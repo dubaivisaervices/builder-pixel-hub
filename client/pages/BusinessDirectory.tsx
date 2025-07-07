@@ -470,11 +470,9 @@ export default function BusinessDirectory() {
 
     setFilteredBusinesses(filtered);
 
-    // Reset pagination when filters change
-    setCurrentPage(1);
-    const initialDisplay = filtered.slice(0, ITEMS_PER_PAGE);
-    setDisplayedBusinesses(initialDisplay);
-    setHasMore(filtered.length > ITEMS_PER_PAGE);
+    // Show all filtered businesses (no pagination needed since we load all from DB)
+    setDisplayedBusinesses(filtered);
+    setHasMore(false); // No pagination needed
   };
 
   const loadMoreBusinesses = () => {
