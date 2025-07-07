@@ -260,7 +260,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
               }
 
               // Add small delay between detail requests to respect rate limits
-              await new Promise((resolve) => setTimeout(resolve, 100));
+              await new Promise((resolve) => setTimeout(resolve, 50));
 
               // Early exit if we have enough businesses to prevent timeout
               if (allBusinesses.length >= 150) {
@@ -278,7 +278,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
         }
 
         // Add small delay between requests to respect rate limits
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 50));
 
         // Early exit if we have enough businesses
         if (allBusinesses.length >= 150) {
