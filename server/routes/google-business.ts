@@ -328,8 +328,8 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
           successfulRequests++;
 
           // Process results and get detailed information for each business
-          // Process up to 20 results per category for 300+ total (18 categories × 20 = 360+ potential)
-          const limitedResults = data.results.slice(0, 20);
+          // Process up to 12 results per category for better server performance (24 categories × 12 = 288+ potential)
+          const limitedResults = data.results.slice(0, 12);
 
           for (const place of limitedResults) {
             if (!processedPlaceIds.has(place.place_id)) {
@@ -552,8 +552,8 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                 );
               }
 
-              // Balanced delay for server stability
-              await new Promise((resolve) => setTimeout(resolve, 30)); // Reduced delay for faster processing
+              // Minimal delay for server stability
+              await new Promise((resolve) => setTimeout(resolve, 20)); // Minimal delay for faster processing
             }
           }
         } else if (data.status === "ZERO_RESULTS") {
@@ -566,8 +566,8 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
           `Completed category "${category}" - Current total: ${allBusinesses.length} businesses`,
         );
 
-        // Balanced delay between categories for stable processing
-        await new Promise((resolve) => setTimeout(resolve, 30)); // Reduced delay for faster processing
+        // Minimal delay between categories for faster processing
+        await new Promise((resolve) => setTimeout(resolve, 20)); // Minimal delay for faster processing
       } catch (error) {
         console.error(`Error searching category ${category}:`, error);
         // Continue with other categories
