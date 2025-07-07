@@ -5,6 +5,7 @@ import {
   searchDubaiVisaServices,
   getBusinessDetails,
   getBusinessPhoto,
+  testGoogleAPI,
 } from "./routes/google-business";
 
 export function createServer() {
@@ -23,6 +24,7 @@ export function createServer() {
   app.get("/api/demo", handleDemo);
 
   // Google Business API routes
+  app.get("/api/test-google-api", testGoogleAPI);
   app.get("/api/dubai-visa-services", searchDubaiVisaServices);
   app.get("/api/business/:placeId", getBusinessDetails);
   app.get("/api/business-photo/:photoReference", getBusinessPhoto);
