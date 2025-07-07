@@ -7,7 +7,11 @@ import {
   getBusinessPhoto,
   testGoogleAPI,
 } from "./routes/google-business";
-import { syncGoogleData, getSyncStatus } from "./routes/sync-google-data";
+import {
+  syncGoogleData,
+  getSyncStatus,
+  syncReviewsOnly,
+} from "./routes/sync-google-data";
 
 export function createServer() {
   const app = express();
