@@ -29,6 +29,14 @@ export default function CompanyReviews() {
   // Debug logging
   console.log("CompanyReviews - businessData:", businessData);
   console.log("CompanyReviews - businessData.reviews:", businessData?.reviews);
+  console.log(
+    "CompanyReviews - businessData.reviews length:",
+    businessData?.reviews?.length,
+  );
+  console.log(
+    "CompanyReviews - company.realReviews length:",
+    businessData?.reviews?.length || 0,
+  );
   console.log("CompanyReviews - businessData.photos:", businessData?.photos);
 
   // Use passed business data or enhanced mock data
