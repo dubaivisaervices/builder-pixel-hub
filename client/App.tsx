@@ -12,6 +12,7 @@ import CompanyReviews from "./pages/CompanyReviews";
 import BusinessDirectory from "./pages/BusinessDirectory";
 import ApiTest from "./pages/ApiTest";
 import AdminSync from "./pages/AdminSync";
+import AdminManage from "./pages/AdminManage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
