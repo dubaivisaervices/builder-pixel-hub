@@ -307,7 +307,7 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
         const data: GooglePlacesResponse = await response.json();
 
         if (data.status === "OK" && data.results) {
-          const limitedResults = data.results.slice(0, 12);
+          const limitedResults = data.results.slice(0, 20);
 
           for (const place of limitedResults) {
             try {
