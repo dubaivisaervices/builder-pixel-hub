@@ -161,8 +161,12 @@ export default function BusinessDirectory() {
   const navigate = useNavigate();
   // Start with empty state and load immediately
   const [allBusinesses, setAllBusinesses] = useState<BusinessData[]>([]);
-  const [filteredBusinesses, setFilteredBusinesses] = useState<BusinessData[]>([]);
-  const [displayedBusinesses, setDisplayedBusinesses] = useState<BusinessData[]>([]);
+  const [filteredBusinesses, setFilteredBusinesses] = useState<BusinessData[]>(
+    [],
+  );
+  const [displayedBusinesses, setDisplayedBusinesses] = useState<
+    BusinessData[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -312,8 +316,8 @@ export default function BusinessDirectory() {
       const endIndex = startIndex + ITEMS_PER_PAGE;
       const nextBatch = filteredBusinesses.slice(startIndex, endIndex);
 
-      setDisplayedBusinesses(prev => [...prev, ...nextBatch]);
-      setCurrentPage(prev => prev + 1);
+      setDisplayedBusinesses((prev) => [...prev, ...nextBatch]);
+      setCurrentPage((prev) => prev + 1);
       setHasMore(endIndex < filteredBusinesses.length);
       setLoadingMore(false);
     }, 500);
@@ -488,149 +492,191 @@ export default function BusinessDirectory() {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {displayedBusinesses.map((business) => (
-              <Card
-                key={business.id}
-                className="shadow-lg border-0 hover:shadow-xl transition-shadow"
-              >
-                <CardHeader className="pb-4">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-start space-x-3 flex-1">
-                      {/* Business Logo */}
-                      <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-primary/20 rounded-lg flex items-center justify-center border border-primary/20 flex-shrink-0 overflow-hidden">
-                        {business.logoUrl ? (
-                          <img
-                            src={business.logoUrl}
-                            alt={`${business.name} logo`}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              // Fallback to letter if image fails to load
-                              const target = e.target as HTMLImageElement;
-                              target.style.display = "none";
-                              target.nextElementSibling!.classList.remove(
-                                "hidden",
-                              );
-                            }}
-                          />
-                        ) : null}
-                        <span
-                          className={`text-primary text-xl font-bold ${business.logoUrl ? "hidden" : ""}`}
-                        >
-                          {business.name.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                      <div className="flex-1">
-                        <CardTitle className="text-lg font-semibold line-clamp-2 mb-2">
-                          {business.name}
-                        </CardTitle>
-                        <Badge
-                          className={`text-xs ${getBusinessStatusColor(business.businessStatus)}`}
-                        >
-                          {business.businessStatus.replace("_", " ")}
-                        </Badge>
+                <Card
+                  key={business.id}
+                  className="shadow-lg border-0 hover:shadow-xl transition-shadow"
+                >
+                  <CardHeader className="pb-4">
+                    <div className="flex justify-between items-start">
+                      <div className="flex items-start space-x-3 flex-1">
+                        {/* Business Logo */}
+                        <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-primary/20 rounded-lg flex items-center justify-center border border-primary/20 flex-shrink-0 overflow-hidden">
+                          {business.logoUrl ? (
+                            <img
+                              src={business.logoUrl}
+                              alt={`${business.name} logo`}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                // Fallback to letter if image fails to load
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = "none";
+                                target.nextElementSibling!.classList.remove(
+                                  "hidden",
+                                );
+                              }}
+                            />
+                          ) : null}
+                          <span
+                            className={`text-primary text-xl font-bold ${business.logoUrl ? "hidden" : ""}`}
+                          >
+                            {business.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                        <div className="flex-1">
+                          <CardTitle className="text-lg font-semibold line-clamp-2 mb-2">
+                            {business.name}
+                          </CardTitle>
+                          <Badge
+                            className={`text-xs ${getBusinessStatusColor(business.businessStatus)}`}
+                          >
+                            {business.businessStatus.replace("_", " ")}
+                          </Badge>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center space-x-1 mt-2">
-                    {renderStars(business.rating)}
-                    <span className="text-sm text-muted-foreground ml-2">
-                      {business.rating > 0
-                        ? business.rating.toFixed(1)
-                        : "No rating"}
-                      {business.reviewCount > 0 && ` (${business.reviewCount})`}
-                    </span>
-                  </div>
-                </CardHeader>
-
-                <CardContent className="space-y-3">
-                  <div className="flex items-start space-x-2">
-                    <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-muted-foreground line-clamp-2">
-                      {business.address}
-                    </span>
-                  </div>
-
-                  {business.phone && (
-                    <div className="flex items-center space-x-2">
-                      <Phone className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                      <span className="text-sm text-muted-foreground">
-                        {business.phone}
+                    <div className="flex items-center space-x-1 mt-2">
+                      {renderStars(business.rating)}
+                      <span className="text-sm text-muted-foreground ml-2">
+                        {business.rating > 0
+                          ? business.rating.toFixed(1)
+                          : "No rating"}
+                        {business.reviewCount > 0 &&
+                          ` (${business.reviewCount})`}
                       </span>
                     </div>
-                  )}
+                  </CardHeader>
 
-                  {business.website && (
-                    <div className="flex items-center space-x-2">
-                      <Globe className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                      <a
-                        href={business.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm text-primary hover:underline line-clamp-1"
-                      >
-                        Visit Website
-                      </a>
+                  <CardContent className="space-y-3">
+                    <div className="flex items-start space-x-2">
+                      <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <span className="text-sm text-muted-foreground line-clamp-2">
+                        {business.address}
+                      </span>
                     </div>
-                  )}
 
-                  <div className="flex items-center justify-between">
-                    <Badge variant="outline" className="text-xs">
-                      {business.category}
-                    </Badge>
-                    {business.isOpen !== undefined && (
-                      <div className="flex items-center space-x-1">
-                        <Clock className="h-3 w-3" />
-                        <span
-                          className={`text-xs ${business.isOpen ? "text-green-600" : "text-red-600"}`}
-                        >
-                          {business.isOpen ? "Open" : "Closed"}
+                    {business.phone && (
+                      <div className="flex items-center space-x-2">
+                        <Phone className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                        <span className="text-sm text-muted-foreground">
+                          {business.phone}
                         </span>
                       </div>
                     )}
-                  </div>
 
-                  <div className="flex space-x-2 pt-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="flex-1"
-                      onClick={() => {
-                        // Navigate to company details page with business data
-                        const locationSlug =
-                          business.address
-                            .split(",")[0]
-                            ?.trim()
+                    {business.website && (
+                      <div className="flex items-center space-x-2">
+                        <Globe className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                        <a
+                          href={business.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-primary hover:underline line-clamp-1"
+                        >
+                          Visit Website
+                        </a>
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between">
+                      <Badge variant="outline" className="text-xs">
+                        {business.category}
+                      </Badge>
+                      {business.isOpen !== undefined && (
+                        <div className="flex items-center space-x-1">
+                          <Clock className="h-3 w-3" />
+                          <span
+                            className={`text-xs ${business.isOpen ? "text-green-600" : "text-red-600"}`}
+                          >
+                            {business.isOpen ? "Open" : "Closed"}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex space-x-2 pt-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex-1"
+                        onClick={() => {
+                          // Navigate to company details page with business data
+                          const locationSlug =
+                            business.address
+                              .split(",")[0]
+                              ?.trim()
+                              .toLowerCase()
+                              .replace(/\s+/g, "-") || "dubai";
+                          const nameSlug = business.name
                             .toLowerCase()
-                            .replace(/\s+/g, "-") || "dubai";
-                        const nameSlug = business.name
-                          .toLowerCase()
-                          .replace(/\s+/g, "-");
-                        navigate(`/reviews/${locationSlug}/${nameSlug}`, {
-                          state: { businessData: business },
-                        });
-                      }}
-                    >
-                      View Details
-                    </Button>
+                            .replace(/\s+/g, "-");
+                          navigate(`/reviews/${locationSlug}/${nameSlug}`, {
+                            state: { businessData: business },
+                          });
+                        }}
+                      >
+                        View Details
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="flex-1"
+                        onClick={() =>
+                          navigate("/complaint", {
+                            state: {
+                              companyName: business.name,
+                              companyLocation: business.address,
+                            },
+                          })
+                        }
+                      >
+                        Report Issues
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Load More Button */}
+            {hasMore && (
+              <div className="text-center mt-12">
+                <Card className="shadow-lg border-0 inline-block">
+                  <CardContent className="pt-6 pb-6">
                     <Button
-                      size="sm"
-                      className="flex-1"
-                      onClick={() =>
-                        navigate("/complaint", {
-                          state: {
-                            companyName: business.name,
-                            companyLocation: business.address,
-                          },
-                        })
-                      }
+                      onClick={loadMoreBusinesses}
+                      disabled={loadingMore}
+                      size="lg"
+                      className="min-w-[200px]"
                     >
-                      Report Issues
+                      {loadingMore ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                          Loading More...
+                        </>
+                      ) : (
+                        <>
+                          Load More Businesses
+                          <span className="ml-2 text-sm opacity-75">
+                            (+
+                            {Math.min(
+                              ITEMS_PER_PAGE,
+                              filteredBusinesses.length -
+                                displayedBusinesses.length,
+                            )}{" "}
+                            more)
+                          </span>
+                        </>
+                      )}
                     </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    <p className="text-sm text-muted-foreground mt-3">
+                      Showing {displayedBusinesses.length} of{" "}
+                      {filteredBusinesses.length} businesses
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </>
         )}
 
         {/* Results Summary */}
