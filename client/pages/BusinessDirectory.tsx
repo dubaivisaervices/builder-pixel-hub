@@ -29,6 +29,49 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+// Generate sample reviews for fallback businesses
+const generateSampleReviews = (businessName: string): BusinessReview[] => {
+  const sampleReviews: BusinessReview[] = [
+    {
+      id: "1",
+      authorName: "Ahmed Hassan",
+      rating: 1,
+      text: `Very disappointed with ${businessName}. They took forever to process my documents and charged extra fees that weren't mentioned initially.`,
+      timeAgo: "2 weeks ago",
+    },
+    {
+      id: "2",
+      authorName: "Sarah Johnson",
+      rating: 2,
+      text: "Poor customer service. Staff was unprofessional and didn't return my calls. Had to follow up multiple times.",
+      timeAgo: "1 month ago",
+    },
+    {
+      id: "3",
+      authorName: "Mohammed Ali",
+      rating: 4,
+      text: "Good service overall. They helped me get my work visa approved, though it took longer than expected.",
+      timeAgo: "3 weeks ago",
+    },
+    {
+      id: "4",
+      authorName: "Jennifer Smith",
+      rating: 1,
+      text: "Terrible experience! They lost my documents and blamed me for it. Very unprofessional and unreliable.",
+      timeAgo: "1 week ago",
+    },
+    {
+      id: "5",
+      authorName: "Omar Khalil",
+      rating: 2,
+      text: "Overpriced and slow service. They kept asking for additional documents that weren't mentioned initially.",
+      timeAgo: "5 days ago",
+    },
+  ];
+
+  return sampleReviews;
+};
+
 // Enhanced fallback sample data for Dubai visa services
 const getFallbackBusinesses = (): BusinessData[] => [
   {
@@ -47,6 +90,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
       { id: 1, url: "", caption: "Office Reception" },
       { id: 2, url: "", caption: "Consultation Room" },
     ],
+    reviews: generateSampleReviews("Dubai Visa Solutions"),
   },
   {
     id: "sample2",
@@ -58,6 +102,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
     category: "immigration consultants",
     businessStatus: "OPERATIONAL",
     isOpen: true,
+    reviews: generateSampleReviews("Emirates Immigration Services"),
   },
   {
     id: "sample3",
@@ -69,6 +114,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
     category: "visa services",
     businessStatus: "OPERATIONAL",
     isOpen: false,
+    reviews: generateSampleReviews("Global Visa Center Dubai"),
   },
   {
     id: "sample4",
@@ -80,6 +126,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
     category: "travel agents",
     businessStatus: "OPERATIONAL",
     isOpen: true,
+    reviews: generateSampleReviews("Dubai Travel & Visa Hub"),
   },
   {
     id: "sample5",
@@ -91,6 +138,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
     category: "visa agency",
     businessStatus: "OPERATIONAL",
     isOpen: true,
+    reviews: generateSampleReviews("Quick Visa Dubai"),
   },
 ];
 
