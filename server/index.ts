@@ -36,6 +36,7 @@ export function createServer() {
 
   // Database sync routes
   app.post("/api/sync-google-data", syncGoogleData);
+  app.post("/api/sync-reviews", syncReviewsOnly);
   app.get("/api/sync-status", getSyncStatus);
 
   return app;
