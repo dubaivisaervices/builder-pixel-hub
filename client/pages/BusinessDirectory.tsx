@@ -92,30 +92,20 @@ const getFallbackBusinesses = (): BusinessData[] => [
 
 export default function BusinessDirectory() {
   const navigate = useNavigate();
-  // Initialize with fallback data immediately
-  const [businesses, setBusinesses] = useState<BusinessData[]>(
-    getFallbackBusinesses(),
-  );
+  // Start with empty state and load immediately
+  const [businesses, setBusinesses] = useState<BusinessData[]>([]);
   const [filteredBusinesses, setFilteredBusinesses] = useState<BusinessData[]>(
-    getFallbackBusinesses(),
+    [],
   );
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(
-    "Showing sample Dubai businesses. Click 'Load Live Data' to fetch from Google.",
-  );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [categories, setCategories] = useState<string[]>([
-    "visa consulting services",
-    "immigration consultants",
-    "visa services",
-    "travel agents",
-    "visa agency",
-  ]);
+  const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
-    // Don't auto-fetch on load, let user trigger it
-    // fetchDubaiBusinesses();
+    // Auto-fetch live data with logos on page load
+    fetchDubaiBusinesses();
   }, []);
 
   useEffect(() => {
