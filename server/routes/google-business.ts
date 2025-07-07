@@ -249,6 +249,11 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     );
     console.log(`Total unique businesses found: ${allBusinesses.length}`);
 
+    // Add timing info for performance monitoring
+    const endTime = Date.now();
+    const duration = Math.round((endTime - startTime) / 1000);
+    console.log(`API process took approximately ${duration} seconds`);
+
     // Sort by rating and review count
     const sortedBusinesses = allBusinesses.sort((a, b) => {
       if (b.rating !== a.rating) return b.rating - a.rating;
