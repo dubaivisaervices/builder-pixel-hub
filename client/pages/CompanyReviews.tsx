@@ -157,20 +157,9 @@ export default function CompanyReviews() {
             <div className="flex flex-col lg:flex-row lg:items-start space-y-6 lg:space-y-0 lg:space-x-8">
               {/* Logo and Basic Info */}
               <div className="flex-shrink-0">
-                <div className="w-32 h-32 bg-gradient-to-br from-primary/10 to-primary/20 rounded-xl flex items-center justify-center mb-4">
-                  <img
-                    src={company.logo}
-                    alt={`${company.name} logo`}
-                    className="w-20 h-20 object-contain"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = "none";
-                      (
-                        e.target as HTMLImageElement
-                      ).nextElementSibling!.classList.remove("hidden");
-                    }}
-                  />
-                  <div className="hidden text-primary text-4xl font-bold">
-                    {company.name.charAt(0)}
+                <div className="w-32 h-32 bg-gradient-to-br from-primary/10 to-primary/20 rounded-xl flex items-center justify-center mb-4 border-2 border-primary/20">
+                  <div className="text-primary text-4xl font-bold">
+                    {company.name.charAt(0).toUpperCase()}
                   </div>
                 </div>
                 <div className="text-center lg:text-left">
