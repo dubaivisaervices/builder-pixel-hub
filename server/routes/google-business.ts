@@ -87,10 +87,10 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     let totalRequests = 0;
     let successfulRequests = 0;
 
-    // Process 12 priority categories focusing on businesses with target names
-    const priorityCategories = DUBAI_VISA_CATEGORIES.slice(0, 12); // Top 12 categories prioritizing exact name matches
+    // Process ALL categories to ensure 300+ listings
+    const priorityCategories = DUBAI_VISA_CATEGORIES; // Use all categories for maximum coverage
     console.log(
-      `Processing ${priorityCategories.length} priority categories focusing on businesses with target keyword names`,
+      `Processing ${priorityCategories.length} categories to ensure 300+ business listings`,
     );
 
     // Search each category
@@ -113,8 +113,8 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
           successfulRequests++;
 
           // Process results and get detailed information for each business
-          // Process up to 15 results per category for stable performance (8 categories × 15 = 120 potential)
-          const limitedResults = data.results.slice(0, 15);
+          // Process up to 20 results per category for 300+ total (18 categories × 20 = 360+ potential)
+          const limitedResults = data.results.slice(0, 20);
 
           for (const place of limitedResults) {
             if (!processedPlaceIds.has(place.place_id)) {
@@ -244,14 +244,14 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
 
                   allBusinesses.push(business);
 
-                  // Log progress every 25 businesses for reliable processing
-                  if (allBusinesses.length % 25 === 0) {
+                  // Log progress every 50 businesses for reliable processing
+                  if (allBusinesses.length % 50 === 0) {
                     console.log(
-                      `🎯 MILESTONE: ${allBusinesses.length} businesses processed! Target: 150+`,
+                      `🎯 MILESTONE: ${allBusinesses.length} businesses processed! Target: 300+`,
                     );
-                  } else {
+                  } else if (allBusinesses.length % 25 === 0) {
                     console.log(
-                      `Fetched detailed info for: ${business.name} (Total: ${allBusinesses.length})`,
+                      `Progress: ${allBusinesses.length} businesses processed`,
                     );
                   }
                 } else {
@@ -326,15 +326,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
               }
 
               // Balanced delay for server stability
-              await new Promise((resolve) => setTimeout(resolve, 50));
-
-              // Early exit if we have enough businesses to prevent timeout
-              if (allBusinesses.length >= 150) {
-                console.log(
-                  `Reached 150 businesses limit, stopping to prevent timeout`,
-                );
-                break;
-              }
+              await new Promise((resolve) => setTimeout(resolve, 30)); // Reduced delay for faster processing
             }
           }
         } else if (data.status === "ZERO_RESULTS") {
@@ -348,13 +340,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
         );
 
         // Balanced delay between categories for stable processing
-        await new Promise((resolve) => setTimeout(resolve, 50));
-
-        // Early exit if we have enough businesses
-        if (allBusinesses.length >= 150) {
-          console.log(`Reached business limit, stopping category processing`);
-          break;
-        }
+        await new Promise((resolve) => setTimeout(resolve, 30)); // Reduced delay for faster processing
       } catch (error) {
         console.error(`Error searching category ${category}:`, error);
         // Continue with other categories
@@ -408,7 +394,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
         cat.replace(" Dubai UAE", ""),
       ),
       processingTime: duration,
-      message: `Fetched detailed information for ${sortedBusinesses.length} businesses in ${duration} seconds`,
+      message: `Successfully fetched ${sortedBusinesses.length} Dubai visa service providers in ${duration} seconds`,
     });
   } catch (error) {
     console.error("Error fetching Dubai visa services:", error);
