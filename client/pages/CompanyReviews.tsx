@@ -492,9 +492,10 @@ export default function CompanyReviews() {
                   </>
                 ) : (
                   <>
-                    <div className="mb-4 text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
-                      ⭐ No reviews available from business data. Showing sample
-                      reviews.
+                    <div className="mb-4 text-sm text-orange-600 bg-orange-50 p-3 rounded-lg">
+                      ⚠️ No real Google reviews available for this business.
+                      Please run "Sync Real Google Reviews" from the admin panel
+                      to fetch authentic customer reviews.
                     </div>
                     {company.positiveReviews.map((review) => (
                       <div
