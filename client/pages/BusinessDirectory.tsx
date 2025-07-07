@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-// Fallback sample data for Dubai visa services
+// Enhanced fallback sample data for Dubai visa services
 const getFallbackBusinesses = (): BusinessData[] => [
   {
     id: "sample1",
@@ -90,6 +90,73 @@ const getFallbackBusinesses = (): BusinessData[] => [
   },
 ];
 
+// Enhanced fallback with more comprehensive sample data
+const getEnhancedFallbackBusinesses = (): BusinessData[] => [
+  ...getFallbackBusinesses(),
+  {
+    id: "sample6",
+    name: "Al Fardan Immigration Services",
+    address: "Sheikh Zayed Road, Dubai, UAE",
+    location: { lat: 25.213, lng: 55.279 },
+    rating: 4.1,
+    reviewCount: 234,
+    category: "immigration lawyers",
+    businessStatus: "OPERATIONAL",
+    isOpen: true,
+    phone: "+971-4-987-6543",
+    website: "https://alfardan-immigration.ae",
+  },
+  {
+    id: "sample7",
+    name: "Express PRO Services Dubai",
+    address: "Trade Centre, Dubai, UAE",
+    location: { lat: 25.222, lng: 55.285 },
+    rating: 4.3,
+    reviewCount: 189,
+    category: "PRO services",
+    businessStatus: "OPERATIONAL",
+    isOpen: true,
+    phone: "+971-4-567-8901",
+  },
+  {
+    id: "sample8",
+    name: "Dubai Document Clearing",
+    address: "Al Garhoud, Dubai, UAE",
+    location: { lat: 25.252, lng: 55.347 },
+    rating: 3.9,
+    reviewCount: 156,
+    category: "document clearing",
+    businessStatus: "OPERATIONAL",
+    isOpen: false,
+    phone: "+971-4-234-5678",
+  },
+  {
+    id: "sample9",
+    name: "Emirates Attestation Center",
+    address: "Karama, Dubai, UAE",
+    location: { lat: 25.238, lng: 55.289 },
+    rating: 4.0,
+    reviewCount: 298,
+    category: "attestation services",
+    businessStatus: "OPERATIONAL",
+    isOpen: true,
+    phone: "+971-4-345-6789",
+    website: "https://emirates-attestation.com",
+  },
+  {
+    id: "sample10",
+    name: "Skyline Immigration Consultants",
+    address: "Marina Walk, Dubai, UAE",
+    location: { lat: 25.077, lng: 55.139 },
+    rating: 4.4,
+    reviewCount: 167,
+    category: "immigration consultants",
+    businessStatus: "OPERATIONAL",
+    isOpen: true,
+    phone: "+971-4-456-7890",
+  },
+];
+
 export default function BusinessDirectory() {
   const navigate = useNavigate();
   // Start with empty state and load immediately
@@ -118,7 +185,7 @@ export default function BusinessDirectory() {
 
       // Add timeout and better error handling
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 120000); // 120 second timeout for comprehensive data
+      const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 second timeout for optimized data
 
       const response = await fetch("/api/dubai-visa-services", {
         signal: controller.signal,
@@ -160,13 +227,17 @@ export default function BusinessDirectory() {
       console.error("Error fetching businesses:", err);
 
       // Use fallback data on any error
-      console.log("API error, using fallback data");
-      setBusinesses(getFallbackBusinesses());
+      console.log("API error, using enhanced fallback data");
+      setBusinesses(getEnhancedFallbackBusinesses());
       setCategories([
         "visa consulting services",
         "immigration consultants",
         "visa services",
         "travel agents",
+        "immigration lawyers",
+        "PRO services",
+        "document clearing",
+        "attestation services",
       ]);
 
       let errorMessage =
@@ -249,14 +320,14 @@ export default function BusinessDirectory() {
             Loading Dubai Visa Services
           </h3>
           <p className="text-muted-foreground mb-4">
-            Fetching comprehensive business information for 300+ Dubai visa
-            service providers including phone numbers, websites, hours, and
+            Fetching comprehensive business information for 100+ top-rated Dubai
+            visa service providers including phone numbers, websites, hours, and
             photos from Google My Business...
           </p>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
             <p className="text-sm text-blue-700">
-              💡 This process takes 60-120 seconds because we're gathering
-              detailed data for each business across 16 categories
+              💡 This process takes 60-90 seconds because we're gathering
+              detailed data for each business across priority categories
             </p>
           </div>
         </div>
@@ -288,8 +359,8 @@ export default function BusinessDirectory() {
                 </h1>
                 <p className="text-sm text-muted-foreground">
                   {loading
-                    ? "Loading comprehensive business database from Google... (This may take 60-120 seconds)"
-                    : `${filteredBusinesses.length} businesses found with detailed information`}
+                    ? "Loading optimized business database from Google... (This may take 60-90 seconds)"
+                    : `${filteredBusinesses.length} top-rated businesses found with detailed information`}
                 </p>
               </div>
             </div>

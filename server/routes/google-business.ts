@@ -83,8 +83,14 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     let totalRequests = 0;
     let successfulRequests = 0;
 
+    // Process only first 8 categories initially to prevent server overload
+    const priorityCategories = DUBAI_VISA_CATEGORIES.slice(0, 8);
+    console.log(
+      `Processing ${priorityCategories.length} priority categories to prevent server overload`,
+    );
+
     // Search each category
-    for (const category of DUBAI_VISA_CATEGORIES) {
+    for (const category of priorityCategories) {
       try {
         totalRequests++;
         const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(category)}&key=${apiKey}`;
@@ -102,8 +108,8 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
           successfulRequests++;
 
           // Process results and get detailed information for each business
-          // Limit to first 20 results per category for more comprehensive coverage
-          const limitedResults = data.results.slice(0, 20);
+          // Limit to first 15 results per category to balance coverage and performance
+          const limitedResults = data.results.slice(0, 15);
 
           for (const place of limitedResults) {
             if (!processedPlaceIds.has(place.place_id)) {
