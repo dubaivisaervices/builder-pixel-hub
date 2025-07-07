@@ -54,7 +54,11 @@ const DUBAI_VISA_CATEGORIES = [
   "travel agents Dubai UAE",
   "travel agency Dubai UAE",
   "visa agency Dubai UAE",
-  // Additional categories for more comprehensive results
+  // Additional specific service categories
+  "overseas services Dubai UAE",
+  "visa consultants Dubai UAE",
+  "work permit Dubai UAE",
+  "study abroad Dubai UAE",
   "immigration lawyers Dubai UAE",
   "visa processing center Dubai UAE",
   "document clearing Dubai UAE",
@@ -83,10 +87,10 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     let totalRequests = 0;
     let successfulRequests = 0;
 
-    // Process 8 priority categories for reliable performance with good coverage
-    const priorityCategories = DUBAI_VISA_CATEGORIES.slice(0, 8); // Top 8 categories
+    // Process 10 priority categories including specific service names
+    const priorityCategories = DUBAI_VISA_CATEGORIES.slice(0, 10); // Top 10 categories including specific terms
     console.log(
-      `Processing ${priorityCategories.length} priority categories for reliable performance with good coverage`,
+      `Processing ${priorityCategories.length} priority categories including specific service names for comprehensive coverage`,
     );
 
     // Search each category
@@ -271,9 +275,9 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
               await new Promise((resolve) => setTimeout(resolve, 50));
 
               // Early exit if we have enough businesses to prevent timeout
-              if (allBusinesses.length >= 120) {
+              if (allBusinesses.length >= 150) {
                 console.log(
-                  `Reached 120 businesses limit, stopping to prevent timeout`,
+                  `Reached 150 businesses limit, stopping to prevent timeout`,
                 );
                 break;
               }
@@ -293,7 +297,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
         await new Promise((resolve) => setTimeout(resolve, 50));
 
         // Early exit if we have enough businesses
-        if (allBusinesses.length >= 120) {
+        if (allBusinesses.length >= 150) {
           console.log(`Reached business limit, stopping category processing`);
           break;
         }

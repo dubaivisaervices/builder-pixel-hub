@@ -155,6 +155,44 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     isOpen: true,
     phone: "+971-4-456-7890",
   },
+  {
+    id: "sample11",
+    name: "Global Overseas Services",
+    address: "Satwa, Dubai, UAE",
+    location: { lat: 25.232, lng: 55.279 },
+    rating: 4.2,
+    reviewCount: 201,
+    category: "overseas services",
+    businessStatus: "OPERATIONAL",
+    isOpen: true,
+    phone: "+971-4-567-8901",
+    website: "https://global-overseas.ae",
+  },
+  {
+    id: "sample12",
+    name: "Dubai Work Permit Center",
+    address: "DIFC, Dubai, UAE",
+    location: { lat: 25.214, lng: 55.282 },
+    rating: 4.1,
+    reviewCount: 145,
+    category: "work permit",
+    businessStatus: "OPERATIONAL",
+    isOpen: true,
+    phone: "+971-4-678-9012",
+  },
+  {
+    id: "sample13",
+    name: "Study Abroad Dubai",
+    address: "Jumeirah Beach Road, Dubai, UAE",
+    location: { lat: 25.231, lng: 55.266 },
+    rating: 4.5,
+    reviewCount: 178,
+    category: "study abroad",
+    businessStatus: "OPERATIONAL",
+    isOpen: true,
+    phone: "+971-4-789-0123",
+    website: "https://studyabroaddubai.com",
+  },
 ];
 
 export default function BusinessDirectory() {
@@ -241,11 +279,13 @@ export default function BusinessDirectory() {
         "visa consulting services",
         "immigration consultants",
         "visa services",
+        "overseas services",
+        "work permit",
+        "study abroad",
         "travel agents",
         "immigration lawyers",
         "PRO services",
         "document clearing",
-        "attestation services",
       ]);
 
       let errorMessage =
@@ -358,9 +398,10 @@ export default function BusinessDirectory() {
             Loading Dubai Visa Services
           </h3>
           <p className="text-muted-foreground mb-4">
-            Fetching comprehensive business information for 100+ top-rated Dubai
-            visa service providers including phone numbers, websites, hours, and
-            photos from Google My Business across priority service categories...
+            Fetching comprehensive business information for 150+ Dubai visa
+            service providers including overseas services, work permit, study
+            abroad, and visa consultants with phone numbers, websites, hours,
+            and photos from Google My Business...
           </p>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
             <p className="text-sm text-blue-700">
