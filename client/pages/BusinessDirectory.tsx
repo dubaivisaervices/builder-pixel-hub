@@ -337,6 +337,13 @@ export default function BusinessDirectory() {
       console.log(
         `API response received: ${data.businesses?.length || 0} businesses`,
       );
+      console.log("API response keys:", Object.keys(data));
+      console.log(
+        "First business sample:",
+        data.businesses?.[0]
+          ? Object.keys(data.businesses[0])
+          : "No businesses",
+      );
 
       // If no businesses found from API, use fallback data
       if (!data.businesses || data.businesses.length === 0) {
