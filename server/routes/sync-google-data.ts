@@ -599,11 +599,13 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
 
     const stats = await businessService.getStats();
 
-    console.log(`🎉 Google data sync completed!`);
+    console.log(`🎉 Enhanced Google data sync completed!`);
+    console.log(`📊 Categories processed: ${DUBAI_VISA_CATEGORIES.length}`);
     console.log(
       `📊 Total synced: ${totalSynced} (${totalNew} new, ${totalUpdated} updated)`,
     );
     console.log(`⏱️  Duration: ${duration} seconds`);
+    console.log(`💾 Database now contains ${stats.total} total businesses`);
 
     res.json({
       success: true,
