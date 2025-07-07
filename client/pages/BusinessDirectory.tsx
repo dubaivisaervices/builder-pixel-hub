@@ -213,7 +213,7 @@ export default function BusinessDirectory() {
       // If no businesses found from API, use fallback data
       if (!data.businesses || data.businesses.length === 0) {
         console.log("No businesses from API, using fallback data");
-        setBusinesses(getFallbackBusinesses());
+        setAllBusinesses(getEnhancedFallbackBusinesses());
         setCategories([
           "visa consulting services",
           "immigration consultants",
