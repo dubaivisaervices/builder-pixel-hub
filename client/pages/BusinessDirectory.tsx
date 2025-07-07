@@ -25,6 +25,65 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+// Fallback sample data for Dubai visa services
+const getFallbackBusinesses = (): BusinessData[] => [
+  {
+    id: "sample1",
+    name: "Dubai Visa Solutions",
+    address: "Business Bay, Dubai, UAE",
+    location: { lat: 25.188, lng: 55.274 },
+    rating: 4.2,
+    reviewCount: 156,
+    category: "visa consulting services",
+    businessStatus: "OPERATIONAL",
+    isOpen: true,
+  },
+  {
+    id: "sample2",
+    name: "Emirates Immigration Services",
+    address: "Deira, Dubai, UAE",
+    location: { lat: 25.263, lng: 55.297 },
+    rating: 4.0,
+    reviewCount: 89,
+    category: "immigration consultants",
+    businessStatus: "OPERATIONAL",
+    isOpen: true,
+  },
+  {
+    id: "sample3",
+    name: "Global Visa Center Dubai",
+    address: "Jumeirah, Dubai, UAE",
+    location: { lat: 25.218, lng: 55.272 },
+    rating: 3.8,
+    reviewCount: 234,
+    category: "visa services",
+    businessStatus: "OPERATIONAL",
+    isOpen: false,
+  },
+  {
+    id: "sample4",
+    name: "Dubai Travel & Visa Hub",
+    address: "Al Karama, Dubai, UAE",
+    location: { lat: 25.238, lng: 55.289 },
+    rating: 4.5,
+    reviewCount: 67,
+    category: "travel agents",
+    businessStatus: "OPERATIONAL",
+    isOpen: true,
+  },
+  {
+    id: "sample5",
+    name: "Quick Visa Dubai",
+    address: "Bur Dubai, Dubai, UAE",
+    location: { lat: 25.262, lng: 55.29 },
+    rating: 3.5,
+    reviewCount: 123,
+    category: "visa agency",
+    businessStatus: "OPERATIONAL",
+    isOpen: true,
+  },
+];
+
 export default function BusinessDirectory() {
   const navigate = useNavigate();
   // Initialize with fallback data immediately
