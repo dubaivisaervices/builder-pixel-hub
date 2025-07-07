@@ -311,11 +311,15 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
       });
     }
 
-    console.log("🔄 Starting Google data sync...");
+    console.log("🔄 Starting enhanced Google data sync...");
+    console.log(
+      `📋 Processing ${DUBAI_VISA_CATEGORIES.length} search categories with pagination`,
+    );
 
     let totalSynced = 0;
     let totalUpdated = 0;
     let totalNew = 0;
+    let skippedDuplicates = 0;
 
     // Process all categories
     for (const category of DUBAI_VISA_CATEGORIES) {
