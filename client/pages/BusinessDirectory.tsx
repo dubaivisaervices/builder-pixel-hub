@@ -298,6 +298,10 @@ export default function BusinessDirectory() {
                   Sample Data Mode
                 </h3>
                 <p className="text-sm text-blue-700">{error}</p>
+                <p className="text-xs text-blue-600 mt-1">
+                  💡 Click "Load Live Data" to see real business logos and
+                  photos from Google My Business
+                </p>
                 <div className="flex gap-2 mt-2">
                   <Button
                     variant="outline"
@@ -306,7 +310,7 @@ export default function BusinessDirectory() {
                     disabled={loading}
                     className="border-blue-300 text-blue-700 hover:bg-blue-100"
                   >
-                    {loading ? "Loading..." : "Load Live Data from Google"}
+                    {loading ? "Loading..." : "Load Live Data with Logos"}
                   </Button>
                   <Button
                     variant="ghost"
