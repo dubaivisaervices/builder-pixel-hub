@@ -44,7 +44,9 @@ export default function CompanyReviews() {
     description:
       "A visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, and tourist visa applications.",
     website: businessData?.website || "https://example-visa-services.com",
-    email: "info@example-visa-services.com",
+    email:
+      businessData?.email ||
+      `info@${(businessData?.name || companyName || "company").toLowerCase().replace(/[^a-z0-9]/g, "")}.ae`,
     phone: businessData?.phone || "+971-4-123-4567",
     address:
       businessData?.address || "Office 1204, Business Bay Tower, Dubai, UAE",
@@ -444,49 +446,93 @@ export default function CompanyReviews() {
           <TabsContent value="reviews" className="space-y-6">
             <Card className="shadow-lg border-0">
               <CardHeader>
-                <CardTitle>Customer Reviews ({company.totalReviews})</CardTitle>
+                <CardTitle>
+                  Customer Reviews (
+                  {businessData?.reviews?.length || company.totalReviews})
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                {company.positiveReviews.map((review) => (
-                  <div
-                    key={review.id}
-                    className="border-b pb-6 last:border-b-0"
-                  >
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center space-x-3">
-                        <div className="bg-primary/10 p-2 rounded-full">
-                          <User className="h-4 w-4 text-primary" />
-                        </div>
-                        <div>
-                          <div className="font-medium">
-                            {review.reviewerName}
+                {/* Show real reviews from business data if available */}
+                {businessData?.reviews && businessData.reviews.length > 0
+                  ? businessData.reviews.map((review) => (
+                      <div
+                        key={review.id}
+                        className="border-b pb-6 last:border-b-0"
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center space-x-3">
+                            <div className="bg-primary/10 p-2 rounded-full">
+                              <User className="h-4 w-4 text-primary" />
+                            </div>
+                            <div>
+                              <div className="font-medium">
+                                {review.authorName}
+                              </div>
+                              <div className="flex items-center space-x-1">
+                                {[...Array(5)].map((_, i) => (
+                                  <Star
+                                    key={i}
+                                    className={`h-4 w-4 ${
+                                      i < review.rating
+                                        ? "text-yellow-400 fill-current"
+                                        : "text-gray-300"
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                            </div>
                           </div>
-                          <div className="flex items-center space-x-1">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`h-4 w-4 ${
-                                  i < review.rating
-                                    ? "text-yellow-400 fill-current"
-                                    : "text-gray-300"
-                                }`}
-                              />
-                            ))}
+                          <div className="flex items-center space-x-1 text-sm text-muted-foreground">
+                            <Calendar className="h-4 w-4" />
+                            <span>{review.timeAgo}</span>
                           </div>
                         </div>
+                        <p className="text-muted-foreground leading-relaxed">
+                          {review.text}
+                        </p>
                       </div>
-                      <div className="flex items-center space-x-1 text-sm text-muted-foreground">
-                        <Calendar className="h-4 w-4" />
-                        <span>
-                          {new Date(review.date).toLocaleDateString()}
-                        </span>
+                    ))
+                  : /* Fallback to static reviews if no business data */
+                    company.positiveReviews.map((review) => (
+                      <div
+                        key={review.id}
+                        className="border-b pb-6 last:border-b-0"
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center space-x-3">
+                            <div className="bg-primary/10 p-2 rounded-full">
+                              <User className="h-4 w-4 text-primary" />
+                            </div>
+                            <div>
+                              <div className="font-medium">
+                                {review.reviewerName}
+                              </div>
+                              <div className="flex items-center space-x-1">
+                                {[...Array(5)].map((_, i) => (
+                                  <Star
+                                    key={i}
+                                    className={`h-4 w-4 ${
+                                      i < review.rating
+                                        ? "text-yellow-400 fill-current"
+                                        : "text-gray-300"
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-1 text-sm text-muted-foreground">
+                            <Calendar className="h-4 w-4" />
+                            <span>
+                              {new Date(review.date).toLocaleDateString()}
+                            </span>
+                          </div>
+                        </div>
+                        <p className="text-muted-foreground leading-relaxed">
+                          {review.comment}
+                        </p>
                       </div>
-                    </div>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {review.comment}
-                    </p>
-                  </div>
-                ))}
+                    ))}
               </CardContent>
             </Card>
           </TabsContent>
