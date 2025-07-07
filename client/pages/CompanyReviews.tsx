@@ -43,7 +43,6 @@ export default function CompanyReviews() {
     // Company details
     description:
       "A visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, and tourist visa applications.",
-    logo: "/placeholder.svg", // Placeholder logo
     website: "https://example-visa-services.com",
     email: "info@example-visa-services.com",
     phone: "+971-4-123-4567",
@@ -55,10 +54,12 @@ export default function CompanyReviews() {
     totalReviews: 127,
     // Photos
     photos: [
-      { id: 1, url: "/placeholder.svg", caption: "Office Reception" },
-      { id: 2, url: "/placeholder.svg", caption: "Consultation Room" },
-      { id: 3, url: "/placeholder.svg", caption: "Team Photo" },
-      { id: 4, url: "/placeholder.svg", caption: "Office Exterior" },
+      { id: 1, caption: "Office Reception" },
+      { id: 2, caption: "Consultation Room" },
+      { id: 3, caption: "Team Photo" },
+      { id: 4, caption: "Office Exterior" },
+      { id: 5, caption: "Waiting Area" },
+      { id: 6, caption: "Document Processing Center" },
     ],
     // Operating hours
     hours: {
@@ -360,18 +361,31 @@ export default function CompanyReviews() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {company.photos.map((photo) => (
                     <div key={photo.id} className="space-y-2">
-                      <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                        <img
-                          src={photo.url}
-                          alt={photo.caption}
-                          className="w-full h-full object-cover"
-                        />
+                      <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-200">
+                        <div className="text-center text-gray-500">
+                          <Camera className="h-12 w-12 mx-auto mb-2" />
+                          <p className="text-sm font-medium">{photo.caption}</p>
+                          <p className="text-xs text-gray-400">
+                            Photo placeholder
+                          </p>
+                        </div>
                       </div>
-                      <p className="text-sm text-muted-foreground text-center">
+                      <p className="text-sm text-muted-foreground text-center font-medium">
                         {photo.caption}
                       </p>
                     </div>
                   ))}
+                </div>
+
+                {/* No Photos Message */}
+                <div className="text-center py-8 text-muted-foreground">
+                  <Camera className="h-16 w-16 mx-auto mb-4 text-gray-300" />
+                  <h3 className="text-lg font-medium mb-2">Photo Gallery</h3>
+                  <p className="text-sm">
+                    Company photos will be displayed here once uploaded. This
+                    includes office reception, consultation rooms, team photos,
+                    and exterior views.
+                  </p>
                 </div>
               </CardContent>
             </Card>
