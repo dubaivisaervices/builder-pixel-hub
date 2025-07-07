@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import ComplaintForm from "./pages/ComplaintForm";
 import CompanyReviews from "./pages/CompanyReviews";
 import BusinessDirectory from "./pages/BusinessDirectory";
+import ApiTest from "./pages/ApiTest";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/complaint" element={<ComplaintForm />} />
           <Route path="/dubai-businesses" element={<BusinessDirectory />} />
+          <Route path="/api-test" element={<ApiTest />} />
           <Route
             path="/reviews/:location/:companyName"
             element={<CompanyReviews />}
