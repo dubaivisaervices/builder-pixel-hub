@@ -213,12 +213,15 @@ export default function BusinessDirectory() {
   const [categories, setCategories] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
+  const [isApiCallInProgress, setIsApiCallInProgress] = useState(false);
 
   const ITEMS_PER_PAGE = 25;
 
   useEffect(() => {
-    // Auto-fetch live data with logos on page load
-    fetchDubaiBusinesses();
+    // Auto-fetch live data with logos on page load - prevent multiple calls
+    if (!isApiCallInProgress) {
+      fetchDubaiBusinesses();
+    }
   }, []);
 
   useEffect(() => {
@@ -226,13 +229,22 @@ export default function BusinessDirectory() {
   }, [allBusinesses, searchTerm, selectedCategory]);
 
   const fetchDubaiBusinesses = async () => {
+    // Prevent multiple concurrent API calls
+    if (isApiCallInProgress) {
+      console.log("API call already in progress, skipping...");
+      return;
+    }
+
     try {
+      setIsApiCallInProgress(true);
       setLoading(true);
+      setError(null);
 
       // Add timeout and better error handling for larger dataset
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 150000); // 150 second timeout for 300+ businesses
+      const timeoutId = setTimeout(() => controller.abort(), 180000); // 3 minute timeout for reliable processing
 
+      console.log("Starting API call to fetch Dubai businesses...");
       const response = await fetch("/api/dubai-visa-services", {
         signal: controller.signal,
         headers: {
@@ -243,10 +255,16 @@ export default function BusinessDirectory() {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(
+          `HTTP error! status: ${response.status} - ${errorText}`,
+        );
       }
 
       const data: BusinessSearchResponse = await response.json();
+      console.log(
+        `API response received: ${data.businesses?.length || 0} businesses`,
+      );
 
       // If no businesses found from API, use fallback data
       if (!data.businesses || data.businesses.length === 0) {
@@ -306,6 +324,8 @@ export default function BusinessDirectory() {
       setError(errorMessage);
     } finally {
       setLoading(false);
+      setIsApiCallInProgress(false);
+      console.log("API call completed and state cleaned up");
     }
   };
 
@@ -398,15 +418,15 @@ export default function BusinessDirectory() {
             Loading Dubai Visa Services
           </h3>
           <p className="text-muted-foreground mb-4">
-            Fetching comprehensive business information for 300+ Dubai visa
+            Fetching comprehensive business information for 200+ Dubai visa
             service providers including overseas services, work permit, study
             abroad, and visa consultants with phone numbers, websites, hours,
             and photos from Google My Business...
           </p>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
             <p className="text-sm text-blue-700">
-              💡 This process takes 2-3 minutes because we're gathering detailed
-              data for 300+ businesses with reliable performance
+              💡 This process takes 30-60 seconds because we're gathering
+              detailed data from Google Places API with reliable performance
             </p>
           </div>
         </div>
