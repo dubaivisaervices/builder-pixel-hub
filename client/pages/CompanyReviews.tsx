@@ -445,13 +445,13 @@ export default function CompanyReviews() {
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Show real reviews from business data if available */}
-                {company.realReviews && company.realReviews.length > 0 ? (
+                {businessData?.reviews && businessData.reviews.length > 0 ? (
                   <>
                     <div className="mb-4 text-sm text-green-600 bg-green-50 p-3 rounded-lg">
-                      ⭐ Showing {company.realReviews.length} real customer
-                      reviews (70% negative, 30% positive)
+                      ⭐ Showing {businessData.reviews.length} real Google
+                      reviews from verified customers
                     </div>
-                    {company.realReviews.map((review) => (
+                    {businessData.reviews.map((review) => (
                       <div
                         key={review.id}
                         className="border-b pb-6 last:border-b-0"
