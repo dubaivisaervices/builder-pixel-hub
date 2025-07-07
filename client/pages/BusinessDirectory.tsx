@@ -63,7 +63,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: true,
     email: "contact@emiratesimmigration.ae",
-    reviews: generateSampleReviews("Emirates Immigration Services"),
+    reviews: [], // No fake reviews
   },
   {
     id: "sample3",
@@ -76,7 +76,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: false,
     email: "info@globalvisacenter.ae",
-    reviews: generateSampleReviews("Global Visa Center Dubai"),
+    reviews: [], // No fake reviews
   },
   {
     id: "sample4",
@@ -89,7 +89,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: true,
     email: "services@dubaitravelvisa.ae",
-    reviews: generateSampleReviews("Dubai Travel & Visa Hub"),
+    reviews: [], // No fake reviews
   },
   {
     id: "sample5",
@@ -102,7 +102,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: true,
     email: "support@quickvisadubai.ae",
-    reviews: generateSampleReviews("Quick Visa Dubai"),
+    reviews: [], // No fake reviews
   },
 ];
 
@@ -121,7 +121,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     isOpen: true,
     phone: "+971-4-987-6543",
     website: "https://alfardan-immigration.ae",
-    reviews: generateSampleReviews("Al Fardan Immigration Services"),
+    reviews: [], // No fake reviews
   },
   {
     id: "sample7",
@@ -134,7 +134,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: true,
     phone: "+971-4-567-8901",
-    reviews: generateSampleReviews("Express PRO Services Dubai"),
+    reviews: [], // No fake reviews
   },
   {
     id: "sample8",
@@ -147,7 +147,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: false,
     phone: "+971-4-234-5678",
-    reviews: generateSampleReviews("Dubai Document Clearing"),
+    reviews: [], // No fake reviews
   },
   {
     id: "sample9",
@@ -161,7 +161,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     isOpen: true,
     phone: "+971-4-345-6789",
     website: "https://emirates-attestation.com",
-    reviews: generateSampleReviews("Emirates Attestation Center"),
+    reviews: [], // No fake reviews
   },
   {
     id: "sample10",
@@ -174,7 +174,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: true,
     phone: "+971-4-456-7890",
-    reviews: generateSampleReviews("Skyline Immigration Consultants"),
+    reviews: [], // No fake reviews
   },
   {
     id: "sample11",
@@ -188,7 +188,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     isOpen: true,
     phone: "+971-4-567-8901",
     website: "https://global-overseas.ae",
-    reviews: generateSampleReviews("Global Overseas Services"),
+    reviews: [], // No fake reviews
   },
   {
     id: "sample12",
@@ -201,7 +201,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: true,
     phone: "+971-4-678-9012",
-    reviews: generateSampleReviews("Dubai Work Permit Center"),
+    reviews: [], // No fake reviews
   },
   {
     id: "sample13",
@@ -214,7 +214,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: true,
     phone: "+971-4-789-0123",
-    reviews: generateSampleReviews("Study Abroad Dubai"),
+    reviews: [], // No fake reviews
     website: "https://studyabroaddubai.com",
   },
 ];
