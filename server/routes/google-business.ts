@@ -44,7 +44,7 @@ interface BusinessData {
   priceLevel?: number;
 }
 
-// Dubai visa/immigration service categories to search - prioritizing specific name patterns
+// Dubai visa/immigration service categories to search - prioritizing specific name patterns and variations
 const DUBAI_VISA_CATEGORIES = [
   // High priority - businesses with exact target names
   '"overseas services" Dubai UAE',
@@ -53,7 +53,7 @@ const DUBAI_VISA_CATEGORIES = [
   '"visa consultants" Dubai UAE',
   '"work permit" Dubai UAE',
   '"study abroad" Dubai UAE',
-  // Standard categories
+  // Standard categories with variations
   "visa consulting services Dubai UAE",
   "immigration consultants Dubai UAE",
   "visa agency Dubai UAE",
@@ -67,6 +67,13 @@ const DUBAI_VISA_CATEGORIES = [
   "student visa services Dubai UAE",
   "business visa services Dubai UAE",
   "visa application center Dubai UAE",
+  // Additional patterns to find more businesses
+  "visitor visa Dubai UAE",
+  "family visa Dubai UAE",
+  "employment visa Dubai UAE",
+  "residence visa Dubai UAE",
+  "business setup Dubai UAE",
+  "company formation Dubai UAE",
 ];
 
 export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
@@ -87,10 +94,10 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     let totalRequests = 0;
     let successfulRequests = 0;
 
-    // Process ALL categories to ensure 300+ listings
+    // Process ALL categories to maximize unique business listings
     const priorityCategories = DUBAI_VISA_CATEGORIES; // Use all categories for maximum coverage
     console.log(
-      `Processing ${priorityCategories.length} categories to ensure 300+ business listings`,
+      `Processing ${priorityCategories.length} categories to maximize Dubai business listings`,
     );
 
     // Search each category
@@ -247,11 +254,11 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                   // Log progress every 50 businesses for reliable processing
                   if (allBusinesses.length % 50 === 0) {
                     console.log(
-                      `🎯 MILESTONE: ${allBusinesses.length} businesses processed! Target: 300+`,
+                      `🎯 MILESTONE: ${allBusinesses.length} unique businesses processed!`,
                     );
                   } else if (allBusinesses.length % 25 === 0) {
                     console.log(
-                      `Progress: ${allBusinesses.length} businesses processed`,
+                      `Progress: ${allBusinesses.length} unique businesses processed`,
                     );
                   }
                 } else {
