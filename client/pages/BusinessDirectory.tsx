@@ -523,6 +523,15 @@ export default function BusinessDirectory() {
     ));
   };
 
+  console.log(
+    "Render - loading state:",
+    loading,
+    "businesses count:",
+    allBusinesses.length,
+    "displayed:",
+    displayedBusinesses.length,
+  );
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center">
