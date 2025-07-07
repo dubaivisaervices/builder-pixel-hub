@@ -44,29 +44,29 @@ interface BusinessData {
   priceLevel?: number;
 }
 
-// Dubai visa/immigration service categories to search
+// Dubai visa/immigration service categories to search - prioritizing specific name patterns
 const DUBAI_VISA_CATEGORIES = [
+  // High priority - businesses with exact target names
+  '"overseas services" Dubai UAE',
+  '"visa services" Dubai UAE',
+  '"immigration services" Dubai UAE',
+  '"visa consultants" Dubai UAE',
+  '"work permit" Dubai UAE',
+  '"study abroad" Dubai UAE',
+  // Standard categories
   "visa consulting services Dubai UAE",
   "immigration consultants Dubai UAE",
-  "visa services Dubai UAE",
-  "visa agent Dubai UAE",
-  "immigration services Dubai UAE",
-  "travel agents Dubai UAE",
-  "travel agency Dubai UAE",
   "visa agency Dubai UAE",
-  // Additional specific service categories
-  "overseas services Dubai UAE",
-  "visa consultants Dubai UAE",
-  "work permit Dubai UAE",
-  "study abroad Dubai UAE",
+  "travel agents Dubai UAE",
+  // Additional comprehensive categories
   "immigration lawyers Dubai UAE",
   "visa processing center Dubai UAE",
   "document clearing Dubai UAE",
   "attestation services Dubai UAE",
   "PRO services Dubai UAE",
-  "work permit services Dubai UAE",
-  "student visa consultants Dubai UAE",
+  "student visa services Dubai UAE",
   "business visa services Dubai UAE",
+  "visa application center Dubai UAE",
 ];
 
 export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
@@ -87,10 +87,10 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     let totalRequests = 0;
     let successfulRequests = 0;
 
-    // Process 10 priority categories including specific service names
-    const priorityCategories = DUBAI_VISA_CATEGORIES.slice(0, 10); // Top 10 categories including specific terms
+    // Process 12 priority categories focusing on businesses with target names
+    const priorityCategories = DUBAI_VISA_CATEGORIES.slice(0, 12); // Top 12 categories prioritizing exact name matches
     console.log(
-      `Processing ${priorityCategories.length} priority categories including specific service names for comprehensive coverage`,
+      `Processing ${priorityCategories.length} priority categories focusing on businesses with target keyword names`,
     );
 
     // Search each category
@@ -141,6 +141,33 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
 
                 if (detailsData.status === "OK" && detailsData.result) {
                   const details = detailsData.result;
+
+                  // Check if business name contains target keywords for prioritization
+                  const targetKeywords = [
+                    "overseas services",
+                    "visa services",
+                    "immigration services",
+                    "visa consultants",
+                    "work permit",
+                    "study abroad",
+                    "visa consulting",
+                    "immigration consulting",
+                    "visa agency",
+                  ];
+
+                  const businessName = (
+                    details.name || place.name
+                  ).toLowerCase();
+                  const hasTargetKeyword = targetKeywords.some((keyword) =>
+                    businessName.includes(keyword.toLowerCase()),
+                  );
+
+                  // Log when we find businesses with target keywords
+                  if (hasTargetKeyword) {
+                    console.log(
+                      `🎯 FOUND TARGET BUSINESS: ${details.name || place.name} - contains relevant keywords!`,
+                    );
+                  }
 
                   const business: BusinessData = {
                     id: place.place_id,
@@ -212,6 +239,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                       details.opening_hours?.open_now ??
                       place.opening_hours?.open_now,
                     priceLevel: place.price_level,
+                    hasTargetKeyword: hasTargetKeyword, // Flag for businesses with target keywords
                   };
 
                   allBusinesses.push(business);
@@ -230,6 +258,31 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                   console.log(
                     `Failed to get details for ${place.name}: ${detailsData.status}`,
                   );
+
+                  // Check fallback business for target keywords too
+                  const targetKeywords = [
+                    "overseas services",
+                    "visa services",
+                    "immigration services",
+                    "visa consultants",
+                    "work permit",
+                    "study abroad",
+                    "visa consulting",
+                    "immigration consulting",
+                    "visa agency",
+                  ];
+
+                  const businessName = place.name.toLowerCase();
+                  const hasTargetKeyword = targetKeywords.some((keyword) =>
+                    businessName.includes(keyword.toLowerCase()),
+                  );
+
+                  if (hasTargetKeyword) {
+                    console.log(
+                      `🎯 FOUND TARGET BUSINESS (fallback): ${place.name} - contains relevant keywords!`,
+                    );
+                  }
+
                   // Fallback to basic information if details API fails
                   const business: BusinessData = {
                     id: place.place_id,
@@ -321,10 +374,17 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     const duration = Math.round((endTime - startTime) / 1000);
     console.log(`API process took approximately ${duration} seconds`);
 
-    // Sort by rating and review count
+    // Sort by target keywords first, then by rating and review count
     const sortedBusinesses = allBusinesses.sort((a, b) => {
-      if (b.rating !== a.rating) return b.rating - a.rating;
-      return b.reviewCount - a.reviewCount;
+      // Prioritize businesses with target keywords
+      if (a.hasTargetKeyword && !b.hasTargetKeyword) return -1;
+      if (!a.hasTargetKeyword && b.hasTargetKeyword) return 1;
+
+      // Then sort by review count (highest first)
+      if (b.reviewCount !== a.reviewCount) return b.reviewCount - a.reviewCount;
+
+      // Finally by rating
+      return b.rating - a.rating;
     });
 
     res.json({

@@ -30,6 +30,7 @@ export interface BusinessData {
   };
   isOpen?: boolean;
   priceLevel?: number;
+  hasTargetKeyword?: boolean;
 }
 
 export interface BusinessSearchResponse {
