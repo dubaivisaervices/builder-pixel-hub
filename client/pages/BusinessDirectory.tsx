@@ -50,7 +50,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
       { id: 1, url: "", caption: "Office Reception" },
       { id: 2, url: "", caption: "Consultation Room" },
     ],
-    reviews: generateSampleReviews("Dubai Visa Solutions"),
+    reviews: [], // No fake reviews
   },
   {
     id: "sample2",
