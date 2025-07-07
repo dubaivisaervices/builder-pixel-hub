@@ -395,6 +395,13 @@ export default function BusinessDirectory() {
             data.pagination.hasMore,
           );
         }
+
+        // Force loading to false with a small delay to ensure state updates
+        setTimeout(() => {
+          console.log("Forcing loading to false as backup");
+          setLoading(false);
+          setIsApiCallInProgress(false);
+        }, 100);
       }
     } catch (err) {
       console.error("Error fetching businesses:", err);
