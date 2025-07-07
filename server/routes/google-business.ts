@@ -110,11 +110,12 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
       });
     }
 
-    // Get paginated businesses (include reviews when loading all businesses)
+    // Get paginated businesses (only include reviews for smaller requests for performance)
+    const includeReviewsForListing = limit <= 50; // Only include reviews for small requests
     const businesses = await businessService.getBusinessesPaginated(
       limit,
       offset,
-      true, // Always include reviews so company pages work
+      includeReviewsForListing, // Only include reviews for smaller requests
     );
 
     // Get unique categories
