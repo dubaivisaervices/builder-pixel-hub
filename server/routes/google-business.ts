@@ -311,6 +311,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                       })) || [],
                     isOpen: place.opening_hours?.open_now,
                     priceLevel: place.price_level,
+                    hasTargetKeyword: hasTargetKeyword,
                   };
                   allBusinesses.push(business);
                   console.log(
