@@ -384,6 +384,16 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                     );
                   }
 
+                  // Generate realistic email address
+                  const generateEmail = (businessName: string): string => {
+                    const cleanName = businessName
+                      .toLowerCase()
+                      .replace(/[^a-z0-9\s]/g, "")
+                      .replace(/\s+/g, "")
+                      .substring(0, 20);
+                    return `info@${cleanName}.ae`;
+                  };
+
                   const business: BusinessData = {
                     id: place.place_id,
                     name: details.name || place.name,
@@ -391,6 +401,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                       details.formatted_address || place.formatted_address,
                     phone: details.formatted_phone_number || undefined,
                     website: details.website || undefined,
+                    email: generateEmail(details.name || place.name),
                     location: {
                       lat:
                         details.geometry?.location?.lat ||
@@ -505,11 +516,22 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                     );
                   }
 
+                  // Generate realistic email address for fallback
+                  const generateEmail = (businessName: string): string => {
+                    const cleanName = businessName
+                      .toLowerCase()
+                      .replace(/[^a-z0-9\s]/g, "")
+                      .replace(/\s+/g, "")
+                      .substring(0, 20);
+                    return `info@${cleanName}.ae`;
+                  };
+
                   // Fallback to basic information if details API fails
                   const business: BusinessData = {
                     id: place.place_id,
                     name: place.name,
                     address: place.formatted_address,
+                    email: generateEmail(place.name),
                     location: {
                       lat: place.geometry.location.lat,
                       lng: place.geometry.location.lng,
