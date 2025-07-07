@@ -546,6 +546,110 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
   }
 };
 
+export const syncReviewsOnly: RequestHandler = async (req, res) => {
+  const startTime = Date.now();
+
+  try {
+    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+
+    if (!apiKey) {
+      return res.status(500).json({
+        error: "Google Places API key not configured",
+      });
+    }
+
+    console.log("🔄 Starting reviews-only sync for existing businesses...");
+
+    // Get all businesses from database
+    const allBusinesses = await businessService.getBusinessesPaginated(
+      1000,
+      0,
+      false,
+    );
+    let reviewsUpdated = 0;
+    let businessesProcessed = 0;
+
+    for (const business of allBusinesses) {
+      try {
+        businessesProcessed++;
+        console.log(
+          `📝 Processing reviews for: ${business.name} (${businessesProcessed}/${allBusinesses.length})`,
+        );
+
+        // Get detailed information including reviews
+        const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${business.id}&fields=reviews&key=${apiKey}`;
+        const detailsResponse = await fetch(detailsUrl);
+        const detailsData = await detailsResponse.json();
+
+        if (
+          detailsData.status === "OK" &&
+          detailsData.result &&
+          detailsData.result.reviews
+        ) {
+          const googleReviews = processGoogleReviews(
+            detailsData.result.reviews,
+            business.name,
+          );
+
+          if (googleReviews.length > 0) {
+            // Update only the reviews for this business
+            await businessService.upsertReviews(business.id, googleReviews);
+            reviewsUpdated++;
+            console.log(
+              `   ✅ Updated ${googleReviews.length} reviews for ${business.name}`,
+            );
+          } else {
+            console.log(`   ⚠️  No reviews found for ${business.name}`);
+          }
+        } else {
+          console.log(
+            `   ❌ Failed to get reviews for ${business.name}: ${detailsData.status}`,
+          );
+        }
+
+        // Progress logging
+        if (businessesProcessed % 50 === 0) {
+          console.log(
+            `📊 Progress: ${businessesProcessed}/${allBusinesses.length} businesses processed, ${reviewsUpdated} updated with reviews`,
+          );
+        }
+
+        // Small delay for API stability
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      } catch (error) {
+        console.error(
+          `Error processing reviews for business ${business.name}:`,
+          error,
+        );
+      }
+    }
+
+    const endTime = Date.now();
+    const duration = Math.round((endTime - startTime) / 1000);
+
+    console.log(`🎉 Reviews sync completed!`);
+    console.log(`📊 Businesses processed: ${businessesProcessed}`);
+    console.log(`📊 Businesses updated with reviews: ${reviewsUpdated}`);
+    console.log(`⏱️  Duration: ${duration} seconds`);
+
+    res.json({
+      success: true,
+      message: "Reviews sync completed successfully",
+      stats: {
+        businessesProcessed,
+        reviewsUpdated,
+        duration,
+      },
+    });
+  } catch (error) {
+    console.error("Error during reviews sync:", error);
+    res.status(500).json({
+      error: "Failed to sync reviews",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+};
+
 export const getSyncStatus: RequestHandler = async (req, res) => {
   try {
     const stats = await businessService.getStats();
