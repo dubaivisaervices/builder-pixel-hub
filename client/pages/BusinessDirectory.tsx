@@ -118,7 +118,7 @@ export default function BusinessDirectory() {
 
       // Add timeout and better error handling
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout for detailed data
 
       const response = await fetch("/api/dubai-visa-services", {
         signal: controller.signal,
@@ -284,8 +284,8 @@ export default function BusinessDirectory() {
                 </h1>
                 <p className="text-sm text-muted-foreground">
                   {loading
-                    ? "Loading businesses with logos from Google..."
-                    : `${filteredBusinesses.length} businesses found`}
+                    ? "Loading detailed business information from Google... (This may take 30-60 seconds)"
+                    : `${filteredBusinesses.length} businesses found with detailed information`}
                 </p>
               </div>
             </div>
