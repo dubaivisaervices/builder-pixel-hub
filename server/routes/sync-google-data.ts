@@ -361,8 +361,8 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
                   return `info@${cleanName}.ae`;
                 };
 
-                // Get detailed information
-                const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,formatted_phone_number,website,opening_hours,photos,rating,user_ratings_total,business_status,geometry&key=${apiKey}`;
+                // Get detailed information including reviews
+                const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,formatted_phone_number,website,opening_hours,photos,reviews,rating,user_ratings_total,business_status,geometry&key=${apiKey}`;
                 const detailsResponse = await fetch(detailsUrl);
                 const detailsData = await detailsResponse.json();
 
