@@ -243,6 +243,14 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
 
               // Add small delay between detail requests to respect rate limits
               await new Promise((resolve) => setTimeout(resolve, 100));
+
+              // Early exit if we have enough businesses to prevent timeout
+              if (allBusinesses.length >= 100) {
+                console.log(
+                  `Reached 100 businesses limit, stopping to prevent timeout`,
+                );
+                break;
+              }
             }
           }
         } else if (data.status === "ZERO_RESULTS") {
@@ -253,6 +261,12 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
 
         // Add small delay between requests to respect rate limits
         await new Promise((resolve) => setTimeout(resolve, 100));
+
+        // Early exit if we have enough businesses
+        if (allBusinesses.length >= 100) {
+          console.log(`Reached business limit, stopping category processing`);
+          break;
+        }
       } catch (error) {
         console.error(`Error searching category ${category}:`, error);
         // Continue with other categories
