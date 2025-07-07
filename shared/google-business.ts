@@ -11,6 +11,12 @@ export interface BusinessData {
   category: string;
   businessStatus: string;
   photoReference?: string;
+  logoUrl?: string;
+  photos?: Array<{
+    id: number;
+    url: string;
+    caption: string;
+  }>;
   isOpen?: boolean;
   priceLevel?: number;
 }
