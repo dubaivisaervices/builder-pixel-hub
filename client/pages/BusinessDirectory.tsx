@@ -118,7 +118,7 @@ export default function BusinessDirectory() {
 
       // Add timeout and better error handling
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout for detailed data
+      const timeoutId = setTimeout(() => controller.abort(), 120000); // 120 second timeout for comprehensive data
 
       const response = await fetch("/api/dubai-visa-services", {
         signal: controller.signal,
@@ -287,7 +287,7 @@ export default function BusinessDirectory() {
                 </h1>
                 <p className="text-sm text-muted-foreground">
                   {loading
-                    ? "Loading detailed business information from Google... (This may take 30-60 seconds)"
+                    ? "Loading comprehensive business database from Google... (This may take 60-120 seconds)"
                     : `${filteredBusinesses.length} businesses found with detailed information`}
                 </p>
               </div>
@@ -526,8 +526,57 @@ export default function BusinessDirectory() {
           </div>
         )}
 
+        {/* Results Summary */}
+        {!loading && filteredBusinesses.length > 0 && (
+          <Card className="shadow-lg border-0 mt-8">
+            <CardContent className="pt-6 text-center">
+              <h3 className="text-xl font-semibold mb-4">
+                📊 Comprehensive Dubai Visa Services Database
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">
+                    {filteredBusinesses.length}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Total Businesses
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">
+                    {categories.length}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Service Categories
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">
+                    {Math.round(
+                      (filteredBusinesses.reduce(
+                        (acc, b) => acc + b.rating,
+                        0,
+                      ) /
+                        filteredBusinesses.length) *
+                        10,
+                    ) / 10}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Average Rating
+                  </div>
+                </div>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                This comprehensive database includes visa consultants,
+                immigration lawyers, PRO services, document clearing, and
+                attestation services across Dubai.
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Call to Action */}
-        <Card className="shadow-lg border-0 mt-12">
+        <Card className="shadow-lg border-0 mt-8">
           <CardContent className="pt-6 text-center">
             <h3 className="text-xl font-semibold mb-4">
               Don't see your experience listed?

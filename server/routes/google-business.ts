@@ -54,6 +54,15 @@ const DUBAI_VISA_CATEGORIES = [
   "travel agents Dubai UAE",
   "travel agency Dubai UAE",
   "visa agency Dubai UAE",
+  // Additional categories for more comprehensive results
+  "immigration lawyers Dubai UAE",
+  "visa processing center Dubai UAE",
+  "document clearing Dubai UAE",
+  "attestation services Dubai UAE",
+  "PRO services Dubai UAE",
+  "work permit services Dubai UAE",
+  "student visa consultants Dubai UAE",
+  "business visa services Dubai UAE",
 ];
 
 export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
@@ -93,8 +102,8 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
           successfulRequests++;
 
           // Process results and get detailed information for each business
-          // Limit to first 10 results per category to reduce API calls and improve speed
-          const limitedResults = data.results.slice(0, 10);
+          // Limit to first 20 results per category for more comprehensive coverage
+          const limitedResults = data.results.slice(0, 20);
 
           for (const place of limitedResults) {
             if (!processedPlaceIds.has(place.place_id)) {
