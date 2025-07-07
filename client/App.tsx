@@ -11,6 +11,7 @@ import ComplaintForm from "./pages/ComplaintForm";
 import CompanyReviews from "./pages/CompanyReviews";
 import BusinessDirectory from "./pages/BusinessDirectory";
 import ApiTest from "./pages/ApiTest";
+import AdminSync from "./pages/AdminSync";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/complaint" element={<ComplaintForm />} />
           <Route path="/dubai-businesses" element={<BusinessDirectory />} />
           <Route path="/api-test" element={<ApiTest />} />
+          <Route path="/admin/sync" element={<AdminSync />} />
           <Route
             path="/reviews/:location/:companyName"
             element={<CompanyReviews />}
