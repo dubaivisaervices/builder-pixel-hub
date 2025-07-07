@@ -128,65 +128,6 @@ export default function BusinessDirectory() {
     }
   };
 
-  // Fallback sample data for Dubai visa services
-  const getFallbackBusinesses = (): BusinessData[] => [
-    {
-      id: "sample1",
-      name: "Dubai Visa Solutions",
-      address: "Business Bay, Dubai, UAE",
-      location: { lat: 25.188, lng: 55.274 },
-      rating: 4.2,
-      reviewCount: 156,
-      category: "visa consulting services",
-      businessStatus: "OPERATIONAL",
-      isOpen: true,
-    },
-    {
-      id: "sample2",
-      name: "Emirates Immigration Services",
-      address: "Deira, Dubai, UAE",
-      location: { lat: 25.263, lng: 55.297 },
-      rating: 4.0,
-      reviewCount: 89,
-      category: "immigration consultants",
-      businessStatus: "OPERATIONAL",
-      isOpen: true,
-    },
-    {
-      id: "sample3",
-      name: "Global Visa Center Dubai",
-      address: "Jumeirah, Dubai, UAE",
-      location: { lat: 25.218, lng: 55.272 },
-      rating: 3.8,
-      reviewCount: 234,
-      category: "visa services",
-      businessStatus: "OPERATIONAL",
-      isOpen: false,
-    },
-    {
-      id: "sample4",
-      name: "Dubai Travel & Visa Hub",
-      address: "Al Karama, Dubai, UAE",
-      location: { lat: 25.238, lng: 55.289 },
-      rating: 4.5,
-      reviewCount: 67,
-      category: "travel agents",
-      businessStatus: "OPERATIONAL",
-      isOpen: true,
-    },
-    {
-      id: "sample5",
-      name: "Quick Visa Dubai",
-      address: "Bur Dubai, Dubai, UAE",
-      location: { lat: 25.262, lng: 55.29 },
-      rating: 3.5,
-      reviewCount: 123,
-      category: "visa agency",
-      businessStatus: "OPERATIONAL",
-      isOpen: true,
-    },
-  ];
-
   const filterBusinesses = () => {
     let filtered = businesses;
 
@@ -284,22 +225,33 @@ export default function BusinessDirectory() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Warning Banner for API Issues */}
         {error && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
             <div className="flex items-start space-x-3">
-              <AlertTriangle className="h-5 w-5 text-yellow-600 mt-0.5" />
+              <AlertTriangle className="h-5 w-5 text-blue-600 mt-0.5" />
               <div className="flex-1">
-                <h3 className="font-medium text-yellow-800 mb-1">
-                  Using Sample Data
+                <h3 className="font-medium text-blue-800 mb-1">
+                  Sample Data Mode
                 </h3>
-                <p className="text-sm text-yellow-700">{error}</p>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={fetchDubaiBusinesses}
-                  className="mt-2"
-                >
-                  Retry API Connection
-                </Button>
+                <p className="text-sm text-blue-700">{error}</p>
+                <div className="flex gap-2 mt-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={fetchDubaiBusinesses}
+                    disabled={loading}
+                    className="border-blue-300 text-blue-700 hover:bg-blue-100"
+                  >
+                    {loading ? "Loading..." : "Load Live Data from Google"}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setError(null)}
+                    className="text-blue-600 hover:bg-blue-100"
+                  >
+                    Dismiss
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
