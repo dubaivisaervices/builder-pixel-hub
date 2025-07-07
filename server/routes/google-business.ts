@@ -370,6 +370,19 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
       `Average businesses per successful category: ${Math.round(allBusinesses.length / Math.max(successfulRequests, 1))}`,
     );
 
+    // Count businesses with target keywords
+    const targetKeywordBusinesses = allBusinesses.filter(
+      (b) => b.hasTargetKeyword,
+    );
+    console.log(
+      `🎯 TARGET KEYWORD BUSINESSES FOUND: ${targetKeywordBusinesses.length} out of ${allBusinesses.length}`,
+    );
+    if (targetKeywordBusinesses.length > 0) {
+      console.log(
+        `Target businesses: ${targetKeywordBusinesses.map((b) => b.name).join(", ")}`,
+      );
+    }
+
     // Add timing info for performance monitoring
     const endTime = Date.now();
     const duration = Math.round((endTime - startTime) / 1000);
