@@ -121,10 +121,24 @@ export class BusinessService {
     );
   }
 
-  // Get all businesses from database
+  // Get all businesses from database (lightweight - no reviews)
   async getAllBusinesses(): Promise<BusinessData[]> {
     const businesses = await database.all(`
-      SELECT * FROM businesses ORDER BY rating DESC, review_count DESC
+      SELECT * FROM businesses
+      ORDER BY has_target_keyword DESC, rating DESC, review_count DESC
+    `);
+
+    // Return businesses without reviews for faster loading
+    return businesses.map((business) => {
+      return this.mapToBusinessData(business, []);
+    });
+  }
+
+  // Get all businesses with full reviews (slower but complete)
+  async getAllBusinessesWithReviews(): Promise<BusinessData[]> {
+    const businesses = await database.all(`
+      SELECT * FROM businesses
+      ORDER BY has_target_keyword DESC, rating DESC, review_count DESC
     `);
 
     return Promise.all(
@@ -135,35 +149,44 @@ export class BusinessService {
     );
   }
 
-  // Get businesses with pagination
+  // Get businesses with pagination (lightweight - no reviews)
   async getBusinessesPaginated(
     limit: number = 25,
     offset: number = 0,
+    includeReviews: boolean = false,
   ): Promise<BusinessData[]> {
     const businesses = await database.all(
       `
-      SELECT * FROM businesses 
+      SELECT * FROM businesses
       ORDER BY has_target_keyword DESC, rating DESC, review_count DESC
       LIMIT ? OFFSET ?
     `,
       [limit, offset],
     );
 
-    return Promise.all(
-      businesses.map(async (business) => {
-        const reviews = await this.getBusinessReviews(business.id);
-        return this.mapToBusinessData(business, reviews);
-      }),
-    );
+    if (includeReviews) {
+      return Promise.all(
+        businesses.map(async (business) => {
+          const reviews = await this.getBusinessReviews(business.id);
+          return this.mapToBusinessData(business, reviews);
+        }),
+      );
+    } else {
+      // Return without reviews for faster loading
+      return businesses.map((business) => {
+        return this.mapToBusinessData(business, []);
+      });
+    }
   }
 
-  // Search businesses by name or category
+  // Search businesses by name or category (lightweight - no reviews)
   async searchBusinesses(
     query: string,
     category?: string,
+    includeReviews: boolean = false,
   ): Promise<BusinessData[]> {
     let sql = `
-      SELECT * FROM businesses 
+      SELECT * FROM businesses
       WHERE (name LIKE ? OR address LIKE ?)
     `;
     let params = [`%${query}%`, `%${query}%`];
@@ -177,12 +200,19 @@ export class BusinessService {
 
     const businesses = await database.all(sql, params);
 
-    return Promise.all(
-      businesses.map(async (business) => {
-        const reviews = await this.getBusinessReviews(business.id);
-        return this.mapToBusinessData(business, reviews);
-      }),
-    );
+    if (includeReviews) {
+      return Promise.all(
+        businesses.map(async (business) => {
+          const reviews = await this.getBusinessReviews(business.id);
+          return this.mapToBusinessData(business, reviews);
+        }),
+      );
+    } else {
+      // Return without reviews for faster loading
+      return businesses.map((business) => {
+        return this.mapToBusinessData(business, []);
+      });
+    }
   }
 
   // Get reviews for a specific business
