@@ -271,6 +271,59 @@ export default function AdminSync() {
           </CardContent>
         </Card>
 
+        {/* Reviews Sync Results */}
+        {reviewsSyncResult && (
+          <Card className="shadow-lg border-0 border-blue-200">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 text-blue-800">
+                <CheckCircle className="h-5 w-5" />
+                <span>Reviews Sync Results</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-blue-600" />
+                  <div>
+                    <h3 className="font-medium text-blue-800">
+                      Reviews Sync Completed Successfully
+                    </h3>
+                    <p className="text-sm text-blue-700">
+                      Real Google reviews have been fetched and updated in the
+                      database
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="text-center p-4 bg-blue-50 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {reviewsSyncResult.businessesProcessed || 0}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Businesses Processed
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-green-50 rounded-lg">
+                  <div className="text-2xl font-bold text-green-600">
+                    {reviewsSyncResult.reviewsUpdated || 0}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Updated with Reviews
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-purple-50 rounded-lg">
+                  <div className="text-2xl font-bold text-purple-600">
+                    {reviewsSyncResult.duration || 0}s
+                  </div>
+                  <div className="text-sm text-muted-foreground">Duration</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Sync Results */}
         {syncResult && (
           <Card className="shadow-lg border-0">
