@@ -461,19 +461,8 @@ export default function BusinessDirectory() {
   };
 
   const loadMoreBusinesses = () => {
-    setLoadingMore(true);
-
-    // Simulate slight delay for better UX
-    setTimeout(() => {
-      const startIndex = currentPage * ITEMS_PER_PAGE;
-      const endIndex = startIndex + ITEMS_PER_PAGE;
-      const nextBatch = filteredBusinesses.slice(startIndex, endIndex);
-
-      setDisplayedBusinesses((prev) => [...prev, ...nextBatch]);
-      setCurrentPage((prev) => prev + 1);
-      setHasMore(endIndex < filteredBusinesses.length);
-      setLoadingMore(false);
-    }, 500);
+    const nextPage = currentPage + 1;
+    fetchDubaiBusinesses(nextPage, true); // Append to existing data
   };
 
   const getBusinessStatusColor = (status: string) => {
