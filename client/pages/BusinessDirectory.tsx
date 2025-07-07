@@ -214,33 +214,7 @@ export default function BusinessDirectory() {
     );
   }
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center">
-        <Card className="max-w-md w-full shadow-xl border-0 m-4">
-          <CardContent className="pt-6 text-center">
-            <AlertTriangle className="h-12 w-12 text-destructive mx-auto mb-4" />
-            <h2 className="text-xl font-semibold mb-2">
-              Unable to Load Businesses
-            </h2>
-            <p className="text-muted-foreground mb-4">{error}</p>
-            <div className="space-y-2">
-              <Button onClick={fetchDubaiBusinesses} className="w-full">
-                Try Again
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => navigate("/")}
-                className="w-full"
-              >
-                Back to Home
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  // Don't show error screen, just show warning banner and fallback data
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
