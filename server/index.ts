@@ -13,6 +13,14 @@ import {
   syncReviewsOnly,
   clearFakeReviewsAndSyncReal,
 } from "./routes/sync-google-data";
+import {
+  getBusinessesByCategory,
+  updateBusiness,
+  deleteBusiness,
+  getAllCategories,
+  updateCategory,
+  deleteCategory,
+} from "./routes/admin";
 
 export function createServer() {
   const app = express();
