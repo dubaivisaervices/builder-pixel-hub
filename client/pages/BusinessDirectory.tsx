@@ -210,6 +210,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: true,
     phone: "+971-4-456-7890",
+    reviews: generateSampleReviews("Skyline Immigration Consultants"),
   },
   {
     id: "sample11",
@@ -223,6 +224,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     isOpen: true,
     phone: "+971-4-567-8901",
     website: "https://global-overseas.ae",
+    reviews: generateSampleReviews("Global Overseas Services"),
   },
   {
     id: "sample12",
@@ -235,6 +237,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: true,
     phone: "+971-4-678-9012",
+    reviews: generateSampleReviews("Dubai Work Permit Center"),
   },
   {
     id: "sample13",
@@ -247,6 +250,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: true,
     phone: "+971-4-789-0123",
+    reviews: generateSampleReviews("Study Abroad Dubai"),
     website: "https://studyabroaddubai.com",
   },
 ];
