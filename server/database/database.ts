@@ -149,5 +149,12 @@ class Database {
   }
 }
 
-// Export singleton instance
-export const database = new Database();
+// Export singleton instance - only create during runtime, not build
+let databaseInstance: Database | null = null;
+
+export const database = (() => {
+  if (!databaseInstance) {
+    databaseInstance = new Database();
+  }
+  return databaseInstance;
+})();
