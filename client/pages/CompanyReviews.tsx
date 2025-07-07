@@ -362,35 +362,79 @@ export default function CompanyReviews() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {company.photos.map((photo) => (
-                    <div key={photo.id} className="space-y-2">
-                      <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-200">
-                        <div className="text-center text-gray-500">
-                          <Camera className="h-12 w-12 mx-auto mb-2" />
-                          <p className="text-sm font-medium">{photo.caption}</p>
-                          <p className="text-xs text-gray-400">
-                            Photo placeholder
+                {/* Real Google Photos */}
+                {businessData?.photos && businessData.photos.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {businessData.photos.map((photo) => (
+                      <div key={photo.id} className="space-y-2">
+                        <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-200">
+                          <img
+                            src={photo.url}
+                            alt={photo.caption}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                            onError={(e) => {
+                              // Fallback to placeholder if Google image fails
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = "none";
+                              target.nextElementSibling!.classList.remove(
+                                "hidden",
+                              );
+                            }}
+                          />
+                          <div className="hidden flex items-center justify-center w-full h-full text-center text-gray-500">
+                            <div>
+                              <Camera className="h-12 w-12 mx-auto mb-2" />
+                              <p className="text-sm font-medium">
+                                {photo.caption}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <p className="text-sm text-muted-foreground text-center font-medium">
+                          {photo.caption}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <>
+                    {/* Fallback placeholder photos */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {company.photos.map((photo) => (
+                        <div key={photo.id} className="space-y-2">
+                          <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-200">
+                            <div className="text-center text-gray-500">
+                              <Camera className="h-12 w-12 mx-auto mb-2" />
+                              <p className="text-sm font-medium">
+                                {photo.caption}
+                              </p>
+                              <p className="text-xs text-gray-400">
+                                Photo placeholder
+                              </p>
+                            </div>
+                          </div>
+                          <p className="text-sm text-muted-foreground text-center font-medium">
+                            {photo.caption}
                           </p>
                         </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground text-center font-medium">
-                        {photo.caption}
+                      ))}
+                    </div>
+
+                    {/* No Photos Message */}
+                    <div className="text-center py-8 text-muted-foreground">
+                      <Camera className="h-16 w-16 mx-auto mb-4 text-gray-300" />
+                      <h3 className="text-lg font-medium mb-2">
+                        Photo Gallery
+                      </h3>
+                      <p className="text-sm">
+                        Real business photos from Google My Business will be
+                        displayed here when available. This includes office
+                        reception, consultation rooms, team photos, and exterior
+                        views.
                       </p>
                     </div>
-                  ))}
-                </div>
-
-                {/* No Photos Message */}
-                <div className="text-center py-8 text-muted-foreground">
-                  <Camera className="h-16 w-16 mx-auto mb-4 text-gray-300" />
-                  <h3 className="text-lg font-medium mb-2">Photo Gallery</h3>
-                  <p className="text-sm">
-                    Company photos will be displayed here once uploaded. This
-                    includes office reception, consultation rooms, team photos,
-                    and exterior views.
-                  </p>
-                </div>
+                  </>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
