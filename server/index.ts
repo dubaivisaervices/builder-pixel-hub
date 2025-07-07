@@ -11,6 +11,7 @@ import {
   syncGoogleData,
   getSyncStatus,
   syncReviewsOnly,
+  clearFakeReviewsAndSyncReal,
 } from "./routes/sync-google-data";
 
 export function createServer() {
