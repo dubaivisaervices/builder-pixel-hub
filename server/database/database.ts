@@ -2,24 +2,33 @@ import sqlite3 from "sqlite3";
 import { promisify } from "util";
 import path from "path";
 
-// Enable verbose mode for debugging
-const sqlite = sqlite3.verbose();
-
 // Database file path
 const DB_PATH = path.join(__dirname, "dubai_businesses.db");
 
 class Database {
-  private db: sqlite3.Database;
+  private db: sqlite3.Database | null = null;
 
   constructor() {
-    this.db = new sqlite(DB_PATH, (err) => {
-      if (err) {
-        console.error("Error opening database:", err);
-      } else {
-        console.log("Connected to SQLite database");
-        this.initTables();
-      }
-    });
+    this.initDatabase();
+  }
+
+  private initDatabase() {
+    try {
+      // Enable verbose mode for debugging
+      const sqlite = sqlite3.verbose();
+
+      this.db = new sqlite.Database(DB_PATH, (err) => {
+        if (err) {
+          console.error("Error opening database:", err);
+        } else {
+          console.log("Connected to SQLite database");
+          this.initTables();
+        }
+      });
+    } catch (error) {
+      console.error("Failed to initialize database:", error);
+      this.db = null;
+    }
   }
 
   private async initTables() {
@@ -89,6 +98,10 @@ class Database {
   // Promisify database methods
   public run(sql: string, params: any[] = []): Promise<sqlite3.RunResult> {
     return new Promise((resolve, reject) => {
+      if (!this.db) {
+        reject(new Error("Database not initialized"));
+        return;
+      }
       this.db.run(sql, params, function (err) {
         if (err) reject(err);
         else resolve(this);
@@ -98,6 +111,10 @@ class Database {
 
   public get(sql: string, params: any[] = []): Promise<any> {
     return new Promise((resolve, reject) => {
+      if (!this.db) {
+        reject(new Error("Database not initialized"));
+        return;
+      }
       this.db.get(sql, params, (err, row) => {
         if (err) reject(err);
         else resolve(row);
@@ -107,6 +124,10 @@ class Database {
 
   public all(sql: string, params: any[] = []): Promise<any[]> {
     return new Promise((resolve, reject) => {
+      if (!this.db) {
+        reject(new Error("Database not initialized"));
+        return;
+      }
       this.db.all(sql, params, (err, rows) => {
         if (err) reject(err);
         else resolve(rows);
@@ -116,6 +137,10 @@ class Database {
 
   public close(): Promise<void> {
     return new Promise((resolve, reject) => {
+      if (!this.db) {
+        resolve();
+        return;
+      }
       this.db.close((err) => {
         if (err) reject(err);
         else resolve();
