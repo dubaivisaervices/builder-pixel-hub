@@ -302,14 +302,16 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
 
     if (totalCount.total === 0) {
       // If no businesses in database, return message to sync first
+      console.log("📭 Database is empty - suggesting sync");
       return res.json({
         businesses: [],
         total: 0,
         categories: [],
         processingTime: 0,
         message:
-          "No businesses found in database. Please run data sync first using /api/sync-google-data",
+          "Database is empty. Please visit /admin/sync to load Google data, or we'll show sample businesses",
         needsSync: true,
+        syncUrl: "/admin/sync",
       });
     }
 
