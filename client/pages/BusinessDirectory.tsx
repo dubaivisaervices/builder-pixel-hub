@@ -384,9 +384,16 @@ export default function BusinessDirectory() {
         setError(null);
 
         // Update pagination info
+        console.log("Pagination data:", data.pagination);
         if (data.pagination) {
           setCurrentPage(data.pagination.page);
           setHasMore(data.pagination.hasMore);
+          console.log(
+            "Updated pagination - page:",
+            data.pagination.page,
+            "hasMore:",
+            data.pagination.hasMore,
+          );
         }
       }
     } catch (err) {
