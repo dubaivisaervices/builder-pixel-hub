@@ -108,6 +108,20 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                 category: category.replace(" Dubai UAE", ""),
                 businessStatus: place.business_status,
                 photoReference: place.photos?.[0]?.photo_reference,
+                // Generate Google Photos URL if photo reference exists
+                logoUrl: place.photos?.[0]?.photo_reference
+                  ? `https://maps.googleapis.com/maps/api/place/photo?photoreference=${place.photos[0].photo_reference}&maxwidth=200&key=${apiKey}`
+                  : undefined,
+                // Get all photos for the business
+                photos:
+                  place.photos?.slice(0, 6).map((photo, index) => ({
+                    id: index + 1,
+                    url: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photo.photo_reference}&maxwidth=400&key=${apiKey}`,
+                    caption:
+                      index === 0
+                        ? "Business Logo/Main Photo"
+                        : `Business Photo ${index + 1}`,
+                  })) || [],
                 isOpen: place.opening_hours?.open_now,
                 priceLevel: place.price_level,
               };
