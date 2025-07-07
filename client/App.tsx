@@ -29,6 +29,7 @@ const App = () => (
           <Route path="/dubai-businesses" element={<BusinessDirectory />} />
           <Route path="/api-test" element={<ApiTest />} />
           <Route path="/admin/sync" element={<AdminSync />} />
+          <Route path="/admin/manage" element={<AdminManage />} />
           <Route
             path="/reviews/:location/:companyName"
             element={<CompanyReviews />}
