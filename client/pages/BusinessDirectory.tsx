@@ -177,7 +177,7 @@ export default function BusinessDirectory() {
 
   useEffect(() => {
     filterBusinesses();
-  }, [businesses, searchTerm, selectedCategory]);
+  }, [allBusinesses, searchTerm, selectedCategory]);
 
   const fetchDubaiBusinesses = async () => {
     try {
@@ -219,7 +219,7 @@ export default function BusinessDirectory() {
         console.log(
           `Successfully loaded ${data.businesses.length} businesses with logos from Google`,
         );
-        setBusinesses(data.businesses);
+        setAllBusinesses(data.businesses);
         setCategories(data.categories);
         setError(null);
       }
@@ -228,7 +228,7 @@ export default function BusinessDirectory() {
 
       // Use fallback data on any error
       console.log("API error, using enhanced fallback data");
-      setBusinesses(getEnhancedFallbackBusinesses());
+      setAllBusinesses(getEnhancedFallbackBusinesses());
       setCategories([
         "visa consulting services",
         "immigration consultants",
@@ -262,7 +262,7 @@ export default function BusinessDirectory() {
   };
 
   const filterBusinesses = () => {
-    let filtered = businesses;
+    let filtered = allBusinesses;
 
     // Filter by search term
     if (searchTerm) {
@@ -282,7 +282,37 @@ export default function BusinessDirectory() {
       );
     }
 
+    // Sort by review count (highest first) then by rating
+    filtered = filtered.sort((a, b) => {
+      if (b.reviewCount !== a.reviewCount) {
+        return b.reviewCount - a.reviewCount;
+      }
+      return b.rating - a.rating;
+    });
+
     setFilteredBusinesses(filtered);
+
+    // Reset pagination when filters change
+    setCurrentPage(1);
+    const initialDisplay = filtered.slice(0, ITEMS_PER_PAGE);
+    setDisplayedBusinesses(initialDisplay);
+    setHasMore(filtered.length > ITEMS_PER_PAGE);
+  };
+
+  const loadMoreBusinesses = () => {
+    setLoadingMore(true);
+
+    // Simulate slight delay for better UX
+    setTimeout(() => {
+      const startIndex = currentPage * ITEMS_PER_PAGE;
+      const endIndex = startIndex + ITEMS_PER_PAGE;
+      const nextBatch = filteredBusinesses.slice(startIndex, endIndex);
+
+      setDisplayedBusinesses(prev => [...prev, ...nextBatch]);
+      setCurrentPage(prev => prev + 1);
+      setHasMore(endIndex < filteredBusinesses.length);
+      setLoadingMore(false);
+    }, 500);
   };
 
   const getBusinessStatusColor = (status: string) => {
@@ -360,7 +390,7 @@ export default function BusinessDirectory() {
                 <p className="text-sm text-muted-foreground">
                   {loading
                     ? "Loading comprehensive business database from Google... (This may take 120-180 seconds)"
-                    : `${filteredBusinesses.length} businesses found with detailed information across all visa service categories`}
+                    : `${filteredBusinesses.length} businesses found • Showing ${displayedBusinesses.length} (sorted by reviews)`}
                 </p>
               </div>
             </div>
@@ -438,7 +468,7 @@ export default function BusinessDirectory() {
         </Card>
 
         {/* Business Grid */}
-        {filteredBusinesses.length === 0 ? (
+        {displayedBusinesses.length === 0 ? (
           <Card className="shadow-lg border-0">
             <CardContent className="pt-6 text-center">
               <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -451,8 +481,9 @@ export default function BusinessDirectory() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredBusinesses.map((business) => (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {displayedBusinesses.map((business) => (
               <Card
                 key={business.id}
                 className="shadow-lg border-0 hover:shadow-xl transition-shadow"
