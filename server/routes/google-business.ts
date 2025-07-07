@@ -295,7 +295,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 161; // Show all businesses by default
     const offset = (page - 1) * limit;
-    const includeReviews = req.query.includeReviews === "true";
+    const includeReviews = req.query.includeReviews === "true" || limit <= 50; // Include reviews for smaller requests
 
     // Get total count for pagination
     const totalCount = await businessService.getStats();
@@ -315,11 +315,11 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
       });
     }
 
-    // Get paginated businesses (lightweight by default)
+    // Get paginated businesses (include reviews when loading all businesses)
     const businesses = await businessService.getBusinessesPaginated(
       limit,
       offset,
-      includeReviews,
+      true, // Always include reviews so company pages work
     );
 
     // Get unique categories
