@@ -13,6 +13,7 @@ export interface BusinessData {
   address: string;
   phone?: string;
   website?: string;
+  email?: string;
   location: {
     lat: number;
     lng: number;
