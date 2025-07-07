@@ -157,6 +157,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     isOpen: true,
     phone: "+971-4-987-6543",
     website: "https://alfardan-immigration.ae",
+    reviews: generateSampleReviews("Al Fardan Immigration Services"),
   },
   {
     id: "sample7",
@@ -169,6 +170,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: true,
     phone: "+971-4-567-8901",
+    reviews: generateSampleReviews("Express PRO Services Dubai"),
   },
   {
     id: "sample8",
@@ -181,6 +183,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     businessStatus: "OPERATIONAL",
     isOpen: false,
     phone: "+971-4-234-5678",
+    reviews: generateSampleReviews("Dubai Document Clearing"),
   },
   {
     id: "sample9",
@@ -194,6 +197,7 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
     isOpen: true,
     phone: "+971-4-345-6789",
     website: "https://emirates-attestation.com",
+    reviews: generateSampleReviews("Emirates Attestation Center"),
   },
   {
     id: "sample10",
