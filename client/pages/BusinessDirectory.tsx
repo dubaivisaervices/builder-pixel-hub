@@ -430,7 +430,30 @@ export default function BusinessDirectory() {
                     </span>
                   </div>
 
-                  <div className="flex items-center space-x-2">
+                  {business.phone && (
+                    <div className="flex items-center space-x-2">
+                      <Phone className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <span className="text-sm text-muted-foreground">
+                        {business.phone}
+                      </span>
+                    </div>
+                  )}
+
+                  {business.website && (
+                    <div className="flex items-center space-x-2">
+                      <Globe className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <a
+                        href={business.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-primary hover:underline line-clamp-1"
+                      >
+                        Visit Website
+                      </a>
+                    </div>
+                  )}
+
+                  <div className="flex items-center justify-between">
                     <Badge variant="outline" className="text-xs">
                       {business.category}
                     </Badge>

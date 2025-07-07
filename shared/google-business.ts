@@ -2,6 +2,8 @@ export interface BusinessData {
   id: string;
   name: string;
   address: string;
+  phone?: string;
+  website?: string;
   location: {
     lat: number;
     lng: number;
@@ -17,6 +19,15 @@ export interface BusinessData {
     url: string;
     caption: string;
   }>;
+  hours?: {
+    monday: string;
+    tuesday: string;
+    wednesday: string;
+    thursday: string;
+    friday: string;
+    saturday: string;
+    sunday: string;
+  };
   isOpen?: boolean;
   priceLevel?: number;
 }

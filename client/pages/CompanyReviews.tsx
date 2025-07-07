@@ -40,13 +40,14 @@ export default function CompanyReviews() {
     rating: businessData?.rating || 3.2,
     totalReviews: businessData?.reviewCount || 127,
     totalReports: 3,
-    // Company details
+    // Company details - use real data when available
     description:
       "A visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, and tourist visa applications.",
-    website: "https://example-visa-services.com",
+    website: businessData?.website || "https://example-visa-services.com",
     email: "info@example-visa-services.com",
-    phone: "+971-4-123-4567",
-    address: "Office 1204, Business Bay Tower, Dubai, UAE",
+    phone: businessData?.phone || "+971-4-123-4567",
+    address:
+      businessData?.address || "Office 1204, Business Bay Tower, Dubai, UAE",
     establishedYear: "2018",
     licenseNumber: "DED-12345678",
     // Business metrics
@@ -61,8 +62,8 @@ export default function CompanyReviews() {
       { id: 5, caption: "Waiting Area" },
       { id: 6, caption: "Document Processing Center" },
     ],
-    // Operating hours
-    hours: {
+    // Operating hours - use real data when available
+    hours: businessData?.hours || {
       monday: "9:00 AM - 6:00 PM",
       tuesday: "9:00 AM - 6:00 PM",
       wednesday: "9:00 AM - 6:00 PM",

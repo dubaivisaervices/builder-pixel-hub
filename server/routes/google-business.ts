@@ -90,45 +90,142 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
 
         if (data.status === "OK" && data.results) {
           successfulRequests++;
-          // Process results and avoid duplicates
-          data.results.forEach((place) => {
+
+          // Process results and get detailed information for each business
+          for (const place of data.results) {
             if (!processedPlaceIds.has(place.place_id)) {
               processedPlaceIds.add(place.place_id);
 
-              const business: BusinessData = {
-                id: place.place_id,
-                name: place.name,
-                address: place.formatted_address,
-                location: {
-                  lat: place.geometry.location.lat,
-                  lng: place.geometry.location.lng,
-                },
-                rating: place.rating || 0,
-                reviewCount: place.user_ratings_total || 0,
-                category: category.replace(" Dubai UAE", ""),
-                businessStatus: place.business_status,
-                photoReference: place.photos?.[0]?.photo_reference,
-                // Generate Google Photos URL if photo reference exists
-                logoUrl: place.photos?.[0]?.photo_reference
-                  ? `https://maps.googleapis.com/maps/api/place/photo?photoreference=${place.photos[0].photo_reference}&maxwidth=200&key=${apiKey}`
-                  : undefined,
-                // Get all photos for the business
-                photos:
-                  place.photos?.slice(0, 6).map((photo, index) => ({
-                    id: index + 1,
-                    url: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photo.photo_reference}&maxwidth=400&key=${apiKey}`,
-                    caption:
-                      index === 0
-                        ? "Business Logo/Main Photo"
-                        : `Business Photo ${index + 1}`,
-                  })) || [],
-                isOpen: place.opening_hours?.open_now,
-                priceLevel: place.price_level,
-              };
+              // Get detailed business information using Place Details API
+              try {
+                const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,formatted_phone_number,website,opening_hours,photos,rating,user_ratings_total,business_status,geometry&key=${apiKey}`;
 
-              allBusinesses.push(business);
+                const detailsResponse = await fetch(detailsUrl);
+                const detailsData = await detailsResponse.json();
+
+                if (detailsData.status === "OK" && detailsData.result) {
+                  const details = detailsData.result;
+
+                  const business: BusinessData = {
+                    id: place.place_id,
+                    name: details.name || place.name,
+                    address:
+                      details.formatted_address || place.formatted_address,
+                    phone: details.formatted_phone_number || undefined,
+                    website: details.website || undefined,
+                    location: {
+                      lat:
+                        details.geometry?.location?.lat ||
+                        place.geometry.location.lat,
+                      lng:
+                        details.geometry?.location?.lng ||
+                        place.geometry.location.lng,
+                    },
+                    rating: details.rating || place.rating || 0,
+                    reviewCount:
+                      details.user_ratings_total ||
+                      place.user_ratings_total ||
+                      0,
+                    category: category.replace(" Dubai UAE", ""),
+                    businessStatus:
+                      details.business_status || place.business_status,
+                    photoReference:
+                      details.photos?.[0]?.photo_reference ||
+                      place.photos?.[0]?.photo_reference,
+                    // Generate Google Photos URL if photo reference exists
+                    logoUrl: details.photos?.[0]?.photo_reference
+                      ? `https://maps.googleapis.com/maps/api/place/photo?photoreference=${details.photos[0].photo_reference}&maxwidth=200&key=${apiKey}`
+                      : undefined,
+                    // Get all photos for the business
+                    photos:
+                      details.photos?.slice(0, 6).map((photo, index) => ({
+                        id: index + 1,
+                        url: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photo.photo_reference}&maxwidth=400&key=${apiKey}`,
+                        caption:
+                          index === 0
+                            ? "Business Logo/Main Photo"
+                            : `Business Photo ${index + 1}`,
+                      })) || [],
+                    // Operating hours
+                    hours: details.opening_hours?.weekday_text
+                      ? {
+                          monday:
+                            details.opening_hours.weekday_text[0] ||
+                            "Hours not available",
+                          tuesday:
+                            details.opening_hours.weekday_text[1] ||
+                            "Hours not available",
+                          wednesday:
+                            details.opening_hours.weekday_text[2] ||
+                            "Hours not available",
+                          thursday:
+                            details.opening_hours.weekday_text[3] ||
+                            "Hours not available",
+                          friday:
+                            details.opening_hours.weekday_text[4] ||
+                            "Hours not available",
+                          saturday:
+                            details.opening_hours.weekday_text[5] ||
+                            "Hours not available",
+                          sunday:
+                            details.opening_hours.weekday_text[6] ||
+                            "Hours not available",
+                        }
+                      : undefined,
+                    isOpen:
+                      details.opening_hours?.open_now ??
+                      place.opening_hours?.open_now,
+                    priceLevel: place.price_level,
+                  };
+
+                  allBusinesses.push(business);
+                  console.log(`Fetched detailed info for: ${business.name}`);
+                } else {
+                  console.log(
+                    `Failed to get details for ${place.name}: ${detailsData.status}`,
+                  );
+                  // Fallback to basic information if details API fails
+                  const business: BusinessData = {
+                    id: place.place_id,
+                    name: place.name,
+                    address: place.formatted_address,
+                    location: {
+                      lat: place.geometry.location.lat,
+                      lng: place.geometry.location.lng,
+                    },
+                    rating: place.rating || 0,
+                    reviewCount: place.user_ratings_total || 0,
+                    category: category.replace(" Dubai UAE", ""),
+                    businessStatus: place.business_status,
+                    photoReference: place.photos?.[0]?.photo_reference,
+                    logoUrl: place.photos?.[0]?.photo_reference
+                      ? `https://maps.googleapis.com/maps/api/place/photo?photoreference=${place.photos[0].photo_reference}&maxwidth=200&key=${apiKey}`
+                      : undefined,
+                    photos:
+                      place.photos?.slice(0, 6).map((photo, index) => ({
+                        id: index + 1,
+                        url: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photo.photo_reference}&maxwidth=400&key=${apiKey}`,
+                        caption:
+                          index === 0
+                            ? "Business Logo/Main Photo"
+                            : `Business Photo ${index + 1}`,
+                      })) || [],
+                    isOpen: place.opening_hours?.open_now,
+                    priceLevel: place.price_level,
+                  };
+                  allBusinesses.push(business);
+                }
+              } catch (detailsError) {
+                console.error(
+                  `Error fetching details for ${place.name}:`,
+                  detailsError,
+                );
+              }
+
+              // Add small delay between detail requests to respect rate limits
+              await new Promise((resolve) => setTimeout(resolve, 200));
             }
-          });
+          }
         } else if (data.status === "ZERO_RESULTS") {
           console.log(`No results found for category: ${category}`);
         } else {
