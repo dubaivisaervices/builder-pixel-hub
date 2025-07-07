@@ -475,11 +475,14 @@ export default function BusinessDirectory() {
       return b.rating - a.rating;
     });
 
+    console.log("Setting filtered businesses:", filtered.length);
     setFilteredBusinesses(filtered);
 
     // Show all filtered businesses (no pagination needed since we load all from DB)
+    console.log("Setting displayed businesses:", filtered.length);
     setDisplayedBusinesses(filtered);
     setHasMore(false); // No pagination needed
+    console.log("filterBusinesses completed successfully");
   };
 
   const loadMoreBusinesses = () => {
