@@ -246,6 +246,29 @@ export default function BusinessDirectory() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Warning Banner for API Issues */}
+        {error && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <div className="flex items-start space-x-3">
+              <AlertTriangle className="h-5 w-5 text-yellow-600 mt-0.5" />
+              <div className="flex-1">
+                <h3 className="font-medium text-yellow-800 mb-1">
+                  Using Sample Data
+                </h3>
+                <p className="text-sm text-yellow-700">{error}</p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={fetchDubaiBusinesses}
+                  className="mt-2"
+                >
+                  Retry API Connection
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Search and Filter */}
         <Card className="shadow-lg border-0 mb-8">
           <CardContent className="pt-6">
