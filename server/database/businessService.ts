@@ -123,15 +123,20 @@ export class BusinessService {
 
   // Get all businesses from database (lightweight - no reviews)
   async getAllBusinesses(): Promise<BusinessData[]> {
-    const businesses = await database.all(`
-      SELECT * FROM businesses
-      ORDER BY has_target_keyword DESC, rating DESC, review_count DESC
-    `);
+    try {
+      const businesses = await database.all(`
+        SELECT * FROM businesses
+        ORDER BY has_target_keyword DESC, rating DESC, review_count DESC
+      `);
 
-    // Return businesses without reviews for faster loading
-    return businesses.map((business) => {
-      return this.mapToBusinessData(business, []);
-    });
+      // Return businesses without reviews for faster loading
+      return businesses.map((business) => {
+        return this.mapToBusinessData(business, []);
+      });
+    } catch (error) {
+      console.error("Database error in getAllBusinesses:", error);
+      return []; // Return empty array if database fails
+    }
   }
 
   // Get all businesses with full reviews (slower but complete)
@@ -249,10 +254,15 @@ export class BusinessService {
 
   // Get unique categories
   async getCategories(): Promise<string[]> {
-    const categories = await database.all(`
-      SELECT DISTINCT category FROM businesses WHERE category IS NOT NULL ORDER BY category
-    `);
-    return categories.map((c) => c.category);
+    try {
+      const categories = await database.all(`
+        SELECT DISTINCT category FROM businesses WHERE category IS NOT NULL ORDER BY category
+      `);
+      return categories.map((c) => c.category);
+    } catch (error) {
+      console.error("Database error in getCategories:", error);
+      return []; // Return empty array if database fails
+    }
   }
 
   // Get database statistics
@@ -261,21 +271,30 @@ export class BusinessService {
     categories: number;
     withReviews: number;
   }> {
-    const total = await database.get(
-      "SELECT COUNT(*) as count FROM businesses",
-    );
-    const categories = await database.get(
-      "SELECT COUNT(DISTINCT category) as count FROM businesses WHERE category IS NOT NULL",
-    );
-    const withReviews = await database.get(
-      "SELECT COUNT(DISTINCT business_id) as count FROM reviews",
-    );
+    try {
+      const total = await database.get(
+        "SELECT COUNT(*) as count FROM businesses",
+      );
+      const categories = await database.get(
+        "SELECT COUNT(DISTINCT category) as count FROM businesses WHERE category IS NOT NULL",
+      );
+      const withReviews = await database.get(
+        "SELECT COUNT(DISTINCT business_id) as count FROM reviews",
+      );
 
-    return {
-      total: total.count,
-      categories: categories.count,
-      withReviews: withReviews.count,
-    };
+      return {
+        total: total?.count || 0,
+        categories: categories?.count || 0,
+        withReviews: withReviews?.count || 0,
+      };
+    } catch (error) {
+      console.error("Database error in getStats:", error);
+      return {
+        total: 0,
+        categories: 0,
+        withReviews: 0,
+      };
+    }
   }
 
   // Helper method to map database row to BusinessData
