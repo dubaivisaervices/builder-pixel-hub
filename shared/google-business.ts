@@ -1,3 +1,12 @@
+export interface BusinessReview {
+  id: string;
+  authorName: string;
+  rating: number;
+  text: string;
+  timeAgo: string;
+  profilePhotoUrl?: string;
+}
+
 export interface BusinessData {
   id: string;
   name: string;
@@ -31,6 +40,7 @@ export interface BusinessData {
   isOpen?: boolean;
   priceLevel?: number;
   hasTargetKeyword?: boolean;
+  reviews?: BusinessReview[];
 }
 
 export interface BusinessSearchResponse {
