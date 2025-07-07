@@ -239,6 +239,12 @@ export class BusinessService {
     }));
   }
 
+  // Clear all existing reviews (to remove fake reviews)
+  async clearAllReviews(): Promise<void> {
+    await database.run("DELETE FROM reviews");
+    console.log("✅ Cleared all existing reviews from database");
+  }
+
   // Get business by ID
   async getBusinessById(id: string): Promise<BusinessData | null> {
     const business = await database.get(
