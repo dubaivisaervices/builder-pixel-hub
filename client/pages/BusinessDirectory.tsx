@@ -193,7 +193,7 @@ export default function BusinessDirectory() {
 
       // Add timeout and better error handling
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 180000); // 180 second timeout for comprehensive data
+      const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 second timeout for reliable performance
 
       const response = await fetch("/api/dubai-visa-services", {
         signal: controller.signal,
@@ -358,14 +358,14 @@ export default function BusinessDirectory() {
             Loading Dubai Visa Services
           </h3>
           <p className="text-muted-foreground mb-4">
-            Fetching comprehensive business information for 300+ Dubai visa
-            service providers including phone numbers, websites, hours, and
-            photos from Google My Business across all 16 service categories...
+            Fetching comprehensive business information for 100+ top-rated Dubai
+            visa service providers including phone numbers, websites, hours, and
+            photos from Google My Business across priority service categories...
           </p>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
             <p className="text-sm text-blue-700">
-              💡 This process takes 120-180 seconds because we're gathering
-              detailed data for each business across ALL visa service categories
+              💡 This process takes 60-90 seconds because we're gathering
+              detailed data for each business with reliable performance
             </p>
           </div>
         </div>
@@ -397,7 +397,7 @@ export default function BusinessDirectory() {
                 </h1>
                 <p className="text-sm text-muted-foreground">
                   {loading
-                    ? "Loading comprehensive business database from Google... (This may take 120-180 seconds)"
+                    ? "Loading reliable business database from Google... (This may take 60-90 seconds)"
                     : `${filteredBusinesses.length} businesses found • Showing ${displayedBusinesses.length} (sorted by reviews)`}
                 </p>
               </div>

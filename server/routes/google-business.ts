@@ -83,10 +83,10 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     let totalRequests = 0;
     let successfulRequests = 0;
 
-    // Process ALL categories to get maximum comprehensive results (300+)
-    const priorityCategories = DUBAI_VISA_CATEGORIES; // Use all 16 categories
+    // Process 8 priority categories for reliable performance with good coverage
+    const priorityCategories = DUBAI_VISA_CATEGORIES.slice(0, 8); // Top 8 categories
     console.log(
-      `Processing ALL ${priorityCategories.length} categories for maximum coverage (target: 300+ businesses)`,
+      `Processing ${priorityCategories.length} priority categories for reliable performance with good coverage`,
     );
 
     // Search each category
@@ -109,8 +109,8 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
           successfulRequests++;
 
           // Process results and get detailed information for each business
-          // Process up to 20 results per category for maximum coverage (16 categories × 20 = 320 potential)
-          const limitedResults = data.results.slice(0, 20);
+          // Process up to 15 results per category for stable performance (8 categories × 15 = 120 potential)
+          const limitedResults = data.results.slice(0, 15);
 
           for (const place of limitedResults) {
             if (!processedPlaceIds.has(place.place_id)) {
@@ -212,10 +212,10 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
 
                   allBusinesses.push(business);
 
-                  // Log progress every 50 businesses for large-scale processing
-                  if (allBusinesses.length % 50 === 0) {
+                  // Log progress every 25 businesses for reliable processing
+                  if (allBusinesses.length % 25 === 0) {
                     console.log(
-                      `🎯 MILESTONE: ${allBusinesses.length} businesses processed! Target: 300+`,
+                      `🎯 MILESTONE: ${allBusinesses.length} businesses processed! Target: 100+`,
                     );
                   } else {
                     console.log(
@@ -267,13 +267,13 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                 );
               }
 
-              // Minimal delay for large-scale processing
-              await new Promise((resolve) => setTimeout(resolve, 25));
+              // Balanced delay for server stability
+              await new Promise((resolve) => setTimeout(resolve, 50));
 
               // Early exit if we have enough businesses to prevent timeout
-              if (allBusinesses.length >= 350) {
+              if (allBusinesses.length >= 120) {
                 console.log(
-                  `Reached 350 businesses limit, stopping to prevent timeout`,
+                  `Reached 120 businesses limit, stopping to prevent timeout`,
                 );
                 break;
               }
@@ -289,11 +289,11 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
           `Completed category "${category}" - Current total: ${allBusinesses.length} businesses`,
         );
 
-        // Minimal delay between categories for comprehensive processing
-        await new Promise((resolve) => setTimeout(resolve, 25));
+        // Balanced delay between categories for stable processing
+        await new Promise((resolve) => setTimeout(resolve, 50));
 
         // Early exit if we have enough businesses
-        if (allBusinesses.length >= 350) {
+        if (allBusinesses.length >= 120) {
           console.log(`Reached business limit, stopping category processing`);
           break;
         }
