@@ -208,3 +208,34 @@ export const getBusinessPhoto: RequestHandler = async (req, res) => {
     });
   }
 };
+
+export const testGoogleAPI: RequestHandler = async (req, res) => {
+  try {
+    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+
+    if (!apiKey) {
+      return res.status(500).json({
+        error: "Google Places API key not configured",
+      });
+    }
+
+    // Simple test query
+    const testUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=visa+services+Dubai&key=${apiKey}`;
+
+    const response = await fetch(testUrl);
+    const data = await response.json();
+
+    res.json({
+      status: data.status,
+      message: "Google Places API test",
+      resultCount: data.results?.length || 0,
+      sampleResult: data.results?.[0]?.name || "No results",
+    });
+  } catch (error) {
+    console.error("Google API test error:", error);
+    res.status(500).json({
+      error: "Failed to test Google API",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+};
