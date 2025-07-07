@@ -417,11 +417,9 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
                       place.opening_hours?.open_now,
                     priceLevel: place.price_level,
                     hasTargetKeyword: hasTargetKeyword,
-                    reviews: generateBusinessReviews(
+                    reviews: processGoogleReviews(
+                      details.reviews || [],
                       details.name || place.name,
-                      details.user_ratings_total ||
-                        place.user_ratings_total ||
-                        15,
                     ),
                   };
                 } else {
