@@ -314,7 +314,7 @@ export default function BusinessDirectory() {
         `Starting API call to fetch Dubai businesses page ${page}...`,
       );
       const response = await fetch(
-        `/api/dubai-visa-services?page=${page}&limit=50`,
+        `/api/dubai-visa-services?page=${page}&limit=161`,
         {
           signal: controller.signal,
           headers: {
