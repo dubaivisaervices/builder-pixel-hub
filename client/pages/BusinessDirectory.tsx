@@ -185,7 +185,7 @@ export default function BusinessDirectory() {
 
       // Add timeout and better error handling
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 second timeout for optimized data
+      const timeoutId = setTimeout(() => controller.abort(), 180000); // 180 second timeout for comprehensive data
 
       const response = await fetch("/api/dubai-visa-services", {
         signal: controller.signal,
@@ -320,14 +320,14 @@ export default function BusinessDirectory() {
             Loading Dubai Visa Services
           </h3>
           <p className="text-muted-foreground mb-4">
-            Fetching comprehensive business information for 150+ top-rated Dubai
-            visa service providers including phone numbers, websites, hours, and
-            photos from Google My Business...
+            Fetching comprehensive business information for 300+ Dubai visa
+            service providers including phone numbers, websites, hours, and
+            photos from Google My Business across all 16 service categories...
           </p>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
             <p className="text-sm text-blue-700">
-              💡 This process takes 60-90 seconds because we're gathering
-              detailed data for each business across priority categories
+              💡 This process takes 120-180 seconds because we're gathering
+              detailed data for each business across ALL visa service categories
             </p>
           </div>
         </div>
@@ -359,8 +359,8 @@ export default function BusinessDirectory() {
                 </h1>
                 <p className="text-sm text-muted-foreground">
                   {loading
-                    ? "Loading optimized business database from Google... (This may take 60-90 seconds)"
-                    : `${filteredBusinesses.length} top-rated businesses found with detailed information`}
+                    ? "Loading comprehensive business database from Google... (This may take 120-180 seconds)"
+                    : `${filteredBusinesses.length} businesses found with detailed information across all visa service categories`}
                 </p>
               </div>
             </div>

@@ -83,10 +83,10 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     let totalRequests = 0;
     let successfulRequests = 0;
 
-    // Process 10 categories to get more comprehensive results
-    const priorityCategories = DUBAI_VISA_CATEGORIES.slice(0, 10);
+    // Process ALL categories to get maximum comprehensive results (300+)
+    const priorityCategories = DUBAI_VISA_CATEGORIES; // Use all 16 categories
     console.log(
-      `Processing ${priorityCategories.length} categories for comprehensive coverage`,
+      `Processing ALL ${priorityCategories.length} categories for maximum coverage (target: 300+ businesses)`,
     );
 
     // Search each category
@@ -109,8 +109,8 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
           successfulRequests++;
 
           // Process results and get detailed information for each business
-          // Limit to first 18 results per category for better coverage
-          const limitedResults = data.results.slice(0, 18);
+          // Process up to 20 results per category for maximum coverage (16 categories × 20 = 320 potential)
+          const limitedResults = data.results.slice(0, 20);
 
           for (const place of limitedResults) {
             if (!processedPlaceIds.has(place.place_id)) {
@@ -259,8 +259,8 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                 );
               }
 
-              // Add small delay between detail requests to respect rate limits
-              await new Promise((resolve) => setTimeout(resolve, 50));
+              // Minimal delay for large-scale processing
+              await new Promise((resolve) => setTimeout(resolve, 25));
 
               // Early exit if we have enough businesses to prevent timeout
               if (allBusinesses.length >= 150) {
@@ -281,11 +281,11 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
           `Completed category "${category}" - Current total: ${allBusinesses.length} businesses`,
         );
 
-        // Add small delay between requests to respect rate limits
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        // Minimal delay between categories for comprehensive processing
+        await new Promise((resolve) => setTimeout(resolve, 25));
 
         // Early exit if we have enough businesses
-        if (allBusinesses.length >= 150) {
+        if (allBusinesses.length >= 350) {
           console.log(`Reached business limit, stopping category processing`);
           break;
         }
