@@ -31,6 +31,42 @@ export default function AdminSync() {
   const [dbStats, setDbStats] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const handleReviewsSync = async () => {
+    setIsReviewsLoading(true);
+    setError(null);
+    setReviewsSyncResult(null);
+
+    try {
+      console.log("Starting Google reviews sync...");
+
+      const response = await fetch("/api/sync-reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Reviews sync completed:", result);
+
+      setReviewsSyncResult(result.stats || {});
+      await checkStatus(); // Refresh database stats
+    } catch (error) {
+      console.error("Reviews sync failed:", error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Unknown error occurred during reviews sync",
+      );
+    } finally {
+      setIsReviewsLoading(false);
+    }
+  };
+
   const handleSync = async () => {
     setIsLoading(true);
     setError(null);
