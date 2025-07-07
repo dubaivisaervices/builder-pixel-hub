@@ -174,10 +174,13 @@ export default function BusinessDirectory() {
       if (err instanceof Error) {
         if (err.name === "AbortError") {
           errorMessage =
-            "Google API request timeout. Showing sample Dubai businesses.";
+            "Request timeout - Fetching detailed business data takes time. Showing sample Dubai businesses.";
         } else if (err.message.includes("fetch")) {
           errorMessage =
             "Unable to connect to Google Places API. Showing sample Dubai businesses.";
+        } else if (err.message.includes("timeout")) {
+          errorMessage =
+            "Google API is taking longer than expected. Showing sample Dubai businesses.";
         }
       }
 
