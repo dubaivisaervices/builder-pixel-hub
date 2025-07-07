@@ -316,7 +316,9 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
 
           if (data.status === "OK" && data.results) {
             pageCount++;
-            console.log(`   📄 Processing page ${pageCount} (${data.results.length} results)`);
+            console.log(
+              `   📄 Processing page ${pageCount} (${data.results.length} results)`,
+            );
 
             for (const place of data.results) {
               try {
@@ -325,216 +327,241 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
                   place.place_id,
                 );
 
-              // Generate email address
-              const generateEmail = (businessName: string): string => {
-                const cleanName = businessName
-                  .toLowerCase()
-                  .replace(/[^a-z0-9\s]/g, "")
-                  .replace(/\s+/g, "")
-                  .substring(0, 20);
-                return `info@${cleanName}.ae`;
-              };
+                // Generate email address
+                const generateEmail = (businessName: string): string => {
+                  const cleanName = businessName
+                    .toLowerCase()
+                    .replace(/[^a-z0-9\s]/g, "")
+                    .replace(/\s+/g, "")
+                    .substring(0, 20);
+                  return `info@${cleanName}.ae`;
+                };
 
-              // Get detailed information
-              const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,formatted_phone_number,website,opening_hours,photos,rating,user_ratings_total,business_status,geometry&key=${apiKey}`;
-              const detailsResponse = await fetch(detailsUrl);
-              const detailsData = await detailsResponse.json();
+                // Get detailed information
+                const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,formatted_phone_number,website,opening_hours,photos,rating,user_ratings_total,business_status,geometry&key=${apiKey}`;
+                const detailsResponse = await fetch(detailsUrl);
+                const detailsData = await detailsResponse.json();
 
-              let businessData: any;
+                let businessData: any;
 
-              if (detailsData.status === "OK" && detailsData.result) {
-                const details = detailsData.result;
+                if (detailsData.status === "OK" && detailsData.result) {
+                  const details = detailsData.result;
 
-                // Check for target keywords - expanded for better detection
-                const targetKeywords = [
-                  "overseas services",
-                  "visa services",
-                  "immigration services",
-                  "visa consultants",
-                  "visa consulting",
-                  "visa consultation",
-                  "visa consultancy",
-                  "immigration consulting",
-                  "immigration consultancy",
-                  "immigration consultant",
-                  "visa consultant",
-                  "visa advisor",
-                  "immigration advisor",
-                  "visa agency",
-                  "immigration agency",
-                  "visa processing",
-                  "immigration processing",
-                  "visa application",
-                  "visa center",
-                  "immigration center",
-                  "work permit",
-                  "work visa",
-                  "employment visa",
-                  "business visa",
-                  "student visa",
-                  "study abroad",
-                  "education visa",
-                  "family visa",
-                  "residence visa",
-                  "golden visa",
-                  "document clearing",
-                  "document clearance",
-                  "attestation",
-                  "pro services",
-                  "visa expert",
-                  "visa specialist",
-                  "immigration expert",
-                  "immigration specialist",
-                  "visa assistance",
-                  "immigration assistance",
-                  "visa support",
-                  "immigration support",
-                  "migration services",
-                  "relocation services",
-                  "expatriate services",
-                ];
+                  // Check for target keywords - expanded for better detection
+                  const targetKeywords = [
+                    "overseas services",
+                    "visa services",
+                    "immigration services",
+                    "visa consultants",
+                    "visa consulting",
+                    "visa consultation",
+                    "visa consultancy",
+                    "immigration consulting",
+                    "immigration consultancy",
+                    "immigration consultant",
+                    "visa consultant",
+                    "visa advisor",
+                    "immigration advisor",
+                    "visa agency",
+                    "immigration agency",
+                    "visa processing",
+                    "immigration processing",
+                    "visa application",
+                    "visa center",
+                    "immigration center",
+                    "work permit",
+                    "work visa",
+                    "employment visa",
+                    "business visa",
+                    "student visa",
+                    "study abroad",
+                    "education visa",
+                    "family visa",
+                    "residence visa",
+                    "golden visa",
+                    "document clearing",
+                    "document clearance",
+                    "attestation",
+                    "pro services",
+                    "visa expert",
+                    "visa specialist",
+                    "immigration expert",
+                    "immigration specialist",
+                    "visa assistance",
+                    "immigration assistance",
+                    "visa support",
+                    "immigration support",
+                    "migration services",
+                    "relocation services",
+                    "expatriate services",
+                  ];
 
-                const businessName = (details.name || place.name).toLowerCase();
-                const hasTargetKeyword = targetKeywords.some((keyword) =>
-                  businessName.includes(keyword.toLowerCase()),
-                );
+                  const businessName = (
+                    details.name || place.name
+                  ).toLowerCase();
+                  const hasTargetKeyword = targetKeywords.some((keyword) =>
+                    businessName.includes(keyword.toLowerCase()),
+                  );
 
-                businessData = {
-                  id: place.place_id,
-                  name: details.name || place.name,
-                  address: details.formatted_address || place.formatted_address,
-                  phone: details.formatted_phone_number || undefined,
-                  website: details.website || undefined,
-                  email: generateEmail(details.name || place.name),
-                  location: {
-                    lat:
-                      details.geometry?.location?.lat ||
-                      place.geometry.location.lat,
-                    lng:
-                      details.geometry?.location?.lng ||
-                      place.geometry.location.lng,
-                  },
-                  rating: details.rating || place.rating || 0,
-                  reviewCount:
-                    details.user_ratings_total || place.user_ratings_total || 0,
-                  category: category.replace(" Dubai UAE", ""),
-                  businessStatus:
-                    details.business_status || place.business_status,
-                  photoReference:
-                    details.photos?.[0]?.photo_reference ||
-                    place.photos?.[0]?.photo_reference,
-                  logoUrl: details.photos?.[0]?.photo_reference
-                    ? `https://maps.googleapis.com/maps/api/place/photo?photoreference=${details.photos[0].photo_reference}&maxwidth=200&key=${apiKey}`
-                    : undefined,
-                  photos:
-                    details.photos?.slice(0, 6).map((photo, index) => ({
-                      id: index + 1,
-                      url: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photo.photo_reference}&maxwidth=400&key=${apiKey}`,
-                      caption:
-                        index === 0
-                          ? "Business Logo/Main Photo"
-                          : `Business Photo ${index + 1}`,
-                    })) || [],
-                  hours: details.opening_hours?.weekday_text
-                    ? {
-                        monday:
-                          details.opening_hours.weekday_text[0] ||
-                          "Hours not available",
-                        tuesday:
-                          details.opening_hours.weekday_text[1] ||
-                          "Hours not available",
-                        wednesday:
-                          details.opening_hours.weekday_text[2] ||
-                          "Hours not available",
-                        thursday:
-                          details.opening_hours.weekday_text[3] ||
-                          "Hours not available",
-                        friday:
-                          details.opening_hours.weekday_text[4] ||
-                          "Hours not available",
-                        saturday:
-                          details.opening_hours.weekday_text[5] ||
-                          "Hours not available",
-                        sunday:
-                          details.opening_hours.weekday_text[6] ||
-                          "Hours not available",
-                      }
-                    : undefined,
-                  isOpen:
-                    details.opening_hours?.open_now ??
-                    place.opening_hours?.open_now,
-                  priceLevel: place.price_level,
-                  hasTargetKeyword: hasTargetKeyword,
-                  reviews: generateBusinessReviews(
-                    details.name || place.name,
-                    details.user_ratings_total ||
+                  businessData = {
+                    id: place.place_id,
+                    name: details.name || place.name,
+                    address:
+                      details.formatted_address || place.formatted_address,
+                    phone: details.formatted_phone_number || undefined,
+                    website: details.website || undefined,
+                    email: generateEmail(details.name || place.name),
+                    location: {
+                      lat:
+                        details.geometry?.location?.lat ||
+                        place.geometry.location.lat,
+                      lng:
+                        details.geometry?.location?.lng ||
+                        place.geometry.location.lng,
+                    },
+                    rating: details.rating || place.rating || 0,
+                    reviewCount:
+                      details.user_ratings_total ||
                       place.user_ratings_total ||
-                      15,
-                  ),
-                };
-              } else {
-                // Fallback data
-                businessData = {
-                  id: place.place_id,
-                  name: place.name,
-                  address: place.formatted_address,
-                  email: generateEmail(place.name),
-                  location: {
-                    lat: place.geometry.location.lat,
-                    lng: place.geometry.location.lng,
-                  },
-                  rating: place.rating || 0,
-                  reviewCount: place.user_ratings_total || 0,
-                  category: category.replace(" Dubai UAE", ""),
-                  businessStatus: place.business_status,
-                  photoReference: place.photos?.[0]?.photo_reference,
-                  logoUrl: place.photos?.[0]?.photo_reference
-                    ? `https://maps.googleapis.com/maps/api/place/photo?photoreference=${place.photos[0].photo_reference}&maxwidth=200&key=${apiKey}`
-                    : undefined,
-                  photos:
-                    place.photos?.slice(0, 6).map((photo, index) => ({
-                      id: index + 1,
-                      url: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photo.photo_reference}&maxwidth=400&key=${apiKey}`,
-                      caption:
-                        index === 0
-                          ? "Business Logo/Main Photo"
-                          : `Business Photo ${index + 1}`,
-                    })) || [],
-                  isOpen: place.opening_hours?.open_now,
-                  priceLevel: place.price_level,
-                  hasTargetKeyword: false,
-                  reviews: generateBusinessReviews(
-                    place.name,
-                    place.user_ratings_total || 15,
-                  ),
-                };
+                      0,
+                    category: category.replace(" Dubai UAE", ""),
+                    businessStatus:
+                      details.business_status || place.business_status,
+                    photoReference:
+                      details.photos?.[0]?.photo_reference ||
+                      place.photos?.[0]?.photo_reference,
+                    logoUrl: details.photos?.[0]?.photo_reference
+                      ? `https://maps.googleapis.com/maps/api/place/photo?photoreference=${details.photos[0].photo_reference}&maxwidth=200&key=${apiKey}`
+                      : undefined,
+                    photos:
+                      details.photos?.slice(0, 6).map((photo, index) => ({
+                        id: index + 1,
+                        url: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photo.photo_reference}&maxwidth=400&key=${apiKey}`,
+                        caption:
+                          index === 0
+                            ? "Business Logo/Main Photo"
+                            : `Business Photo ${index + 1}`,
+                      })) || [],
+                    hours: details.opening_hours?.weekday_text
+                      ? {
+                          monday:
+                            details.opening_hours.weekday_text[0] ||
+                            "Hours not available",
+                          tuesday:
+                            details.opening_hours.weekday_text[1] ||
+                            "Hours not available",
+                          wednesday:
+                            details.opening_hours.weekday_text[2] ||
+                            "Hours not available",
+                          thursday:
+                            details.opening_hours.weekday_text[3] ||
+                            "Hours not available",
+                          friday:
+                            details.opening_hours.weekday_text[4] ||
+                            "Hours not available",
+                          saturday:
+                            details.opening_hours.weekday_text[5] ||
+                            "Hours not available",
+                          sunday:
+                            details.opening_hours.weekday_text[6] ||
+                            "Hours not available",
+                        }
+                      : undefined,
+                    isOpen:
+                      details.opening_hours?.open_now ??
+                      place.opening_hours?.open_now,
+                    priceLevel: place.price_level,
+                    hasTargetKeyword: hasTargetKeyword,
+                    reviews: generateBusinessReviews(
+                      details.name || place.name,
+                      details.user_ratings_total ||
+                        place.user_ratings_total ||
+                        15,
+                    ),
+                  };
+                } else {
+                  // Fallback data
+                  businessData = {
+                    id: place.place_id,
+                    name: place.name,
+                    address: place.formatted_address,
+                    email: generateEmail(place.name),
+                    location: {
+                      lat: place.geometry.location.lat,
+                      lng: place.geometry.location.lng,
+                    },
+                    rating: place.rating || 0,
+                    reviewCount: place.user_ratings_total || 0,
+                    category: category.replace(" Dubai UAE", ""),
+                    businessStatus: place.business_status,
+                    photoReference: place.photos?.[0]?.photo_reference,
+                    logoUrl: place.photos?.[0]?.photo_reference
+                      ? `https://maps.googleapis.com/maps/api/place/photo?photoreference=${place.photos[0].photo_reference}&maxwidth=200&key=${apiKey}`
+                      : undefined,
+                    photos:
+                      place.photos?.slice(0, 6).map((photo, index) => ({
+                        id: index + 1,
+                        url: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photo.photo_reference}&maxwidth=400&key=${apiKey}`,
+                        caption:
+                          index === 0
+                            ? "Business Logo/Main Photo"
+                            : `Business Photo ${index + 1}`,
+                      })) || [],
+                    isOpen: place.opening_hours?.open_now,
+                    priceLevel: place.price_level,
+                    hasTargetKeyword: false,
+                    reviews: generateBusinessReviews(
+                      place.name,
+                      place.user_ratings_total || 15,
+                    ),
+                  };
+                }
+
+                // Save to database
+                await businessService.upsertBusiness(businessData);
+                totalSynced++;
+
+                if (existingBusiness) {
+                  totalUpdated++;
+                } else {
+                  totalNew++;
+                }
+
+                // Progress logging
+                if (totalSynced % 25 === 0) {
+                  console.log(`✅ Synced ${totalSynced} businesses so far...`);
+                }
+
+                // Small delay for API stability
+                await new Promise((resolve) => setTimeout(resolve, 20));
+              } catch (error) {
+                console.error(
+                  `Error processing business ${place.name}:`,
+                  error,
+                );
               }
-
-              // Save to database
-              await businessService.upsertBusiness(businessData);
-              totalSynced++;
-
-              if (existingBusiness) {
-                totalUpdated++;
-              } else {
-                totalNew++;
-              }
-
-              // Progress logging
-              if (totalSynced % 25 === 0) {
-                console.log(`✅ Synced ${totalSynced} businesses so far...`);
-              }
-
-              // Small delay for API stability
-              await new Promise((resolve) => setTimeout(resolve, 20));
-            } catch (error) {
-              console.error(`Error processing business ${place.name}:`, error);
             }
+
+            // Set next page token for pagination
+            nextPageToken = data.next_page_token;
+
+            // Add delay for next page token to become valid (required by Google API)
+            if (nextPageToken && pageCount < maxPagesPerCategory) {
+              console.log(
+                `   ⏳ Waiting for next page token to become valid...`,
+              );
+              await new Promise((resolve) => setTimeout(resolve, 2000));
+            }
+          } else {
+            console.log(
+              `   ❌ No results for category: ${category} (Status: ${data.status})`,
+            );
+            break;
           }
-        }
+        } while (nextPageToken && pageCount < maxPagesPerCategory);
 
         // Small delay between categories
-        await new Promise((resolve) => setTimeout(resolve, 20));
+        await new Promise((resolve) => setTimeout(resolve, 200));
       } catch (error) {
         console.error(`Error processing category ${category}:`, error);
       }
