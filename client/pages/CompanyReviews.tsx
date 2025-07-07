@@ -372,94 +372,56 @@ export default function CompanyReviews() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {/* Always show photos section */}
-                <>
-                  {businessData?.photos && businessData.photos.length > 0 ? (
-                    <div className="mb-4 text-sm text-green-600 bg-green-50 p-3 rounded-lg">
-                      📷 Showing {businessData.photos.length} real business photos from Google My Business
-                    </div>
-                  ) : (
-                    <div className="mb-4 text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
-                      📷 No photos available from Google My Business. Showing placeholder gallery.
-                    </div>
-                  )}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {company.photos.map((photo) => (
-                      <div key={photo.id} className="space-y-2">
-                        <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-200">
-                          {photo.url && businessData?.photos ? (
-                            <img
-                              src={photo.url}
-                              alt={photo.caption}
-                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
-                              onError={(e) => {
-                                // Fallback to placeholder if Google image fails
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = "none";
-                                const placeholder = target.parentElement?.querySelector('.photo-placeholder');
-                                if (placeholder) placeholder.classList.remove('hidden');
-                              }}
-                            />
-                          ) : null}
-                          <div className={`photo-placeholder text-center text-gray-500 ${photo.url && businessData?.photos ? 'hidden' : ''}`}>
-                            <Camera className="h-12 w-12 mx-auto mb-2" />
-                            <p className="text-sm font-medium">
-                              {photo.caption}
-                            </p>
-                            <p className="text-xs text-gray-400">
-                              Photo placeholder
-                            </p>
-                          </div>
-                        </div>
-                        <p className="text-sm text-muted-foreground text-center font-medium">
-                          {photo.caption}
-                        </p>
-                      </div>
-                    ))}
-                    </div>
-                  </>
+                {/* Always show photos - simplified approach */}
+                {businessData?.photos && businessData.photos.length > 0 ? (
+                  <div className="mb-4 text-sm text-green-600 bg-green-50 p-3 rounded-lg">
+                    📷 Showing {businessData.photos.length} real business photos
+                    from Google My Business
+                  </div>
                 ) : (
-                  <>
-                    <div className="mb-4 text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
-                      📷 No photos available from Google My Business. Showing placeholder gallery.
-                    </div>
-                    {/* Fallback placeholder photos */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {company.photos.map((photo) => (
-                        <div key={photo.id} className="space-y-2">
-                          <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-200">
-                            <div className="text-center text-gray-500">
-                              <Camera className="h-12 w-12 mx-auto mb-2" />
-                              <p className="text-sm font-medium">
-                                {photo.caption}
-                              </p>
-                              <p className="text-xs text-gray-400">
-                                Photo placeholder
-                              </p>
-                            </div>
-                          </div>
-                          <p className="text-sm text-muted-foreground text-center font-medium">
-                            {photo.caption}
+                  <div className="mb-4 text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
+                    📷 Showing placeholder photo gallery for this business
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {company.photos.map((photo) => (
+                    <div key={photo.id} className="space-y-2">
+                      <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-200">
+                        {photo.url && businessData?.photos ? (
+                          <img
+                            src={photo.url}
+                            alt={photo.caption}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                            onError={(e) => {
+                              // Fallback to placeholder if Google image fails
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = "none";
+                              const placeholder =
+                                target.parentElement?.querySelector(
+                                  ".photo-placeholder",
+                                );
+                              if (placeholder)
+                                placeholder.classList.remove("hidden");
+                            }}
+                          />
+                        ) : null}
+                        <div
+                          className={`photo-placeholder text-center text-gray-500 ${photo.url && businessData?.photos ? "hidden" : ""}`}
+                        >
+                          <Camera className="h-12 w-12 mx-auto mb-2" />
+                          <p className="text-sm font-medium">{photo.caption}</p>
+                          <p className="text-xs text-gray-400">
+                            Photo placeholder
                           </p>
                         </div>
-                      ))}
-                    </div>
-
-                    {/* No Photos Message */}
-                    <div className="text-center py-8 text-muted-foreground">
-                      <Camera className="h-16 w-16 mx-auto mb-4 text-gray-300" />
-                      <h3 className="text-lg font-medium mb-2">
-                        Photo Gallery
-                      </h3>
-                      <p className="text-sm">
-                        Real business photos from Google My Business will be
-                        displayed here when available. This includes office
-                        reception, consultation rooms, team photos, and exterior
-                        views.
+                      </div>
+                      <p className="text-sm text-muted-foreground text-center font-medium">
+                        {photo.caption}
                       </p>
                     </div>
-                  </>
-                )}
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -478,7 +440,8 @@ export default function CompanyReviews() {
                 {company.realReviews && company.realReviews.length > 0 ? (
                   <>
                     <div className="mb-4 text-sm text-green-600 bg-green-50 p-3 rounded-lg">
-                      ⭐ Showing {company.realReviews.length} real customer reviews (70% negative, 30% positive)
+                      ⭐ Showing {company.realReviews.length} real customer
+                      reviews (70% negative, 30% positive)
                     </div>
                     {company.realReviews.map((review) => (
                       <div
@@ -522,7 +485,8 @@ export default function CompanyReviews() {
                 ) : (
                   <>
                     <div className="mb-4 text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
-                      ⭐ No reviews available from business data. Showing sample reviews.
+                      ⭐ No reviews available from business data. Showing sample
+                      reviews.
                     </div>
                     {company.positiveReviews.map((review) => (
                       <div
@@ -561,9 +525,9 @@ export default function CompanyReviews() {
                         </div>
                         <p className="text-muted-foreground leading-relaxed">
                           {review.comment}
-                      </p>
-                    </div>
-                  ))}
+                        </p>
+                      </div>
+                    ))}
                   </>
                 )}
               </CardContent>
