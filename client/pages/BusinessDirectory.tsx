@@ -279,7 +279,9 @@ export default function BusinessDirectory() {
                   Dubai Visa Services Directory
                 </h1>
                 <p className="text-sm text-muted-foreground">
-                  {filteredBusinesses.length} businesses found
+                  {loading
+                    ? "Loading businesses with logos from Google..."
+                    : `${filteredBusinesses.length} businesses found`}
                 </p>
               </div>
             </div>
@@ -288,35 +290,29 @@ export default function BusinessDirectory() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Warning Banner for API Issues */}
+        {/* Error Banner - Only show when there's an actual error */}
         {error && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
             <div className="flex items-start space-x-3">
-              <AlertTriangle className="h-5 w-5 text-blue-600 mt-0.5" />
+              <AlertTriangle className="h-5 w-5 text-yellow-600 mt-0.5" />
               <div className="flex-1">
-                <h3 className="font-medium text-blue-800 mb-1">
-                  Sample Data Mode
-                </h3>
-                <p className="text-sm text-blue-700">{error}</p>
-                <p className="text-xs text-blue-600 mt-1">
-                  💡 Click "Load Live Data" to see real business logos and
-                  photos from Google My Business
-                </p>
+                <h3 className="font-medium text-yellow-800 mb-1">API Issue</h3>
+                <p className="text-sm text-yellow-700">{error}</p>
                 <div className="flex gap-2 mt-2">
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={fetchDubaiBusinesses}
                     disabled={loading}
-                    className="border-blue-300 text-blue-700 hover:bg-blue-100"
+                    className="border-yellow-300 text-yellow-700 hover:bg-yellow-100"
                   >
-                    {loading ? "Loading..." : "Load Live Data with Logos"}
+                    {loading ? "Retrying..." : "Retry Google API"}
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => setError(null)}
-                    className="text-blue-600 hover:bg-blue-100"
+                    className="text-yellow-600 hover:bg-yellow-100"
                   >
                     Dismiss
                   </Button>
