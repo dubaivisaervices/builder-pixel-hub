@@ -735,56 +735,20 @@ export default function BusinessDirectory() {
                       )}
                     </div>
 
-                    {/* Reviews Preview */}
-                    {business.reviews && business.reviews.length > 0 && (
+                    {/* Reviews Summary - simplified for faster loading */}
+                    {business.reviewCount > 0 && (
                       <div className="mt-4 border-t pt-3">
-                        <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center justify-between">
                           <h4 className="text-sm font-medium">
-                            Recent Reviews
+                            Customer Reviews
                           </h4>
                           <span className="text-xs text-muted-foreground">
-                            {business.reviews.length} reviews
+                            {business.reviewCount} reviews available
                           </span>
                         </div>
-                        <div className="space-y-2 max-h-32 overflow-y-auto">
-                          {business.reviews.slice(0, 2).map((review) => (
-                            <div
-                              key={review.id}
-                              className="bg-gray-50 p-2 rounded text-xs"
-                            >
-                              <div className="flex items-center justify-between mb-1">
-                                <div className="flex items-center space-x-1">
-                                  <span className="font-medium text-gray-700">
-                                    {review.authorName}
-                                  </span>
-                                  <div className="flex">
-                                    {Array.from({ length: 5 }).map((_, i) => (
-                                      <Star
-                                        key={i}
-                                        className={`h-3 w-3 ${
-                                          i < review.rating
-                                            ? "fill-yellow-400 text-yellow-400"
-                                            : "text-gray-300"
-                                        }`}
-                                      />
-                                    ))}
-                                  </div>
-                                </div>
-                                <span className="text-gray-500">
-                                  {review.timeAgo}
-                                </span>
-                              </div>
-                              <p className="text-gray-600 line-clamp-2">
-                                {review.text}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                        {business.reviews.length > 2 && (
-                          <button className="text-xs text-primary mt-2 hover:underline">
-                            View all {business.reviews.length} reviews
-                          </button>
-                        )}
+                        <p className="text-xs text-gray-600 mt-1">
+                          Click "View Details" to see full reviews and ratings
+                        </p>
                       </div>
                     )}
 
