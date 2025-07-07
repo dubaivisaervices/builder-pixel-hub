@@ -157,8 +157,23 @@ export default function CompanyReviews() {
             <div className="flex flex-col lg:flex-row lg:items-start space-y-6 lg:space-y-0 lg:space-x-8">
               {/* Logo and Basic Info */}
               <div className="flex-shrink-0">
-                <div className="w-32 h-32 bg-gradient-to-br from-primary/10 to-primary/20 rounded-xl flex items-center justify-center mb-4 border-2 border-primary/20">
-                  <div className="text-primary text-4xl font-bold">
+                <div className="w-32 h-32 bg-gradient-to-br from-primary/10 to-primary/20 rounded-xl flex items-center justify-center mb-4 border-2 border-primary/20 overflow-hidden">
+                  {businessData?.logoUrl ? (
+                    <img
+                      src={businessData.logoUrl}
+                      alt={`${company.name} logo`}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        // Fallback to letter if image fails to load
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = "none";
+                        target.nextElementSibling!.classList.remove("hidden");
+                      }}
+                    />
+                  ) : null}
+                  <div
+                    className={`text-primary text-4xl font-bold ${businessData?.logoUrl ? "hidden" : ""}`}
+                  >
                     {company.name.charAt(0).toUpperCase()}
                   </div>
                 </div>
