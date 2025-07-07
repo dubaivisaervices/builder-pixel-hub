@@ -27,18 +27,30 @@ import {
 
 export default function BusinessDirectory() {
   const navigate = useNavigate();
-  const [businesses, setBusinesses] = useState<BusinessData[]>([]);
-  const [filteredBusinesses, setFilteredBusinesses] = useState<BusinessData[]>(
-    [],
+  // Initialize with fallback data immediately
+  const [businesses, setBusinesses] = useState<BusinessData[]>(
+    getFallbackBusinesses(),
   );
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [filteredBusinesses, setFilteredBusinesses] = useState<BusinessData[]>(
+    getFallbackBusinesses(),
+  );
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(
+    "Showing sample Dubai businesses. Click 'Load Live Data' to fetch from Google.",
+  );
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>([
+    "visa consulting services",
+    "immigration consultants",
+    "visa services",
+    "travel agents",
+    "visa agency",
+  ]);
 
   useEffect(() => {
-    fetchDubaiBusinesses();
+    // Don't auto-fetch on load, let user trigger it
+    // fetchDubaiBusinesses();
   }, []);
 
   useEffect(() => {
