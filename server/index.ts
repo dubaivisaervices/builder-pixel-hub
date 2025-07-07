@@ -49,5 +49,13 @@ export function createServer() {
   app.post("/api/clear-fake-reviews", clearFakeReviewsAndSyncReal);
   app.get("/api/sync-status", getSyncStatus);
 
+  // Admin routes for business and category management
+  app.get("/api/admin/businesses-by-category", getBusinessesByCategory);
+  app.put("/api/admin/business/:id", updateBusiness);
+  app.delete("/api/admin/business/:id", deleteBusiness);
+  app.get("/api/admin/categories", getAllCategories);
+  app.put("/api/admin/category/:oldCategory", updateCategory);
+  app.delete("/api/admin/category/:category", deleteCategory);
+
   return app;
 }
