@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -21,13 +21,24 @@ import {
 } from "lucide-react";
 
 export default function CompanyReviews() {
-  const { location, companyName } = useParams();
+  const { location: locationParam, companyName } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const businessData = location.state?.businessData;
 
-  // Enhanced mock data - in real app this would come from API
+  // Use passed business data or enhanced mock data
   const company = {
-    name: companyName?.replace(/-/g, " ") || "Unknown Company",
-    location: location?.replace(/-/g, " ") || "Unknown Location",
+    name:
+      businessData?.name ||
+      companyName?.replace(/-/g, " ") ||
+      "Unknown Company",
+    location:
+      businessData?.address ||
+      locationParam?.replace(/-/g, " ") ||
+      "Unknown Location",
+    // Use real business data if available
+    rating: businessData?.rating || 3.2,
+    totalReviews: businessData?.reviewCount || 127,
     totalReports: 3,
     // Company details
     description:
