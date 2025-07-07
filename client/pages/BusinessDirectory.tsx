@@ -427,7 +427,7 @@ export default function BusinessDirectory() {
                       variant="outline"
                       className="flex-1"
                       onClick={() => {
-                        // Navigate to company reviews page
+                        // Navigate to company details page with business data
                         const locationSlug =
                           business.address
                             .split(",")[0]
@@ -437,10 +437,12 @@ export default function BusinessDirectory() {
                         const nameSlug = business.name
                           .toLowerCase()
                           .replace(/\s+/g, "-");
-                        navigate(`/reviews/${locationSlug}/${nameSlug}`);
+                        navigate(`/reviews/${locationSlug}/${nameSlug}`, {
+                          state: { businessData: business },
+                        });
                       }}
                     >
-                      View Reviews
+                      View Details
                     </Button>
                     <Button
                       size="sm"
