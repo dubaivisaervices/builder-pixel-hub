@@ -374,15 +374,23 @@ export default function BusinessDirectory() {
               >
                 <CardHeader className="pb-4">
                   <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <CardTitle className="text-lg font-semibold line-clamp-2 mb-2">
-                        {business.name}
-                      </CardTitle>
-                      <Badge
-                        className={`text-xs ${getBusinessStatusColor(business.businessStatus)}`}
-                      >
-                        {business.businessStatus.replace("_", " ")}
-                      </Badge>
+                    <div className="flex items-start space-x-3 flex-1">
+                      {/* Business Logo */}
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-primary/20 rounded-lg flex items-center justify-center border border-primary/20 flex-shrink-0">
+                        <span className="text-primary text-xl font-bold">
+                          {business.name.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                      <div className="flex-1">
+                        <CardTitle className="text-lg font-semibold line-clamp-2 mb-2">
+                          {business.name}
+                        </CardTitle>
+                        <Badge
+                          className={`text-xs ${getBusinessStatusColor(business.businessStatus)}`}
+                        >
+                          {business.businessStatus.replace("_", " ")}
+                        </Badge>
+                      </div>
                     </div>
                   </div>
 
