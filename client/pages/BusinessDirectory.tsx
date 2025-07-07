@@ -300,9 +300,9 @@ export default function BusinessDirectory() {
       setLoading(true);
       setError(null);
 
-      // Add timeout and better error handling for larger dataset
+      // Add timeout and better error handling
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 180000); // 3 minute timeout for reliable processing
+      const timeoutId = setTimeout(() => controller.abort(), 60000); // 1 minute timeout
 
       console.log("Starting API call to fetch Dubai businesses...");
       const response = await fetch("/api/dubai-visa-services", {
@@ -310,6 +310,8 @@ export default function BusinessDirectory() {
         headers: {
           "Content-Type": "application/json",
         },
+        // Add retry logic with credentials
+        credentials: "same-origin",
       });
 
       clearTimeout(timeoutId);
