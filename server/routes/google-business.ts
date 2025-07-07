@@ -219,7 +219,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                   // Log progress every 25 businesses for reliable processing
                   if (allBusinesses.length % 25 === 0) {
                     console.log(
-                      `🎯 MILESTONE: ${allBusinesses.length} businesses processed! Target: 100+`,
+                      `🎯 MILESTONE: ${allBusinesses.length} businesses processed! Target: 150+`,
                     );
                   } else {
                     console.log(
