@@ -433,7 +433,9 @@ export default function BusinessDirectory() {
 
       setError(errorMessage);
     } finally {
+      console.log("Finally block executing - setting loading to false");
       setLoading(false);
+      if (append) setLoadingMore(false);
       setIsApiCallInProgress(false);
       console.log("API call completed and state cleaned up");
     }
