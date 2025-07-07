@@ -48,7 +48,19 @@ export default function BusinessDirectory() {
   const fetchDubaiBusinesses = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/dubai-visa-services");
+
+      // Add timeout and better error handling
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+      const response = await fetch("/api/dubai-visa-services", {
+        signal: controller.signal,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -66,15 +78,19 @@ export default function BusinessDirectory() {
           "visa services",
           "travel agents",
         ]);
+        setError("API returned no results. Showing sample businesses.");
       } else {
+        console.log(
+          `Successfully loaded ${data.businesses.length} businesses from API`,
+        );
         setBusinesses(data.businesses);
         setCategories(data.categories);
+        setError(null);
       }
-      setError(null);
     } catch (err) {
       console.error("Error fetching businesses:", err);
 
-      // Use fallback data on error
+      // Use fallback data on any error
       console.log("API error, using fallback data");
       setBusinesses(getFallbackBusinesses());
       setCategories([
@@ -84,9 +100,17 @@ export default function BusinessDirectory() {
         "travel agents",
       ]);
 
-      setError(
-        "Unable to fetch live data from Google. Showing sample Dubai businesses. Please configure Google Places API properly.",
-      );
+      let errorMessage = "Network error. Showing sample Dubai businesses.";
+      if (err instanceof Error) {
+        if (err.name === "AbortError") {
+          errorMessage = "Request timeout. Showing sample Dubai businesses.";
+        } else if (err.message.includes("fetch")) {
+          errorMessage =
+            "Unable to connect to server. Showing sample Dubai businesses.";
+        }
+      }
+
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
