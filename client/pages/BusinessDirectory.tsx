@@ -320,7 +320,7 @@ export default function BusinessDirectory() {
             Loading Dubai Visa Services
           </h3>
           <p className="text-muted-foreground mb-4">
-            Fetching comprehensive business information for 100+ top-rated Dubai
+            Fetching comprehensive business information for 150+ top-rated Dubai
             visa service providers including phone numbers, websites, hours, and
             photos from Google My Business...
           </p>

@@ -102,18 +102,31 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
         console.log(`API Response for ${category}:`, {
           status: data.status,
           resultCount: data.results?.length || 0,
+          totalProcessed: allBusinesses.length,
         });
 
         if (data.status === "OK" && data.results) {
           successfulRequests++;
 
           // Process results and get detailed information for each business
-          // Limit to first 15 results per category to balance coverage and performance
-          const limitedResults = data.results.slice(0, 15);
+          // Limit to first 18 results per category for better coverage
+          const limitedResults = data.results.slice(0, 18);
 
           for (const place of limitedResults) {
             if (!processedPlaceIds.has(place.place_id)) {
               processedPlaceIds.add(place.place_id);
+
+              // Also check for duplicate business names to avoid similar businesses
+              const existingBusiness = allBusinesses.find(
+                (b) =>
+                  b.name.toLowerCase().trim() ===
+                  place.name.toLowerCase().trim(),
+              );
+
+              if (existingBusiness) {
+                console.log(`Skipping duplicate business name: ${place.name}`);
+                continue;
+              }
 
               // Get detailed business information using Place Details API
               try {
@@ -245,9 +258,9 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
               await new Promise((resolve) => setTimeout(resolve, 100));
 
               // Early exit if we have enough businesses to prevent timeout
-              if (allBusinesses.length >= 100) {
+              if (allBusinesses.length >= 150) {
                 console.log(
-                  `Reached 100 businesses limit, stopping to prevent timeout`,
+                  `Reached 150 businesses limit, stopping to prevent timeout`,
                 );
                 break;
               }
@@ -263,7 +276,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
         await new Promise((resolve) => setTimeout(resolve, 100));
 
         // Early exit if we have enough businesses
-        if (allBusinesses.length >= 100) {
+        if (allBusinesses.length >= 150) {
           console.log(`Reached business limit, stopping category processing`);
           break;
         }
@@ -277,6 +290,10 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
       `Search completed: ${successfulRequests}/${totalRequests} successful requests`,
     );
     console.log(`Total unique businesses found: ${allBusinesses.length}`);
+    console.log(`Categories processed: ${successfulRequests}/${totalRequests}`);
+    console.log(
+      `Average businesses per successful category: ${Math.round(allBusinesses.length / Math.max(successfulRequests, 1))}`,
+    );
 
     // Add timing info for performance monitoring
     const endTime = Date.now();
