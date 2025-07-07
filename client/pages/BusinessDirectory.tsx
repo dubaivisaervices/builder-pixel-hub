@@ -293,7 +293,7 @@ export default function BusinessDirectory() {
     filterBusinesses();
   }, [allBusinesses, searchTerm, selectedCategory]);
 
-  const fetchDubaiBusinesses = async () => {
+  const fetchDubaiBusinesses = async (page = 1, append = false) => {
     // Prevent multiple concurrent API calls
     if (isApiCallInProgress) {
       console.log("API call already in progress, skipping...");
@@ -302,22 +302,27 @@ export default function BusinessDirectory() {
 
     try {
       setIsApiCallInProgress(true);
-      setLoading(true);
+      if (!append) setLoading(true);
+      if (append) setLoadingMore(true);
       setError(null);
 
-      // Add timeout and better error handling
+      // Add timeout and better error handling - much faster now
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 60000); // 1 minute timeout
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-      console.log("Starting API call to fetch Dubai businesses...");
-      const response = await fetch("/api/dubai-visa-services", {
-        signal: controller.signal,
-        headers: {
-          "Content-Type": "application/json",
+      console.log(
+        `Starting API call to fetch Dubai businesses page ${page}...`,
+      );
+      const response = await fetch(
+        `/api/dubai-visa-services?page=${page}&limit=50`,
+        {
+          signal: controller.signal,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "same-origin",
         },
-        // Add retry logic with credentials
-        credentials: "same-origin",
-      });
+      );
 
       clearTimeout(timeoutId);
 
