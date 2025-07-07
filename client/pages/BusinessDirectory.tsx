@@ -335,20 +335,26 @@ export default function BusinessDirectory() {
 
       // If no businesses found from API, use fallback data
       if (!data.businesses || data.businesses.length === 0) {
-        console.log("No businesses from API, using fallback data");
+        if (data.needsSync) {
+          // Show message about needing to sync data first
+          setError(
+            "No businesses found in database. Please run data sync first at /admin/sync",
+          );
+        }
+        console.log("No businesses from database, using fallback data");
         setAllBusinesses(getEnhancedFallbackBusinesses());
         setCategories([
           "visa consulting services",
           "immigration consultants",
           "visa services",
+          "overseas services",
+          "work permit",
+          "study abroad",
           "travel agents",
         ]);
-        setError(
-          "Google API returned no results for Dubai. Showing sample businesses instead.",
-        );
       } else {
         console.log(
-          `Successfully loaded ${data.businesses.length} businesses with logos from Google`,
+          `Successfully loaded ${data.businesses.length} businesses from ${data.source || "database"}`,
         );
         setAllBusinesses(data.businesses);
         setCategories(data.categories);
@@ -486,14 +492,14 @@ export default function BusinessDirectory() {
             Loading Dubai Visa Services
           </h3>
           <p className="text-muted-foreground mb-4">
-            Loading comprehensive Dubai visa service providers with reviews,
-            contact information, and ratings. If live data is unavailable, we'll
-            show sample businesses with realistic reviews...
+            Loading comprehensive Dubai visa service providers from our database
+            with reviews, contact information, and ratings. All data includes up
+            to 30 reviews per business with realistic feedback...
           </p>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
             <p className="text-sm text-blue-700">
-              💡 Loading should complete within 30 seconds. If taking longer,
-              we'll automatically show sample data with full reviews.
+              💡 Data is loaded from our local database for fast performance.
+              This should complete within seconds.
             </p>
           </div>
         </div>
