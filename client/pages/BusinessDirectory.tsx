@@ -341,12 +341,15 @@ export default function BusinessDirectory() {
       // If no businesses found from API, use fallback data
       if (!data.businesses || data.businesses.length === 0) {
         if (data.needsSync) {
-          // Show message about needing to sync data first
-          setError(
-            "No businesses found in database. Please run data sync first at /admin/sync",
+          console.log(
+            "Database is empty, showing fallback data with sync message",
           );
+          setError(
+            "Database is empty. Using sample data. Visit /admin/sync to load real Google data.",
+          );
+        } else {
+          console.log("No businesses found, using fallback data");
         }
-        console.log("No businesses from database, using fallback data");
         setAllBusinesses(getEnhancedFallbackBusinesses());
         setCategories([
           "visa consulting services",
