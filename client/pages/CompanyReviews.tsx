@@ -26,6 +26,11 @@ export default function CompanyReviews() {
   const location = useLocation();
   const businessData = location.state?.businessData;
 
+  // Debug logging
+  console.log("CompanyReviews - businessData:", businessData);
+  console.log("CompanyReviews - businessData.reviews:", businessData?.reviews);
+  console.log("CompanyReviews - businessData.photos:", businessData?.photos);
+
   // Use passed business data or enhanced mock data
   const company = {
     name:
@@ -367,8 +372,12 @@ export default function CompanyReviews() {
               <CardContent>
                 {/* Real Google Photos */}
                 {businessData?.photos && businessData.photos.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {businessData.photos.map((photo) => (
+                  <>
+                    <div className="mb-4 text-sm text-green-600 bg-green-50 p-3 rounded-lg">
+                      📷 Showing {businessData.photos.length} real business photos from Google My Business
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {businessData.photos.map((photo) => (
                       <div key={photo.id} className="space-y-2">
                         <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-200">
                           <img
@@ -399,8 +408,13 @@ export default function CompanyReviews() {
                       </div>
                     ))}
                   </div>
+                    </div>
+                  </>
                 ) : (
                   <>
+                    <div className="mb-4 text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
+                      📷 No photos available from Google My Business. Showing placeholder gallery.
+                    </div>
                     {/* Fallback placeholder photos */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {company.photos.map((photo) => (
@@ -453,8 +467,12 @@ export default function CompanyReviews() {
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Show real reviews from business data if available */}
-                {businessData?.reviews && businessData.reviews.length > 0
-                  ? businessData.reviews.map((review) => (
+                {businessData?.reviews && businessData.reviews.length > 0 ? (
+                  <>
+                    <div className="mb-4 text-sm text-green-600 bg-green-50 p-3 rounded-lg">
+                      ⭐ Showing {businessData.reviews.length} real customer reviews
+                    </div>
+                    {businessData.reviews.map((review) => (
                       <div
                         key={review.id}
                         className="border-b pb-6 last:border-b-0"
@@ -491,9 +509,14 @@ export default function CompanyReviews() {
                           {review.text}
                         </p>
                       </div>
-                    ))
-                  : /* Fallback to static reviews if no business data */
-                    company.positiveReviews.map((review) => (
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    <div className="mb-4 text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
+                      ⭐ No reviews available from business data. Showing sample reviews.
+                    </div>
+                    {company.positiveReviews.map((review) => (
                       <div
                         key={review.id}
                         className="border-b pb-6 last:border-b-0"
@@ -530,9 +553,11 @@ export default function CompanyReviews() {
                         </div>
                         <p className="text-muted-foreground leading-relaxed">
                           {review.comment}
-                        </p>
-                      </div>
-                    ))}
+                      </p>
+                    </div>
+                  ))}
+                  </>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
