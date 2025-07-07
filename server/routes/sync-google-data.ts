@@ -46,32 +46,96 @@ interface BusinessData {
   priceLevel?: number;
 }
 
-// Dubai visa/immigration service categories to search
+// Dubai visa/immigration service categories to search - expanded for comprehensive coverage
 const DUBAI_VISA_CATEGORIES = [
+  // Core visa services
   '"overseas services" Dubai UAE',
   '"visa services" Dubai UAE',
   '"immigration services" Dubai UAE',
   '"visa consultants" Dubai UAE',
-  '"work permit" Dubai UAE',
-  '"study abroad" Dubai UAE',
+  '"visa consulting" Dubai UAE',
+  '"visa consultation" Dubai UAE',
+
+  // Consulting services - expanded
   "visa consulting services Dubai UAE",
-  "immigration consultants Dubai UAE",
+  "immigration consulting services Dubai UAE",
+  "visa consultancy Dubai UAE",
+  "immigration consultancy Dubai UAE",
+  "visa consultant Dubai UAE",
+  "immigration consultant Dubai UAE",
+  "visa advisor Dubai UAE",
+  "immigration advisor Dubai UAE",
+
+  // Professional services
   "visa agency Dubai UAE",
-  "travel agents Dubai UAE",
-  "immigration lawyers Dubai UAE",
+  "immigration agency Dubai UAE",
   "visa processing center Dubai UAE",
-  "document clearing Dubai UAE",
-  "attestation services Dubai UAE",
-  "PRO services Dubai UAE",
-  "student visa services Dubai UAE",
-  "business visa services Dubai UAE",
+  "visa processing services Dubai UAE",
+  "immigration processing Dubai UAE",
   "visa application center Dubai UAE",
-  "visitor visa Dubai UAE",
-  "family visa Dubai UAE",
+  "visa application services Dubai UAE",
+
+  // Document and legal services
+  "document clearing Dubai UAE",
+  "document clearance Dubai UAE",
+  "attestation services Dubai UAE",
+  "document attestation Dubai UAE",
+  "PRO services Dubai UAE",
+  "legal services Dubai UAE",
+  "immigration lawyers Dubai UAE",
+  "visa lawyers Dubai UAE",
+
+  // Specific visa types
+  '"work permit" Dubai UAE',
+  '"work visa" Dubai UAE',
   "employment visa Dubai UAE",
+  "business visa services Dubai UAE",
+  "investor visa Dubai UAE",
+  "student visa services Dubai UAE",
+  '"study abroad" Dubai UAE',
+  "education visa Dubai UAE",
+  "family visa Dubai UAE",
+  "spouse visa Dubai UAE",
+  "dependent visa Dubai UAE",
+  "visitor visa Dubai UAE",
+  "tourist visa Dubai UAE",
   "residence visa Dubai UAE",
+  "golden visa Dubai UAE",
+
+  // Business setup (often includes visa services)
   "business setup Dubai UAE",
   "company formation Dubai UAE",
+  "business formation Dubai UAE",
+  "freezone setup Dubai UAE",
+  "mainland company Dubai UAE",
+  "offshore company Dubai UAE",
+
+  // Travel and relocation
+  "travel agents Dubai UAE",
+  "travel agencies Dubai UAE",
+  "relocation services Dubai UAE",
+  "migration services Dubai UAE",
+  "expatriate services Dubai UAE",
+
+  // Additional variations
+  "visa processing office Dubai UAE",
+  "immigration office Dubai UAE",
+  "visa center Dubai UAE",
+  "immigration center Dubai UAE",
+  "visa expert Dubai UAE",
+  "immigration expert Dubai UAE",
+  "visa specialist Dubai UAE",
+  "immigration specialist Dubai UAE",
+  "visa helper Dubai UAE",
+  "visa assistance Dubai UAE",
+  "immigration assistance Dubai UAE",
+  "visa support Dubai UAE",
+  "immigration support Dubai UAE",
+
+  // Arabic/local terms
+  "خدمات التأشيرات دبي",
+  "استشارات الهجرة دبي",
+  "خدمات الهجرة دبي",
 ];
 
 // Generate realistic reviews with 70% negative, 30% positive ratio
