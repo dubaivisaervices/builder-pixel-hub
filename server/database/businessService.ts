@@ -245,6 +245,130 @@ export class BusinessService {
     console.log("✅ Cleared all existing reviews from database");
   }
 
+  // CRUD operations for admin panel
+
+  // Get all businesses grouped by category
+  async getBusinessesByCategory(): Promise<Record<string, BusinessData[]>> {
+    const businesses = await database.all(
+      "SELECT * FROM businesses ORDER BY category, name",
+    );
+
+    const businessesByCategory: Record<string, BusinessData[]> = {};
+
+    for (const business of businesses) {
+      const reviews = await this.getBusinessReviews(business.id);
+      const businessData = this.mapToBusinessData(business, reviews);
+
+      if (!businessesByCategory[business.category]) {
+        businessesByCategory[business.category] = [];
+      }
+      businessesByCategory[business.category].push(businessData);
+    }
+
+    return businessesByCategory;
+  }
+
+  // Update a business
+  async updateBusiness(
+    id: string,
+    businessData: Partial<BusinessData>,
+  ): Promise<void> {
+    const updateFields = [];
+    const updateValues = [];
+
+    if (businessData.name) {
+      updateFields.push("name = ?");
+      updateValues.push(businessData.name);
+    }
+    if (businessData.address) {
+      updateFields.push("address = ?");
+      updateValues.push(businessData.address);
+    }
+    if (businessData.phone) {
+      updateFields.push("phone = ?");
+      updateValues.push(businessData.phone);
+    }
+    if (businessData.website) {
+      updateFields.push("website = ?");
+      updateValues.push(businessData.website);
+    }
+    if (businessData.email) {
+      updateFields.push("email = ?");
+      updateValues.push(businessData.email);
+    }
+    if (businessData.category) {
+      updateFields.push("category = ?");
+      updateValues.push(businessData.category);
+    }
+    if (businessData.rating !== undefined) {
+      updateFields.push("rating = ?");
+      updateValues.push(businessData.rating);
+    }
+    if (businessData.reviewCount !== undefined) {
+      updateFields.push("review_count = ?");
+      updateValues.push(businessData.reviewCount);
+    }
+    if (businessData.businessStatus) {
+      updateFields.push("business_status = ?");
+      updateValues.push(businessData.businessStatus);
+    }
+
+    if (updateFields.length === 0) return;
+
+    updateValues.push(id);
+
+    await database.run(
+      `UPDATE businesses SET ${updateFields.join(", ")} WHERE id = ?`,
+      updateValues,
+    );
+  }
+
+  // Delete a business
+  async deleteBusiness(id: string): Promise<void> {
+    // Delete reviews first (foreign key constraint)
+    await database.run("DELETE FROM reviews WHERE business_id = ?", [id]);
+    // Delete business
+    await database.run("DELETE FROM businesses WHERE id = ?", [id]);
+  }
+
+  // Get all unique categories
+  async getAllCategories(): Promise<string[]> {
+    const result = await database.all(
+      "SELECT DISTINCT category FROM businesses ORDER BY category",
+    );
+    return result.map((row) => row.category);
+  }
+
+  // Update category name for all businesses in that category
+  async updateCategory(
+    oldCategory: string,
+    newCategory: string,
+  ): Promise<void> {
+    await database.run(
+      "UPDATE businesses SET category = ? WHERE category = ?",
+      [newCategory, oldCategory],
+    );
+  }
+
+  // Delete category (delete all businesses in that category)
+  async deleteCategory(category: string): Promise<void> {
+    // First get all business IDs in this category
+    const businesses = await database.all(
+      "SELECT id FROM businesses WHERE category = ?",
+      [category],
+    );
+
+    // Delete reviews for all businesses in this category
+    for (const business of businesses) {
+      await database.run("DELETE FROM reviews WHERE business_id = ?", [
+        business.id,
+      ]);
+    }
+
+    // Delete all businesses in this category
+    await database.run("DELETE FROM businesses WHERE category = ?", [category]);
+  }
+
   // Get business by ID
   async getBusinessById(id: string): Promise<BusinessData | null> {
     const business = await database.get(
