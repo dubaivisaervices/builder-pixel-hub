@@ -145,10 +145,12 @@ export default function BusinessDirectory() {
           "visa services",
           "travel agents",
         ]);
-        setError("API returned no results. Showing sample businesses.");
+        setError(
+          "Google API returned no results for Dubai. Showing sample businesses instead.",
+        );
       } else {
         console.log(
-          `Successfully loaded ${data.businesses.length} businesses from API`,
+          `Successfully loaded ${data.businesses.length} businesses with logos from Google`,
         );
         setBusinesses(data.businesses);
         setCategories(data.categories);
@@ -167,13 +169,15 @@ export default function BusinessDirectory() {
         "travel agents",
       ]);
 
-      let errorMessage = "Network error. Showing sample Dubai businesses.";
+      let errorMessage =
+        "Unable to load live data from Google. Showing sample Dubai businesses.";
       if (err instanceof Error) {
         if (err.name === "AbortError") {
-          errorMessage = "Request timeout. Showing sample Dubai businesses.";
+          errorMessage =
+            "Google API request timeout. Showing sample Dubai businesses.";
         } else if (err.message.includes("fetch")) {
           errorMessage =
-            "Unable to connect to server. Showing sample Dubai businesses.";
+            "Unable to connect to Google Places API. Showing sample Dubai businesses.";
         }
       }
 
