@@ -211,10 +211,10 @@ export default function AdminSync() {
               </div>
             </div>
 
-            <div className="text-center">
+            <div className="text-center space-y-3">
               <Button
                 onClick={handleSync}
-                disabled={isLoading}
+                disabled={isLoading || isReviewsLoading}
                 size="lg"
                 className="min-w-[200px]"
               >
@@ -227,6 +227,26 @@ export default function AdminSync() {
                   <>
                     <Download className="h-4 w-4 mr-2" />
                     Sync Google Data
+                  </>
+                )}
+              </Button>
+
+              <Button
+                onClick={handleReviewsSync}
+                disabled={isLoading || isReviewsLoading}
+                variant="outline"
+                size="lg"
+                className="min-w-[200px]"
+              >
+                {isReviewsLoading ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Syncing Reviews...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Sync Real Google Reviews
                   </>
                 )}
               </Button>
