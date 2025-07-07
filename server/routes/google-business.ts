@@ -211,9 +211,17 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                   };
 
                   allBusinesses.push(business);
-                  console.log(
-                    `Fetched detailed info for: ${business.name} (Total: ${allBusinesses.length})`,
-                  );
+
+                  // Log progress every 50 businesses for large-scale processing
+                  if (allBusinesses.length % 50 === 0) {
+                    console.log(
+                      `🎯 MILESTONE: ${allBusinesses.length} businesses processed! Target: 300+`,
+                    );
+                  } else {
+                    console.log(
+                      `Fetched detailed info for: ${business.name} (Total: ${allBusinesses.length})`,
+                    );
+                  }
                 } else {
                   console.log(
                     `Failed to get details for ${place.name}: ${detailsData.status}`,
@@ -263,9 +271,9 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
               await new Promise((resolve) => setTimeout(resolve, 25));
 
               // Early exit if we have enough businesses to prevent timeout
-              if (allBusinesses.length >= 150) {
+              if (allBusinesses.length >= 350) {
                 console.log(
-                  `Reached 150 businesses limit, stopping to prevent timeout`,
+                  `Reached 350 businesses limit, stopping to prevent timeout`,
                 );
                 break;
               }
