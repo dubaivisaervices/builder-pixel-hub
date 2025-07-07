@@ -453,9 +453,9 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
                     isOpen: place.opening_hours?.open_now,
                     priceLevel: place.price_level,
                     hasTargetKeyword: false,
-                    reviews: generateBusinessReviews(
+                    reviews: processGoogleReviews(
+                      [], // No Google reviews available for fallback data
                       place.name,
-                      place.user_ratings_total || 15,
                     ),
                   };
                 }
