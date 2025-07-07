@@ -293,7 +293,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
 
     // Get pagination parameters from query
     const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 50; // Start with 50 for faster loading
+    const limit = parseInt(req.query.limit as string) || 161; // Show all businesses by default
     const offset = (page - 1) * limit;
     const includeReviews = req.query.includeReviews === "true";
 
