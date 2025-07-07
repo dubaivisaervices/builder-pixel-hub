@@ -481,15 +481,14 @@ export default function BusinessDirectory() {
             Loading Dubai Visa Services
           </h3>
           <p className="text-muted-foreground mb-4">
-            Fetching comprehensive business information for 200+ Dubai visa
-            service providers including overseas services, work permit, study
-            abroad, and visa consultants with phone numbers, websites, hours,
-            and photos from Google My Business...
+            Loading comprehensive Dubai visa service providers with reviews,
+            contact information, and ratings. If live data is unavailable, we'll
+            show sample businesses with realistic reviews...
           </p>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
             <p className="text-sm text-blue-700">
-              💡 This process takes 30-60 seconds because we're gathering
-              detailed data from Google Places API with reliable performance
+              💡 Loading should complete within 30 seconds. If taking longer,
+              we'll automatically show sample data with full reviews.
             </p>
           </div>
         </div>
