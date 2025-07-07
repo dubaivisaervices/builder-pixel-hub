@@ -240,11 +240,21 @@ export default function BusinessDirectory() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center">
-        <div className="text-center">
+        <div className="text-center max-w-md">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">
-            Loading Dubai visa services...
+          <h3 className="text-lg font-semibold text-foreground mb-2">
+            Loading Dubai Visa Services
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Fetching detailed business information including phone numbers,
+            websites, hours, and photos from Google My Business...
           </p>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <p className="text-sm text-blue-700">
+              💡 This process takes 30-60 seconds because we're gathering
+              comprehensive data for each business
+            </p>
+          </div>
         </div>
       </div>
     );
