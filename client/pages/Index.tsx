@@ -154,6 +154,26 @@ export default function Index() {
           </CardContent>
         </Card>
 
+        {/* Browse Businesses Link */}
+        <Card className="max-w-2xl mx-auto mt-8 shadow-lg border-0">
+          <CardContent className="pt-6 text-center">
+            <h3 className="text-lg font-semibold mb-2">
+              Browse Dubai Visa Services
+            </h3>
+            <p className="text-muted-foreground mb-4">
+              Research visa service providers in Dubai before choosing one
+            </p>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => navigate("/dubai-businesses")}
+              className="w-full"
+            >
+              View Dubai Business Directory
+            </Button>
+          </CardContent>
+        </Card>
+
         {/* Features */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
           <div className="flex items-start space-x-4">
