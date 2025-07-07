@@ -84,6 +84,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
     category: "visa consulting services",
     businessStatus: "OPERATIONAL",
     isOpen: true,
+    email: "info@dubaiviasolutions.ae",
     // Note: In real implementation, these would come from Google Places API
     logoUrl: undefined, // Will show fallback letter logo
     photos: [
@@ -102,6 +103,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
     category: "immigration consultants",
     businessStatus: "OPERATIONAL",
     isOpen: true,
+    email: "contact@emiratesimmigration.ae",
     reviews: generateSampleReviews("Emirates Immigration Services"),
   },
   {
@@ -114,6 +116,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
     category: "visa services",
     businessStatus: "OPERATIONAL",
     isOpen: false,
+    email: "info@globalvisacenter.ae",
     reviews: generateSampleReviews("Global Visa Center Dubai"),
   },
   {
@@ -126,6 +129,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
     category: "travel agents",
     businessStatus: "OPERATIONAL",
     isOpen: true,
+    email: "services@dubaitravelvisa.ae",
     reviews: generateSampleReviews("Dubai Travel & Visa Hub"),
   },
   {
@@ -138,6 +142,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
     category: "visa agency",
     businessStatus: "OPERATIONAL",
     isOpen: true,
+    email: "support@quickvisadubai.ae",
     reviews: generateSampleReviews("Quick Visa Dubai"),
   },
 ];
