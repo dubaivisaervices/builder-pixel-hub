@@ -132,6 +132,26 @@ const DUBAI_VISA_CATEGORIES = [
   "visa support Dubai UAE",
   "immigration support Dubai UAE",
 
+  // Location-specific searches to find more businesses
+  "visa services DIFC Dubai",
+  "visa services Jumeirah Dubai",
+  "visa services Bur Dubai",
+  "visa services Deira Dubai",
+  "visa services Business Bay Dubai",
+  "visa services Downtown Dubai",
+  "visa services Marina Dubai",
+  "visa consulting Karama Dubai",
+  "immigration services Al Barsha Dubai",
+  "visa agency Satwa Dubai",
+  "visa consultants Sheikh Zayed Road Dubai",
+
+  // Professional variations
+  "certified visa consultant Dubai",
+  "licensed immigration advisor Dubai",
+  "registered visa agent Dubai",
+  "authorized visa center Dubai",
+  "government approved visa Dubai",
+
   // Arabic/local terms
   "خدمات التأشيرات دب��",
   "استشارات الهجرة دبي",
