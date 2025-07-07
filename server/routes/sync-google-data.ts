@@ -542,13 +542,16 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
                 }
 
                 // Save to database
+                const wasNew = !existingBusiness;
                 await businessService.upsertBusiness(businessData);
                 totalSynced++;
 
                 if (existingBusiness) {
                   totalUpdated++;
+                  console.log(`🔄 Updated: ${businessData.name}`);
                 } else {
                   totalNew++;
+                  console.log(`🆕 New: ${businessData.name}`);
                 }
 
                 // Progress logging
