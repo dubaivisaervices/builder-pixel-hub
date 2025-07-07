@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { BusinessReview } from "@shared/google-business";
+import { businessService } from "../database/businessService";
 
 interface GooglePlacesResponse {
   results: Array<{
@@ -286,344 +287,30 @@ const DUBAI_VISA_CATEGORIES = [
 
 export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
   const startTime = Date.now();
-  try {
-    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
-    console.log("API Key configured:", !!apiKey);
 
-    if (!apiKey) {
-      console.error("Google Places API key not found in environment variables");
-      return res.status(500).json({
-        error: "Google Places API key not configured",
+  try {
+    console.log("🗄️ Fetching businesses from database...");
+
+    // Get all businesses from database
+    const allBusinesses = await businessService.getAllBusinesses();
+
+    if (allBusinesses.length === 0) {
+      // If no businesses in database, return message to sync first
+      return res.json({
+        businesses: [],
+        total: 0,
+        categories: [],
+        processingTime: 0,
+        message:
+          "No businesses found in database. Please run data sync first using /api/sync-google-data",
+        needsSync: true,
       });
     }
 
-    const allBusinesses: BusinessData[] = [];
-    const processedPlaceIds = new Set<string>();
-    let totalRequests = 0;
-    let successfulRequests = 0;
+    // Get unique categories
+    const categories = await businessService.getCategories();
 
-    // Process ALL categories to maximize unique business listings
-    const priorityCategories = DUBAI_VISA_CATEGORIES; // Use all categories for maximum coverage
-    console.log(
-      `Processing ${priorityCategories.length} categories to maximize Dubai business listings`,
-    );
-
-    // Search each category
-    for (const category of priorityCategories) {
-      try {
-        totalRequests++;
-        const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(category)}&key=${apiKey}`;
-
-        console.log(`Searching category: ${category}`);
-        const response = await fetch(searchUrl);
-        const data: GooglePlacesResponse = await response.json();
-
-        console.log(`API Response for ${category}:`, {
-          status: data.status,
-          resultCount: data.results?.length || 0,
-          totalProcessed: allBusinesses.length,
-        });
-
-        if (data.status === "OK" && data.results) {
-          successfulRequests++;
-
-          // Process results and get detailed information for each business
-          // Process up to 12 results per category for better server performance (24 categories × 12 = 288+ potential)
-          const limitedResults = data.results.slice(0, 12);
-
-          for (const place of limitedResults) {
-            if (!processedPlaceIds.has(place.place_id)) {
-              processedPlaceIds.add(place.place_id);
-
-              // Also check for duplicate business names to avoid similar businesses
-              const existingBusiness = allBusinesses.find(
-                (b) =>
-                  b.name.toLowerCase().trim() ===
-                  place.name.toLowerCase().trim(),
-              );
-
-              if (existingBusiness) {
-                console.log(`Skipping duplicate business name: ${place.name}`);
-                continue;
-              }
-
-              // Get detailed business information using Place Details API
-              try {
-                const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,formatted_phone_number,website,opening_hours,photos,rating,user_ratings_total,business_status,geometry&key=${apiKey}`;
-
-                const detailsResponse = await fetch(detailsUrl);
-                const detailsData = await detailsResponse.json();
-
-                if (detailsData.status === "OK" && detailsData.result) {
-                  const details = detailsData.result;
-
-                  // Check if business name contains target keywords for prioritization
-                  const targetKeywords = [
-                    "overseas services",
-                    "visa services",
-                    "immigration services",
-                    "visa consultants",
-                    "work permit",
-                    "study abroad",
-                    "visa consulting",
-                    "immigration consulting",
-                    "visa agency",
-                  ];
-
-                  const businessName = (
-                    details.name || place.name
-                  ).toLowerCase();
-                  const hasTargetKeyword = targetKeywords.some((keyword) =>
-                    businessName.includes(keyword.toLowerCase()),
-                  );
-
-                  // Log when we find businesses with target keywords
-                  if (hasTargetKeyword) {
-                    console.log(
-                      `🎯 FOUND TARGET BUSINESS: ${details.name || place.name} - contains relevant keywords!`,
-                    );
-                  }
-
-                  // Generate realistic email address
-                  const generateEmail = (businessName: string): string => {
-                    const cleanName = businessName
-                      .toLowerCase()
-                      .replace(/[^a-z0-9\s]/g, "")
-                      .replace(/\s+/g, "")
-                      .substring(0, 20);
-                    return `info@${cleanName}.ae`;
-                  };
-
-                  const business: BusinessData = {
-                    id: place.place_id,
-                    name: details.name || place.name,
-                    address:
-                      details.formatted_address || place.formatted_address,
-                    phone: details.formatted_phone_number || undefined,
-                    website: details.website || undefined,
-                    email: generateEmail(details.name || place.name),
-                    location: {
-                      lat:
-                        details.geometry?.location?.lat ||
-                        place.geometry.location.lat,
-                      lng:
-                        details.geometry?.location?.lng ||
-                        place.geometry.location.lng,
-                    },
-                    rating: details.rating || place.rating || 0,
-                    reviewCount:
-                      details.user_ratings_total ||
-                      place.user_ratings_total ||
-                      0,
-                    category: category.replace(" Dubai UAE", ""),
-                    businessStatus:
-                      details.business_status || place.business_status,
-                    photoReference:
-                      details.photos?.[0]?.photo_reference ||
-                      place.photos?.[0]?.photo_reference,
-                    // Generate Google Photos URL if photo reference exists
-                    logoUrl: details.photos?.[0]?.photo_reference
-                      ? `https://maps.googleapis.com/maps/api/place/photo?photoreference=${details.photos[0].photo_reference}&maxwidth=200&key=${apiKey}`
-                      : undefined,
-                    // Get all photos for the business
-                    photos:
-                      details.photos?.slice(0, 6).map((photo, index) => ({
-                        id: index + 1,
-                        url: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photo.photo_reference}&maxwidth=400&key=${apiKey}`,
-                        caption:
-                          index === 0
-                            ? "Business Logo/Main Photo"
-                            : `Business Photo ${index + 1}`,
-                      })) || [],
-                    // Operating hours
-                    hours: details.opening_hours?.weekday_text
-                      ? {
-                          monday:
-                            details.opening_hours.weekday_text[0] ||
-                            "Hours not available",
-                          tuesday:
-                            details.opening_hours.weekday_text[1] ||
-                            "Hours not available",
-                          wednesday:
-                            details.opening_hours.weekday_text[2] ||
-                            "Hours not available",
-                          thursday:
-                            details.opening_hours.weekday_text[3] ||
-                            "Hours not available",
-                          friday:
-                            details.opening_hours.weekday_text[4] ||
-                            "Hours not available",
-                          saturday:
-                            details.opening_hours.weekday_text[5] ||
-                            "Hours not available",
-                          sunday:
-                            details.opening_hours.weekday_text[6] ||
-                            "Hours not available",
-                        }
-                      : undefined,
-                    isOpen:
-                      details.opening_hours?.open_now ??
-                      place.opening_hours?.open_now,
-                    priceLevel: place.price_level,
-                    hasTargetKeyword: hasTargetKeyword, // Flag for businesses with target keywords
-                    // Generate reviews with 70% negative, 30% positive ratio
-                    reviews: generateBusinessReviews(
-                      details.name || place.name,
-                      details.user_ratings_total ||
-                        place.user_ratings_total ||
-                        15,
-                    ),
-                  };
-
-                  allBusinesses.push(business);
-
-                  // Log progress every 50 businesses for reliable processing
-                  if (allBusinesses.length % 50 === 0) {
-                    console.log(
-                      `🎯 MILESTONE: ${allBusinesses.length} unique businesses processed!`,
-                    );
-                  } else if (allBusinesses.length % 25 === 0) {
-                    console.log(
-                      `Progress: ${allBusinesses.length} unique businesses processed`,
-                    );
-                  }
-                } else {
-                  console.log(
-                    `Failed to get details for ${place.name}: ${detailsData.status}`,
-                  );
-
-                  // Check fallback business for target keywords too
-                  const targetKeywords = [
-                    "overseas services",
-                    "visa services",
-                    "immigration services",
-                    "visa consultants",
-                    "work permit",
-                    "study abroad",
-                    "visa consulting",
-                    "immigration consulting",
-                    "visa agency",
-                  ];
-
-                  const businessName = place.name.toLowerCase();
-                  const hasTargetKeyword = targetKeywords.some((keyword) =>
-                    businessName.includes(keyword.toLowerCase()),
-                  );
-
-                  if (hasTargetKeyword) {
-                    console.log(
-                      `🎯 FOUND TARGET BUSINESS (fallback): ${place.name} - contains relevant keywords!`,
-                    );
-                  }
-
-                  // Generate realistic email address for fallback
-                  const generateEmail = (businessName: string): string => {
-                    const cleanName = businessName
-                      .toLowerCase()
-                      .replace(/[^a-z0-9\s]/g, "")
-                      .replace(/\s+/g, "")
-                      .substring(0, 20);
-                    return `info@${cleanName}.ae`;
-                  };
-
-                  // Fallback to basic information if details API fails
-                  const business: BusinessData = {
-                    id: place.place_id,
-                    name: place.name,
-                    address: place.formatted_address,
-                    email: generateEmail(place.name),
-                    location: {
-                      lat: place.geometry.location.lat,
-                      lng: place.geometry.location.lng,
-                    },
-                    rating: place.rating || 0,
-                    reviewCount: place.user_ratings_total || 0,
-                    category: category.replace(" Dubai UAE", ""),
-                    businessStatus: place.business_status,
-                    photoReference: place.photos?.[0]?.photo_reference,
-                    logoUrl: place.photos?.[0]?.photo_reference
-                      ? `https://maps.googleapis.com/maps/api/place/photo?photoreference=${place.photos[0].photo_reference}&maxwidth=200&key=${apiKey}`
-                      : undefined,
-                    photos:
-                      place.photos?.slice(0, 6).map((photo, index) => ({
-                        id: index + 1,
-                        url: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photo.photo_reference}&maxwidth=400&key=${apiKey}`,
-                        caption:
-                          index === 0
-                            ? "Business Logo/Main Photo"
-                            : `Business Photo ${index + 1}`,
-                      })) || [],
-                    isOpen: place.opening_hours?.open_now,
-                    priceLevel: place.price_level,
-                    hasTargetKeyword: hasTargetKeyword,
-                    // Generate reviews with 70% negative, 30% positive ratio
-                    reviews: generateBusinessReviews(
-                      place.name,
-                      place.user_ratings_total || 15,
-                    ),
-                  };
-                  allBusinesses.push(business);
-                  console.log(
-                    `Added fallback business: ${business.name} (Total: ${allBusinesses.length})`,
-                  );
-                }
-              } catch (detailsError) {
-                console.error(
-                  `Error fetching details for ${place.name}:`,
-                  detailsError,
-                );
-              }
-
-              // Minimal delay for server stability
-              await new Promise((resolve) => setTimeout(resolve, 20)); // Minimal delay for faster processing
-            }
-          }
-        } else if (data.status === "ZERO_RESULTS") {
-          console.log(`No results found for category: ${category}`);
-        } else {
-          console.error(`API Error for ${category}:`, data.status);
-        }
-
-        console.log(
-          `Completed category "${category}" - Current total: ${allBusinesses.length} businesses`,
-        );
-
-        // Minimal delay between categories for faster processing
-        await new Promise((resolve) => setTimeout(resolve, 20)); // Minimal delay for faster processing
-      } catch (error) {
-        console.error(`Error searching category ${category}:`, error);
-        // Continue with other categories
-      }
-    }
-
-    console.log(
-      `Search completed: ${successfulRequests}/${totalRequests} successful requests`,
-    );
-    console.log(`Total unique businesses found: ${allBusinesses.length}`);
-    console.log(`Categories processed: ${successfulRequests}/${totalRequests}`);
-    console.log(
-      `Average businesses per successful category: ${Math.round(allBusinesses.length / Math.max(successfulRequests, 1))}`,
-    );
-
-    // Count businesses with target keywords
-    const targetKeywordBusinesses = allBusinesses.filter(
-      (b) => b.hasTargetKeyword,
-    );
-    console.log(
-      `🎯 TARGET KEYWORD BUSINESSES FOUND: ${targetKeywordBusinesses.length} out of ${allBusinesses.length}`,
-    );
-    if (targetKeywordBusinesses.length > 0) {
-      console.log(
-        `Target businesses: ${targetKeywordBusinesses.map((b) => b.name).join(", ")}`,
-      );
-    }
-
-    // Add timing info for performance monitoring
-    const endTime = Date.now();
-    const duration = Math.round((endTime - startTime) / 1000);
-    console.log(`API process took approximately ${duration} seconds`);
-
-    // Sort by target keywords first, then by rating and review count
+    // Sort businesses by target keywords first, then by rating and review count
     const sortedBusinesses = allBusinesses.sort((a, b) => {
       // Prioritize businesses with target keywords
       if (a.hasTargetKeyword && !b.hasTargetKeyword) return -1;
@@ -636,19 +323,35 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
       return b.rating - a.rating;
     });
 
+    const endTime = Date.now();
+    const duration = Math.round((endTime - startTime) / 1000);
+
+    // Count businesses with target keywords
+    const targetKeywordBusinesses = sortedBusinesses.filter(
+      (b) => b.hasTargetKeyword,
+    );
+
+    console.log(`📊 Database query completed:`);
+    console.log(`   Total businesses: ${sortedBusinesses.length}`);
+    console.log(
+      `   Target keyword businesses: ${targetKeywordBusinesses.length}`,
+    );
+    console.log(`   Categories: ${categories.length}`);
+    console.log(`   Query time: ${duration} seconds`);
+
     res.json({
       businesses: sortedBusinesses,
       total: sortedBusinesses.length,
-      categories: DUBAI_VISA_CATEGORIES.map((cat) =>
-        cat.replace(" Dubai UAE", ""),
-      ),
+      categories: categories,
       processingTime: duration,
-      message: `Successfully fetched ${sortedBusinesses.length} Dubai visa service providers in ${duration} seconds`,
+      message: `Loaded ${sortedBusinesses.length} Dubai visa service providers from database in ${duration} seconds`,
+      source: "database",
+      targetKeywordCount: targetKeywordBusinesses.length,
     });
   } catch (error) {
-    console.error("Error fetching Dubai visa services:", error);
+    console.error("Error fetching businesses from database:", error);
     res.status(500).json({
-      error: "Failed to fetch business data",
+      error: "Failed to fetch business data from database",
       details: error instanceof Error ? error.message : "Unknown error",
     });
   }
