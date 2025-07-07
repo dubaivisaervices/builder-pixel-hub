@@ -37,6 +37,12 @@ const getFallbackBusinesses = (): BusinessData[] => [
     category: "visa consulting services",
     businessStatus: "OPERATIONAL",
     isOpen: true,
+    // Note: In real implementation, these would come from Google Places API
+    logoUrl: undefined, // Will show fallback letter logo
+    photos: [
+      { id: 1, url: "", caption: "Office Reception" },
+      { id: 2, url: "", caption: "Consultation Room" },
+    ],
   },
   {
     id: "sample2",
