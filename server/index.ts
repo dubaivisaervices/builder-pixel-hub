@@ -7,6 +7,7 @@ import {
   getBusinessPhoto,
   testGoogleAPI,
 } from "./routes/google-business";
+import { syncGoogleData, getSyncStatus } from "./routes/sync-google-data";
 
 export function createServer() {
   const app = express();
@@ -28,6 +29,10 @@ export function createServer() {
   app.get("/api/dubai-visa-services", searchDubaiVisaServices);
   app.get("/api/business/:placeId", getBusinessDetails);
   app.get("/api/business-photo/:photoReference", getBusinessPhoto);
+
+  // Database sync routes
+  app.post("/api/sync-google-data", syncGoogleData);
+  app.get("/api/sync-status", getSyncStatus);
 
   return app;
 }
