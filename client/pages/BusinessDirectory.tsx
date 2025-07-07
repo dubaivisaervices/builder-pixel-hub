@@ -229,9 +229,9 @@ export default function BusinessDirectory() {
     try {
       setLoading(true);
 
-      // Add timeout and better error handling
+      // Add timeout and better error handling for larger dataset
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 second timeout for reliable performance
+      const timeoutId = setTimeout(() => controller.abort(), 150000); // 150 second timeout for 300+ businesses
 
       const response = await fetch("/api/dubai-visa-services", {
         signal: controller.signal,
