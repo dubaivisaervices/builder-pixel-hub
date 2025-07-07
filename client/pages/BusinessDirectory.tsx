@@ -356,9 +356,23 @@ export default function BusinessDirectory() {
         console.log(
           `Successfully loaded ${data.businesses.length} businesses from ${data.source || "database"}`,
         );
-        setAllBusinesses(data.businesses);
+
+        if (append) {
+          // Append new businesses to existing list
+          setAllBusinesses((prev) => [...prev, ...data.businesses]);
+        } else {
+          // Replace with new businesses
+          setAllBusinesses(data.businesses);
+        }
+
         setCategories(data.categories);
         setError(null);
+
+        // Update pagination info
+        if (data.pagination) {
+          setCurrentPage(data.pagination.page);
+          setHasMore(data.pagination.hasMore);
+        }
       }
     } catch (err) {
       console.error("Error fetching businesses:", err);
@@ -492,14 +506,13 @@ export default function BusinessDirectory() {
             Loading Dubai Visa Services
           </h3>
           <p className="text-muted-foreground mb-4">
-            Loading comprehensive Dubai visa service providers from our database
-            with reviews, contact information, and ratings. All data includes up
-            to 30 reviews per business with realistic feedback...
+            Loading Dubai visa service providers from our database. Contact
+            information and business details are loaded instantly.
           </p>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
             <p className="text-sm text-blue-700">
-              💡 Data is loaded from our local database for fast performance.
-              This should complete within seconds.
+              ⚡ Fast loading from local database - should complete in under 3
+              seconds!
             </p>
           </div>
         </div>
