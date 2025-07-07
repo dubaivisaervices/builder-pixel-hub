@@ -59,8 +59,10 @@ const DUBAI_VISA_CATEGORIES = [
 export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
   try {
     const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+    console.log("API Key configured:", !!apiKey);
 
     if (!apiKey) {
+      console.error("Google Places API key not found in environment variables");
       return res.status(500).json({
         error: "Google Places API key not configured",
       });
@@ -68,16 +70,26 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
 
     const allBusinesses: BusinessData[] = [];
     const processedPlaceIds = new Set<string>();
+    let totalRequests = 0;
+    let successfulRequests = 0;
 
     // Search each category
     for (const category of DUBAI_VISA_CATEGORIES) {
       try {
+        totalRequests++;
         const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(category)}&key=${apiKey}`;
 
+        console.log(`Searching category: ${category}`);
         const response = await fetch(searchUrl);
         const data: GooglePlacesResponse = await response.json();
 
+        console.log(`API Response for ${category}:`, {
+          status: data.status,
+          resultCount: data.results?.length || 0,
+        });
+
         if (data.status === "OK" && data.results) {
+          successfulRequests++;
           // Process results and avoid duplicates
           data.results.forEach((place) => {
             if (!processedPlaceIds.has(place.place_id)) {
@@ -103,12 +115,24 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
               allBusinesses.push(business);
             }
           });
+        } else if (data.status === "ZERO_RESULTS") {
+          console.log(`No results found for category: ${category}`);
+        } else {
+          console.error(`API Error for ${category}:`, data.status);
         }
+
+        // Add small delay between requests to respect rate limits
+        await new Promise((resolve) => setTimeout(resolve, 100));
       } catch (error) {
         console.error(`Error searching category ${category}:`, error);
         // Continue with other categories
       }
     }
+
+    console.log(
+      `Search completed: ${successfulRequests}/${totalRequests} successful requests`,
+    );
+    console.log(`Total unique businesses found: ${allBusinesses.length}`);
 
     // Sort by rating and review count
     const sortedBusinesses = allBusinesses.sort((a, b) => {
