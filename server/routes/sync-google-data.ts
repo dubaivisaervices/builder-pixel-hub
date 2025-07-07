@@ -133,7 +133,7 @@ const DUBAI_VISA_CATEGORIES = [
   "immigration support Dubai UAE",
 
   // Arabic/local terms
-  "خدمات التأشيرات دبي",
+  "خدمات التأشيرات دب��",
   "استشارات الهجرة دبي",
   "خدمات الهجرة دبي",
 ];
@@ -319,11 +319,11 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
             console.log(`   📄 Processing page ${pageCount} (${data.results.length} results)`);
 
             for (const place of data.results) {
-            try {
-              // Check if business already exists
-              const existingBusiness = await businessService.getBusinessById(
-                place.place_id,
-              );
+              try {
+                // Check if business already exists
+                const existingBusiness = await businessService.getBusinessById(
+                  place.place_id,
+                );
 
               // Generate email address
               const generateEmail = (businessName: string): string => {
