@@ -83,10 +83,10 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     let totalRequests = 0;
     let successfulRequests = 0;
 
-    // Process only first 8 categories initially to prevent server overload
-    const priorityCategories = DUBAI_VISA_CATEGORIES.slice(0, 8);
+    // Process 10 categories to get more comprehensive results
+    const priorityCategories = DUBAI_VISA_CATEGORIES.slice(0, 10);
     console.log(
-      `Processing ${priorityCategories.length} priority categories to prevent server overload`,
+      `Processing ${priorityCategories.length} categories for comprehensive coverage`,
     );
 
     // Search each category
@@ -211,7 +211,9 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                   };
 
                   allBusinesses.push(business);
-                  console.log(`Fetched detailed info for: ${business.name}`);
+                  console.log(
+                    `Fetched detailed info for: ${business.name} (Total: ${allBusinesses.length})`,
+                  );
                 } else {
                   console.log(
                     `Failed to get details for ${place.name}: ${detailsData.status}`,
@@ -246,6 +248,9 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                     priceLevel: place.price_level,
                   };
                   allBusinesses.push(business);
+                  console.log(
+                    `Added fallback business: ${business.name} (Total: ${allBusinesses.length})`,
+                  );
                 }
               } catch (detailsError) {
                 console.error(
