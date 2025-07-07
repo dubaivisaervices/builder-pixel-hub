@@ -455,6 +455,13 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                       place.opening_hours?.open_now,
                     priceLevel: place.price_level,
                     hasTargetKeyword: hasTargetKeyword, // Flag for businesses with target keywords
+                    // Generate reviews with 70% negative, 30% positive ratio
+                    reviews: generateBusinessReviews(
+                      details.name || place.name,
+                      details.user_ratings_total ||
+                        place.user_ratings_total ||
+                        15,
+                    ),
                   };
 
                   allBusinesses.push(business);
@@ -527,6 +534,11 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
                     isOpen: place.opening_hours?.open_now,
                     priceLevel: place.price_level,
                     hasTargetKeyword: hasTargetKeyword,
+                    // Generate reviews with 70% negative, 30% positive ratio
+                    reviews: generateBusinessReviews(
+                      place.name,
+                      place.user_ratings_total || 15,
+                    ),
                   };
                   allBusinesses.push(business);
                   console.log(
