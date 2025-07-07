@@ -29,48 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-// Generate sample reviews for fallback businesses
-const generateSampleReviews = (businessName: string): BusinessReview[] => {
-  const sampleReviews: BusinessReview[] = [
-    {
-      id: "1",
-      authorName: "Ahmed Hassan",
-      rating: 1,
-      text: `Very disappointed with ${businessName}. They took forever to process my documents and charged extra fees that weren't mentioned initially.`,
-      timeAgo: "2 weeks ago",
-    },
-    {
-      id: "2",
-      authorName: "Sarah Johnson",
-      rating: 2,
-      text: "Poor customer service. Staff was unprofessional and didn't return my calls. Had to follow up multiple times.",
-      timeAgo: "1 month ago",
-    },
-    {
-      id: "3",
-      authorName: "Mohammed Ali",
-      rating: 4,
-      text: "Good service overall. They helped me get my work visa approved, though it took longer than expected.",
-      timeAgo: "3 weeks ago",
-    },
-    {
-      id: "4",
-      authorName: "Jennifer Smith",
-      rating: 1,
-      text: "Terrible experience! They lost my documents and blamed me for it. Very unprofessional and unreliable.",
-      timeAgo: "1 week ago",
-    },
-    {
-      id: "5",
-      authorName: "Omar Khalil",
-      rating: 2,
-      text: "Overpriced and slow service. They kept asking for additional documents that weren't mentioned initially.",
-      timeAgo: "5 days ago",
-    },
-  ];
-
-  return sampleReviews;
-};
+// No fake reviews - businesses will show empty reviews until real Google reviews are synced
 
 // Enhanced fallback sample data for Dubai visa services
 const getFallbackBusinesses = (): BusinessData[] => [
