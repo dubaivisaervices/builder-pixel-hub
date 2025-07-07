@@ -302,14 +302,23 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
       try {
         console.log(`📍 Processing category: ${category}`);
 
-        const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(category)}&key=${apiKey}`;
-        const response = await fetch(searchUrl);
-        const data: GooglePlacesResponse = await response.json();
+        let nextPageToken: string | undefined;
+        let pageCount = 0;
+        const maxPagesPerCategory = 2; // Fetch up to 2 pages per category (up to 40 results)
 
-        if (data.status === "OK" && data.results) {
-          const limitedResults = data.results.slice(0, 20);
+        do {
+          const searchUrl = nextPageToken
+            ? `https://maps.googleapis.com/maps/api/place/textsearch/json?pagetoken=${nextPageToken}&key=${apiKey}`
+            : `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(category)}&key=${apiKey}`;
 
-          for (const place of limitedResults) {
+          const response = await fetch(searchUrl);
+          const data: GooglePlacesResponse = await response.json();
+
+          if (data.status === "OK" && data.results) {
+            pageCount++;
+            console.log(`   📄 Processing page ${pageCount} (${data.results.length} results)`);
+
+            for (const place of data.results) {
             try {
               // Check if business already exists
               const existingBusiness = await businessService.getBusinessById(
