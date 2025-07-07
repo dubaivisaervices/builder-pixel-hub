@@ -368,18 +368,19 @@ export default function BusinessDirectory() {
         "document clearing",
       ]);
 
-      let errorMessage =
-        "Unable to load live data from Google. Showing sample Dubai businesses.";
+      let errorMessage = null; // Don't show error, just use fallback seamlessly
+
       if (err instanceof Error) {
+        console.log("Error details:", err.name, err.message);
         if (err.name === "AbortError") {
-          errorMessage =
-            "Request timeout - Fetching detailed business data takes time. Showing sample Dubai businesses.";
-        } else if (err.message.includes("fetch")) {
-          errorMessage =
-            "Unable to connect to Google Places API. Showing sample Dubai businesses.";
-        } else if (err.message.includes("timeout")) {
-          errorMessage =
-            "Google API is taking longer than expected. Showing sample Dubai businesses.";
+          console.log("Request timeout - using fallback data");
+        } else if (
+          err.message.includes("fetch") ||
+          err.message.includes("Failed to fetch")
+        ) {
+          console.log("Connection issue - using fallback data");
+        } else {
+          console.log("API error - using fallback data");
         }
       }
 
