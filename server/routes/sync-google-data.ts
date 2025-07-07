@@ -158,145 +158,66 @@ const DUBAI_VISA_CATEGORIES = [
   "خدمات الهجرة دبي",
 ];
 
-// Generate realistic reviews with 70% negative, 30% positive ratio
-const generateBusinessReviews = (
+// Process real Google reviews (up to 50 reviews)
+const processGoogleReviews = (
+  googleReviews: any[],
   businessName: string,
-  reviewCount: number,
 ): BusinessReview[] => {
-  const reviews: BusinessReview[] = [];
-  const targetReviews = Math.min(30, reviewCount || 15);
-
-  const reviewerNames = [
-    "Ahmed Al-Rashid",
-    "Sarah Johnson",
-    "Mohammed Hassan",
-    "Emily Chen",
-    "David Wilson",
-    "Fatima Al-Zahra",
-    "James Smith",
-    "Aisha Khan",
-    "Michael Brown",
-    "Noor Abdullah",
-    "Jennifer Taylor",
-    "Omar Malik",
-    "Lisa Anderson",
-    "Hassan Ali",
-    "Maria Garcia",
-    "Khalid Al-Mansouri",
-    "Rachel Williams",
-    "Abdul Rahman",
-    "Sophie Martin",
-    "Youssef Ibrahim",
-    "Anna Thompson",
-    "Rashid Al-Maktoum",
-    "Catherine Lee",
-    "Tariq Ahmed",
-    "Grace Miller",
-    "Saeed Al-Qasimi",
-    "Victoria Clark",
-    "Mansour Al-Suwaidi",
-    "Jessica Davis",
-    "Hamad Al-Thani",
-  ];
-
-  const negativeReviews = [
-    {
-      text: `Terrible experience with ${businessName}. They promised quick visa processing but took months longer than expected. Poor communication and hidden fees.`,
-      rating: 1,
-    },
-    {
-      text: `Do NOT use this service! ${businessName} gave me wrong information about visa requirements. Cost me time and money. Very unprofessional.`,
-      rating: 1,
-    },
-    {
-      text: `Worst visa service in Dubai. They took my documents and money, then became impossible to reach. Still waiting for updates after 3 months.`,
-      rating: 2,
-    },
-    {
-      text: `${businessName} charged me double what they quoted initially. So many hidden fees and no transparency. Would never recommend.`,
-      rating: 1,
-    },
-    {
-      text: `Complete waste of time and money. They messed up my visa application twice. Had to start over with another company. Avoid at all costs.`,
-      rating: 1,
-    },
-    {
-      text: `Very disappointing service. Staff is rude and unprofessional. They don't return calls and provide misleading information.`,
-      rating: 2,
-    },
-    {
-      text: `Scammed me out of 3000 AED. Promised family visa in 2 weeks, it's been 4 months. They stopped answering my calls.`,
-      rating: 1,
-    },
-    {
-      text: `Poor customer service and overpriced. Made so many mistakes in documentation. Had to correct everything myself.`,
-      rating: 2,
-    },
-    {
-      text: `${businessName} is a complete fraud. They took advance payment and disappeared. Filing complaint with authorities.`,
-      rating: 1,
-    },
-    {
-      text: `Extremely slow process and unprofessional staff. They don't know basic visa procedures. Lost my documents twice.`,
-      rating: 2,
-    },
-  ];
-
-  const positiveReviews = [
-    {
-      text: `Excellent service from ${businessName}! They processed my work visa quickly and efficiently. Highly professional team.`,
-      rating: 5,
-    },
-    {
-      text: `Great experience! The staff was helpful and guided me through the entire process. Would definitely recommend.`,
-      rating: 4,
-    },
-    {
-      text: `${businessName} delivered exactly what they promised. Fast processing and transparent pricing. Very satisfied.`,
-      rating: 5,
-    },
-    {
-      text: `Professional and reliable service. They handled my family visa application smoothly. Good communication throughout.`,
-      rating: 4,
-    },
-    {
-      text: `Positive experience overall. They were upfront about costs and timeline. Got my visa on time as promised.`,
-      rating: 4,
-    },
-  ];
-
-  for (let i = 0; i < targetReviews; i++) {
-    const isNegative = Math.random() < 0.7;
-    const reviewTemplate = isNegative
-      ? negativeReviews[Math.floor(Math.random() * negativeReviews.length)]
-      : positiveReviews[Math.floor(Math.random() * positiveReviews.length)];
-
-    const reviewerName =
-      reviewerNames[Math.floor(Math.random() * reviewerNames.length)];
-
-    const daysAgo = Math.floor(Math.random() * 730) + 7;
-    let timeAgo: string;
-    if (daysAgo < 30) {
-      timeAgo = `${daysAgo} days ago`;
-    } else if (daysAgo < 365) {
-      const monthsAgo = Math.floor(daysAgo / 30);
-      timeAgo = `${monthsAgo} month${monthsAgo > 1 ? "s" : ""} ago`;
-    } else {
-      const yearsAgo = Math.floor(daysAgo / 365);
-      timeAgo = `${yearsAgo} year${yearsAgo > 1 ? "s" : ""} ago`;
-    }
-
-    reviews.push({
-      id: `review_${businessName.replace(/\s+/g, "_")}_${i + 1}`,
-      authorName: reviewerName,
-      rating: reviewTemplate.rating,
-      text: reviewTemplate.text,
-      timeAgo: timeAgo,
-      profilePhotoUrl: undefined,
-    });
+  if (!googleReviews || googleReviews.length === 0) {
+    console.log(`   ⚠️  No Google reviews found for ${businessName}`);
+    return [];
   }
 
-  return reviews.sort((a, b) => a.rating - b.rating);
+  const processedReviews: BusinessReview[] = [];
+
+  // Process up to 50 reviews
+  const reviewsToProcess = googleReviews.slice(0, 50);
+
+  reviewsToProcess.forEach((review, index) => {
+    try {
+      // Calculate time ago from relative_time_description or time
+      let timeAgo = "Unknown";
+      if (review.relative_time_description) {
+        timeAgo = review.relative_time_description;
+      } else if (review.time) {
+        const reviewDate = new Date(review.time * 1000);
+        const now = new Date();
+        const diffTime = Math.abs(now.getTime() - reviewDate.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays < 30) {
+          timeAgo = `${diffDays} days ago`;
+        } else if (diffDays < 365) {
+          const months = Math.floor(diffDays / 30);
+          timeAgo = `${months} month${months > 1 ? "s" : ""} ago`;
+        } else {
+          const years = Math.floor(diffDays / 365);
+          timeAgo = `${years} year${years > 1 ? "s" : ""} ago`;
+        }
+      }
+
+      processedReviews.push({
+        id: `google_review_${businessName.replace(/\s+/g, "_")}_${index + 1}`,
+        authorName: review.author_name || "Anonymous",
+        rating: review.rating || 0,
+        text: review.text || "No review text available",
+        timeAgo: timeAgo,
+        profilePhotoUrl: review.profile_photo_url,
+      });
+    } catch (error) {
+      console.error(
+        `Error processing review ${index} for ${businessName}:`,
+        error,
+      );
+    }
+  });
+
+  console.log(
+    `   ✅ Processed ${processedReviews.length} real Google reviews for ${businessName}`,
+  );
+
+  // Sort reviews by rating (lowest first to show problems prominently)
+  return processedReviews.sort((a, b) => a.rating - b.rating);
 };
 
 export const syncGoogleData: RequestHandler = async (req, res) => {
