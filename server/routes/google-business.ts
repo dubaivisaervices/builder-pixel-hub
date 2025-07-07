@@ -291,10 +291,16 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
   try {
     console.log("🗄️ Fetching businesses from database...");
 
-    // Get all businesses from database
-    const allBusinesses = await businessService.getAllBusinesses();
+    // Get pagination parameters from query
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 50; // Start with 50 for faster loading
+    const offset = (page - 1) * limit;
+    const includeReviews = req.query.includeReviews === "true";
 
-    if (allBusinesses.length === 0) {
+    // Get total count for pagination
+    const totalCount = await businessService.getStats();
+
+    if (totalCount.total === 0) {
       // If no businesses in database, return message to sync first
       return res.json({
         businesses: [],
@@ -307,32 +313,28 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
       });
     }
 
+    // Get paginated businesses (lightweight by default)
+    const businesses = await businessService.getBusinessesPaginated(
+      limit,
+      offset,
+      includeReviews,
+    );
+
     // Get unique categories
     const categories = await businessService.getCategories();
-
-    // Sort businesses by target keywords first, then by rating and review count
-    const sortedBusinesses = allBusinesses.sort((a, b) => {
-      // Prioritize businesses with target keywords
-      if (a.hasTargetKeyword && !b.hasTargetKeyword) return -1;
-      if (!a.hasTargetKeyword && b.hasTargetKeyword) return 1;
-
-      // Then sort by review count (highest first)
-      if (b.reviewCount !== a.reviewCount) return b.reviewCount - a.reviewCount;
-
-      // Finally by rating
-      return b.rating - a.rating;
-    });
 
     const endTime = Date.now();
     const duration = Math.round((endTime - startTime) / 1000);
 
     // Count businesses with target keywords
-    const targetKeywordBusinesses = sortedBusinesses.filter(
+    const targetKeywordBusinesses = businesses.filter(
       (b) => b.hasTargetKeyword,
     );
 
     console.log(`📊 Database query completed:`);
-    console.log(`   Total businesses: ${sortedBusinesses.length}`);
+    console.log(`   Page: ${page}, Limit: ${limit}, Offset: ${offset}`);
+    console.log(`   Returned businesses: ${businesses.length}`);
+    console.log(`   Total in database: ${totalCount.total}`);
     console.log(
       `   Target keyword businesses: ${targetKeywordBusinesses.length}`,
     );
@@ -340,13 +342,20 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     console.log(`   Query time: ${duration} seconds`);
 
     res.json({
-      businesses: sortedBusinesses,
-      total: sortedBusinesses.length,
+      businesses: businesses,
+      total: totalCount.total,
       categories: categories,
       processingTime: duration,
-      message: `Loaded ${sortedBusinesses.length} Dubai visa service providers from database in ${duration} seconds`,
+      message: `Loaded ${businesses.length} of ${totalCount.total} Dubai visa service providers from database in ${duration} seconds`,
       source: "database",
       targetKeywordCount: targetKeywordBusinesses.length,
+      pagination: {
+        page: page,
+        limit: limit,
+        total: totalCount.total,
+        totalPages: Math.ceil(totalCount.total / limit),
+        hasMore: offset + limit < totalCount.total,
+      },
     });
   } catch (error) {
     console.error("Error fetching businesses from database:", error);
