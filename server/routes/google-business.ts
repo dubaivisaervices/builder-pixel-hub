@@ -277,6 +277,10 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
           console.error(`API Error for ${category}:`, data.status);
         }
 
+        console.log(
+          `Completed category "${category}" - Current total: ${allBusinesses.length} businesses`,
+        );
+
         // Add small delay between requests to respect rate limits
         await new Promise((resolve) => setTimeout(resolve, 50));
 
