@@ -442,6 +442,11 @@ export default function BusinessDirectory() {
   };
 
   const filterBusinesses = () => {
+    console.log(
+      "filterBusinesses called with:",
+      allBusinesses.length,
+      "businesses",
+    );
     let filtered = allBusinesses;
 
     // Filter by search term
