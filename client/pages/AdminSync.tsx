@@ -252,7 +252,7 @@ export default function AdminSync() {
             <div className="text-center space-y-3">
               <Button
                 onClick={handleSync}
-                disabled={isLoading || isReviewsLoading}
+                disabled={isLoading || isReviewsLoading || isClearingReviews}
                 size="lg"
                 className="min-w-[200px]"
               >
@@ -270,8 +270,28 @@ export default function AdminSync() {
               </Button>
 
               <Button
+                onClick={handleClearFakeReviews}
+                disabled={isLoading || isReviewsLoading || isClearingReviews}
+                variant="destructive"
+                size="lg"
+                className="min-w-[200px]"
+              >
+                {isClearingReviews ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Clearing Fake Reviews...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Clear Fake Reviews & Sync Real
+                  </>
+                )}
+              </Button>
+
+              <Button
                 onClick={handleReviewsSync}
-                disabled={isLoading || isReviewsLoading}
+                disabled={isLoading || isReviewsLoading || isClearingReviews}
                 variant="outline"
                 size="lg"
                 className="min-w-[200px]"
