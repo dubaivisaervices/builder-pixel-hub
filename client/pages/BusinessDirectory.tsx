@@ -376,8 +376,25 @@ export default function BusinessDirectory() {
                   <div className="flex justify-between items-start">
                     <div className="flex items-start space-x-3 flex-1">
                       {/* Business Logo */}
-                      <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-primary/20 rounded-lg flex items-center justify-center border border-primary/20 flex-shrink-0">
-                        <span className="text-primary text-xl font-bold">
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-primary/20 rounded-lg flex items-center justify-center border border-primary/20 flex-shrink-0 overflow-hidden">
+                        {business.logoUrl ? (
+                          <img
+                            src={business.logoUrl}
+                            alt={`${business.name} logo`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              // Fallback to letter if image fails to load
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = "none";
+                              target.nextElementSibling!.classList.remove(
+                                "hidden",
+                              );
+                            }}
+                          />
+                        ) : null}
+                        <span
+                          className={`text-primary text-xl font-bold ${business.logoUrl ? "hidden" : ""}`}
+                        >
                           {business.name.charAt(0).toUpperCase()}
                         </span>
                       </div>
