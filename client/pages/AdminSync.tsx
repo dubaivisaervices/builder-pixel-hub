@@ -33,6 +33,42 @@ export default function AdminSync() {
   const [dbStats, setDbStats] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const handleClearFakeReviews = async () => {
+    setIsClearingReviews(true);
+    setError(null);
+    setClearReviewsResult(null);
+
+    try {
+      console.log("Clearing fake reviews and syncing real Google reviews...");
+
+      const response = await fetch("/api/clear-fake-reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Clear fake reviews completed:", result);
+
+      setClearReviewsResult(result.stats || {});
+      await checkStatus(); // Refresh database stats
+    } catch (error) {
+      console.error("Clear fake reviews failed:", error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Unknown error occurred during fake reviews clearing",
+      );
+    } finally {
+      setIsClearingReviews(false);
+    }
+  };
+
   const handleReviewsSync = async () => {
     setIsReviewsLoading(true);
     setError(null);
