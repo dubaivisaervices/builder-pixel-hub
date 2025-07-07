@@ -1,6 +1,11 @@
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import {
+  searchDubaiVisaServices,
+  getBusinessDetails,
+  getBusinessPhoto,
+} from "./routes/google-business";
 
 export function createServer() {
   const app = express();
@@ -16,6 +21,11 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Google Business API routes
+  app.get("/api/dubai-visa-services", searchDubaiVisaServices);
+  app.get("/api/business/:placeId", getBusinessDetails);
+  app.get("/api/business-photo/:photoReference", getBusinessPhoto);
 
   return app;
 }
