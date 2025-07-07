@@ -57,6 +57,7 @@ const DUBAI_VISA_CATEGORIES = [
 ];
 
 export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
+  const startTime = Date.now();
   try {
     const apiKey = process.env.GOOGLE_PLACES_API_KEY;
     console.log("API Key configured:", !!apiKey);
@@ -92,7 +93,10 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
           successfulRequests++;
 
           // Process results and get detailed information for each business
-          for (const place of data.results) {
+          // Limit to first 10 results per category to reduce API calls and improve speed
+          const limitedResults = data.results.slice(0, 10);
+
+          for (const place of limitedResults) {
             if (!processedPlaceIds.has(place.place_id)) {
               processedPlaceIds.add(place.place_id);
 
@@ -223,7 +227,7 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
               }
 
               // Add small delay between detail requests to respect rate limits
-              await new Promise((resolve) => setTimeout(resolve, 200));
+              await new Promise((resolve) => setTimeout(resolve, 100));
             }
           }
         } else if (data.status === "ZERO_RESULTS") {
@@ -257,6 +261,8 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
       categories: DUBAI_VISA_CATEGORIES.map((cat) =>
         cat.replace(" Dubai UAE", ""),
       ),
+      processingTime: duration,
+      message: `Fetched detailed information for ${sortedBusinesses.length} businesses in ${duration} seconds`,
     });
   } catch (error) {
     console.error("Error fetching Dubai visa services:", error);
