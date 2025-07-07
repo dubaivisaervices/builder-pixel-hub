@@ -169,6 +169,16 @@ export default function AdminSync() {
           <p className="text-lg text-muted-foreground">
             Manage Google Places API data synchronization
           </p>
+          <div className="mt-4">
+            <Button
+              onClick={() => window.open("/admin/manage", "_blank")}
+              variant="outline"
+              size="sm"
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Manage Businesses & Categories
+            </Button>
+          </div>
         </div>
 
         {/* Current Database Status */}
