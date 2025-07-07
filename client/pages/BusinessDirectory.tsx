@@ -160,15 +160,19 @@ const getEnhancedFallbackBusinesses = (): BusinessData[] => [
 export default function BusinessDirectory() {
   const navigate = useNavigate();
   // Start with empty state and load immediately
-  const [businesses, setBusinesses] = useState<BusinessData[]>([]);
-  const [filteredBusinesses, setFilteredBusinesses] = useState<BusinessData[]>(
-    [],
-  );
+  const [allBusinesses, setAllBusinesses] = useState<BusinessData[]>([]);
+  const [filteredBusinesses, setFilteredBusinesses] = useState<BusinessData[]>([]);
+  const [displayedBusinesses, setDisplayedBusinesses] = useState<BusinessData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [categories, setCategories] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+
+  const ITEMS_PER_PAGE = 25;
 
   useEffect(() => {
     // Auto-fetch live data with logos on page load
