@@ -546,6 +546,119 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
   }
 };
 
+export const clearFakeReviewsAndSyncReal: RequestHandler = async (req, res) => {
+  const startTime = Date.now();
+
+  try {
+    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+
+    if (!apiKey) {
+      return res.status(500).json({
+        error: "Google Places API key not configured",
+      });
+    }
+
+    console.log("🧹 Clearing all fake reviews from database...");
+    await businessService.clearAllReviews();
+
+    console.log(
+      "🔄 Starting real Google reviews sync for existing businesses...",
+    );
+
+    // Get all businesses from database
+    const allBusinesses = await businessService.getBusinessesPaginated(
+      1000,
+      0,
+      false,
+    );
+    let reviewsUpdated = 0;
+    let businessesProcessed = 0;
+    let businessesWithReviews = 0;
+
+    for (const business of allBusinesses) {
+      try {
+        businessesProcessed++;
+        console.log(
+          `📝 Processing reviews for: ${business.name} (${businessesProcessed}/${allBusinesses.length})`,
+        );
+
+        // Get detailed information including reviews
+        const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${business.id}&fields=reviews&key=${apiKey}`;
+        const detailsResponse = await fetch(detailsUrl);
+        const detailsData = await detailsResponse.json();
+
+        if (
+          detailsData.status === "OK" &&
+          detailsData.result &&
+          detailsData.result.reviews
+        ) {
+          const googleReviews = processGoogleReviews(
+            detailsData.result.reviews,
+            business.name,
+          );
+
+          if (googleReviews.length > 0) {
+            // Update only the reviews for this business
+            await businessService.upsertReviews(business.id, googleReviews);
+            reviewsUpdated++;
+            businessesWithReviews++;
+            console.log(
+              `   ✅ Added ${googleReviews.length} real Google reviews for ${business.name}`,
+            );
+          } else {
+            console.log(`   ⚠️  No Google reviews found for ${business.name}`);
+          }
+        } else {
+          console.log(
+            `   ❌ Failed to get reviews for ${business.name}: ${detailsData.status}`,
+          );
+        }
+
+        // Progress logging
+        if (businessesProcessed % 25 === 0) {
+          console.log(
+            `📊 Progress: ${businessesProcessed}/${allBusinesses.length} businesses processed, ${businessesWithReviews} have real reviews`,
+          );
+        }
+
+        // Small delay for API stability
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      } catch (error) {
+        console.error(
+          `Error processing reviews for business ${business.name}:`,
+          error,
+        );
+      }
+    }
+
+    const endTime = Date.now();
+    const duration = Math.round((endTime - startTime) / 1000);
+
+    console.log(`🎉 Real Google reviews sync completed!`);
+    console.log(`📊 Businesses processed: ${businessesProcessed}`);
+    console.log(`📊 Businesses with real reviews: ${businessesWithReviews}`);
+    console.log(`⏱️  Duration: ${duration} seconds`);
+
+    res.json({
+      success: true,
+      message:
+        "Fake reviews cleared and real Google reviews synced successfully",
+      stats: {
+        businessesProcessed,
+        businessesWithReviews,
+        reviewsUpdated,
+        duration,
+      },
+    });
+  } catch (error) {
+    console.error("Error during reviews sync:", error);
+    res.status(500).json({
+      error: "Failed to sync real reviews",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+};
+
 export const syncReviewsOnly: RequestHandler = async (req, res) => {
   const startTime = Date.now();
 
