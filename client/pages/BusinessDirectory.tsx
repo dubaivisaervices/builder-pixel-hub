@@ -494,7 +494,7 @@ export default function BusinessDirectory() {
                 },
                 {
                   name: "Business Setup",
-                  icon: "🏢",
+                  icon: "����",
                   count: businesses.filter(
                     (b) =>
                       b.category.includes("business") ||
@@ -797,22 +797,22 @@ export default function BusinessDirectory() {
                   </div>
 
                   {/* Contact Info */}
-                  <div className="space-y-2 mb-4">
+                  <div className="space-y-1 md:space-y-2 mb-3 md:mb-4">
                     {business.phone && (
-                      <div className="flex items-center space-x-2 text-sm text-gray-600">
-                        <Phone className="h-3 w-3" />
-                        <span>{business.phone}</span>
+                      <div className="flex items-center space-x-2 text-xs md:text-sm text-gray-600">
+                        <Phone className="h-3 w-3 flex-shrink-0" />
+                        <span className="truncate">{business.phone}</span>
                       </div>
                     )}
                     {business.email && (
-                      <div className="flex items-center space-x-2 text-sm text-gray-600">
-                        <Mail className="h-3 w-3" />
+                      <div className="flex items-center space-x-2 text-xs md:text-sm text-gray-600">
+                        <Mail className="h-3 w-3 flex-shrink-0" />
                         <span className="truncate">{business.email}</span>
                       </div>
                     )}
                     {business.website && (
-                      <div className="flex items-center space-x-2 text-sm text-gray-600">
-                        <Globe className="h-3 w-3" />
+                      <div className="flex items-center space-x-2 text-xs md:text-sm text-gray-600">
+                        <Globe className="h-3 w-3 flex-shrink-0" />
                         <span className="truncate">Website Available</span>
                       </div>
                     )}
