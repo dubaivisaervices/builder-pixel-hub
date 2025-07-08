@@ -985,8 +985,15 @@ export default function CompanyReviews() {
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div className="mb-2 md:mb-0">
-                      <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 leading-tight truncate">
-                        {businessData.name}
+                      <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-1 leading-tight">
+                        <span className="block md:hidden">
+                          {businessData.name.length > 50
+                            ? businessData.name.substring(0, 50) + "..."
+                            : businessData.name}
+                        </span>
+                        <span className="hidden md:block">
+                          {businessData.name}
+                        </span>
                       </h1>
 
                       {/* Inline Rating & Category */}
