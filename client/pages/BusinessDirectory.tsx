@@ -186,17 +186,33 @@ export default function BusinessDirectory() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
 
-  // Fetch businesses with error handling
-  const fetchBusinesses = useCallback(async (): Promise<void> => {
+  // Fetch businesses with enhanced error handling and retry logic
+  const fetchBusinesses = useCallback(async (retryCount = 0): Promise<void> => {
     try {
       setLoading(true);
-      setError(null);
+      if (retryCount === 0) setError(null);
 
-      console.log("Fetching businesses from API...");
-      const response = await fetch("/api/dubai-visa-services?limit=300");
+      console.log(
+        `Fetching businesses from API... (attempt ${retryCount + 1})`,
+      );
+
+      // Add timeout to prevent hanging requests
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+      const response = await fetch("/api/dubai-visa-services?limit=300", {
+        signal: controller.signal,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: Failed to fetch businesses`);
+        throw new Error(
+          `HTTP ${response.status}: Server error - ${response.statusText}`,
+        );
       }
 
       const data = await response.json();
@@ -204,37 +220,64 @@ export default function BusinessDirectory() {
 
       // Check the correct response format from the API
       if (data.businesses && Array.isArray(data.businesses)) {
-        console.log(`Loaded ${data.businesses.length} businesses from API`);
+        console.log(`✅ Loaded ${data.businesses.length} businesses from API`);
 
-        // If no businesses in database, use fallback
+        // If no businesses in database, use fallback but don't show error
         if (data.businesses.length === 0) {
-          console.log("No businesses in database, using fallback data");
+          console.log(
+            "📭 Database is empty, using sample data for demonstration",
+          );
+          setError("Database is empty - showing sample data for demonstration");
           setBusinesses(getFallbackBusinesses());
         } else {
           setBusinesses(data.businesses);
+          setError(null); // Clear any previous errors
         }
       } else {
-        console.log("API returned no businesses, using fallback data");
+        console.log("⚠️ API returned invalid format, using fallback data");
+        setError("Invalid API response - using sample data");
         setBusinesses(getFallbackBusinesses());
       }
     } catch (err) {
-      console.error("Error fetching businesses:", err);
+      console.error(
+        `❌ Error fetching businesses (attempt ${retryCount + 1}):`,
+        err,
+      );
 
       // Determine error type for better user feedback
-      let errorMessage = "Failed to load businesses";
+      let errorMessage = "Unable to load live data";
+      let shouldRetry = false;
+
       if (err instanceof TypeError && err.message.includes("fetch")) {
-        errorMessage = "Network connection issue - using offline data";
+        errorMessage = "Network connection failed - using offline data";
+      } else if (err instanceof Error && err.name === "AbortError") {
+        errorMessage = "Request timeout - using offline data";
+        shouldRetry = retryCount < 1; // Retry once for timeouts
+      } else if (err instanceof Error && err.message.includes("HTTP 5")) {
+        errorMessage = "Server temporarily unavailable - using offline data";
+        shouldRetry = retryCount < 1; // Retry once for server errors
       } else if (err instanceof Error) {
-        errorMessage = err.message;
+        errorMessage = `API Error: ${err.message}`;
+      }
+
+      // Retry logic for certain errors
+      if (shouldRetry) {
+        console.log(`🔄 Retrying in 2 seconds...`);
+        setTimeout(() => {
+          fetchBusinesses(retryCount + 1);
+        }, 2000);
+        return;
       }
 
       setError(errorMessage);
 
       // Always fallback to sample data to ensure the page works
-      console.log("Using fallback sample data due to error");
+      console.log("🏠 Using sample data to ensure page functionality");
       setBusinesses(getFallbackBusinesses());
     } finally {
-      setLoading(false);
+      if (retryCount === 0 || !setLoading) {
+        setLoading(false);
+      }
     }
   }, []);
 
