@@ -57,6 +57,7 @@ export function createServer() {
   app.get("/api/admin/categories", getAllCategories);
   app.put("/api/admin/category/:oldCategory", updateCategory);
   app.delete("/api/admin/category/:category", deleteCategory);
+  app.get("/api/admin/debug-photos", debugPhotoData);
 
   return app;
 }
