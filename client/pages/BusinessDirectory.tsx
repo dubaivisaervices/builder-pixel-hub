@@ -609,9 +609,9 @@ export default function BusinessDirectory() {
           </CardContent>
         </Card>
 
-        {/* Error Notice - Hidden on Mobile */}
+        {/* Error Notice */}
         {error && (
-          <Card className="hidden md:block shadow-xl border-0 bg-blue-50/80 backdrop-blur-xl border-blue-200">
+          <Card className="shadow-xl border-0 bg-blue-50/80 backdrop-blur-xl border-blue-200">
             <CardContent className="p-4 md:p-6">
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 mt-0.5">
