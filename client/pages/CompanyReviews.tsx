@@ -195,7 +195,7 @@ export default function CompanyReviews() {
             {/* Scam Alert Badge */}
             {scamAlertLevel === "high" && (
               <Badge variant="destructive" className="animate-pulse">
-                <Warning className="h-3 w-3 mr-1" />
+                <AlertTriangle className="h-3 w-3 mr-1" />
                 High Scam Risk
               </Badge>
             )}
