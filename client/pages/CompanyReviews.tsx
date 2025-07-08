@@ -205,163 +205,168 @@ export default function CompanyReviews() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 space-y-6 md:space-y-8">
+        {/* Scam Warning Banner - Prominent for mobile */}
+        {scamAlertLevel === "high" && (
+          <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white p-4 md:p-6 rounded-xl shadow-xl">
+            <div className="flex items-start space-x-3">
+              <Warning className="h-6 w-6 md:h-8 md:w-8 flex-shrink-0 mt-1" />
+              <div className="flex-grow">
+                <h2 className="text-lg md:text-xl font-bold mb-2">
+                  ⚠️ HIGH SCAM RISK ALERT
+                </h2>
+                <p className="text-sm md:text-base opacity-90">
+                  This business has {oneStarCount} negative reviews (
+                  {scamPercentage.toFixed(0)}% of all reviews). Multiple
+                  customers report fraudulent activities.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Company Header */}
-        <Card className="shadow-xl border-0 mb-8">
-          <CardContent className="pt-8">
-            <div className="flex flex-col lg:flex-row lg:items-start space-y-6 lg:space-y-0 lg:space-x-8">
-              {/* Logo and Basic Info */}
-              <div className="flex-shrink-0">
-                <div className="w-32 h-32 bg-gradient-to-br from-primary/10 to-primary/20 rounded-xl flex items-center justify-center mb-4 border-2 border-primary/20 overflow-hidden relative">
-                  {businessData?.logoUrl ? (
-                    <>
-                      <img
-                        src={businessData.logoUrl}
-                        alt={`${company.name} logo`}
-                        className="w-full h-full object-cover absolute inset-0"
-                        onError={(e) => {
-                          // Hide image and show fallback letter
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = "none";
-                          const parent = target.parentElement;
-                          const fallback = parent?.querySelector(
-                            ".company-logo-fallback",
-                          ) as HTMLElement;
-                          if (fallback) {
-                            fallback.style.display = "flex";
-                          }
-                        }}
-                        onLoad={(e) => {
-                          // Hide fallback when image loads successfully
-                          const target = e.target as HTMLImageElement;
-                          const parent = target.parentElement;
-                          const fallback = parent?.querySelector(
-                            ".company-logo-fallback",
-                          ) as HTMLElement;
-                          if (fallback) {
-                            fallback.style.display = "none";
-                          }
-                        }}
-                      />
-                      <div
-                        className="company-logo-fallback absolute inset-0 flex items-center justify-center"
-                        style={{ display: "none" }}
-                      >
-                        <span className="text-primary text-4xl font-bold">
-                          {company.name.charAt(0).toUpperCase()}
+        <Card className="shadow-xl border-0 overflow-hidden">
+          <CardContent className="p-4 md:p-8">
+            <div className="flex flex-col space-y-6">
+              {/* Mobile-first header layout */}
+              <div className="flex flex-col sm:flex-row sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
+                {/* Logo */}
+                <div className="flex-shrink-0 self-center sm:self-start">
+                  <div className="w-20 h-20 md:w-32 md:h-32 bg-gradient-to-br from-primary/10 to-primary/20 rounded-xl flex items-center justify-center border-2 border-primary/20 overflow-hidden relative">
+                    {businessData?.logoUrl ? (
+                      <>
+                        <img
+                          src={businessData.logoUrl}
+                          alt={`${businessData.name} logo`}
+                          className="w-full h-full object-cover absolute inset-0"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
+                            const parent = target.parentElement;
+                            const fallback = parent?.querySelector(
+                              ".company-logo-fallback",
+                            ) as HTMLElement;
+                            if (fallback) fallback.style.display = "flex";
+                          }}
+                        />
+                        <div
+                          className="company-logo-fallback absolute inset-0 flex items-center justify-center"
+                          style={{ display: "none" }}
+                        >
+                          <span className="text-primary text-2xl md:text-4xl font-bold">
+                            {businessData.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="company-logo-fallback absolute inset-0 flex items-center justify-center">
+                        <span className="text-primary text-2xl md:text-4xl font-bold">
+                          {businessData.name.charAt(0).toUpperCase()}
                         </span>
                       </div>
-                    </>
-                  ) : (
-                    <div className="company-logo-fallback absolute inset-0 flex items-center justify-center">
-                      <span className="text-primary text-4xl font-bold">
-                        {company.name.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div className="text-center lg:text-left">
-                  <div className="flex items-center justify-center lg:justify-start space-x-1 mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-5 w-5 ${
-                          i < Math.floor(company.rating)
-                            ? "text-yellow-400 fill-current"
-                            : "text-gray-300"
-                        }`}
-                      />
-                    ))}
-                    <span className="text-sm text-muted-foreground ml-2">
-                      {company.rating} ({company.totalReviews} reviews)
-                    </span>
+                    )}
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Est. {company.establishedYear}
+                </div>
+
+                {/* Company Info */}
+                <div className="flex-grow text-center sm:text-left">
+                  <h1 className="text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-3">
+                    {businessData.name}
+                  </h1>
+
+                  {/* Rating with emphasis on poor ratings */}
+                  <div className="flex items-center justify-center sm:justify-start space-x-2 mb-3">
+                    <div className="flex items-center space-x-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-4 w-4 md:h-5 md:w-5 ${
+                            i < Math.floor(businessData.rating)
+                              ? "text-yellow-400 fill-current"
+                              : "text-gray-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-sm md:text-base text-muted-foreground">
+                      {businessData.rating.toFixed(1)} (
+                      {businessData.reviewCount} reviews)
+                    </span>
+                    {businessData.rating <= 2.0 && (
+                      <Badge variant="destructive" className="text-xs">
+                        <TrendingDown className="h-3 w-3 mr-1" />
+                        Poor Rating
+                      </Badge>
+                    )}
+                  </div>
+
+                  <p className="text-sm md:text-base text-muted-foreground mb-4">
+                    Category: {businessData.category}
                   </p>
+
+                  {/* Contact Info - Grid for larger screens, stack for mobile */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 text-sm">
+                    <div className="flex items-center justify-center sm:justify-start space-x-2">
+                      <MapPin className="h-4 w-4 text-primary flex-shrink-0" />
+                      <span className="truncate">{businessData.address}</span>
+                    </div>
+                    {businessData.phone && (
+                      <div className="flex items-center justify-center sm:justify-start space-x-2">
+                        <Phone className="h-4 w-4 text-primary flex-shrink-0" />
+                        <span>{businessData.phone}</span>
+                      </div>
+                    )}
+                    {businessData.email && (
+                      <div className="flex items-center justify-center sm:justify-start space-x-2">
+                        <Mail className="h-4 w-4 text-primary flex-shrink-0" />
+                        <span className="truncate">{businessData.email}</span>
+                      </div>
+                    )}
+                    {businessData.website && (
+                      <div className="flex items-center justify-center sm:justify-start space-x-2">
+                        <Globe className="h-4 w-4 text-primary flex-shrink-0" />
+                        <a
+                          href={businessData.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline flex items-center truncate"
+                        >
+                          Website
+                          <ExternalLink className="h-3 w-3 ml-1 flex-shrink-0" />
+                        </a>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              {/* Company Details */}
-              <div className="flex-grow">
-                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-6">
-                  <div className="flex-grow">
-                    <h1 className="text-4xl font-bold text-foreground mb-3">
-                      {company.name}
-                    </h1>
-                    <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
-                      {company.description}
-                    </p>
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
+                <Button
+                  onClick={() =>
+                    navigate("/complaint", {
+                      state: {
+                        companyName: businessData.name,
+                        companyLocation: businessData.address,
+                      },
+                    })
+                  }
+                  className="bg-destructive hover:bg-destructive/90 w-full sm:w-auto"
+                  size="lg"
+                >
+                  <AlertTriangle className="h-4 w-4 mr-2" />
+                  Report This Company
+                </Button>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                      <div className="flex items-center space-x-3">
-                        <MapPin className="h-5 w-5 text-primary" />
-                        <span className="text-sm">{company.address}</span>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Phone className="h-5 w-5 text-primary" />
-                        <span className="text-sm">{company.phone}</span>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Mail className="h-5 w-5 text-primary" />
-                        <span className="text-sm">{company.email}</span>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Globe className="h-5 w-5 text-primary" />
-                        <a
-                          href={company.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-primary hover:underline flex items-center"
-                        >
-                          Visit Website
-                          <ExternalLink className="h-3 w-3 ml-1" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Warning and Action */}
-                  <div className="flex flex-col space-y-3 lg:ml-6">
-                    <Badge
-                      variant="destructive"
-                      className="text-base px-4 py-2 font-semibold self-start"
-                    >
-                      <AlertTriangle className="h-4 w-4 mr-2" />
-                      {company.totalReports} scam reports
-                    </Badge>
-                    <Button
-                      onClick={() =>
-                        navigate("/complaint", {
-                          state: {
-                            companyName: company.name,
-                            companyLocation: company.location,
-                          },
-                        })
-                      }
-                      className="bg-destructive hover:bg-destructive/90"
-                    >
-                      Report This Company
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Services */}
-                <div className="mb-6">
-                  <h3 className="font-semibold text-lg mb-3">
-                    Services Offered
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {company.services.map((service, index) => (
-                      <Badge
-                        key={index}
-                        variant="secondary"
-                        className="text-xs"
-                      >
-                        {service}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
+                {oneStarCount > 0 && (
+                  <Badge
+                    variant="outline"
+                    className="w-full sm:w-auto justify-center py-2 text-destructive border-destructive"
+                  >
+                    <Warning className="h-4 w-4 mr-2" />
+                    {oneStarCount} Scam Report{oneStarCount > 1 ? "s" : ""}
+                  </Badge>
+                )}
               </div>
             </div>
           </CardContent>
@@ -557,7 +562,7 @@ export default function CompanyReviews() {
                 ) : (
                   <>
                     <div className="mb-4 text-sm text-orange-600 bg-orange-50 p-3 rounded-lg">
-                      ⚠️ No real Google reviews available for this business.
+                      ���️ No real Google reviews available for this business.
                       Please run "Sync Real Google Reviews" from the admin panel
                       to fetch authentic customer reviews.
                     </div>
