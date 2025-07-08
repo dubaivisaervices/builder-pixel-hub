@@ -1498,6 +1498,31 @@ export default function CompanyReviews() {
           </div>
         </div>
       </div>
+
+      {/* Sticky Footer with Report Button */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 p-4 pb-safe">
+        <div className="max-w-sm mx-auto">
+          <Button
+            onClick={() =>
+              navigate("/complaint", {
+                state: {
+                  companyName: businessData.name,
+                  companyLocation: businessData.address,
+                },
+              })
+            }
+            className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-2xl py-4 text-lg font-semibold rounded-2xl border-0 animate-pulse"
+            size="lg"
+          >
+            <AlertTriangle className="h-5 w-5 mr-3" />
+            🚨 Report This Scam
+            <AlertTriangle className="h-5 w-5 ml-3" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Bottom spacing for sticky button */}
+      <div className="h-24"></div>
     </div>
   );
 }
