@@ -401,6 +401,38 @@ export default function CompanyReviews() {
         const idToFetch = businessId || location.state?.businessData?.id;
 
         if (!idToFetch) {
+          // If no ID available, use fallback data if available
+          if (location.state?.businessData) {
+            console.log("Using fallback business data from navigation state");
+            const fallbackData = location.state.businessData;
+            // Enhance with sample reviews
+            fallbackData.reviews = generateSampleReviews(fallbackData.name);
+
+            // Add description if not present
+            if (!fallbackData.description) {
+              fallbackData.description = `${fallbackData.name} is a visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, tourist visa applications, and business visa support. The company claims to provide professional immigration advice and document processing services for clients seeking to travel to various destinations worldwide.`;
+            }
+
+            // Add sample photos if not present
+            if (!fallbackData.photos || fallbackData.photos.length === 0) {
+              fallbackData.photos = [
+                {
+                  id: 1,
+                  caption: "Office Reception Area",
+                  url: "https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F9ae29db9dce64d21a464c6d8ac374b23?format=webp&width=800",
+                },
+                { id: 2, caption: "Consultation Room" },
+                { id: 3, caption: "Document Processing Center" },
+                { id: 4, caption: "Client Waiting Area" },
+                { id: 5, caption: "Office Building Exterior" },
+                { id: 6, caption: "Team Meeting Room" },
+              ];
+            }
+
+            setBusinessData(fallbackData);
+            setLoading(false);
+            return;
+          }
           throw new Error("No business ID provided");
         }
 
