@@ -28,11 +28,7 @@ import {
   List,
   Sparkles,
 } from "lucide-react";
-import {
-  BusinessData,
-  BusinessSearchResponse,
-  BusinessReview,
-} from "@shared/google-business";
+import { BusinessData, BusinessReview } from "@shared/google-business";
 import {
   Select,
   SelectContent,
