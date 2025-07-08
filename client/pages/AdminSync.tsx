@@ -35,6 +35,42 @@ export default function AdminSync() {
   const [dbStats, setDbStats] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const handleFreshSync = async () => {
+    setIsFreshSyncing(true);
+    setError(null);
+    setFreshSyncResult(null);
+
+    try {
+      console.log("Starting fresh database clear and Google sync...");
+
+      const response = await fetch("/api/clear-and-resync", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Fresh sync completed:", result);
+
+      setFreshSyncResult(result.stats || {});
+      await checkStatus(); // Refresh database stats
+    } catch (error) {
+      console.error("Fresh sync failed:", error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Unknown error occurred during fresh sync",
+      );
+    } finally {
+      setIsFreshSyncing(false);
+    }
+  };
+
   const handleClearFakeReviews = async () => {
     setIsClearingReviews(true);
     setError(null);
