@@ -249,6 +249,12 @@ export class BusinessService {
     console.log("✅ Cleared all existing reviews from database");
   }
 
+  // Clear all businesses
+  async clearAllBusinesses(): Promise<void> {
+    await database.run("DELETE FROM businesses");
+    console.log("✅ Cleared all businesses from database");
+  }
+
   // CRUD operations for admin panel
 
   // Get all businesses grouped by category
