@@ -56,133 +56,125 @@ interface BusinessData {
 }
 
 export default function CompanyReviews() {
-  const { location: locationParam, companyName } = useParams();
+  const { businessId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const businessData = location.state?.businessData;
+  const [businessData, setBusinessData] = useState<BusinessData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [reviewFilter, setReviewFilter] = useState<
+    "all" | "1star" | "2star" | "3star" | "4star" | "5star"
+  >("all");
 
-  // Debug logging
-  console.log("CompanyReviews - businessData:", businessData);
-  console.log("CompanyReviews - businessData.reviews:", businessData?.reviews);
-  console.log(
-    "CompanyReviews - businessData.reviews length:",
-    businessData?.reviews?.length,
-  );
-  console.log(
-    "CompanyReviews - company.realReviews length:",
-    businessData?.reviews?.length || 0,
-  );
-  console.log("CompanyReviews - businessData.photos:", businessData?.photos);
+  // Fetch business data from database
+  useEffect(() => {
+    const fetchBusinessData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-  // Use passed business data or enhanced mock data
-  const company = {
-    name:
-      businessData?.name ||
-      companyName?.replace(/-/g, " ") ||
-      "Unknown Company",
-    location:
-      businessData?.address ||
-      locationParam?.replace(/-/g, " ") ||
-      "Unknown Location",
-    // Use real business data if available
-    rating: businessData?.rating || 3.2,
-    totalReviews: businessData?.reviewCount || 127,
-    totalReports: 3,
-    // Company details - use real data when available
-    description:
-      "A visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, and tourist visa applications.",
-    website: businessData?.website || "https://example-visa-services.com",
-    email:
-      businessData?.email ||
-      `info@${(businessData?.name || companyName || "company").toLowerCase().replace(/[^a-z0-9]/g, "")}.ae`,
-    phone: businessData?.phone || "+971-4-123-4567",
-    address:
-      businessData?.address || "Office 1204, Business Bay Tower, Dubai, UAE",
-    establishedYear: "2018",
-    licenseNumber: "DED-12345678",
-    // Business metrics
-    rating: 3.2,
-    totalReviews: 127,
-    // Photos - use real photos if available, otherwise show placeholders
-    photos: businessData?.photos || [
-      { id: 1, caption: "Office Reception" },
-      { id: 2, caption: "Consultation Room" },
-      { id: 3, caption: "Team Photo" },
-      { id: 4, caption: "Office Exterior" },
-      { id: 5, caption: "Waiting Area" },
-      { id: 6, caption: "Document Processing Center" },
-    ],
-    // Reviews - use real reviews if available
-    realReviews: businessData?.reviews || [],
-    // Operating hours - use real data when available
-    hours: businessData?.hours || {
-      monday: "9:00 AM - 6:00 PM",
-      tuesday: "9:00 AM - 6:00 PM",
-      wednesday: "9:00 AM - 6:00 PM",
-      thursday: "9:00 AM - 6:00 PM",
-      friday: "9:00 AM - 6:00 PM",
-      saturday: "10:00 AM - 4:00 PM",
-      sunday: "Closed",
-    },
-    // Services offered
-    services: [
-      "Student Visa Consultation",
-      "Work Permit Processing",
-      "Tourist Visa Services",
-      "Business Visa Support",
-      "Document Translation",
-      "Embassy Appointments",
-    ],
-    // Positive reviews
-    positiveReviews: [
-      {
-        id: 1,
-        reviewerName: "Sarah M.",
-        rating: 5,
-        date: "2024-01-20",
-        comment:
-          "Excellent service! They helped me get my student visa to Canada within 3 weeks. Very professional and responsive team.",
+        // First try to get businessId from URL params or state
+        const idToFetch = businessId || location.state?.businessData?.id;
+
+        if (!idToFetch) {
+          throw new Error("No business ID provided");
+        }
+
+        console.log(`Fetching business data for ID: ${idToFetch}`);
+
+        const response = await fetch(`/api/business-db/${idToFetch}`);
+        if (!response.ok) {
+          throw new Error(
+            `HTTP ${response.status}: Failed to fetch business data`,
+          );
+        }
+
+        const data = await response.json();
+
+        if (!data.success || !data.business) {
+          throw new Error("Invalid response format from server");
+        }
+
+        console.log(
+          `Loaded business: ${data.business.name} with ${data.business.reviews.length} reviews`,
+        );
+        setBusinessData(data.business);
+      } catch (err) {
+        console.error("Error fetching business data:", err);
+        setError(
+          err instanceof Error ? err.message : "Failed to load business data",
+        );
+
+        // Fallback to passed business data if available
+        if (location.state?.businessData) {
+          console.log("Using fallback business data from navigation state");
+          setBusinessData(location.state.businessData);
+          setError(null);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBusinessData();
+  }, [businessId, location.state?.businessData]);
+
+  // Filter reviews based on rating
+  const filteredReviews =
+    businessData?.reviews.filter((review) => {
+      if (reviewFilter === "all") return true;
+      const targetRating = parseInt(reviewFilter.replace("star", ""));
+      return review.rating === targetRating;
+    }) || [];
+
+  // Count reviews by rating
+  const reviewCounts =
+    businessData?.reviews.reduce(
+      (acc, review) => {
+        acc[review.rating] = (acc[review.rating] || 0) + 1;
+        return acc;
       },
-      {
-        id: 2,
-        reviewerName: "Ahmed K.",
-        rating: 4,
-        date: "2024-01-18",
-        comment:
-          "Good experience overall. The process was smooth and they kept me updated throughout. A bit expensive but worth it.",
-      },
-    ],
-    // Scam reports
-    reports: [
-      {
-        id: 1,
-        reporterName: "Anonymous User",
-        date: "2024-01-15",
-        country: "United States",
-        visaType: "Student Visa",
-        description:
-          "They promised guaranteed visa approval for $5000 upfront. After payment, they became unresponsive and provided fake documents. Lost all my money and got visa rejection.",
-      },
-      {
-        id: 2,
-        reporterName: "Jane D.",
-        date: "2024-01-10",
-        country: "Canada",
-        visaType: "Work Visa",
-        description:
-          "Company charged excessive fees for basic document preparation that I could have done myself. They provided outdated forms and incorrect information leading to application delays.",
-      },
-      {
-        id: 3,
-        reporterName: "Anonymous User",
-        date: "2024-01-05",
-        country: "United Kingdom",
-        visaType: "Business Visa",
-        description:
-          "Fake company with no proper licensing. They collected personal information and money but never processed any applications. Office address was fake too.",
-      },
-    ],
-  };
+      {} as Record<number, number>,
+    ) || {};
+
+  // Calculate scam alert level based on 1-star reviews
+  const oneStarCount = reviewCounts[1] || 0;
+  const totalReviews = businessData?.reviews.length || 0;
+  const scamPercentage =
+    totalReviews > 0 ? (oneStarCount / totalReviews) * 100 : 0;
+  const scamAlertLevel =
+    scamPercentage > 50 ? "high" : scamPercentage > 25 ? "medium" : "low";
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Loading business details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !businessData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-6 text-center">
+            <AlertTriangle className="h-12 w-12 text-destructive mx-auto mb-4" />
+            <h3 className="text-lg font-semibold mb-2">
+              Failed to Load Business
+            </h3>
+            <p className="text-muted-foreground mb-4">{error}</p>
+            <Button onClick={() => navigate("/")} variant="outline">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Directory
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
