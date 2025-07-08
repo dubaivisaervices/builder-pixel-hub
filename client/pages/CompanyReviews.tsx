@@ -1166,8 +1166,8 @@ export default function CompanyReviews() {
                 )}
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Reviews Section - Primary Focus */}
         <Card className="shadow-lg border-0">
