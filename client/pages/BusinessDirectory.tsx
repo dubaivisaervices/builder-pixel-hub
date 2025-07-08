@@ -694,9 +694,9 @@ export default function BusinessDirectory() {
         {/* Business Grid/List */}
         {filteredBusinesses.length > 0 && (
           <div
-            className={`grid gap-6 ${
+            className={`grid gap-4 md:gap-6 ${
               viewMode.mode === "grid"
-                ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
                 : "grid-cols-1"
             }`}
           >
