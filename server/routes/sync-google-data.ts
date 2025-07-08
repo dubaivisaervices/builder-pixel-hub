@@ -791,10 +791,7 @@ export const clearAllDataAndResync: RequestHandler = async (req, res) => {
 
     // Clear all existing data
     await businessService.clearAllReviews();
-    const clearBusinessQuery = `DELETE FROM businesses`;
-    await (
-      await import("../database/database")
-    ).database.run(clearBusinessQuery);
+    await database.run("DELETE FROM businesses");
 
     console.log("✅ All existing data cleared");
     console.log("🔄 Starting fresh Google data sync...");
