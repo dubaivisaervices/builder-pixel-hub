@@ -537,10 +537,13 @@ export default function BusinessDirectory() {
             "Database is empty, showing fallback data with sync message",
           );
           setError(
-            "Database is empty. Using sample data. Visit /admin/sync to load real Google data.",
+            "⚠️ Database is empty due to Google API issues. Showing 30+ sample businesses. Please check Google API key configuration in /admin/sync.",
           );
         } else {
           console.log("No businesses found, using fallback data");
+          setError(
+            "⚠️ Google API temporarily unavailable. Showing 30+ sample visa service businesses.",
+          );
         }
         setAllBusinesses(getEnhancedFallbackBusinesses());
         setCategories([
