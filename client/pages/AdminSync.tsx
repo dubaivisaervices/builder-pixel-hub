@@ -482,6 +482,66 @@ export default function AdminSync() {
           </CardContent>
         </Card>
 
+        {/* Offline Photo Sync Results */}
+        {offlineSyncResult && (
+          <Card className="shadow-lg border-0 border-purple-200">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 text-purple-800">
+                <CheckCircle className="h-5 w-5" />
+                <span>Offline Photo Sync Results</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-purple-600" />
+                  <div>
+                    <h3 className="font-medium text-purple-800">
+                      Photos Downloaded Successfully
+                    </h3>
+                    <p className="text-sm text-purple-700">
+                      All business photos are now stored offline in the database
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="text-center p-4 bg-purple-50 rounded-lg">
+                  <div className="text-2xl font-bold text-purple-600">
+                    {offlineSyncResult.totalSynced || 0}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Businesses Processed
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-blue-50 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {offlineSyncResult.photosDownloaded || 0}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Photos Downloaded
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-green-50 rounded-lg">
+                  <div className="text-2xl font-bold text-green-600">
+                    {offlineSyncResult.businessesWithPhotos || 0}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    With Photos
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-orange-50 rounded-lg">
+                  <div className="text-2xl font-bold text-orange-600">
+                    {offlineSyncResult.duration || 0}s
+                  </div>
+                  <div className="text-sm text-muted-foreground">Duration</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Fresh Sync Results */}
         {freshSyncResult && (
           <Card className="shadow-lg border-0 border-green-200">
