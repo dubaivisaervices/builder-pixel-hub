@@ -258,6 +258,7 @@ export default function BusinessDirectory() {
 
       if (err instanceof TypeError && err.message.includes("fetch")) {
         errorMessage = "Network connection failed - using offline data";
+        shouldRetry = retryCount < 2; // Retry up to 3 times for network errors
       } else if (err instanceof Error && err.name === "AbortError") {
         errorMessage = "Request timeout - using offline data";
         shouldRetry = retryCount < 1; // Retry once for timeouts
@@ -270,10 +271,13 @@ export default function BusinessDirectory() {
 
       // Retry logic for certain errors
       if (shouldRetry) {
-        console.log(`🔄 Retrying in 2 seconds...`);
-        setTimeout(() => {
-          fetchBusinesses(retryCount + 1);
-        }, 2000);
+        console.log(`🔄 Retrying in ${(retryCount + 1) * 2} seconds...`);
+        setTimeout(
+          () => {
+            fetchBusinesses(retryCount + 1);
+          },
+          (retryCount + 1) * 2000,
+        ); // Exponential backoff
         return;
       }
 
