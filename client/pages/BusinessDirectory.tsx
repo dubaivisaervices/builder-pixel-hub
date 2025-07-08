@@ -512,8 +512,8 @@ export default function BusinessDirectory() {
           </div>
         </div>
 
-        {/* Category Showcase - Hidden on Mobile */}
-        <Card className="hidden md:block shadow-xl border-0 bg-white/60 backdrop-blur-xl">
+        {/* Category Showcase */}
+        <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
           <CardContent className="p-4 md:p-6">
             <div className="text-center mb-4 md:mb-6">
               <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
