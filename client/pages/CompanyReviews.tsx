@@ -625,868 +625,874 @@ export default function CompanyReviews() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 via-indigo-50 to-pink-50 relative">
       {/* Professional Background Pattern */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-100/20 via-purple-100/20 to-pink-100/20"></div>
-      <div className="absolute inset-0" style={{
-        backgroundImage: `radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
                          radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.1) 0%, transparent 50%)`,
-      }}></div>
+        }}
+      ></div>
       <div className="relative z-10">
-      {/* Modern Header with Glass Effect */}
-      <div className="bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          {/* Breadcrumbs - Mobile Friendly */}
-          <div className="flex items-center space-x-1 md:space-x-2 text-xs md:text-sm text-muted-foreground mb-4 overflow-x-auto">
-            <Home className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
-            <button
-              onClick={() => navigate("/")}
-              className="hover:text-primary transition-colors whitespace-nowrap"
-            >
-              <span className="hidden sm:inline">Home</span>
-              <span className="sm:hidden">🏠</span>
-            </button>
-            <ChevronRight className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
-            <button
-              onClick={() => navigate("/dubai-businesses")}
-              className="hover:text-primary transition-colors whitespace-nowrap"
-            >
-              <span className="hidden sm:inline">Dubai Businesses</span>
-              <span className="sm:hidden">Businesses</span>
-            </button>
-            <ChevronRight className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
-            <span className="text-foreground font-medium truncate max-w-[120px] md:max-w-none">
-              {businessData?.name || "Business Profile"}
-            </span>
-          </div>
-
-          {/* Header Actions */}
-          <div className="flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate("/dubai-businesses")}
-              className="flex items-center space-x-2 hover:bg-white/50 transition-colors"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              <span className="hidden sm:inline">Back to Directory</span>
-              <span className="sm:hidden">Back</span>
-            </Button>
-
-            <div className="flex items-center space-x-3">
-              {/* Scam Alert Badge */}
-              {scamAlertLevel === "high" && (
-                <Badge
-                  variant="destructive"
-                  className="animate-pulse shadow-lg"
-                >
-                  <AlertTriangle className="h-3 w-3 mr-1" />
-                  High Risk
-                </Badge>
-              )}
-
-              {/* Share Button */}
-              <div className="relative">
-                <Button
-                  size="sm"
-                  onClick={() => setShowShareMenu(!showShareMenu)}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg border-0"
-                >
-                  <Share2 className="h-4 w-4 mr-2" />
-                  Share
-                </Button>
-
-                {/* Share Menu */}
-                {showShareMenu && (
-                  <div className="absolute right-0 top-full mt-2 w-48 bg-white/90 backdrop-blur-xl rounded-xl shadow-xl border border-white/20 p-3 z-50">
-                    <div className="space-y-2">
-                      <button
-                        onClick={() => handleShare("copy")}
-                        className="w-full flex items-center space-x-3 p-2 hover:bg-gray-100/50 rounded-lg transition-colors"
-                      >
-                        <Copy className="h-4 w-4" />
-                        <span className="text-sm">Copy Link</span>
-                      </button>
-                      <button
-                        onClick={() => handleShare("whatsapp")}
-                        className="w-full flex items-center space-x-3 p-2 hover:bg-gray-100/50 rounded-lg transition-colors"
-                      >
-                        <MessageCircle className="h-4 w-4 text-green-600" />
-                        <span className="text-sm">WhatsApp</span>
-                      </button>
-                      <button
-                        onClick={() => handleShare("facebook")}
-                        className="w-full flex items-center space-x-3 p-2 hover:bg-gray-100/50 rounded-lg transition-colors"
-                      >
-                        <Facebook className="h-4 w-4 text-blue-600" />
-                        <span className="text-sm">Facebook</span>
-                      </button>
-                      <button
-                        onClick={() => handleShare("twitter")}
-                        className="w-full flex items-center space-x-3 p-2 hover:bg-gray-100/50 rounded-lg transition-colors"
-                      >
-                        <Twitter className="h-4 w-4 text-blue-400" />
-                        <span className="text-sm">Twitter</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
+        {/* Modern Header with Glass Effect */}
+        <div className="bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            {/* Breadcrumbs - Mobile Friendly */}
+            <div className="flex items-center space-x-1 md:space-x-2 text-xs md:text-sm text-muted-foreground mb-4 overflow-x-auto">
+              <Home className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
+              <button
+                onClick={() => navigate("/")}
+                className="hover:text-primary transition-colors whitespace-nowrap"
+              >
+                <span className="hidden sm:inline">Home</span>
+                <span className="sm:hidden">🏠</span>
+              </button>
+              <ChevronRight className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
+              <button
+                onClick={() => navigate("/dubai-businesses")}
+                className="hover:text-primary transition-colors whitespace-nowrap"
+              >
+                <span className="hidden sm:inline">Dubai Businesses</span>
+                <span className="sm:hidden">Businesses</span>
+              </button>
+              <ChevronRight className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
+              <span className="text-foreground font-medium truncate max-w-[120px] md:max-w-none">
+                {businessData?.name || "Business Profile"}
+              </span>
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Click outside to close share menu */}
-      {showShareMenu && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => setShowShareMenu(false)}
-        />
-      )}
+            {/* Header Actions */}
+            <div className="flex items-center justify-between">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/dubai-businesses")}
+                className="flex items-center space-x-2 hover:bg-white/50 transition-colors"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                <span className="hidden sm:inline">Back to Directory</span>
+                <span className="sm:hidden">Back</span>
+              </Button>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-8">
-        {/* High Risk Alert Banner */}
-        {scamAlertLevel === "high" && (
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-500 via-red-600 to-red-700 p-6 shadow-2xl">
-            <div className="absolute inset-0 bg-black/10"></div>
-            <div className="relative flex items-start space-x-4 text-white">
-              <div className="flex-shrink-0 p-2 bg-white/20 rounded-full backdrop-blur-sm">
-                <AlertTriangle className="h-6 w-6" />
-              </div>
-              <div className="flex-grow">
-                <h3 className="text-xl font-bold mb-2">
-                  ⚠️ HIGH SCAM RISK DETECTED
-                </h3>
-                <p className="text-white/90 text-sm leading-relaxed">
-                  This business has {oneStarCount} negative reviews (
-                  {scamPercentage.toFixed(0)}% of all reviews). Multiple
-                  customers report fraudulent activities. Exercise extreme
-                  caution.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Modern Photo Gallery */}
-        {businessData?.photos && businessData.photos.length > 0 && (
-          <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                <Camera className="h-5 w-5 mr-2" />
-                Photo Gallery
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {businessData.photos.slice(0, 8).map((photo, index) => (
-                  <div
-                    key={photo.id || index}
-                    className={`relative overflow-hidden rounded-xl group cursor-pointer ${
-                      index === 0 ? "md:col-span-2 md:row-span-2" : ""
-                    }`}
+              <div className="flex items-center space-x-3">
+                {/* Scam Alert Badge */}
+                {scamAlertLevel === "high" && (
+                  <Badge
+                    variant="destructive"
+                    className="animate-pulse shadow-lg"
                   >
-                    <div
-                      className={`aspect-square ${index === 0 ? "md:aspect-[2/1]" : ""} bg-gradient-to-br from-gray-100 to-gray-200`}
-                    >
-                      {photo.base64 ? (
-                        <img
-                          src={`data:image/jpeg;base64,${photo.base64}`}
-                          alt={photo.caption || "Business photo"}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                      ) : photo.url ? (
-                        <img
-                          src={photo.url}
-                          alt={photo.caption || "Business photo"}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex flex-col items-center justify-center text-gray-500">
-                          <Camera className="h-8 w-8 mb-2" />
-                          <p className="text-xs font-medium text-center px-2">
-                            {photo.caption || "Business Photo"}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Overlay */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end">
-                        {photo.caption && (
-                          <div className="w-full p-3 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <p className="text-sm font-medium">
-                              {photo.caption}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                {businessData.photos.length > 8 && (
-                  <div className="relative aspect-square bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center text-white cursor-pointer group hover:from-gray-700 hover:to-gray-800 transition-colors">
-                    <div className="text-center">
-                      <Camera className="h-6 w-6 mx-auto mb-2" />
-                      <p className="text-sm font-medium">
-                        +{businessData.photos.length - 8}
-                      </p>
-                      <p className="text-xs">more photos</p>
-                    </div>
-                  </div>
+                    <AlertTriangle className="h-3 w-3 mr-1" />
+                    High Risk
+                  </Badge>
                 )}
-              </div>
-            </div>
-          </div>
-        )}
 
-        {/* Modern Company Hero Section */}
-        <div className="relative overflow-hidden rounded-3xl bg-white/60 backdrop-blur-xl shadow-2xl border border-white/20">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-indigo-100/30"></div>
-
-          <div className="relative p-6 md:p-8 lg:p-10">
-            {/* Header with Logo and Quick Actions */}
-            <div className="flex flex-col lg:flex-row lg:items-start gap-6 mb-8">
-              {/* Logo and Basic Info */}
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                {/* Share Button */}
                 <div className="relative">
-                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br from-blue-500/10 to-indigo-600/20 flex items-center justify-center border border-blue-200/50 overflow-hidden shadow-lg">
-                    {businessData?.logoUrl ? (
-                      <>
-                        <img
-                          src={businessData.logoUrl}
-                          alt={`${businessData.name} logo`}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = "none";
-                            const parent = target.parentElement;
-                            const fallback = parent?.querySelector(
-                              ".company-logo-fallback",
-                            ) as HTMLElement;
-                            if (fallback) fallback.style.display = "flex";
-                          }}
-                        />
-                        <div
-                          className="company-logo-fallback absolute inset-0 flex items-center justify-center"
-                          style={{ display: "none" }}
-                        >
-                          <span className="text-2xl md:text-4xl font-bold text-blue-600">
-                            {businessData.name.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="company-logo-fallback absolute inset-0 flex items-center justify-center">
-                        <span className="text-2xl md:text-4xl font-bold text-blue-600">
-                          {businessData.name.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Status Indicator */}
-                  <div className="absolute -bottom-2 -right-2 px-2 py-1 bg-green-500 text-white text-xs rounded-full shadow-lg">
-                    <div className="flex items-center space-x-1">
-                      <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                      <span>Active</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Company Details */}
-                <div className="text-center sm:text-left">
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 leading-tight">
-                    {businessData.name}
-                  </h1>
-
-                  {/* Rating Section */}
-                  <div className="flex items-center justify-center sm:justify-start space-x-3 mb-4">
-                    <div className="flex items-center space-x-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-5 w-5 ${
-                            i < Math.floor(businessData.rating)
-                              ? "text-yellow-400 fill-current"
-                              : "text-gray-300"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-lg font-semibold text-gray-700">
-                      {businessData.rating.toFixed(1)}
-                    </span>
-                    <span className="text-gray-500">
-                      ({businessData.reviewCount} reviews)
-                    </span>
-                    {businessData.rating <= 2.0 && (
-                      <Badge variant="destructive" className="animate-pulse">
-                        <TrendingDown className="h-3 w-3 mr-1" />
-                        Poor Rating
-                      </Badge>
-                    )}
-                  </div>
-
-                  {/* Category Badge */}
-                  <div className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-4">
-                    <Building2 className="h-4 w-4 mr-2" />
-                    {businessData.category}
-                  </div>
-                </div>
-              </div>
-
-              {/* Quick Actions */}
-              <div className="lg:ml-auto flex flex-col sm:flex-row lg:flex-col gap-3">
-                <Button
-                  onClick={() =>
-                    navigate("/complaint", {
-                      state: {
-                        companyName: businessData.name,
-                        companyLocation: businessData.address,
-                      },
-                    })
-                  }
-                  className="bg-red-600 hover:bg-red-700 text-white shadow-lg"
-                  size="lg"
-                >
-                  <AlertTriangle className="h-4 w-4 mr-2" />
-                  Report Scam
-                </Button>
-
-                <div className="flex gap-2">
                   <Button
-                    variant="outline"
-                    size="lg"
-                    className="bg-white/50 hover:bg-white/80"
+                    size="sm"
+                    onClick={() => setShowShareMenu(!showShareMenu)}
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg border-0"
                   >
-                    <BookmarkPlus className="h-4 w-4 mr-2" />
-                    Save
+                    <Share2 className="h-4 w-4 mr-2" />
+                    Share
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="bg-white/50 hover:bg-white/80"
-                  >
-                    <Heart className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
 
-            {/* Contact Information Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-              <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <MapPin className="h-5 w-5 text-blue-600" />
-                </div>
-                <div className="flex-grow min-w-0">
-                  <p className="text-xs text-gray-500 uppercase tracking-wide">
-                    Address
-                  </p>
-                  <p className="text-sm font-medium text-gray-900 truncate">
-                    {businessData.address}
-                  </p>
-                </div>
-              </div>
-
-              {businessData.phone && (
-                <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <Phone className="h-5 w-5 text-green-600" />
-                  </div>
-                  <div className="flex-grow">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">
-                      Phone
-                    </p>
-                    <p className="text-sm font-medium text-gray-900">
-                      {businessData.phone}
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {businessData.email && (
-                <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
-                  <div className="p-2 bg-purple-100 rounded-lg">
-                    <Mail className="h-5 w-5 text-purple-600" />
-                  </div>
-                  <div className="flex-grow min-w-0">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">
-                      Email
-                    </p>
-                    <p className="text-sm font-medium text-gray-900 truncate">
-                      {businessData.email}
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {businessData.website && (
-                <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
-                  <div className="p-2 bg-orange-100 rounded-lg">
-                    <Globe className="h-5 w-5 text-orange-600" />
-                  </div>
-                  <div className="flex-grow min-w-0">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">
-                      Website
-                    </p>
-                    <a
-                      href={businessData.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm font-medium text-blue-600 hover:text-blue-800 truncate flex items-center"
-                    >
-                      Visit Site
-                      <ExternalLink className="h-3 w-3 ml-1" />
-                    </a>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Warning Alert for High Risk */}
-            {oneStarCount > 0 && (
-              <div className="flex items-center justify-center space-x-3 p-4 bg-red-50 border border-red-200 rounded-xl">
-                <AlertTriangle className="h-5 w-5 text-red-600" />
-                <span className="text-sm font-medium text-red-800">
-                  {oneStarCount} Scam Report{oneStarCount > 1 ? "s" : ""} Filed
-                  Against This Business
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Reviews Section - Primary Focus */}
-        <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
-          <div className="p-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">
-                Customer Reviews ({businessData.reviews.length})
-              </h2>
-
-              {/* Review Filter */}
-              <div className="flex items-center space-x-2 text-sm">
-                <Filter className="h-4 w-4" />
-                <select
-                  value={reviewFilter}
-                  onChange={(e) => setReviewFilter(e.target.value as any)}
-                  className="border rounded-lg px-3 py-2 text-sm bg-white/50 backdrop-blur-sm"
-                >
-                  <option value="all">
-                    All Reviews ({businessData.reviews.length})
-                  </option>
-                  <option value="1star">1 Star ({reviewCounts[1] || 0})</option>
-                  <option value="2star">
-                    2 Stars ({reviewCounts[2] || 0})
-                  </option>
-                  <option value="3star">
-                    3 Stars ({reviewCounts[3] || 0})
-                  </option>
-                  <option value="4star">
-                    4 Stars ({reviewCounts[4] || 0})
-                  </option>
-                  <option value="5star">
-                    5 Stars ({reviewCounts[5] || 0})
-                  </option>
-                </select>
-              </div>
-            </div>
-
-            {/* Review Distribution Bar */}
-            <div className="space-y-2 mb-6">
-              <div className="flex items-center justify-between text-sm text-gray-600">
-                <span>Review Distribution</span>
-                <span>{filteredReviews.length} showing</span>
-              </div>
-              <div className="grid grid-cols-5 gap-1 h-3 rounded-lg overflow-hidden">
-                {[1, 2, 3, 4, 5].map((rating) => {
-                  const count = reviewCounts[rating] || 0;
-                  const percentage =
-                    totalReviews > 0 ? (count / totalReviews) * 100 : 0;
-                  return (
-                    <div
-                      key={rating}
-                      className={`${
-                        rating === 1
-                          ? "bg-red-500"
-                          : rating === 2
-                            ? "bg-orange-500"
-                            : rating === 3
-                              ? "bg-yellow-500"
-                              : rating === 4
-                                ? "bg-green-400"
-                                : "bg-green-500"
-                      }`}
-                      style={{
-                        height: `${Math.max(percentage, 2)}%`,
-                        minHeight: "4px",
-                      }}
-                      title={`${rating} star: ${count} reviews (${percentage.toFixed(1)}%)`}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Reviews List */}
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-              {filteredReviews.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
-                  <User className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No reviews found for the selected filter.</p>
-                </div>
-              ) : (
-                filteredReviews.slice(0, 20).map((review, index) => (
-                  <div
-                    key={review.id}
-                    className={`p-4 rounded-xl border-l-4 ${
-                      review.rating === 1
-                        ? "border-l-red-500 bg-red-50/50"
-                        : review.rating === 2
-                          ? "border-l-orange-500 bg-orange-50/50"
-                          : review.rating === 3
-                            ? "border-l-yellow-500 bg-yellow-50/50"
-                            : review.rating === 4
-                              ? "border-l-green-400 bg-green-50/50"
-                              : "border-l-green-500 bg-green-50/50"
-                    } backdrop-blur-sm`}
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-2 sm:space-y-0 mb-3">
-                      <div className="flex items-center space-x-3">
-                        <div
-                          className={`p-2 rounded-full ${
-                            review.rating <= 2 ? "bg-red-100" : "bg-blue-100"
-                          }`}
+                  {/* Share Menu */}
+                  {showShareMenu && (
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-white/90 backdrop-blur-xl rounded-xl shadow-xl border border-white/20 p-3 z-50">
+                      <div className="space-y-2">
+                        <button
+                          onClick={() => handleShare("copy")}
+                          className="w-full flex items-center space-x-3 p-2 hover:bg-gray-100/50 rounded-lg transition-colors"
                         >
-                          <User
-                            className={`h-4 w-4 ${
-                              review.rating <= 2
-                                ? "text-red-600"
-                                : "text-blue-600"
-                            }`}
-                          />
-                        </div>
-                        <div>
-                          <div className="font-medium text-sm">
-                            {review.authorName}
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`h-4 w-4 ${
-                                  i < review.rating
-                                    ? review.rating <= 2
-                                      ? "text-red-500 fill-current"
-                                      : "text-yellow-400 fill-current"
-                                    : "text-gray-300"
-                                }`}
-                              />
-                            ))}
-                            {review.rating === 1 && (
-                              <Badge
-                                variant="destructive"
-                                className="ml-2 text-xs"
-                              >
-                                SCAM ALERT
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-1 text-xs text-gray-500">
-                        <Calendar className="h-3 w-3" />
-                        <span>{review.timeAgo}</span>
+                          <Copy className="h-4 w-4" />
+                          <span className="text-sm">Copy Link</span>
+                        </button>
+                        <button
+                          onClick={() => handleShare("whatsapp")}
+                          className="w-full flex items-center space-x-3 p-2 hover:bg-gray-100/50 rounded-lg transition-colors"
+                        >
+                          <MessageCircle className="h-4 w-4 text-green-600" />
+                          <span className="text-sm">WhatsApp</span>
+                        </button>
+                        <button
+                          onClick={() => handleShare("facebook")}
+                          className="w-full flex items-center space-x-3 p-2 hover:bg-gray-100/50 rounded-lg transition-colors"
+                        >
+                          <Facebook className="h-4 w-4 text-blue-600" />
+                          <span className="text-sm">Facebook</span>
+                        </button>
+                        <button
+                          onClick={() => handleShare("twitter")}
+                          className="w-full flex items-center space-x-3 p-2 hover:bg-gray-100/50 rounded-lg transition-colors"
+                        >
+                          <Twitter className="h-4 w-4 text-blue-400" />
+                          <span className="text-sm">Twitter</span>
+                        </button>
                       </div>
                     </div>
-                    <p
-                      className={`text-sm leading-relaxed ${
-                        review.rating <= 2 ? "text-red-900" : "text-gray-700"
-                      }`}
-                    >
-                      {review.text}
-                    </p>
-
-                    {/* Highlight concerning keywords for low ratings */}
-                    {review.rating <= 2 && (
-                      <div className="mt-3 p-3 bg-red-100 rounded text-xs text-red-800">
-                        <AlertTriangle className="h-3 w-3 inline mr-1" />
-                        <strong>Warning:</strong> This review reports negative
-                        experiences. Exercise caution.
-                      </div>
-                    )}
-                  </div>
-                ))
-              )}
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Additional Info Tabs */}
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 bg-white/50 backdrop-blur-sm">
-            <TabsTrigger value="overview" className="text-xs md:text-sm">
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="photos" className="text-xs md:text-sm">
-              Photos
-            </TabsTrigger>
-            <TabsTrigger
-              value="contact"
-              className="text-xs md:text-sm hidden md:block"
-            >
-              Contact
-            </TabsTrigger>
-          </TabsList>
+        {/* Click outside to close share menu */}
+        {showShareMenu && (
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setShowShareMenu(false)}
+          />
+        )}
 
-          {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-6">
-            {/* Company Description */}
-            {businessData.description && (
-              <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                    <Shield className="h-5 w-5 mr-2" />
-                    About This Business
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-8">
+          {/* High Risk Alert Banner */}
+          {scamAlertLevel === "high" && (
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-500 via-red-600 to-red-700 p-6 shadow-2xl">
+              <div className="absolute inset-0 bg-black/10"></div>
+              <div className="relative flex items-start space-x-4 text-white">
+                <div className="flex-shrink-0 p-2 bg-white/20 rounded-full backdrop-blur-sm">
+                  <AlertTriangle className="h-6 w-6" />
+                </div>
+                <div className="flex-grow">
+                  <h3 className="text-xl font-bold mb-2">
+                    ⚠️ HIGH SCAM RISK DETECTED
                   </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {businessData.description}
+                  <p className="text-white/90 text-sm leading-relaxed">
+                    This business has {oneStarCount} negative reviews (
+                    {scamPercentage.toFixed(0)}% of all reviews). Multiple
+                    customers report fraudulent activities. Exercise extreme
+                    caution.
                   </p>
                 </div>
               </div>
-            )}
-
-            {/* Business Information */}
-            <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                  <Building2 className="h-5 w-5 mr-2" />
-                  Business Details
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Business ID</span>
-                      <span className="text-gray-600 font-mono text-sm">
-                        {businessData.id}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Category</span>
-                      <span className="text-gray-600">
-                        {businessData.category}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Status</span>
-                      <span className="text-gray-600">
-                        {businessData.businessStatus || "Active"}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Total Reviews</span>
-                      <span className="text-gray-600">
-                        {businessData.reviewCount}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Average Rating</span>
-                      <span className="text-gray-600">
-                        {businessData.rating.toFixed(1)}/5.0
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Negative Reviews</span>
-                      <span
-                        className={`${oneStarCount > 0 ? "text-red-600 font-semibold" : "text-gray-600"}`}
-                      >
-                        {oneStarCount} (1-star reviews)
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Warning for poor ratings */}
-                {businessData.rating < 2.5 && (
-                  <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <div className="flex items-start space-x-2">
-                      <AlertTriangle className="h-5 w-5 text-yellow-600 mt-0.5" />
-                      <div>
-                        <h4 className="font-medium text-yellow-800">
-                          Low Rating Alert
-                        </h4>
-                        <p className="text-sm text-yellow-700 mt-1">
-                          This business has a low average rating of{" "}
-                          {businessData.rating.toFixed(1)}/5.0. Please review
-                          customer feedback carefully before proceeding.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
             </div>
-          </TabsContent>
+          )}
 
-          {/* Photos Tab */}
-          <TabsContent value="photos" className="space-y-6">
+          {/* Modern Photo Gallery */}
+          {businessData?.photos && businessData.photos.length > 0 && (
             <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
                   <Camera className="h-5 w-5 mr-2" />
-                  Business Photos
+                  Photo Gallery
                 </h3>
-                {businessData?.photos && businessData.photos.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {businessData.photos.map((photo, index) => (
-                      <div key={photo.id || index} className="space-y-2">
-                        <div className="aspect-video bg-gray-100 rounded-xl overflow-hidden group">
-                          {photo.base64 ? (
-                            <img
-                              src={`data:image/jpeg;base64,${photo.base64}`}
-                              alt={photo.caption || "Business photo"}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                            />
-                          ) : photo.url ? (
-                            <img
-                              src={photo.url}
-                              alt={photo.caption || "Business photo"}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center text-gray-500">
-                              <Camera className="h-8 w-8 mb-2" />
-                              <p className="text-sm font-medium text-center px-2">
-                                {photo.caption || "Business Photo"}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {businessData.photos.slice(0, 8).map((photo, index) => (
+                    <div
+                      key={photo.id || index}
+                      className={`relative overflow-hidden rounded-xl group cursor-pointer ${
+                        index === 0 ? "md:col-span-2 md:row-span-2" : ""
+                      }`}
+                    >
+                      <div
+                        className={`aspect-square ${index === 0 ? "md:aspect-[2/1]" : ""} bg-gradient-to-br from-gray-100 to-gray-200`}
+                      >
+                        {photo.base64 ? (
+                          <img
+                            src={`data:image/jpeg;base64,${photo.base64}`}
+                            alt={photo.caption || "Business photo"}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
+                        ) : photo.url ? (
+                          <img
+                            src={photo.url}
+                            alt={photo.caption || "Business photo"}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center text-gray-500">
+                            <Camera className="h-8 w-8 mb-2" />
+                            <p className="text-xs font-medium text-center px-2">
+                              {photo.caption || "Business Photo"}
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Overlay */}
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end">
+                          {photo.caption && (
+                            <div className="w-full p-3 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              <p className="text-sm font-medium">
+                                {photo.caption}
                               </p>
                             </div>
                           )}
                         </div>
-                        {photo.caption && (
-                          <p className="text-sm text-gray-600 text-center font-medium">
-                            {photo.caption}
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    <Camera className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No photos available for this business.</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* Contact Tab */}
-          <TabsContent value="contact" className="space-y-6">
-            <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                  <Phone className="h-5 w-5 mr-2" />
-                  Contact Information
-                </h3>
-                <div className="space-y-4">
-                  {businessData.address && (
-                    <div className="flex items-start space-x-3 p-4 bg-gray-50/50 rounded-lg">
-                      <MapPin className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="font-medium text-sm">Address</p>
-                        <p className="text-sm text-gray-600">
-                          {businessData.address}
-                        </p>
                       </div>
                     </div>
-                  )}
+                  ))}
 
-                  {businessData.phone && (
-                    <div className="flex items-center space-x-3 p-4 bg-gray-50/50 rounded-lg">
-                      <Phone className="h-5 w-5 text-green-600" />
-                      <div>
-                        <p className="font-medium text-sm">Phone</p>
-                        <p className="text-sm text-gray-600">
-                          {businessData.phone}
+                  {businessData.photos.length > 8 && (
+                    <div className="relative aspect-square bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center text-white cursor-pointer group hover:from-gray-700 hover:to-gray-800 transition-colors">
+                      <div className="text-center">
+                        <Camera className="h-6 w-6 mx-auto mb-2" />
+                        <p className="text-sm font-medium">
+                          +{businessData.photos.length - 8}
                         </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {businessData.email && (
-                    <div className="flex items-center space-x-3 p-4 bg-gray-50/50 rounded-lg">
-                      <Mail className="h-5 w-5 text-purple-600" />
-                      <div>
-                        <p className="font-medium text-sm">Email</p>
-                        <p className="text-sm text-gray-600">
-                          {businessData.email}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {businessData.website && (
-                    <div className="flex items-center space-x-3 p-4 bg-gray-50/50 rounded-lg">
-                      <Globe className="h-5 w-5 text-orange-600" />
-                      <div>
-                        <p className="font-medium text-sm">Website</p>
-                        <a
-                          href={businessData.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-blue-600 hover:underline flex items-center"
-                        >
-                          Visit Website
-                          <ExternalLink className="h-3 w-3 ml-1" />
-                        </a>
+                        <p className="text-xs">more photos</p>
                       </div>
                     </div>
                   )}
                 </div>
               </div>
             </div>
-          </TabsContent>
-        </Tabs>
+          )}
 
-        {/* Call to Action */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-50 to-orange-50 border border-red-200/50 shadow-xl">
-          <div className="p-6 text-center">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-              <div className="flex-grow text-center sm:text-left">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Have Experience with This Business?
-                </h3>
-                <p className="text-gray-600">
-                  Help protect others by sharing your experience. Your report
-                  can prevent others from becoming victims of scams.
-                </p>
+          {/* Modern Company Hero Section */}
+          <div className="relative overflow-hidden rounded-3xl bg-white/60 backdrop-blur-xl shadow-2xl border border-white/20">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-indigo-100/30"></div>
+
+            <div className="relative p-6 md:p-8 lg:p-10">
+              {/* Header with Logo and Quick Actions */}
+              <div className="flex flex-col lg:flex-row lg:items-start gap-6 mb-8">
+                {/* Logo and Basic Info */}
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                  <div className="relative">
+                    <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br from-blue-500/10 to-indigo-600/20 flex items-center justify-center border border-blue-200/50 overflow-hidden shadow-lg">
+                      {businessData?.logoUrl ? (
+                        <>
+                          <img
+                            src={businessData.logoUrl}
+                            alt={`${businessData.name} logo`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = "none";
+                              const parent = target.parentElement;
+                              const fallback = parent?.querySelector(
+                                ".company-logo-fallback",
+                              ) as HTMLElement;
+                              if (fallback) fallback.style.display = "flex";
+                            }}
+                          />
+                          <div
+                            className="company-logo-fallback absolute inset-0 flex items-center justify-center"
+                            style={{ display: "none" }}
+                          >
+                            <span className="text-2xl md:text-4xl font-bold text-blue-600">
+                              {businessData.name.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="company-logo-fallback absolute inset-0 flex items-center justify-center">
+                          <span className="text-2xl md:text-4xl font-bold text-blue-600">
+                            {businessData.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Status Indicator */}
+                    <div className="absolute -bottom-2 -right-2 px-2 py-1 bg-green-500 text-white text-xs rounded-full shadow-lg">
+                      <div className="flex items-center space-x-1">
+                        <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                        <span>Active</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Company Details */}
+                  <div className="text-center sm:text-left">
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 leading-tight">
+                      {businessData.name}
+                    </h1>
+
+                    {/* Rating Section */}
+                    <div className="flex items-center justify-center sm:justify-start space-x-3 mb-4">
+                      <div className="flex items-center space-x-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`h-5 w-5 ${
+                              i < Math.floor(businessData.rating)
+                                ? "text-yellow-400 fill-current"
+                                : "text-gray-300"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-lg font-semibold text-gray-700">
+                        {businessData.rating.toFixed(1)}
+                      </span>
+                      <span className="text-gray-500">
+                        ({businessData.reviewCount} reviews)
+                      </span>
+                      {businessData.rating <= 2.0 && (
+                        <Badge variant="destructive" className="animate-pulse">
+                          <TrendingDown className="h-3 w-3 mr-1" />
+                          Poor Rating
+                        </Badge>
+                      )}
+                    </div>
+
+                    {/* Category Badge */}
+                    <div className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-4">
+                      <Building2 className="h-4 w-4 mr-2" />
+                      {businessData.category}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick Actions */}
+                <div className="lg:ml-auto flex flex-col sm:flex-row lg:flex-col gap-3">
+                  <Button
+                    onClick={() =>
+                      navigate("/complaint", {
+                        state: {
+                          companyName: businessData.name,
+                          companyLocation: businessData.address,
+                        },
+                      })
+                    }
+                    className="bg-red-600 hover:bg-red-700 text-white shadow-lg"
+                    size="lg"
+                  >
+                    <AlertTriangle className="h-4 w-4 mr-2" />
+                    Report Scam
+                  </Button>
+
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="bg-white/50 hover:bg-white/80"
+                    >
+                      <BookmarkPlus className="h-4 w-4 mr-2" />
+                      Save
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="bg-white/50 hover:bg-white/80"
+                    >
+                      <Heart className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  size="lg"
-                  onClick={() =>
-                    navigate("/complaint", {
-                      state: {
-                        companyName: businessData.name,
-                        companyLocation: businessData.address,
-                      },
-                    })
-                  }
-                  className="bg-red-600 hover:bg-red-700 text-white shadow-lg"
-                >
-                  <AlertTriangle className="h-4 w-4 mr-2" />
-                  Report Scam
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={() => navigate("/dubai-businesses")}
-                  className="bg-white/50 hover:bg-white/80"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to Directory
-                </Button>
+
+              {/* Contact Information Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+                <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <MapPin className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <div className="flex-grow min-w-0">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">
+                      Address
+                    </p>
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {businessData.address}
+                    </p>
+                  </div>
+                </div>
+
+                {businessData.phone && (
+                  <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
+                    <div className="p-2 bg-green-100 rounded-lg">
+                      <Phone className="h-5 w-5 text-green-600" />
+                    </div>
+                    <div className="flex-grow">
+                      <p className="text-xs text-gray-500 uppercase tracking-wide">
+                        Phone
+                      </p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {businessData.phone}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {businessData.email && (
+                  <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
+                    <div className="p-2 bg-purple-100 rounded-lg">
+                      <Mail className="h-5 w-5 text-purple-600" />
+                    </div>
+                    <div className="flex-grow min-w-0">
+                      <p className="text-xs text-gray-500 uppercase tracking-wide">
+                        Email
+                      </p>
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                        {businessData.email}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {businessData.website && (
+                  <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
+                    <div className="p-2 bg-orange-100 rounded-lg">
+                      <Globe className="h-5 w-5 text-orange-600" />
+                    </div>
+                    <div className="flex-grow min-w-0">
+                      <p className="text-xs text-gray-500 uppercase tracking-wide">
+                        Website
+                      </p>
+                      <a
+                        href={businessData.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-medium text-blue-600 hover:text-blue-800 truncate flex items-center"
+                      >
+                        Visit Site
+                        <ExternalLink className="h-3 w-3 ml-1" />
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Warning Alert for High Risk */}
+              {oneStarCount > 0 && (
+                <div className="flex items-center justify-center space-x-3 p-4 bg-red-50 border border-red-200 rounded-xl">
+                  <AlertTriangle className="h-5 w-5 text-red-600" />
+                  <span className="text-sm font-medium text-red-800">
+                    {oneStarCount} Scam Report{oneStarCount > 1 ? "s" : ""}{" "}
+                    Filed Against This Business
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Reviews Section - Primary Focus */}
+          <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
+            <div className="p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Customer Reviews ({businessData.reviews.length})
+                </h2>
+
+                {/* Review Filter */}
+                <div className="flex items-center space-x-2 text-sm">
+                  <Filter className="h-4 w-4" />
+                  <select
+                    value={reviewFilter}
+                    onChange={(e) => setReviewFilter(e.target.value as any)}
+                    className="border rounded-lg px-3 py-2 text-sm bg-white/50 backdrop-blur-sm"
+                  >
+                    <option value="all">
+                      All Reviews ({businessData.reviews.length})
+                    </option>
+                    <option value="1star">
+                      1 Star ({reviewCounts[1] || 0})
+                    </option>
+                    <option value="2star">
+                      2 Stars ({reviewCounts[2] || 0})
+                    </option>
+                    <option value="3star">
+                      3 Stars ({reviewCounts[3] || 0})
+                    </option>
+                    <option value="4star">
+                      4 Stars ({reviewCounts[4] || 0})
+                    </option>
+                    <option value="5star">
+                      5 Stars ({reviewCounts[5] || 0})
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Review Distribution Bar */}
+              <div className="space-y-2 mb-6">
+                <div className="flex items-center justify-between text-sm text-gray-600">
+                  <span>Review Distribution</span>
+                  <span>{filteredReviews.length} showing</span>
+                </div>
+                <div className="grid grid-cols-5 gap-1 h-3 rounded-lg overflow-hidden">
+                  {[1, 2, 3, 4, 5].map((rating) => {
+                    const count = reviewCounts[rating] || 0;
+                    const percentage =
+                      totalReviews > 0 ? (count / totalReviews) * 100 : 0;
+                    return (
+                      <div
+                        key={rating}
+                        className={`${
+                          rating === 1
+                            ? "bg-red-500"
+                            : rating === 2
+                              ? "bg-orange-500"
+                              : rating === 3
+                                ? "bg-yellow-500"
+                                : rating === 4
+                                  ? "bg-green-400"
+                                  : "bg-green-500"
+                        }`}
+                        style={{
+                          height: `${Math.max(percentage, 2)}%`,
+                          minHeight: "4px",
+                        }}
+                        title={`${rating} star: ${count} reviews (${percentage.toFixed(1)}%)`}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Reviews List */}
+              <div className="space-y-4 max-h-96 overflow-y-auto">
+                {filteredReviews.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    <User className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>No reviews found for the selected filter.</p>
+                  </div>
+                ) : (
+                  filteredReviews.slice(0, 20).map((review, index) => (
+                    <div
+                      key={review.id}
+                      className={`p-4 rounded-xl border-l-4 ${
+                        review.rating === 1
+                          ? "border-l-red-500 bg-red-50/50"
+                          : review.rating === 2
+                            ? "border-l-orange-500 bg-orange-50/50"
+                            : review.rating === 3
+                              ? "border-l-yellow-500 bg-yellow-50/50"
+                              : review.rating === 4
+                                ? "border-l-green-400 bg-green-50/50"
+                                : "border-l-green-500 bg-green-50/50"
+                      } backdrop-blur-sm`}
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-2 sm:space-y-0 mb-3">
+                        <div className="flex items-center space-x-3">
+                          <div
+                            className={`p-2 rounded-full ${
+                              review.rating <= 2 ? "bg-red-100" : "bg-blue-100"
+                            }`}
+                          >
+                            <User
+                              className={`h-4 w-4 ${
+                                review.rating <= 2
+                                  ? "text-red-600"
+                                  : "text-blue-600"
+                              }`}
+                            />
+                          </div>
+                          <div>
+                            <div className="font-medium text-sm">
+                              {review.authorName}
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={`h-4 w-4 ${
+                                    i < review.rating
+                                      ? review.rating <= 2
+                                        ? "text-red-500 fill-current"
+                                        : "text-yellow-400 fill-current"
+                                      : "text-gray-300"
+                                  }`}
+                                />
+                              ))}
+                              {review.rating === 1 && (
+                                <Badge
+                                  variant="destructive"
+                                  className="ml-2 text-xs"
+                                >
+                                  SCAM ALERT
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-1 text-xs text-gray-500">
+                          <Calendar className="h-3 w-3" />
+                          <span>{review.timeAgo}</span>
+                        </div>
+                      </div>
+                      <p
+                        className={`text-sm leading-relaxed ${
+                          review.rating <= 2 ? "text-red-900" : "text-gray-700"
+                        }`}
+                      >
+                        {review.text}
+                      </p>
+
+                      {/* Highlight concerning keywords for low ratings */}
+                      {review.rating <= 2 && (
+                        <div className="mt-3 p-3 bg-red-100 rounded text-xs text-red-800">
+                          <AlertTriangle className="h-3 w-3 inline mr-1" />
+                          <strong>Warning:</strong> This review reports negative
+                          experiences. Exercise caution.
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Additional Info Tabs */}
+          <Tabs defaultValue="overview" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 bg-white/50 backdrop-blur-sm">
+              <TabsTrigger value="overview" className="text-xs md:text-sm">
+                Overview
+              </TabsTrigger>
+              <TabsTrigger value="photos" className="text-xs md:text-sm">
+                Photos
+              </TabsTrigger>
+              <TabsTrigger
+                value="contact"
+                className="text-xs md:text-sm hidden md:block"
+              >
+                Contact
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Overview Tab */}
+            <TabsContent value="overview" className="space-y-6">
+              {/* Company Description */}
+              {businessData.description && (
+                <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                      <Shield className="h-5 w-5 mr-2" />
+                      About This Business
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      {businessData.description}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Business Information */}
+              <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <Building2 className="h-5 w-5 mr-2" />
+                    Business Details
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">Business ID</span>
+                        <span className="text-gray-600 font-mono text-sm">
+                          {businessData.id}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">Category</span>
+                        <span className="text-gray-600">
+                          {businessData.category}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">Status</span>
+                        <span className="text-gray-600">
+                          {businessData.businessStatus || "Active"}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">Total Reviews</span>
+                        <span className="text-gray-600">
+                          {businessData.reviewCount}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">Average Rating</span>
+                        <span className="text-gray-600">
+                          {businessData.rating.toFixed(1)}/5.0
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">Negative Reviews</span>
+                        <span
+                          className={`${oneStarCount > 0 ? "text-red-600 font-semibold" : "text-gray-600"}`}
+                        >
+                          {oneStarCount} (1-star reviews)
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Warning for poor ratings */}
+                  {businessData.rating < 2.5 && (
+                    <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <div className="flex items-start space-x-2">
+                        <AlertTriangle className="h-5 w-5 text-yellow-600 mt-0.5" />
+                        <div>
+                          <h4 className="font-medium text-yellow-800">
+                            Low Rating Alert
+                          </h4>
+                          <p className="text-sm text-yellow-700 mt-1">
+                            This business has a low average rating of{" "}
+                            {businessData.rating.toFixed(1)}/5.0. Please review
+                            customer feedback carefully before proceeding.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Photos Tab */}
+            <TabsContent value="photos" className="space-y-6">
+              <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <Camera className="h-5 w-5 mr-2" />
+                    Business Photos
+                  </h3>
+                  {businessData?.photos && businessData.photos.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {businessData.photos.map((photo, index) => (
+                        <div key={photo.id || index} className="space-y-2">
+                          <div className="aspect-video bg-gray-100 rounded-xl overflow-hidden group">
+                            {photo.base64 ? (
+                              <img
+                                src={`data:image/jpeg;base64,${photo.base64}`}
+                                alt={photo.caption || "Business photo"}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                              />
+                            ) : photo.url ? (
+                              <img
+                                src={photo.url}
+                                alt={photo.caption || "Business photo"}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex flex-col items-center justify-center text-gray-500">
+                                <Camera className="h-8 w-8 mb-2" />
+                                <p className="text-sm font-medium text-center px-2">
+                                  {photo.caption || "Business Photo"}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                          {photo.caption && (
+                            <p className="text-sm text-gray-600 text-center font-medium">
+                              {photo.caption}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-gray-500">
+                      <Camera className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>No photos available for this business.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Contact Tab */}
+            <TabsContent value="contact" className="space-y-6">
+              <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <Phone className="h-5 w-5 mr-2" />
+                    Contact Information
+                  </h3>
+                  <div className="space-y-4">
+                    {businessData.address && (
+                      <div className="flex items-start space-x-3 p-4 bg-gray-50/50 rounded-lg">
+                        <MapPin className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="font-medium text-sm">Address</p>
+                          <p className="text-sm text-gray-600">
+                            {businessData.address}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {businessData.phone && (
+                      <div className="flex items-center space-x-3 p-4 bg-gray-50/50 rounded-lg">
+                        <Phone className="h-5 w-5 text-green-600" />
+                        <div>
+                          <p className="font-medium text-sm">Phone</p>
+                          <p className="text-sm text-gray-600">
+                            {businessData.phone}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {businessData.email && (
+                      <div className="flex items-center space-x-3 p-4 bg-gray-50/50 rounded-lg">
+                        <Mail className="h-5 w-5 text-purple-600" />
+                        <div>
+                          <p className="font-medium text-sm">Email</p>
+                          <p className="text-sm text-gray-600">
+                            {businessData.email}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {businessData.website && (
+                      <div className="flex items-center space-x-3 p-4 bg-gray-50/50 rounded-lg">
+                        <Globe className="h-5 w-5 text-orange-600" />
+                        <div>
+                          <p className="font-medium text-sm">Website</p>
+                          <a
+                            href={businessData.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-blue-600 hover:underline flex items-center"
+                          >
+                            Visit Website
+                            <ExternalLink className="h-3 w-3 ml-1" />
+                          </a>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+
+          {/* Call to Action */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-50 to-orange-50 border border-red-200/50 shadow-xl">
+            <div className="p-6 text-center">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <div className="flex-grow text-center sm:text-left">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    Have Experience with This Business?
+                  </h3>
+                  <p className="text-gray-600">
+                    Help protect others by sharing your experience. Your report
+                    can prevent others from becoming victims of scams.
+                  </p>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    size="lg"
+                    onClick={() =>
+                      navigate("/complaint", {
+                        state: {
+                          companyName: businessData.name,
+                          companyLocation: businessData.address,
+                        },
+                      })
+                    }
+                    className="bg-red-600 hover:bg-red-700 text-white shadow-lg"
+                  >
+                    <AlertTriangle className="h-4 w-4 mr-2" />
+                    Report Scam
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => navigate("/dubai-businesses")}
+                    className="bg-white/50 hover:bg-white/80"
+                  >
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Back to Directory
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
