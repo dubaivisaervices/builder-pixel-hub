@@ -5,6 +5,7 @@ import {
   searchDubaiVisaServices,
   getBusinessDetails,
   getBusinessPhoto,
+  getBusinessById,
   testGoogleAPI,
 } from "./routes/google-business";
 import {
