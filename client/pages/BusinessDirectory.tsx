@@ -844,7 +844,8 @@ export default function BusinessDirectory() {
             {displayedBusinesses.map((business, index) => (
               <Card
                 key={business.id}
-                className="shadow-xl border-0 bg-white/60 backdrop-blur-xl hover:shadow-2xl transition-all duration-300 group hover:scale-105"
+                className="shadow-xl border-0 bg-white/60 backdrop-blur-xl hover:shadow-2xl transition-all duration-300 group hover:scale-105 cursor-pointer"
+                onClick={() => navigateToDetails(business)}
               >
                 <CardContent className="p-4 md:p-6">
                   {/* Business Header */}
