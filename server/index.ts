@@ -73,5 +73,11 @@ export function createServer() {
   app.delete("/api/admin/category/:category", deleteCategory);
   app.get("/api/admin/debug-photos", debugPhotoData);
 
+  // Admin sync routes
+  app.get("/api/admin/stats", getDatabaseStats);
+  app.post("/api/admin/sync-database", syncInternalDatabase);
+  app.post("/api/admin/sync-google", syncGoogleApi);
+  app.post("/api/admin/clear-database", clearDatabase);
+
   return app;
 }
