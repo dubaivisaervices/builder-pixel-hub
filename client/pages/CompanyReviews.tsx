@@ -177,25 +177,34 @@ export default function CompanyReviews() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50">
       {/* Header */}
-      <div className="bg-white border-b shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center space-x-4">
+      <div className="bg-white/80 backdrop-blur-sm border-b shadow-sm sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <div className="flex items-center justify-between">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate("/")}
-              className="flex items-center space-x-2"
+              className="flex items-center space-x-2 text-sm md:text-base"
             >
               <ArrowLeft className="h-4 w-4" />
-              <span>Back to Home</span>
+              <span className="hidden sm:inline">Back to Directory</span>
+              <span className="sm:hidden">Back</span>
             </Button>
+
+            {/* Scam Alert Badge */}
+            {scamAlertLevel === "high" && (
+              <Badge variant="destructive" className="animate-pulse">
+                <Warning className="h-3 w-3 mr-1" />
+                High Scam Risk
+              </Badge>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 space-y-6 md:space-y-8">
         {/* Company Header */}
         <Card className="shadow-xl border-0 mb-8">
           <CardContent className="pt-8">
