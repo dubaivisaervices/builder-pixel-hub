@@ -417,6 +417,67 @@ export default function AdminSync() {
           </CardContent>
         </Card>
 
+        {/* Fresh Sync Results */}
+        {freshSyncResult && (
+          <Card className="shadow-lg border-0 border-green-200">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 text-green-800">
+                <CheckCircle className="h-5 w-5" />
+                <span>Fresh Sync Results</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <div>
+                    <h3 className="font-medium text-green-800">
+                      Fresh Sync Completed Successfully
+                    </h3>
+                    <p className="text-sm text-green-700">
+                      Database cleared and fresh Google data with unique photos
+                      synced
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="text-center p-4 bg-green-50 rounded-lg">
+                  <div className="text-2xl font-bold text-green-600">
+                    {freshSyncResult.totalSynced || 0}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Total Synced
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-blue-50 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {freshSyncResult.totalNew || 0}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    New Businesses
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-purple-50 rounded-lg">
+                  <div className="text-2xl font-bold text-purple-600">
+                    {freshSyncResult.businessesWithPhotos || 0}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    With Photos
+                  </div>
+                </div>
+                <div className="text-center p-4 bg-orange-50 rounded-lg">
+                  <div className="text-2xl font-bold text-orange-600">
+                    {freshSyncResult.duration || 0}s
+                  </div>
+                  <div className="text-sm text-muted-foreground">Duration</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Reviews Sync Results */}
         {reviewsSyncResult && (
           <Card className="shadow-lg border-0 border-blue-200">
