@@ -482,7 +482,8 @@ export default function CompanyReviews() {
         setLoading(true);
         setError(null);
 
-        const idToFetch = businessId || location.state?.businessData?.id;
+        // Try to get business ID from state, or create from URL params as fallback
+        const idToFetch = location.state?.businessData?.id;
 
         if (!idToFetch) {
           if (location.state?.businessData) {
