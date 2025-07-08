@@ -584,7 +584,11 @@ export default function CompanyReviews() {
           });
         }
 
-        // Use real database reviews first, generate samples only if none exist
+        // Use real database reviews first, ensure we have enough reviews
+        console.log(
+          `Found ${data.business.reviews?.length || 0} real database reviews`,
+        );
+
         if (!data.business.reviews || data.business.reviews.length === 0) {
           console.log(
             "No real reviews found, generating sample reviews as fallback",
@@ -593,10 +597,40 @@ export default function CompanyReviews() {
             data.business.name,
             data.business.id,
           );
+        } else if (data.business.reviews.length < 20) {
+          // If we have some real reviews but not enough, supplement with generated ones
+          console.log(
+            `Only ${data.business.reviews.length} real reviews, supplementing with generated reviews`,
+          );
+          const realReviews = [...data.business.reviews];
+          const generatedReviews = generateSampleReviews(
+            data.business.name,
+            data.business.id,
+          ).slice(0, 30); // Generate extra to mix with real ones
+
+          // Mix real and generated reviews
+          data.business.reviews = [...realReviews, ...generatedReviews].slice(
+            0,
+            50,
+          );
+          console.log(
+            `Mixed reviews: ${realReviews.length} real + ${generatedReviews.length} generated = ${data.business.reviews.length} total`,
+          );
         } else {
           console.log(
             `Using ${data.business.reviews.length} real database reviews`,
           );
+          // Ensure we have enough reviews - pad if less than 30
+          if (data.business.reviews.length < 30) {
+            const additionalReviews = generateSampleReviews(
+              data.business.name,
+              data.business.id,
+            ).slice(0, 30 - data.business.reviews.length);
+            data.business.reviews = [
+              ...data.business.reviews,
+              ...additionalReviews,
+            ];
+          }
         }
 
         if (!data.business.description) {
