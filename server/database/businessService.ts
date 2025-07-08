@@ -53,9 +53,9 @@ export class BusinessService {
         `
         INSERT INTO businesses (
           id, name, address, phone, website, email, lat, lng, rating,
-          review_count, category, business_status, photo_reference, logo_url,
-          is_open, price_level, has_target_keyword, hours_json, photos_json
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          review_count, category, business_status, photo_reference, logo_url, logo_base64,
+          is_open, price_level, has_target_keyword, hours_json, photos_json, photos_local_json
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
         [
           business.id,
