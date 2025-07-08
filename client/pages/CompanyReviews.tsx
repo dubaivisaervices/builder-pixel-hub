@@ -88,7 +88,6 @@ export default function CompanyReviews() {
   const handleShare = async (platform?: string) => {
     if (platform === "copy") {
       await navigator.clipboard.writeText(shareUrl);
-      // You could add a toast notification here
       return;
     }
 
@@ -122,9 +121,6 @@ export default function CompanyReviews() {
 
   // Generate sample reviews with proper distribution (25 low rating, 25 higher rating)
   const generateSampleReviews = (businessName: string): Review[] => {
-    const reviews: Review[] = [];
-
-    // 25 Low rating reviews (1-2 stars) - Scam reports
     const lowRatingReviews = [
       {
         rating: 1,
@@ -278,7 +274,6 @@ export default function CompanyReviews() {
       },
     ];
 
-    // 25 Mixed reviews (3-5 stars) - Some positive experiences
     const higherRatingReviews = [
       {
         rating: 4,
@@ -432,7 +427,6 @@ export default function CompanyReviews() {
       },
     ];
 
-    // Combine and return reviews
     const allReviews = [...lowRatingReviews, ...higherRatingReviews];
     return allReviews.map((review, index) => ({
       id: `review_${index + 1}`,
@@ -451,23 +445,18 @@ export default function CompanyReviews() {
         setLoading(true);
         setError(null);
 
-        // First try to get businessId from URL params or state
         const idToFetch = businessId || location.state?.businessData?.id;
 
         if (!idToFetch) {
-          // If no ID available, use fallback data if available
           if (location.state?.businessData) {
             console.log("Using fallback business data from navigation state");
             const fallbackData = location.state.businessData;
-            // Enhance with sample reviews
             fallbackData.reviews = generateSampleReviews(fallbackData.name);
 
-            // Add description if not present
             if (!fallbackData.description) {
               fallbackData.description = `${fallbackData.name} is a visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, tourist visa applications, and business visa support. The company claims to provide professional immigration advice and document processing services for clients seeking to travel to various destinations worldwide.`;
             }
 
-            // Add sample photos if not present
             if (!fallbackData.photos || fallbackData.photos.length === 0) {
               fallbackData.photos = [
                 {
@@ -509,17 +498,14 @@ export default function CompanyReviews() {
           `Loaded business: ${data.business.name} with ${data.business.reviews.length} reviews`,
         );
 
-        // Enhance with sample reviews if not enough reviews
         if (!data.business.reviews || data.business.reviews.length < 50) {
           data.business.reviews = generateSampleReviews(data.business.name);
         }
 
-        // Add description if not present
         if (!data.business.description) {
           data.business.description = `${data.business.name} is a visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, tourist visa applications, and business visa support. The company claims to provide professional immigration advice and document processing services for clients seeking to travel to various destinations worldwide.`;
         }
 
-        // Add sample photos if not present
         if (!data.business.photos || data.business.photos.length === 0) {
           data.business.photos = [
             {
@@ -538,23 +524,16 @@ export default function CompanyReviews() {
         setBusinessData(data.business);
       } catch (err) {
         console.error("Error fetching business data:", err);
-        setError(
-          err instanceof Error ? err.message : "Failed to load business data",
-        );
 
-        // Fallback to passed business data if available
         if (location.state?.businessData) {
           console.log("Using fallback business data from navigation state");
           const fallbackData = location.state.businessData;
-          // Enhance with sample reviews
           fallbackData.reviews = generateSampleReviews(fallbackData.name);
 
-          // Add description if not present
           if (!fallbackData.description) {
             fallbackData.description = `${fallbackData.name} is a visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, tourist visa applications, and business visa support. The company claims to provide professional immigration advice and document processing services for clients seeking to travel to various destinations worldwide.`;
           }
 
-          // Add sample photos if not present
           if (!fallbackData.photos || fallbackData.photos.length === 0) {
             fallbackData.photos = [
               {
@@ -572,6 +551,10 @@ export default function CompanyReviews() {
 
           setBusinessData(fallbackData);
           setError(null);
+        } else {
+          setError(
+            err instanceof Error ? err.message : "Failed to load business data",
+          );
         }
       } finally {
         setLoading(false);
@@ -609,7 +592,7 @@ export default function CompanyReviews() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
           <p className="text-muted-foreground">Loading business details...</p>
@@ -620,7 +603,7 @@ export default function CompanyReviews() {
 
   if (error || !businessData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardContent className="pt-6 text-center">
             <AlertTriangle className="h-12 w-12 text-destructive mx-auto mb-4" />
@@ -761,10 +744,14 @@ export default function CompanyReviews() {
                 <AlertTriangle className="h-6 w-6" />
               </div>
               <div className="flex-grow">
-                <h3 className="text-xl font-bold mb-2">⚠️ HIGH SCAM RISK DETECTED</h3>
+                <h3 className="text-xl font-bold mb-2">
+                  ⚠️ HIGH SCAM RISK DETECTED
+                </h3>
                 <p className="text-white/90 text-sm leading-relaxed">
-                  This business has {oneStarCount} negative reviews ({scamPercentage.toFixed(0)}% of all reviews).
-                  Multiple customers report fraudulent activities. Exercise extreme caution.
+                  This business has {oneStarCount} negative reviews (
+                  {scamPercentage.toFixed(0)}% of all reviews). Multiple
+                  customers report fraudulent activities. Exercise extreme
+                  caution.
                 </p>
               </div>
             </div>
@@ -787,7 +774,9 @@ export default function CompanyReviews() {
                       index === 0 ? "md:col-span-2 md:row-span-2" : ""
                     }`}
                   >
-                    <div className={`aspect-square ${index === 0 ? "md:aspect-[2/1]" : ""} bg-gradient-to-br from-gray-100 to-gray-200`}>
+                    <div
+                      className={`aspect-square ${index === 0 ? "md:aspect-[2/1]" : ""} bg-gradient-to-br from-gray-100 to-gray-200`}
+                    >
                       {photo.base64 ? (
                         <img
                           src={`data:image/jpeg;base64,${photo.base64}`}
@@ -813,7 +802,9 @@ export default function CompanyReviews() {
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end">
                         {photo.caption && (
                           <div className="w-full p-3 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <p className="text-sm font-medium">{photo.caption}</p>
+                            <p className="text-sm font-medium">
+                              {photo.caption}
+                            </p>
                           </div>
                         )}
                       </div>
@@ -825,7 +816,9 @@ export default function CompanyReviews() {
                   <div className="relative aspect-square bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center text-white cursor-pointer group hover:from-gray-700 hover:to-gray-800 transition-colors">
                     <div className="text-center">
                       <Camera className="h-6 w-6 mx-auto mb-2" />
-                      <p className="text-sm font-medium">+{businessData.photos.length - 8}</p>
+                      <p className="text-sm font-medium">
+                        +{businessData.photos.length - 8}
+                      </p>
                       <p className="text-xs">more photos</p>
                     </div>
                   </div>
@@ -857,11 +850,16 @@ export default function CompanyReviews() {
                             const target = e.target as HTMLImageElement;
                             target.style.display = "none";
                             const parent = target.parentElement;
-                            const fallback = parent?.querySelector(".company-logo-fallback") as HTMLElement;
+                            const fallback = parent?.querySelector(
+                              ".company-logo-fallback",
+                            ) as HTMLElement;
                             if (fallback) fallback.style.display = "flex";
                           }}
                         />
-                        <div className="company-logo-fallback absolute inset-0 flex items-center justify-center" style={{ display: "none" }}>
+                        <div
+                          className="company-logo-fallback absolute inset-0 flex items-center justify-center"
+                          style={{ display: "none" }}
+                        >
                           <span className="text-2xl md:text-4xl font-bold text-blue-600">
                             {businessData.name.charAt(0).toUpperCase()}
                           </span>
@@ -908,7 +906,9 @@ export default function CompanyReviews() {
                     <span className="text-lg font-semibold text-gray-700">
                       {businessData.rating.toFixed(1)}
                     </span>
-                    <span className="text-gray-500">({businessData.reviewCount} reviews)</span>
+                    <span className="text-gray-500">
+                      ({businessData.reviewCount} reviews)
+                    </span>
                     {businessData.rating <= 2.0 && (
                       <Badge variant="destructive" className="animate-pulse">
                         <TrendingDown className="h-3 w-3 mr-1" />
@@ -944,11 +944,19 @@ export default function CompanyReviews() {
                 </Button>
 
                 <div className="flex gap-2">
-                  <Button variant="outline" size="lg" className="bg-white/50 hover:bg-white/80">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="bg-white/50 hover:bg-white/80"
+                  >
                     <BookmarkPlus className="h-4 w-4 mr-2" />
                     Save
                   </Button>
-                  <Button variant="outline" size="lg" className="bg-white/50 hover:bg-white/80">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="bg-white/50 hover:bg-white/80"
+                  >
                     <Heart className="h-4 w-4" />
                   </Button>
                 </div>
@@ -962,8 +970,12 @@ export default function CompanyReviews() {
                   <MapPin className="h-5 w-5 text-blue-600" />
                 </div>
                 <div className="flex-grow min-w-0">
-                  <p className="text-xs text-gray-500 uppercase tracking-wide">Address</p>
-                  <p className="text-sm font-medium text-gray-900 truncate">{businessData.address}</p>
+                  <p className="text-xs text-gray-500 uppercase tracking-wide">
+                    Address
+                  </p>
+                  <p className="text-sm font-medium text-gray-900 truncate">
+                    {businessData.address}
+                  </p>
                 </div>
               </div>
 
@@ -973,8 +985,12 @@ export default function CompanyReviews() {
                     <Phone className="h-5 w-5 text-green-600" />
                   </div>
                   <div className="flex-grow">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">Phone</p>
-                    <p className="text-sm font-medium text-gray-900">{businessData.phone}</p>
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">
+                      Phone
+                    </p>
+                    <p className="text-sm font-medium text-gray-900">
+                      {businessData.phone}
+                    </p>
                   </div>
                 </div>
               )}
@@ -985,8 +1001,12 @@ export default function CompanyReviews() {
                     <Mail className="h-5 w-5 text-purple-600" />
                   </div>
                   <div className="flex-grow min-w-0">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">Email</p>
-                    <p className="text-sm font-medium text-gray-900 truncate">{businessData.email}</p>
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">
+                      Email
+                    </p>
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {businessData.email}
+                    </p>
                   </div>
                 </div>
               )}
@@ -997,7 +1017,9 @@ export default function CompanyReviews() {
                     <Globe className="h-5 w-5 text-orange-600" />
                   </div>
                   <div className="flex-grow min-w-0">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">Website</p>
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">
+                      Website
+                    </p>
                     <a
                       href={businessData.website}
                       target="_blank"
@@ -1017,151 +1039,21 @@ export default function CompanyReviews() {
               <div className="flex items-center justify-center space-x-3 p-4 bg-red-50 border border-red-200 rounded-xl">
                 <AlertTriangle className="h-5 w-5 text-red-600" />
                 <span className="text-sm font-medium text-red-800">
-                  {oneStarCount} Scam Report{oneStarCount > 1 ? 's' : ''} Filed Against This Business
+                  {oneStarCount} Scam Report{oneStarCount > 1 ? "s" : ""} Filed
+                  Against This Business
                 </span>
               </div>
             )}
           </div>
         </div>
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = "none";
-                            const parent = target.parentElement;
-                            const fallback = parent?.querySelector(
-                              ".company-logo-fallback",
-                            ) as HTMLElement;
-                            if (fallback) fallback.style.display = "flex";
-                          }}
-                        />
-                        <div
-                          className="company-logo-fallback absolute inset-0 flex items-center justify-center"
-                          style={{ display: "none" }}
-                        >
-                          <span className="text-primary text-2xl md:text-4xl font-bold">
-                            {businessData.name.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="company-logo-fallback absolute inset-0 flex items-center justify-center">
-                        <span className="text-primary text-2xl md:text-4xl font-bold">
-                          {businessData.name.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Company Info */}
-                <div className="flex-grow text-center sm:text-left">
-                  <h1 className="text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-3">
-                    {businessData.name}
-                  </h1>
-
-                  {/* Rating with emphasis on poor ratings */}
-                  <div className="flex items-center justify-center sm:justify-start space-x-2 mb-3">
-                    <div className="flex items-center space-x-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-4 w-4 md:h-5 md:w-5 ${
-                            i < Math.floor(businessData.rating)
-                              ? "text-yellow-400 fill-current"
-                              : "text-gray-300"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-sm md:text-base text-muted-foreground">
-                      {businessData.rating.toFixed(1)} (
-                      {businessData.reviewCount} reviews)
-                    </span>
-                    {businessData.rating <= 2.0 && (
-                      <Badge variant="destructive" className="text-xs">
-                        <TrendingDown className="h-3 w-3 mr-1" />
-                        Poor Rating
-                      </Badge>
-                    )}
-                  </div>
-
-                  <p className="text-sm md:text-base text-muted-foreground mb-4">
-                    Category: {businessData.category}
-                  </p>
-
-                  {/* Contact Info - Grid for larger screens, stack for mobile */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 text-sm">
-                    <div className="flex items-center justify-center sm:justify-start space-x-2">
-                      <MapPin className="h-4 w-4 text-primary flex-shrink-0" />
-                      <span className="truncate">{businessData.address}</span>
-                    </div>
-                    {businessData.phone && (
-                      <div className="flex items-center justify-center sm:justify-start space-x-2">
-                        <Phone className="h-4 w-4 text-primary flex-shrink-0" />
-                        <span>{businessData.phone}</span>
-                      </div>
-                    )}
-                    {businessData.email && (
-                      <div className="flex items-center justify-center sm:justify-start space-x-2">
-                        <Mail className="h-4 w-4 text-primary flex-shrink-0" />
-                        <span className="truncate">{businessData.email}</span>
-                      </div>
-                    )}
-                    {businessData.website && (
-                      <div className="flex items-center justify-center sm:justify-start space-x-2">
-                        <Globe className="h-4 w-4 text-primary flex-shrink-0" />
-                        <a
-                          href={businessData.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary hover:underline flex items-center truncate"
-                        >
-                          Website
-                          <ExternalLink className="h-3 w-3 ml-1 flex-shrink-0" />
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
-                <Button
-                  onClick={() =>
-                    navigate("/complaint", {
-                      state: {
-                        companyName: businessData.name,
-                        companyLocation: businessData.address,
-                      },
-                    })
-                  }
-                  className="bg-destructive hover:bg-destructive/90 w-full sm:w-auto"
-                  size="lg"
-                >
-                  <AlertTriangle className="h-4 w-4 mr-2" />
-                  Report This Company
-                </Button>
-
-                {oneStarCount > 0 && (
-                  <Badge
-                    variant="outline"
-                    className="w-full sm:w-auto justify-center py-2 text-destructive border-destructive"
-                  >
-                    <AlertTriangle className="h-4 w-4 mr-2" />
-                    {oneStarCount} Scam Report{oneStarCount > 1 ? "s" : ""}
-                  </Badge>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Reviews Section - Primary Focus */}
-        <Card className="shadow-lg border-0">
-          <CardHeader className="pb-4">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-              <CardTitle className="text-xl md:text-2xl">
+        <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
+          <div className="p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">
                 Customer Reviews ({businessData.reviews.length})
-              </CardTitle>
+              </h2>
 
               {/* Review Filter */}
               <div className="flex items-center space-x-2 text-sm">
@@ -1169,7 +1061,7 @@ export default function CompanyReviews() {
                 <select
                   value={reviewFilter}
                   onChange={(e) => setReviewFilter(e.target.value as any)}
-                  className="border rounded px-2 py-1 text-sm"
+                  className="border rounded-lg px-3 py-2 text-sm bg-white/50 backdrop-blur-sm"
                 >
                   <option value="all">
                     All Reviews ({businessData.reviews.length})
@@ -1192,12 +1084,12 @@ export default function CompanyReviews() {
             </div>
 
             {/* Review Distribution Bar */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
+            <div className="space-y-2 mb-6">
+              <div className="flex items-center justify-between text-sm text-gray-600">
                 <span>Review Distribution</span>
                 <span>{filteredReviews.length} showing</span>
               </div>
-              <div className="grid grid-cols-5 gap-1 h-2">
+              <div className="grid grid-cols-5 gap-1 h-3 rounded-lg overflow-hidden">
                 {[1, 2, 3, 4, 5].map((rating) => {
                   const count = reviewCounts[rating] || 0;
                   const percentage =
@@ -1205,7 +1097,7 @@ export default function CompanyReviews() {
                   return (
                     <div
                       key={rating}
-                      className={`rounded ${
+                      className={`${
                         rating === 1
                           ? "bg-red-500"
                           : rating === 2
@@ -1218,7 +1110,7 @@ export default function CompanyReviews() {
                       }`}
                       style={{
                         height: `${Math.max(percentage, 2)}%`,
-                        minHeight: "2px",
+                        minHeight: "4px",
                       }}
                       title={`${rating} star: ${count} reviews (${percentage.toFixed(1)}%)`}
                     />
@@ -1226,107 +1118,104 @@ export default function CompanyReviews() {
                 })}
               </div>
             </div>
-          </CardHeader>
-
-          <CardContent className="space-y-4">
-            {/* No Reviews Message */}
-            {filteredReviews.length === 0 && (
-              <div className="text-center py-8 text-muted-foreground">
-                <User className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>No reviews found for the selected filter.</p>
-                {businessData.reviews.length === 0 && (
-                  <p className="text-sm mt-2">
-                    This business has no customer reviews yet.
-                  </p>
-                )}
-              </div>
-            )}
 
             {/* Reviews List */}
-            {filteredReviews.map((review, index) => (
-              <div
-                key={review.id}
-                className={`p-4 rounded-lg border-l-4 ${
-                  review.rating === 1
-                    ? "border-l-red-500 bg-red-50"
-                    : review.rating === 2
-                      ? "border-l-orange-500 bg-orange-50"
-                      : review.rating === 3
-                        ? "border-l-yellow-500 bg-yellow-50"
-                        : review.rating === 4
-                          ? "border-l-green-400 bg-green-50"
-                          : "border-l-green-500 bg-green-50"
-                } ${index < filteredReviews.length - 1 ? "border-b pb-4 mb-4" : ""}`}
-              >
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-2 sm:space-y-0 mb-3">
-                  <div className="flex items-center space-x-3">
-                    <div
-                      className={`p-2 rounded-full ${
-                        review.rating <= 2 ? "bg-red-100" : "bg-primary/10"
-                      }`}
-                    >
-                      <User
-                        className={`h-4 w-4 ${
-                          review.rating <= 2 ? "text-red-600" : "text-primary"
-                        }`}
-                      />
-                    </div>
-                    <div>
-                      <div className="font-medium text-sm md:text-base">
-                        {review.authorName}
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-3 w-3 md:h-4 md:w-4 ${
-                              i < review.rating
-                                ? review.rating <= 2
-                                  ? "text-red-500 fill-current"
-                                  : "text-yellow-400 fill-current"
-                                : "text-gray-300"
+            <div className="space-y-4 max-h-96 overflow-y-auto">
+              {filteredReviews.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  <User className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p>No reviews found for the selected filter.</p>
+                </div>
+              ) : (
+                filteredReviews.slice(0, 20).map((review, index) => (
+                  <div
+                    key={review.id}
+                    className={`p-4 rounded-xl border-l-4 ${
+                      review.rating === 1
+                        ? "border-l-red-500 bg-red-50/50"
+                        : review.rating === 2
+                          ? "border-l-orange-500 bg-orange-50/50"
+                          : review.rating === 3
+                            ? "border-l-yellow-500 bg-yellow-50/50"
+                            : review.rating === 4
+                              ? "border-l-green-400 bg-green-50/50"
+                              : "border-l-green-500 bg-green-50/50"
+                    } backdrop-blur-sm`}
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-2 sm:space-y-0 mb-3">
+                      <div className="flex items-center space-x-3">
+                        <div
+                          className={`p-2 rounded-full ${
+                            review.rating <= 2 ? "bg-red-100" : "bg-blue-100"
+                          }`}
+                        >
+                          <User
+                            className={`h-4 w-4 ${
+                              review.rating <= 2
+                                ? "text-red-600"
+                                : "text-blue-600"
                             }`}
                           />
-                        ))}
-                        {review.rating === 1 && (
-                          <Badge variant="destructive" className="ml-2 text-xs">
-                            SCAM ALERT
-                          </Badge>
-                        )}
+                        </div>
+                        <div>
+                          <div className="font-medium text-sm">
+                            {review.authorName}
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`h-4 w-4 ${
+                                  i < review.rating
+                                    ? review.rating <= 2
+                                      ? "text-red-500 fill-current"
+                                      : "text-yellow-400 fill-current"
+                                    : "text-gray-300"
+                                }`}
+                              />
+                            ))}
+                            {review.rating === 1 && (
+                              <Badge
+                                variant="destructive"
+                                className="ml-2 text-xs"
+                              >
+                                SCAM ALERT
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-1 text-xs text-gray-500">
+                        <Calendar className="h-3 w-3" />
+                        <span>{review.timeAgo}</span>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex items-center space-x-1 text-xs md:text-sm text-muted-foreground">
-                    <Calendar className="h-3 w-3 md:h-4 md:w-4" />
-                    <span>{review.timeAgo}</span>
-                  </div>
-                </div>
-                <p
-                  className={`text-sm md:text-base leading-relaxed ${
-                    review.rating <= 2
-                      ? "text-red-900"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  {review.text}
-                </p>
+                    <p
+                      className={`text-sm leading-relaxed ${
+                        review.rating <= 2 ? "text-red-900" : "text-gray-700"
+                      }`}
+                    >
+                      {review.text}
+                    </p>
 
-                {/* Highlight concerning keywords for low ratings */}
-                {review.rating <= 2 && (
-                  <div className="mt-3 p-3 bg-red-100 rounded text-xs text-red-800">
-                    <AlertTriangle className="h-3 w-3 inline mr-1" />
-                    <strong>Warning:</strong> This review reports negative
-                    experiences. Exercise caution.
+                    {/* Highlight concerning keywords for low ratings */}
+                    {review.rating <= 2 && (
+                      <div className="mt-3 p-3 bg-red-100 rounded text-xs text-red-800">
+                        <AlertTriangle className="h-3 w-3 inline mr-1" />
+                        <strong>Warning:</strong> This review reports negative
+                        experiences. Exercise caution.
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
 
         {/* Additional Info Tabs */}
-        <Tabs defaultValue="overview" className="space-y-4 md:space-y-6">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-3">
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 bg-white/50 backdrop-blur-sm">
             <TabsTrigger value="overview" className="text-xs md:text-sm">
               Overview
             </TabsTrigger>
@@ -1342,71 +1231,67 @@ export default function CompanyReviews() {
           </TabsList>
 
           {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-4 md:space-y-6">
+          <TabsContent value="overview" className="space-y-6">
             {/* Company Description */}
             {businessData.description && (
-              <Card className="shadow-lg border-0">
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2 text-lg">
-                    <Shield className="h-5 w-5" />
-                    <span>About This Business</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+              <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <Shield className="h-5 w-5 mr-2" />
+                    About This Business
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
                     {businessData.description}
                   </p>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             )}
 
             {/* Business Information */}
-            <Card className="shadow-lg border-0">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2 text-lg">
-                  <Shield className="h-5 w-5" />
-                  <span>Business Details</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base">
-                  <div className="space-y-3">
-                    <div className="flex flex-col sm:flex-row sm:justify-between">
+            <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Building2 className="h-5 w-5 mr-2" />
+                  Business Details
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
                       <span className="font-medium">Business ID</span>
-                      <span className="text-muted-foreground font-mono text-xs md:text-sm">
+                      <span className="text-gray-600 font-mono text-sm">
                         {businessData.id}
                       </span>
                     </div>
-                    <div className="flex flex-col sm:flex-row sm:justify-between">
+                    <div className="flex justify-between items-center">
                       <span className="font-medium">Category</span>
-                      <span className="text-muted-foreground">
+                      <span className="text-gray-600">
                         {businessData.category}
                       </span>
                     </div>
-                    <div className="flex flex-col sm:flex-row sm:justify-between">
+                    <div className="flex justify-between items-center">
                       <span className="font-medium">Status</span>
-                      <span className="text-muted-foreground">
+                      <span className="text-gray-600">
                         {businessData.businessStatus || "Active"}
                       </span>
                     </div>
                   </div>
-                  <div className="space-y-3">
-                    <div className="flex flex-col sm:flex-row sm:justify-between">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
                       <span className="font-medium">Total Reviews</span>
-                      <span className="text-muted-foreground">
+                      <span className="text-gray-600">
                         {businessData.reviewCount}
                       </span>
                     </div>
-                    <div className="flex flex-col sm:flex-row sm:justify-between">
+                    <div className="flex justify-between items-center">
                       <span className="font-medium">Average Rating</span>
-                      <span className="text-muted-foreground">
+                      <span className="text-gray-600">
                         {businessData.rating.toFixed(1)}/5.0
                       </span>
                     </div>
-                    <div className="flex flex-col sm:flex-row sm:justify-between">
+                    <div className="flex justify-between items-center">
                       <span className="font-medium">Negative Reviews</span>
                       <span
-                        className={`${oneStarCount > 0 ? "text-red-600 font-semibold" : "text-muted-foreground"}`}
+                        className={`${oneStarCount > 0 ? "text-red-600 font-semibold" : "text-gray-600"}`}
                       >
                         {oneStarCount} (1-star reviews)
                       </span>
@@ -1416,7 +1301,7 @@ export default function CompanyReviews() {
 
                 {/* Warning for poor ratings */}
                 {businessData.rating < 2.5 && (
-                  <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                     <div className="flex items-start space-x-2">
                       <AlertTriangle className="h-5 w-5 text-yellow-600 mt-0.5" />
                       <div>
@@ -1432,125 +1317,77 @@ export default function CompanyReviews() {
                     </div>
                   </div>
                 )}
-              </CardContent>
-            </Card>
-
-            {/* Operating Hours - if available */}
-            {businessData.hours && (
-              <Card className="shadow-lg border-0">
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2 text-lg">
-                    <Clock className="h-5 w-5" />
-                    <span>Operating Hours</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 text-sm md:text-base">
-                    {Object.entries(businessData.hours).map(([day, hours]) => (
-                      <div
-                        key={day}
-                        className="flex justify-between items-center"
-                      >
-                        <span className="font-medium capitalize">{day}</span>
-                        <span className="text-muted-foreground">{hours}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+              </div>
+            </div>
           </TabsContent>
 
           {/* Photos Tab */}
-          <TabsContent value="photos" className="space-y-4 md:space-y-6">
-            <Card className="shadow-lg border-0">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2 text-lg">
-                  <Camera className="h-5 w-5" />
-                  <span>Business Photos</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+          <TabsContent value="photos" className="space-y-6">
+            <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Camera className="h-5 w-5 mr-2" />
+                  Business Photos
+                </h3>
                 {businessData?.photos && businessData.photos.length > 0 ? (
-                  <>
-                    <div className="mb-4 text-sm text-green-600 bg-green-50 p-3 rounded-lg">
-                      📷 Showing {businessData.photos.length} real business
-                      photos
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                      {businessData.photos.map((photo, index) => (
-                        <div key={photo.id || index} className="space-y-2">
-                          <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden border-2 border-gray-200 group">
-                            {photo.base64 ? (
-                              <img
-                                src={`data:image/jpeg;base64,${photo.base64}`}
-                                alt={photo.caption || "Business photo"}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                              />
-                            ) : photo.url ? (
-                              <img
-                                src={photo.url}
-                                alt={photo.caption || "Business photo"}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                                onError={(e) => {
-                                  const target = e.target as HTMLImageElement;
-                                  target.style.display = "none";
-                                  const placeholder =
-                                    target.parentElement?.querySelector(
-                                      ".photo-placeholder",
-                                    );
-                                  if (placeholder)
-                                    placeholder.classList.remove("hidden");
-                                }}
-                              />
-                            ) : null}
-                            <div className="photo-placeholder hidden text-center text-gray-500 flex flex-col items-center justify-center h-full">
-                              <Camera className="h-8 w-8 md:h-12 md:w-12 mb-2" />
-                              <p className="text-xs md:text-sm font-medium">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {businessData.photos.map((photo, index) => (
+                      <div key={photo.id || index} className="space-y-2">
+                        <div className="aspect-video bg-gray-100 rounded-xl overflow-hidden group">
+                          {photo.base64 ? (
+                            <img
+                              src={`data:image/jpeg;base64,${photo.base64}`}
+                              alt={photo.caption || "Business photo"}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                            />
+                          ) : photo.url ? (
+                            <img
+                              src={photo.url}
+                              alt={photo.caption || "Business photo"}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center text-gray-500">
+                              <Camera className="h-8 w-8 mb-2" />
+                              <p className="text-sm font-medium text-center px-2">
                                 {photo.caption || "Business Photo"}
                               </p>
                             </div>
-                          </div>
-                          {photo.caption && (
-                            <p className="text-xs md:text-sm text-muted-foreground text-center font-medium">
-                              {photo.caption}
-                            </p>
                           )}
                         </div>
-                      ))}
-                    </div>
-                  </>
+                        {photo.caption && (
+                          <p className="text-sm text-gray-600 text-center font-medium">
+                            {photo.caption}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
+                  <div className="text-center py-8 text-gray-500">
                     <Camera className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>No photos available for this business.</p>
-                    <p className="text-sm mt-2">
-                      Photos may be added when available from Google My
-                      Business.
-                    </p>
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </TabsContent>
 
-          {/* Contact Tab - Mobile only */}
-          <TabsContent value="contact" className="space-y-4 md:space-y-6">
-            <Card className="shadow-lg border-0">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2 text-lg">
-                  <Phone className="h-5 w-5" />
-                  <span>Contact Information</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
+          {/* Contact Tab */}
+          <TabsContent value="contact" className="space-y-6">
+            <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Phone className="h-5 w-5 mr-2" />
+                  Contact Information
+                </h3>
+                <div className="space-y-4">
                   {businessData.address && (
-                    <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                      <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <div className="flex items-start space-x-3 p-4 bg-gray-50/50 rounded-lg">
+                      <MapPin className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
                       <div>
                         <p className="font-medium text-sm">Address</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-gray-600">
                           {businessData.address}
                         </p>
                       </div>
@@ -1558,11 +1395,11 @@ export default function CompanyReviews() {
                   )}
 
                   {businessData.phone && (
-                    <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                      <Phone className="h-5 w-5 text-primary" />
+                    <div className="flex items-center space-x-3 p-4 bg-gray-50/50 rounded-lg">
+                      <Phone className="h-5 w-5 text-green-600" />
                       <div>
                         <p className="font-medium text-sm">Phone</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-gray-600">
                           {businessData.phone}
                         </p>
                       </div>
@@ -1570,11 +1407,11 @@ export default function CompanyReviews() {
                   )}
 
                   {businessData.email && (
-                    <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                      <Mail className="h-5 w-5 text-primary" />
+                    <div className="flex items-center space-x-3 p-4 bg-gray-50/50 rounded-lg">
+                      <Mail className="h-5 w-5 text-purple-600" />
                       <div>
                         <p className="font-medium text-sm">Email</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-gray-600">
                           {businessData.email}
                         </p>
                       </div>
@@ -1582,15 +1419,15 @@ export default function CompanyReviews() {
                   )}
 
                   {businessData.website && (
-                    <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                      <Globe className="h-5 w-5 text-primary" />
+                    <div className="flex items-center space-x-3 p-4 bg-gray-50/50 rounded-lg">
+                      <Globe className="h-5 w-5 text-orange-600" />
                       <div>
                         <p className="font-medium text-sm">Website</p>
                         <a
                           href={businessData.website}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm text-primary hover:underline flex items-center"
+                          className="text-sm text-blue-600 hover:underline flex items-center"
                         >
                           Visit Website
                           <ExternalLink className="h-3 w-3 ml-1" />
@@ -1599,20 +1436,20 @@ export default function CompanyReviews() {
                     </div>
                   )}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
 
         {/* Call to Action */}
-        <Card className="shadow-lg border-0 bg-gradient-to-r from-red-50 to-orange-50">
-          <CardContent className="p-4 md:p-6 text-center">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-50 to-orange-50 border border-red-200/50 shadow-xl">
+          <div className="p-6 text-center">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center space-y-4 sm:space-y-0 sm:space-x-6">
               <div className="flex-grow text-center sm:text-left">
-                <h3 className="text-lg md:text-xl font-semibold mb-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
                   Have Experience with This Business?
                 </h3>
-                <p className="text-sm md:text-base text-muted-foreground">
+                <p className="text-gray-600">
                   Help protect others by sharing your experience. Your report
                   can prevent others from becoming victims of scams.
                 </p>
@@ -1628,7 +1465,7 @@ export default function CompanyReviews() {
                       },
                     })
                   }
-                  className="bg-destructive hover:bg-destructive/90 w-full sm:w-auto"
+                  className="bg-red-600 hover:bg-red-700 text-white shadow-lg"
                 >
                   <AlertTriangle className="h-4 w-4 mr-2" />
                   Report Scam
@@ -1636,16 +1473,16 @@ export default function CompanyReviews() {
                 <Button
                   variant="outline"
                   size="lg"
-                  onClick={() => navigate("/")}
-                  className="w-full sm:w-auto"
+                  onClick={() => navigate("/dubai-businesses")}
+                  className="bg-white/50 hover:bg-white/80"
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Back to Directory
                 </Button>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
