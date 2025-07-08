@@ -892,10 +892,7 @@ export default function CompanyReviews() {
                         </div>
 
                         {businessData.rating <= 2.0 && (
-                          <Badge
-                            variant="destructive"
-                            className="text-xs animate-pulse"
-                          >
+                          <Badge variant="destructive" className="text-xs animate-pulse">
                             <TrendingDown className="h-3 w-3 mr-1" />
                             Risk
                           </Badge>
@@ -904,10 +901,7 @@ export default function CompanyReviews() {
 
                       {/* Category & Location - Compact */}
                       <div className="flex flex-wrap items-center gap-2 mt-2">
-                        <Badge
-                          variant="secondary"
-                          className="text-xs bg-blue-100 text-blue-800 border-blue-200"
-                        >
+                        <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-800 border-blue-200">
                           <Building2 className="h-3 w-3 mr-1" />
                           {businessData.category}
                         </Badge>
@@ -964,63 +958,48 @@ export default function CompanyReviews() {
                 </div>
               </div>
 
-              {/* Contact Information Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-                <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <MapPin className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div className="flex-grow min-w-0">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">
-                      Address
-                    </p>
-                    <p className="text-sm font-medium text-gray-900 truncate">
-                      {businessData.address}
-                    </p>
-                  </div>
-                </div>
-
-                {businessData.phone && (
-                  <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
-                    <div className="p-2 bg-green-100 rounded-lg">
-                      <Phone className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div className="flex-grow">
-                      <p className="text-xs text-gray-500 uppercase tracking-wide">
-                        Phone
-                      </p>
-                      <p className="text-sm font-medium text-gray-900">
-                        {businessData.phone}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {businessData.email && (
-                  <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
-                    <div className="p-2 bg-purple-100 rounded-lg">
-                      <Mail className="h-5 w-5 text-purple-600" />
-                    </div>
+              {/* Compact Contact Information */}
+              <div className="bg-white/50 backdrop-blur-sm rounded-xl p-4 border border-white/40">
+                <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                  Contact Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="flex items-center space-x-3 p-3 rounded-lg bg-blue-50/50 border border-blue-100">
+                    <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
                     <div className="flex-grow min-w-0">
-                      <p className="text-xs text-gray-500 uppercase tracking-wide">
-                        Email
-                      </p>
-                      <p className="text-sm font-medium text-gray-900 truncate">
-                        {businessData.email}
+                      <p className="text-xs text-blue-600 font-medium">Address</p>
+                      <p className="text-sm text-gray-900 truncate">
+                        {businessData.address}
                       </p>
                     </div>
                   </div>
-                )}
 
-                {businessData.website && (
-                  <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
-                    <div className="p-2 bg-orange-100 rounded-lg">
-                      <Globe className="h-5 w-5 text-orange-600" />
+                  {businessData.phone && (
+                    <div className="flex items-center space-x-3 p-3 rounded-lg bg-green-50/50 border border-green-100">
+                      <Phone className="h-4 w-4 text-green-600 flex-shrink-0" />
+                      <div className="flex-grow">
+                        <p className="text-xs text-green-600 font-medium">Phone</p>
+                        <p className="text-sm text-gray-900">{businessData.phone}</p>
+                      </div>
                     </div>
-                    <div className="flex-grow min-w-0">
-                      <p className="text-xs text-gray-500 uppercase tracking-wide">
-                        Website
-                      </p>
+                  )}
+
+                  {businessData.email && (
+                    <div className="flex items-center space-x-3 p-3 rounded-lg bg-purple-50/50 border border-purple-100">
+                      <Mail className="h-4 w-4 text-purple-600 flex-shrink-0" />
+                      <div className="flex-grow min-w-0">
+                        <p className="text-xs text-purple-600 font-medium">Email</p>
+                        <p className="text-sm text-gray-900 truncate">{businessData.email}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {businessData.website && (
+                    <div className="flex items-center space-x-3 p-3 rounded-lg bg-orange-50/50 border border-orange-100">
+                      <Globe className="h-4 w-4 text-orange-600 flex-shrink-0" />
+                      <div className="flex-grow min-w-0">
+                        <p className="text-xs text-orange-600 font-medium">Website</p>
                       <a
                         href={businessData.website}
                         target="_blank"
