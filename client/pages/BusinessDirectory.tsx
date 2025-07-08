@@ -763,13 +763,13 @@ export default function BusinessDirectory() {
                   </div>
 
                   {/* Rating and Reviews */}
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 md:mb-4 gap-2">
                     <div className="flex items-center space-x-2">
                       <div className="flex items-center space-x-1">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Star
                             key={star}
-                            className={`h-4 w-4 ${
+                            className={`h-3 w-3 md:h-4 md:w-4 ${
                               star <= Math.floor(business.rating)
                                 ? "text-yellow-400 fill-current"
                                 : "text-gray-300"
@@ -777,10 +777,10 @@ export default function BusinessDirectory() {
                           />
                         ))}
                       </div>
-                      <span className="font-semibold text-gray-900">
+                      <span className="font-semibold text-sm md:text-base text-gray-900">
                         {business.rating.toFixed(1)}
                       </span>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-xs md:text-sm text-gray-500">
                         ({business.reviewCount} reviews)
                       </span>
                     </div>
