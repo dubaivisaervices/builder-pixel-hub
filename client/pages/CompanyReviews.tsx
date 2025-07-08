@@ -597,7 +597,7 @@ export default function CompanyReviews() {
     };
 
     fetchBusinessData();
-  }, [businessId, location.state?.businessData]);
+  }, [fetchBusinessData, location.state?.businessData]);
 
   // Filter reviews based on rating
   const filteredReviews =
