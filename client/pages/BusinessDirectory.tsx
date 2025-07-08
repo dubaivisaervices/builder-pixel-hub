@@ -486,61 +486,6 @@ export default function BusinessDirectory() {
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Hero Section */}
         <div className="text-center space-y-4 md:space-y-6">
-          <CardContent className="p-4 md:p-6">
-            <div className="text-center mb-4">
-              <h3 className="text-sm md:text-base font-semibold text-gray-700 mb-3">
-                Officially Recognized Dubai Visa Services
-              </h3>
-              <div className="flex items-center justify-center gap-6 md:gap-8">
-                <div className="flex flex-col items-center group">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-xl shadow-lg p-2 group-hover:shadow-xl transition-all duration-300">
-                    <img
-                      src="https://images.pexels.com/photos/15652234/pexels-photo-15652234.jpeg"
-                      alt="UAE Flag"
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  </div>
-                  <span className="text-xs text-gray-600 mt-2 font-medium">
-                    UAE Government
-                  </span>
-                </div>
-
-                <div className="flex flex-col items-center group">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-xl shadow-lg p-2 group-hover:shadow-xl transition-all duration-300">
-                    <img
-                      src="https://images.pexels.com/photos/18294648/pexels-photo-18294648.jpeg"
-                      alt="UAE Official Emblem"
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  </div>
-                  <span className="text-xs text-gray-600 mt-2 font-medium">
-                    Dubai Municipality
-                  </span>
-                </div>
-
-                <div className="flex flex-col items-center group">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-red-500 via-white to-green-600 rounded-xl shadow-lg p-1 group-hover:shadow-xl transition-all duration-300 flex items-center justify-center">
-                    <div className="bg-white rounded-lg w-full h-full flex items-center justify-center">
-                      <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-red-500 to-green-600 bg-clip-text text-transparent">
-                        UAE
-                      </span>
-                    </div>
-                  </div>
-                  <span className="text-xs text-gray-600 mt-2 font-medium">
-                    Immigration Dept
-                  </span>
-                </div>
-              </div>
-              <p className="text-xs text-gray-500 mt-3 max-w-lg mx-auto">
-                All listed services comply with Dubai government regulations for
-                visa and immigration services
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Hero Section - Hidden on Mobile */}
-        <div className="hidden md:block text-center space-y-4 md:space-y-6">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent leading-tight">
             Dubai Visa Services Directory
           </h1>
