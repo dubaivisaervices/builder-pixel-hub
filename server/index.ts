@@ -84,5 +84,10 @@ export function createServer() {
   app.post("/api/admin/sync-google", syncGoogleApi);
   app.post("/api/admin/clear-database", clearDatabase);
 
+  // Photo and review sync routes
+  app.post("/api/admin/download-photos", downloadAllPhotos);
+  app.post("/api/admin/sync-reviews", syncAllReviews);
+  app.get("/api/admin/sync-status", checkSyncStatus);
+
   return app;
 }
