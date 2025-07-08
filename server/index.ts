@@ -46,6 +46,7 @@ export function createServer() {
   app.get("/api/dubai-visa-services", searchDubaiVisaServices);
   app.get("/api/business/:placeId", getBusinessDetails);
   app.get("/api/business-photo/:photoReference", getBusinessPhoto);
+  app.get("/api/business-db/:businessId", getBusinessById);
 
   // Database sync routes
   app.post("/api/sync-google-data", syncGoogleData);
