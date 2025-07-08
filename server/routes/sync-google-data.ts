@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { businessService } from "../database/businessService";
 import { BusinessReview } from "@shared/google-business";
+import { database } from "../database/database";
 
 interface GooglePlacesResponse {
   results: Array<{
