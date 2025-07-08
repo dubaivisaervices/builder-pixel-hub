@@ -32,6 +32,11 @@ import {
   syncGoogleApi,
   clearDatabase,
 } from "./routes/admin-sync";
+import {
+  downloadAllPhotos,
+  syncAllReviews,
+  checkSyncStatus,
+} from "./routes/photo-sync";
 
 export function createServer() {
   const app = express();
