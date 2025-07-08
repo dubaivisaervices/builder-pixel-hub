@@ -196,19 +196,30 @@ export default function BusinessDirectory() {
       setLoading(true);
       setError(null);
 
+      console.log("Fetching businesses from API...");
       const response = await fetch("/api/dubai-visa-services?limit=300");
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: Failed to fetch businesses`);
       }
 
-      const data: BusinessSearchResponse = await response.json();
+      const data = await response.json();
+      console.log("API Response:", data);
 
-      if (data.success && data.businesses) {
+      // Check the correct response format from the API
+      if (data.businesses && Array.isArray(data.businesses)) {
         console.log(`Loaded ${data.businesses.length} businesses from API`);
-        setBusinesses(data.businesses);
+
+        // If no businesses in database, use fallback
+        if (data.businesses.length === 0) {
+          console.log("No businesses in database, using fallback data");
+          setBusinesses(getFallbackBusinesses());
+        } else {
+          setBusinesses(data.businesses);
+        }
       } else {
-        throw new Error(data.error || "Invalid response format");
+        console.log("API returned no businesses, using fallback data");
+        setBusinesses(getFallbackBusinesses());
       }
     } catch (err) {
       console.error("Error fetching businesses:", err);
@@ -217,7 +228,7 @@ export default function BusinessDirectory() {
       );
 
       // Fallback to sample data
-      console.log("Using fallback sample data");
+      console.log("Using fallback sample data due to error");
       setBusinesses(getFallbackBusinesses());
     } finally {
       setLoading(false);
