@@ -213,6 +213,20 @@ export const getBusinessById: RequestHandler = async (req, res) => {
       `Found business: ${business.name} with ${business.reviews.length} reviews`,
     );
 
+    // Debug logging for images
+    console.log(`📸 Image Debug Info for ${business.name}:`);
+    console.log(`  - logoUrl: ${business.logoUrl ? "present" : "not present"}`);
+    console.log(
+      `  - photos: ${business.photos ? business.photos.length : 0} items`,
+    );
+    if (business.photos && business.photos.length > 0) {
+      business.photos.forEach((photo, index) => {
+        console.log(
+          `  - Photo ${index + 1}: ${photo.caption || "No caption"} - ${photo.base64 ? "base64 data present" : photo.url ? "URL present" : "no image data"}`,
+        );
+      });
+    }
+
     res.json({
       success: true,
       business: business,
