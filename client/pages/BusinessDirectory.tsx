@@ -484,8 +484,8 @@ export default function BusinessDirectory() {
       </div>
 
       <div className="container mx-auto px-4 py-8 space-y-8">
-        {/* Dubai Government Logos - Hidden on Mobile */}
-        <Card className="hidden md:block shadow-xl border-0 bg-white/70 backdrop-blur-xl">
+        {/* Hero Section */}
+        <div className="text-center space-y-4 md:space-y-6">
           <CardContent className="p-4 md:p-6">
             <div className="text-center mb-4">
               <h3 className="text-sm md:text-base font-semibold text-gray-700 mb-3">
