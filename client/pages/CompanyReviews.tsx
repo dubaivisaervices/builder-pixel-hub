@@ -617,7 +617,7 @@ export default function CompanyReviews() {
                 {businessData.rating < 2.5 && (
                   <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                     <div className="flex items-start space-x-2">
-                      <Warning className="h-5 w-5 text-yellow-600 mt-0.5" />
+                      <AlertTriangle className="h-5 w-5 text-yellow-600 mt-0.5" />
                       <div>
                         <h4 className="font-medium text-yellow-800">
                           Low Rating Alert
