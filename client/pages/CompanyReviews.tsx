@@ -1511,12 +1511,11 @@ export default function CompanyReviews() {
                 },
               })
             }
-            className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-2xl py-4 text-lg font-semibold rounded-2xl border-0 animate-pulse"
+            className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-2xl py-4 text-lg font-semibold rounded-2xl border-0"
             size="lg"
           >
-            <AlertTriangle className="h-5 w-5 mr-3" />
-            🚨 Report This Scam
-            <AlertTriangle className="h-5 w-5 ml-3" />
+            <AlertTriangle className="h-5 w-5 mr-2" />
+            Report Scam
           </Button>
         </div>
       </div>
