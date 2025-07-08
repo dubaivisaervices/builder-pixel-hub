@@ -1738,29 +1738,93 @@ export default function CompanyReviews() {
         </div>
       </div>
 
-      {/* Sticky Footer with Report Button */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 p-4 pb-safe">
-        <div className="max-w-sm mx-auto">
-          <Button
-            onClick={() =>
-              navigate("/complaint", {
-                state: {
-                  companyName: businessData.name,
-                  companyLocation: businessData.address,
-                },
-              })
-            }
-            className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-2xl py-4 text-lg font-semibold rounded-2xl border-0"
-            size="lg"
-          >
-            <AlertTriangle className="h-5 w-5 mr-2" />
-            Report Scam
-          </Button>
+      {/* Enhanced Sticky Footer */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-gray-200 shadow-2xl p-4 pb-safe">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between gap-3">
+            {/* Back to Directory Button */}
+            <Button
+              onClick={() => navigate("/dubai-businesses")}
+              variant="outline"
+              className="flex-1 bg-white/80 hover:bg-gray-50 border-gray-300 text-gray-700 font-semibold py-3"
+              size="lg"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">Back to Directory</span>
+              <span className="sm:hidden">Back</span>
+            </Button>
+
+            {/* Share Button */}
+            <div className="relative">
+              <Button
+                onClick={() => setShowShareMenu(!showShareMenu)}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold px-4 md:px-6 py-3"
+                size="lg"
+              >
+                <Share2 className="h-4 w-4 mr-1 md:mr-2" />
+                <span className="hidden sm:inline">Share</span>
+              </Button>
+
+              {/* Enhanced Share Menu */}
+              {showShareMenu && (
+                <div className="absolute bottom-full right-0 mb-2 w-48 bg-white/95 backdrop-blur-xl rounded-xl shadow-xl border border-gray-200 p-3 z-50">
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => handleShare("copy")}
+                      className="w-full flex items-center space-x-3 p-3 hover:bg-gray-100/70 rounded-lg transition-colors"
+                    >
+                      <Copy className="h-4 w-4 text-gray-600" />
+                      <span className="text-sm font-medium">Copy Link</span>
+                    </button>
+                    <button
+                      onClick={() => handleShare("whatsapp")}
+                      className="w-full flex items-center space-x-3 p-3 hover:bg-gray-100/70 rounded-lg transition-colors"
+                    >
+                      <MessageCircle className="h-4 w-4 text-green-600" />
+                      <span className="text-sm font-medium">WhatsApp</span>
+                    </button>
+                    <button
+                      onClick={() => handleShare("facebook")}
+                      className="w-full flex items-center space-x-3 p-3 hover:bg-gray-100/70 rounded-lg transition-colors"
+                    >
+                      <Facebook className="h-4 w-4 text-blue-600" />
+                      <span className="text-sm font-medium">Facebook</span>
+                    </button>
+                    <button
+                      onClick={() => handleShare("twitter")}
+                      className="w-full flex items-center space-x-3 p-3 hover:bg-gray-100/70 rounded-lg transition-colors"
+                    >
+                      <Twitter className="h-4 w-4 text-blue-400" />
+                      <span className="text-sm font-medium">Twitter</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Report Button */}
+            <Button
+              onClick={() =>
+                navigate("/complaint", {
+                  state: {
+                    companyName: businessData.name,
+                    companyLocation: businessData.address,
+                  },
+                })
+              }
+              className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-3"
+              size="lg"
+            >
+              <AlertTriangle className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">Report Scam</span>
+              <span className="sm:hidden">Report</span>
+            </Button>
+          </div>
         </div>
       </div>
 
-      {/* Bottom spacing for sticky button - More space for mobile */}
-      <div className="h-32 md:h-24"></div>
+      {/* Bottom spacing for sticky footer */}
+      <div className="h-24 md:h-20"></div>
     </div>
   );
 }
