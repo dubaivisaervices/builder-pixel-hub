@@ -24,11 +24,17 @@ export interface BusinessData {
   businessStatus: string;
   photoReference?: string;
   logoUrl?: string;
+  logoBase64?: string; // Base64 encoded logo for offline use
   photos?: Array<{
     id: number;
     url: string;
     caption: string;
   }>;
+  photosLocal?: Array<{
+    id: number;
+    base64: string;
+    caption: string;
+  }>; // Base64 encoded photos for offline use
   hours?: {
     monday: string;
     tuesday: string;
