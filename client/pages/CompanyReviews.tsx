@@ -986,24 +986,16 @@ export default function CompanyReviews() {
                 )}
               </div>
 
-              {/* Warning Alert for High Risk - Clickable */}
-              {businessData?.scamReports &&
-                businessData.scamReports.length > 0 && (
-                  <button
-                    onClick={() => setShowReports(!showReports)}
-                    className="w-full flex items-center justify-center space-x-3 p-4 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white rounded-xl transition-all duration-300 shadow-lg cursor-pointer transform hover:scale-105"
-                  >
-                    <AlertTriangle className="h-5 w-5 text-white" />
-                    <span className="text-sm font-semibold">
-                      {businessData.scamReports.length} Scam Report
-                      {businessData.scamReports.length > 1 ? "s" : ""} Filed
-                      Against This Business
-                      <span className="ml-2 text-xs bg-white/20 px-2 py-1 rounded">
-                        Click to {showReports ? "hide" : "view"}
-                      </span>
-                    </span>
-                  </button>
-                )}
+              {/* Warning Alert for High Risk */}
+              {oneStarCount > 0 && (
+                <div className="flex items-center justify-center space-x-3 p-4 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-xl shadow-lg">
+                  <AlertTriangle className="h-5 w-5 text-white" />
+                  <span className="text-sm font-semibold">
+                    {oneStarCount} Negative Review{oneStarCount > 1 ? "s" : ""}{" "}
+                    Report Scam Activities
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
