@@ -49,11 +49,13 @@ class Database {
           business_status TEXT,
           photo_reference TEXT,
           logo_url TEXT,
+          logo_base64 TEXT, -- Base64 encoded logo for offline use
           is_open BOOLEAN,
           price_level INTEGER,
           has_target_keyword BOOLEAN DEFAULT FALSE,
           hours_json TEXT, -- JSON string for operating hours
           photos_json TEXT, -- JSON string for photos array
+          photos_local_json TEXT, -- JSON string for base64 encoded photos
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
           updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
