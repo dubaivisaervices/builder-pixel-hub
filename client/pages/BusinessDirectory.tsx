@@ -238,6 +238,21 @@ export default function BusinessDirectory() {
           setError("Database is empty - showing sample data for demonstration");
           setBusinesses(getFallbackBusinesses());
         } else {
+          console.log(
+            `📸 Image debug - checking first 3 businesses for logos/photos:`,
+          );
+          data.businesses
+            .slice(0, 3)
+            .forEach((business: any, index: number) => {
+              console.log(`  ${index + 1}. ${business.name}:`);
+              console.log(
+                `     - logoUrl: ${business.logoUrl ? "present" : "not present"}`,
+              );
+              console.log(
+                `     - photos: ${business.photos ? business.photos.length : 0} items`,
+              );
+            });
+
           setBusinesses(data.businesses);
           setError(null); // Clear any previous errors
         }
