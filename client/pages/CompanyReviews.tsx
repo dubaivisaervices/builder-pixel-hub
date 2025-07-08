@@ -1063,6 +1063,83 @@ export default function CompanyReviews() {
             </div>
           </div>
 
+          {/* Scam Reports Section - When Clicked */}
+          {showReports && businessData?.scamReports && (
+            <div className="relative overflow-hidden rounded-2xl bg-red-50/80 backdrop-blur-xl shadow-xl border border-red-200/50">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-red-900 flex items-center">
+                    <AlertTriangle className="h-6 w-6 mr-3 text-red-600" />
+                    Scam Reports ({businessData.scamReports.length})
+                  </h2>
+                  <button
+                    onClick={() => setShowReports(false)}
+                    className="text-red-600 hover:text-red-800 font-medium text-sm"
+                  >
+                    Hide Reports ✕
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {businessData.scamReports.map((report) => (
+                    <div
+                      key={report.id}
+                      className="bg-white/60 backdrop-blur-sm rounded-xl p-5 border border-red-200/50 shadow-sm"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-2 sm:space-y-0 mb-4">
+                        <div className="flex items-center space-x-3">
+                          <div className="p-2 bg-red-100 rounded-full">
+                            <User className="h-4 w-4 text-red-600" />
+                          </div>
+                          <div>
+                            <div className="font-semibold text-red-900">
+                              {report.reporterName}
+                            </div>
+                            <div className="text-sm text-red-700">
+                              {report.visaType} for {report.country}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end space-y-1">
+                          <div className="flex items-center space-x-1 text-sm text-red-600">
+                            <Calendar className="h-3 w-3" />
+                            <span>
+                              {new Date(report.date).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <div className="text-sm font-semibold text-red-800 bg-red-100 px-2 py-1 rounded">
+                            Lost: {report.amountLost}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                        <p className="text-red-900 leading-relaxed text-sm">
+                          {report.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 p-4 bg-red-100 rounded-xl">
+                  <div className="flex items-start space-x-3">
+                    <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-red-900 mb-1">
+                        ⚠️ Warning to Potential Customers
+                      </h4>
+                      <p className="text-sm text-red-800">
+                        Multiple customers have reported losing money to this
+                        business. Please exercise extreme caution and verify all
+                        claims before making any payments.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Reviews Section - Primary Focus */}
           <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
             <div className="p-6">
