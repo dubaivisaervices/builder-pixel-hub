@@ -530,7 +530,7 @@ export default function CompanyReviews() {
                 {/* Highlight concerning keywords for low ratings */}
                 {review.rating <= 2 && (
                   <div className="mt-3 p-3 bg-red-100 rounded text-xs text-red-800">
-                    <Warning className="h-3 w-3 inline mr-1" />
+                    <AlertTriangle className="h-3 w-3 inline mr-1" />
                     <strong>Warning:</strong> This review reports negative
                     experiences. Exercise caution.
                   </div>
