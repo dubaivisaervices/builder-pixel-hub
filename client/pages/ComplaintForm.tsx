@@ -86,11 +86,7 @@ export default function ComplaintForm() {
             </p>
             <div className="space-y-3">
               <Button
-                onClick={() =>
-                  navigate(
-                    `/reviews/${formData.companyLocation.toLowerCase().replace(/\s+/g, "-")}/${formData.companyName.toLowerCase().replace(/\s+/g, "-")}`,
-                  )
-                }
+                onClick={() => navigate("/dubai-businesses")}
                 className="w-full"
               >
                 View Company Page
