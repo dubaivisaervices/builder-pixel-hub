@@ -19,9 +19,9 @@ export class BusinessService {
         UPDATE businesses SET
           name = ?, address = ?, phone = ?, website = ?, email = ?,
           lat = ?, lng = ?, rating = ?, review_count = ?, category = ?,
-          business_status = ?, photo_reference = ?, logo_url = ?,
+          business_status = ?, photo_reference = ?, logo_url = ?, logo_base64 = ?,
           is_open = ?, price_level = ?, has_target_keyword = ?,
-          hours_json = ?, photos_json = ?, updated_at = CURRENT_TIMESTAMP
+          hours_json = ?, photos_json = ?, photos_local_json = ?, updated_at = CURRENT_TIMESTAMP
         WHERE id = ?
       `,
         [
