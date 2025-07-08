@@ -641,27 +641,53 @@ export default function BusinessDirectory() {
                     <div className="flex justify-between items-start">
                       <div className="flex items-start space-x-3 flex-1">
                         {/* Business Logo */}
-                        <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-primary/20 rounded-lg flex items-center justify-center border border-primary/20 flex-shrink-0 overflow-hidden">
+                        <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-primary/20 rounded-lg flex items-center justify-center border border-primary/20 flex-shrink-0 overflow-hidden relative">
                           {business.logoUrl ? (
-                            <img
-                              src={business.logoUrl}
-                              alt={`${business.name} logo`}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                // Fallback to letter if image fails to load
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = "none";
-                                target.nextElementSibling!.classList.remove(
-                                  "hidden",
-                                );
-                              }}
-                            />
-                          ) : null}
-                          <span
-                            className={`text-primary text-xl font-bold ${business.logoUrl ? "hidden" : ""}`}
-                          >
-                            {business.name.charAt(0).toUpperCase()}
-                          </span>
+                            <>
+                              <img
+                                src={business.logoUrl}
+                                alt={`${business.name} logo`}
+                                className="w-full h-full object-cover absolute inset-0"
+                                onError={(e) => {
+                                  // Hide image and show fallback letter
+                                  const target = e.target as HTMLImageElement;
+                                  target.style.display = "none";
+                                  const parent = target.parentElement;
+                                  const fallback = parent?.querySelector(
+                                    ".logo-fallback",
+                                  ) as HTMLElement;
+                                  if (fallback) {
+                                    fallback.style.display = "flex";
+                                  }
+                                }}
+                                onLoad={(e) => {
+                                  // Hide fallback when image loads successfully
+                                  const target = e.target as HTMLImageElement;
+                                  const parent = target.parentElement;
+                                  const fallback = parent?.querySelector(
+                                    ".logo-fallback",
+                                  ) as HTMLElement;
+                                  if (fallback) {
+                                    fallback.style.display = "none";
+                                  }
+                                }}
+                              />
+                              <div
+                                className="logo-fallback absolute inset-0 flex items-center justify-center"
+                                style={{ display: "none" }}
+                              >
+                                <span className="text-primary text-xl font-bold">
+                                  {business.name.charAt(0).toUpperCase()}
+                                </span>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="logo-fallback absolute inset-0 flex items-center justify-center">
+                              <span className="text-primary text-xl font-bold">
+                                {business.name.charAt(0).toUpperCase()}
+                              </span>
+                            </div>
+                          )}
                         </div>
                         <div className="flex-1">
                           <CardTitle className="text-lg font-semibold line-clamp-2 mb-2">
