@@ -208,7 +208,7 @@ export default function CompanyReviews() {
         {scamAlertLevel === "high" && (
           <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white p-4 md:p-6 rounded-xl shadow-xl">
             <div className="flex items-start space-x-3">
-              <Warning className="h-6 w-6 md:h-8 md:w-8 flex-shrink-0 mt-1" />
+              <AlertTriangle className="h-6 w-6 md:h-8 md:w-8 flex-shrink-0 mt-1" />
               <div className="flex-grow">
                 <h2 className="text-lg md:text-xl font-bold mb-2">
                   ⚠️ HIGH SCAM RISK ALERT
