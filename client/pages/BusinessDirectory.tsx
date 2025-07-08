@@ -293,9 +293,14 @@ export default function BusinessDirectory() {
     }
   }, []);
 
-  // Load businesses on component mount
+  // Load businesses on component mount with a small delay
   useEffect(() => {
-    fetchBusinesses();
+    // Add a small delay to ensure the server middleware is fully loaded
+    const timeoutId = setTimeout(() => {
+      fetchBusinesses();
+    }, 200);
+
+    return () => clearTimeout(timeoutId);
   }, [fetchBusinesses]);
 
   // Memoized filtered and sorted businesses
