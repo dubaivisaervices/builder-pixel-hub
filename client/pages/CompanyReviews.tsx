@@ -1010,12 +1010,29 @@ export default function CompanyReviews() {
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-4 md:space-y-6">
+            {/* Company Description */}
+            {businessData.description && (
+              <Card className="shadow-lg border-0">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2 text-lg">
+                    <Shield className="h-5 w-5" />
+                    <span>About This Business</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                    {businessData.description}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
             {/* Business Information */}
             <Card className="shadow-lg border-0">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2 text-lg">
                   <Shield className="h-5 w-5" />
-                  <span>Business Information</span>
+                  <span>Business Details</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
