@@ -639,34 +639,119 @@ export default function CompanyReviews() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50">
-      {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b shadow-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      {/* Modern Header with Glass Effect */}
+      <div className="bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          {/* Breadcrumbs */}
+          <div className="flex items-center space-x-2 text-sm text-muted-foreground mb-4">
+            <Home className="h-4 w-4" />
+            <button
+              onClick={() => navigate("/")}
+              className="hover:text-primary transition-colors"
+            >
+              Home
+            </button>
+            <ChevronRight className="h-4 w-4" />
+            <button
+              onClick={() => navigate("/dubai-businesses")}
+              className="hover:text-primary transition-colors"
+            >
+              Dubai Businesses
+            </button>
+            <ChevronRight className="h-4 w-4" />
+            <span className="text-foreground font-medium truncate">
+              {businessData?.name || "Business Profile"}
+            </span>
+          </div>
+
+          {/* Header Actions */}
           <div className="flex items-center justify-between">
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate("/")}
-              className="flex items-center space-x-2 text-sm md:text-base"
+              onClick={() => navigate("/dubai-businesses")}
+              className="flex items-center space-x-2 hover:bg-white/50 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               <span className="hidden sm:inline">Back to Directory</span>
               <span className="sm:hidden">Back</span>
             </Button>
 
-            {/* Scam Alert Badge */}
-            {scamAlertLevel === "high" && (
-              <Badge variant="destructive" className="animate-pulse">
-                <AlertTriangle className="h-3 w-3 mr-1" />
-                High Scam Risk
-              </Badge>
-            )}
+            <div className="flex items-center space-x-3">
+              {/* Scam Alert Badge */}
+              {scamAlertLevel === "high" && (
+                <Badge
+                  variant="destructive"
+                  className="animate-pulse shadow-lg"
+                >
+                  <AlertTriangle className="h-3 w-3 mr-1" />
+                  High Risk
+                </Badge>
+              )}
+
+              {/* Share Button */}
+              <div className="relative">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowShareMenu(!showShareMenu)}
+                  className="bg-white/50 hover:bg-white/80 border-white/30 backdrop-blur-sm"
+                >
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Share
+                </Button>
+
+                {/* Share Menu */}
+                {showShareMenu && (
+                  <div className="absolute right-0 top-full mt-2 w-48 bg-white/90 backdrop-blur-xl rounded-xl shadow-xl border border-white/20 p-3 z-50">
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => handleShare("copy")}
+                        className="w-full flex items-center space-x-3 p-2 hover:bg-gray-100/50 rounded-lg transition-colors"
+                      >
+                        <Copy className="h-4 w-4" />
+                        <span className="text-sm">Copy Link</span>
+                      </button>
+                      <button
+                        onClick={() => handleShare("whatsapp")}
+                        className="w-full flex items-center space-x-3 p-2 hover:bg-gray-100/50 rounded-lg transition-colors"
+                      >
+                        <MessageCircle className="h-4 w-4 text-green-600" />
+                        <span className="text-sm">WhatsApp</span>
+                      </button>
+                      <button
+                        onClick={() => handleShare("facebook")}
+                        className="w-full flex items-center space-x-3 p-2 hover:bg-gray-100/50 rounded-lg transition-colors"
+                      >
+                        <Facebook className="h-4 w-4 text-blue-600" />
+                        <span className="text-sm">Facebook</span>
+                      </button>
+                      <button
+                        onClick={() => handleShare("twitter")}
+                        className="w-full flex items-center space-x-3 p-2 hover:bg-gray-100/50 rounded-lg transition-colors"
+                      >
+                        <Twitter className="h-4 w-4 text-blue-400" />
+                        <span className="text-sm">Twitter</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 space-y-6 md:space-y-8">
+      {/* Click outside to close share menu */}
+      {showShareMenu && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setShowShareMenu(false)}
+        />
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-8">
         {/* Photo Grid Section - Like Sample Image */}
         {businessData?.photos && businessData.photos.length > 0 && (
           <Card className="shadow-lg border-0 overflow-hidden">
