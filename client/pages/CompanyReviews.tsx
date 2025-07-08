@@ -444,22 +444,31 @@ export default function CompanyReviews() {
       },
     ];
 
-    // Combine and shuffle based on business seed for uniqueness
+    // Create unique review combinations for each business
     const allReviews = [...lowRatingReviews, ...higherRatingReviews];
 
-    // Shuffle array based on seed to create unique review sets per business
+    // Advanced shuffle algorithm for better distribution
     const shuffledReviews = [...allReviews];
+    const rng = (s: number) => {
+      s = Math.sin(s) * 10000;
+      return s - Math.floor(s);
+    };
+
     for (let i = shuffledReviews.length - 1; i > 0; i--) {
-      const j = (seed + i) % (i + 1);
+      const j = Math.floor(rng(seed + i) * (i + 1));
       [shuffledReviews[i], shuffledReviews[j]] = [
         shuffledReviews[j],
         shuffledReviews[i],
       ];
     }
 
-    // Take subset based on seed for variation
-    const startIndex = seed % 10;
-    const selectedReviews = shuffledReviews.slice(startIndex, startIndex + 45);
+    // Select unique subset based on business characteristics
+    const reviewCount = 40 + (seed % 15); // 40-54 reviews per business
+    const startIndex = seed % 15;
+    const selectedReviews = shuffledReviews.slice(
+      startIndex,
+      startIndex + reviewCount,
+    );
 
     return selectedReviews.map((review, index) => ({
       id: `review_${businessId || "default"}_${index + 1}`,
