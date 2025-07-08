@@ -119,15 +119,24 @@ export default function CompanyReviews() {
     setShowShareMenu(false);
   };
 
-  // Generate sample reviews with proper distribution (25 low rating, 25 higher rating)
+  // Generate sample reviews with proper distribution (15 low rating, 35 mixed rating)
   const generateSampleReviews = (
     businessName: string,
     businessId?: string,
   ): Review[] => {
-    // Use business ID to create unique seed for consistent but different reviews per business
-    const seed = businessId
-      ? businessId.charCodeAt(businessId.length - 1) % 10
-      : 0;
+    // Create more complex seed for better uniqueness
+    const createSeed = (id: string, name: string) => {
+      let hash = 0;
+      const combined = (id + name).toLowerCase();
+      for (let i = 0; i < combined.length; i++) {
+        const char = combined.charCodeAt(i);
+        hash = (hash << 5) - hash + char;
+        hash = hash & hash; // Convert to 32bit integer
+      }
+      return Math.abs(hash);
+    };
+
+    const seed = businessId ? createSeed(businessId, businessName) : Date.now();
     const lowRatingReviews = [
       {
         rating: 1,
