@@ -806,136 +806,160 @@ export default function CompanyReviews() {
           )}
 
           {/* Modern Company Hero Section */}
-          <div className="relative overflow-hidden rounded-3xl bg-white/60 backdrop-blur-xl shadow-2xl border border-white/20">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-indigo-100/30"></div>
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/40 backdrop-blur-xl shadow-xl border border-white/30">
+            {/* Dynamic Background Pattern */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-400/5 via-purple-400/5 to-pink-400/5"></div>
+            <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-blue-500/10 to-purple-600/10"></div>
 
-            <div className="relative p-6 md:p-8 lg:p-10">
-              {/* Header with Logo and Quick Actions */}
-              <div className="flex flex-col lg:flex-row lg:items-start gap-6 mb-8">
-                {/* Logo and Basic Info */}
-                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-                  <div className="relative">
-                    <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br from-blue-500/10 to-indigo-600/20 flex items-center justify-center border border-blue-200/50 overflow-hidden shadow-lg">
-                      {businessData?.logoUrl ? (
-                        <>
-                          <img
-                            src={businessData.logoUrl}
-                            alt={`${businessData.name} logo`}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.style.display = "none";
-                              const parent = target.parentElement;
-                              const fallback = parent?.querySelector(
-                                ".company-logo-fallback",
-                              ) as HTMLElement;
-                              if (fallback) fallback.style.display = "flex";
-                            }}
-                          />
-                          <div
-                            className="company-logo-fallback absolute inset-0 flex items-center justify-center"
-                            style={{ display: "none" }}
-                          >
-                            <span className="text-2xl md:text-4xl font-bold text-blue-600">
-                              {businessData.name.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="company-logo-fallback absolute inset-0 flex items-center justify-center">
-                          <span className="text-2xl md:text-4xl font-bold text-blue-600">
+            <div className="relative p-4 md:p-6">
+              {/* Compact Header Layout */}
+              <div className="flex items-center gap-4 mb-6">
+                {/* Enhanced Logo */}
+                <div className="relative flex-shrink-0">
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-white shadow-lg border-2 border-blue-100 flex items-center justify-center overflow-hidden group hover:shadow-xl transition-all duration-300">
+                    {businessData?.logoUrl ? (
+                      <>
+                        <img
+                          src={businessData.logoUrl}
+                          alt={`${businessData.name} logo`}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
+                            const parent = target.parentElement;
+                            const fallback = parent?.querySelector(
+                              ".company-logo-fallback",
+                            ) as HTMLElement;
+                            if (fallback) fallback.style.display = "flex";
+                          }}
+                        />
+                        <div
+                          className="company-logo-fallback absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600"
+                          style={{ display: "none" }}
+                        >
+                          <span className="text-lg md:text-2xl font-bold text-white">
                             {businessData.name.charAt(0).toUpperCase()}
                           </span>
                         </div>
-                      )}
-                    </div>
-
-                    {/* Status Indicator */}
-                    <div className="absolute -bottom-2 -right-2 px-2 py-1 bg-green-500 text-white text-xs rounded-full shadow-lg">
-                      <div className="flex items-center space-x-1">
-                        <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                        <span>Active</span>
+                      </>
+                    ) : (
+                      <div className="company-logo-fallback absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
+                        <span className="text-lg md:text-2xl font-bold text-white">
+                          {businessData.name.charAt(0).toUpperCase()}
+                        </span>
                       </div>
-                    </div>
+                    )}
                   </div>
 
-                  {/* Company Details */}
-                  <div className="text-center sm:text-left">
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 leading-tight">
-                      {businessData.name}
-                    </h1>
-
-                    {/* Rating Section */}
-                    <div className="flex items-center justify-center sm:justify-start space-x-3 mb-4">
-                      <div className="flex items-center space-x-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-5 w-5 ${
-                              i < Math.floor(businessData.rating)
-                                ? "text-yellow-400 fill-current"
-                                : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-lg font-semibold text-gray-700">
-                        {businessData.rating.toFixed(1)}
-                      </span>
-                      <span className="text-gray-500">
-                        ({businessData.reviewCount} reviews)
-                      </span>
-                      {businessData.rating <= 2.0 && (
-                        <Badge variant="destructive" className="animate-pulse">
-                          <TrendingDown className="h-3 w-3 mr-1" />
-                          Poor Rating
-                        </Badge>
-                      )}
-                    </div>
-
-                    {/* Category Badge */}
-                    <div className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-4">
-                      <Building2 className="h-4 w-4 mr-2" />
-                      {businessData.category}
+                  {/* Status Indicator - Improved */}
+                  <div className="absolute -bottom-1 -right-1 px-2 py-0.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs rounded-full shadow-md border-2 border-white">
+                    <div className="flex items-center space-x-1">
+                      <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
+                      <span className="font-medium">Active</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Quick Actions */}
-                <div className="lg:ml-auto flex flex-col sm:flex-row lg:flex-col gap-3">
-                  <Button
-                    onClick={() =>
-                      navigate("/complaint", {
-                        state: {
-                          companyName: businessData.name,
-                          companyLocation: businessData.address,
-                        },
-                      })
-                    }
-                    className="bg-red-600 hover:bg-red-700 text-white shadow-lg"
-                    size="lg"
-                  >
-                    <AlertTriangle className="h-4 w-4 mr-2" />
-                    Report Scam
-                  </Button>
+                {/* Compact Company Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div className="mb-2 md:mb-0">
+                      <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 leading-tight truncate">
+                        {businessData.name}
+                      </h1>
 
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="bg-white/50 hover:bg-white/80"
-                    >
-                      <BookmarkPlus className="h-4 w-4 mr-2" />
-                      Save
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="bg-white/50 hover:bg-white/80"
-                    >
-                      <Heart className="h-4 w-4" />
-                    </Button>
+                      {/* Inline Rating & Category */}
+                      <div className="flex flex-wrap items-center gap-3">
+                        <div className="flex items-center space-x-1">
+                          <div className="flex">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`h-3.5 w-3.5 md:h-4 md:w-4 ${
+                                  i < Math.floor(businessData.rating)
+                                    ? "text-yellow-500 fill-current"
+                                    : "text-gray-300"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-sm md:text-base font-semibold text-gray-800">
+                            {businessData.rating.toFixed(1)}
+                          </span>
+                          <span className="text-xs md:text-sm text-gray-500">
+                            ({businessData.reviewCount})
+                          </span>
+                        </div>
+
+                        {businessData.rating <= 2.0 && (
+                          <Badge
+                            variant="destructive"
+                            className="text-xs animate-pulse"
+                          >
+                            <TrendingDown className="h-3 w-3 mr-1" />
+                            Risk
+                          </Badge>
+                        )}
+                      </div>
+
+                      {/* Category & Location - Compact */}
+                      <div className="flex flex-wrap items-center gap-2 mt-2">
+                        <Badge
+                          variant="secondary"
+                          className="text-xs bg-blue-100 text-blue-800 border-blue-200"
+                        >
+                          <Building2 className="h-3 w-3 mr-1" />
+                          {businessData.category}
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
+                          <MapPin className="h-3 w-3 mr-1" />
+                          {businessData.address.split(",")[0]}
+                        </Badge>
+                      </div>
+                    </div>
+
+                    {/* Compact Action Buttons */}
+                    <div className="flex items-center gap-2 mt-3 md:mt-0">
+                      <Button
+                        onClick={() =>
+                          navigate("/complaint", {
+                            state: {
+                              companyName: businessData.name,
+                              companyLocation: businessData.address,
+                            },
+                          })
+                        }
+                        className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-lg text-xs md:text-sm px-3 py-2"
+                        size="sm"
+                      >
+                        <AlertTriangle className="h-3 w-3 md:h-4 md:w-4 mr-1" />
+                        Report
+                      </Button>
+
+                      <div className="flex gap-1">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="bg-white/70 hover:bg-white/90 px-2 py-2"
+                        >
+                          <BookmarkPlus className="h-3 w-3 md:h-4 md:w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="bg-white/70 hover:bg-white/90 px-2 py-2"
+                        >
+                          <Heart className="h-3 w-3 md:h-4 md:w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="bg-white/70 hover:bg-white/90 px-2 py-2"
+                        >
+                          <MoreHorizontal className="h-3 w-3 md:h-4 md:w-4" />
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
