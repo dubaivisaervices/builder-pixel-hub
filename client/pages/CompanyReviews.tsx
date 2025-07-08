@@ -1017,45 +1017,68 @@ export default function CompanyReviews() {
                     </div>
 
                     {/* Compact Action Buttons */}
-                    <div className="flex items-center gap-2 mt-3 md:mt-0">
-                      <Button
-                        onClick={() =>
-                          navigate("/complaint", {
-                            state: {
-                              companyName: businessData.name,
-                              companyLocation: businessData.address,
-                            },
-                          })
-                        }
-                        className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-lg text-xs md:text-sm px-3 py-2"
-                        size="sm"
-                      >
-                        <AlertTriangle className="h-3 w-3 md:h-4 md:w-4 mr-1" />
-                        Report
-                      </Button>
+                    <div className="flex flex-col gap-2 mt-3 md:mt-0">
+                      {/* Scam Reports Counter */}
+                      {scamReports > 0 && (
+                        <div className="flex items-center gap-2">
+                          <Badge
+                            variant="destructive"
+                            className="text-xs animate-pulse"
+                          >
+                            <Shield className="h-3 w-3 mr-1" />
+                            {scamReports} Scam Reports
+                          </Badge>
+                          <Button
+                            onClick={() => setShowScamReports(!showScamReports)}
+                            variant="outline"
+                            size="sm"
+                            className="text-xs px-2 py-1 bg-red-50 hover:bg-red-100 border-red-200"
+                          >
+                            View Reports
+                          </Button>
+                        </div>
+                      )}
 
-                      <div className="flex gap-1">
+                      <div className="flex items-center gap-2">
                         <Button
-                          variant="outline"
+                          onClick={() =>
+                            navigate("/complaint", {
+                              state: {
+                                companyName: businessData.name,
+                                companyLocation: businessData.address,
+                              },
+                            })
+                          }
+                          className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-lg text-xs md:text-sm px-3 py-2"
                           size="sm"
-                          className="bg-white/70 hover:bg-white/90 px-2 py-2"
                         >
-                          <BookmarkPlus className="h-3 w-3 md:h-4 md:w-4" />
+                          <AlertTriangle className="h-3 w-3 md:h-4 md:w-4 mr-1" />
+                          Report Scam
                         </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="bg-white/70 hover:bg-white/90 px-2 py-2"
-                        >
-                          <Heart className="h-3 w-3 md:h-4 md:w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="bg-white/70 hover:bg-white/90 px-2 py-2"
-                        >
-                          <MoreHorizontal className="h-3 w-3 md:h-4 md:w-4" />
-                        </Button>
+
+                        <div className="flex gap-1">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="bg-white/70 hover:bg-white/90 px-2 py-2"
+                          >
+                            <BookmarkPlus className="h-3 w-3 md:h-4 md:w-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="bg-white/70 hover:bg-white/90 px-2 py-2"
+                          >
+                            <Heart className="h-3 w-3 md:h-4 md:w-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="bg-white/70 hover:bg-white/90 px-2 py-2"
+                          >
+                            <MoreHorizontal className="h-3 w-3 md:h-4 md:w-4" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
