@@ -366,26 +366,27 @@ export default function BusinessDirectory() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       {/* Modern Header */}
       <div className="bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4 py-3 md:py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 md:space-x-4">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate("/")}
-                className="flex items-center space-x-2 hover:bg-white/50 transition-colors"
+                className="flex items-center space-x-1 md:space-x-2 hover:bg-white/50 transition-colors"
               >
                 <ArrowLeft className="h-4 w-4" />
-                <span>Back to Home</span>
+                <span className="hidden sm:inline">Back to Home</span>
+                <span className="sm:hidden">Back</span>
               </Button>
 
-              <div className="hidden md:flex items-center space-x-2 text-sm text-gray-600">
+              <div className="hidden lg:flex items-center space-x-2 text-sm text-gray-600">
                 <Building2 className="h-4 w-4" />
                 <span>Dubai Visa Services Directory</span>
               </div>
             </div>
 
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 md:space-x-3">
               <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                 <Sparkles className="h-3 w-3 mr-1" />
                 {filteredBusinesses.length} Services Found
