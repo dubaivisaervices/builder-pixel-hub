@@ -446,12 +446,30 @@ export default function CompanyReviews() {
       },
     ];
 
+    // Combine and shuffle based on business seed for uniqueness
     const allReviews = [...lowRatingReviews, ...higherRatingReviews];
-    return allReviews.map((review, index) => ({
-      id: `review_${index + 1}`,
+
+    // Shuffle array based on seed to create unique review sets per business
+    const shuffledReviews = [...allReviews];
+    for (let i = shuffledReviews.length - 1; i > 0; i--) {
+      const j = (seed + i) % (i + 1);
+      [shuffledReviews[i], shuffledReviews[j]] = [
+        shuffledReviews[j],
+        shuffledReviews[i],
+      ];
+    }
+
+    // Take subset based on seed for variation
+    const startIndex = seed % 10;
+    const selectedReviews = shuffledReviews.slice(startIndex, startIndex + 45);
+
+    return selectedReviews.map((review, index) => ({
+      id: `review_${businessId || "default"}_${index + 1}`,
       authorName: review.author,
       rating: review.rating,
-      text: review.text,
+      text: review.text
+        .replace(/\bthey\b/gi, businessName)
+        .replace(/\bcompany\b/gi, businessName),
       timeAgo: review.time,
       profilePhotoUrl: undefined,
     }));
