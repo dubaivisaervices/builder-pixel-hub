@@ -65,6 +65,330 @@ export default function CompanyReviews() {
     "all" | "1star" | "2star" | "3star" | "4star" | "5star"
   >("all");
 
+  // Generate sample reviews with proper distribution (25 low rating, 25 higher rating)
+  const generateSampleReviews = (businessName: string): Review[] => {
+    const reviews: Review[] = [];
+
+    // 25 Low rating reviews (1-2 stars) - Scam reports
+    const lowRatingReviews = [
+      {
+        rating: 1,
+        author: "Ahmed Hassan",
+        text: "Complete scam! They took 8000 AED upfront for UK visa and disappeared. No response to calls or emails. Documents were fake. AVOID!",
+        time: "2 months ago",
+      },
+      {
+        rating: 1,
+        author: "Sarah Mitchell",
+        text: "FRAUD ALERT! Promised guaranteed Canadian visa approval. After paying 6500 AED, they provided incorrect forms and outdated information. Visa rejected and money gone.",
+        time: "1 month ago",
+      },
+      {
+        rating: 1,
+        author: "Raj Patel",
+        text: "Worst experience ever. They charged 7200 AED for student visa to Australia. Documents they prepared were incomplete and had errors. Lost admission due to their negligence.",
+        time: "3 weeks ago",
+      },
+      {
+        rating: 1,
+        author: "Maria Santos",
+        text: "SCAM COMPANY! Took 5500 AED for family visit visa to USA. Office address is fake, phone numbers don't work. They vanished with our money.",
+        time: "1 month ago",
+      },
+      {
+        rating: 2,
+        author: "Hassan Ali",
+        text: "Very poor service. Paid 4500 AED for tourist visa to Europe. Took 3 months longer than promised and had to do most work myself. Not worth the money.",
+        time: "2 months ago",
+      },
+      {
+        rating: 1,
+        author: "Jennifer Wong",
+        text: "Criminal behavior! They forged documents for my work visa application. Could have got me banned from entering the country. Stay away!",
+        time: "5 weeks ago",
+      },
+      {
+        rating: 1,
+        author: "Mohamed Khan",
+        text: "Total fraud. Promised job visa to Germany for 9000 AED. After payment, they said job was not available and refused refund. Lawyers involved now.",
+        time: "6 weeks ago",
+      },
+      {
+        rating: 2,
+        author: "Lisa Thompson",
+        text: "Unprofessional and dishonest. Hidden charges kept appearing. What was quoted as 3000 AED became 6000 AED. Very aggressive sales tactics.",
+        time: "1 month ago",
+      },
+      {
+        rating: 1,
+        author: "Khalid Mahmood",
+        text: "AVOID! They submitted wrong category visa application for my wife. Caused 6 months delay and additional costs. Completely incompetent.",
+        time: "3 months ago",
+      },
+      {
+        rating: 1,
+        author: "Anna Rodriguez",
+        text: "Fake company with fake licenses. They don't even have proper office. Just collecting money and running away. Multiple people got scammed.",
+        time: "2 months ago",
+      },
+      {
+        rating: 2,
+        author: "Priya Sharma",
+        text: "Overpriced and underdelivered. Simple tourist visa took 2 months. Had to follow up constantly. Would not recommend to anyone.",
+        time: "6 weeks ago",
+      },
+      {
+        rating: 1,
+        author: "David Chen",
+        text: "SCAM ALERT! They claimed to have special connections with embassy. After paying 8500 AED, found out they just submitted regular application. Visa rejected.",
+        time: "1 month ago",
+      },
+      {
+        rating: 1,
+        author: "Fatima Al-Zahra",
+        text: "Terrible experience. They lost our original documents and tried to cover it up. Had to get new documents from home country. Caused major delays.",
+        time: "2 months ago",
+      },
+      {
+        rating: 2,
+        author: "James Wilson",
+        text: "Questionable practices. They asked for additional money mid-process claiming new government fees. Later found out fees were false.",
+        time: "5 weeks ago",
+      },
+      {
+        rating: 1,
+        author: "Aisha Abdullah",
+        text: "Complete waste of money. They don't know immigration laws properly. Gave wrong advice which led to visa rejection. 5500 AED down the drain.",
+        time: "3 weeks ago",
+      },
+      {
+        rating: 1,
+        author: "Carlos Martinez",
+        text: "FRAUD! They used our documents to apply for someone else's visa. Found out when embassy called us. Could have caused serious legal issues.",
+        time: "1 month ago",
+      },
+      {
+        rating: 2,
+        author: "Ravi Kumar",
+        text: "Very unprofessional. Staff changes frequently, no one knows what's happening with your case. Paid 4200 AED for substandard service.",
+        time: "6 weeks ago",
+      },
+      {
+        rating: 1,
+        author: "Sophie Laurent",
+        text: "Scammed us badly. Promised work visa to Canada in 3 months. After 8 months and 12000 AED, still nothing. They keep making excuses.",
+        time: "2 weeks ago",
+      },
+      {
+        rating: 1,
+        author: "Omar Farouk",
+        text: "Criminal company! They forged salary certificates for my work visa. Could have resulted in lifetime ban. Reported to authorities.",
+        time: "1 month ago",
+      },
+      {
+        rating: 2,
+        author: "Nina Petrov",
+        text: "Poor communication and delays. What should have taken 1 month took 4 months. Had to constantly chase them for updates. Very frustrating.",
+        time: "3 weeks ago",
+      },
+      {
+        rating: 1,
+        author: "Abdullah Rahman",
+        text: "AVOID AT ALL COSTS! They took 7500 AED for business visa to UK. After 6 months, no progress. They stopped responding to calls.",
+        time: "1 month ago",
+      },
+      {
+        rating: 1,
+        author: "Emma Thompson",
+        text: "Worst visa agency in Dubai. They submitted incomplete application without telling us. Visa rejected and blamed us for it. Total scam!",
+        time: "5 weeks ago",
+      },
+      {
+        rating: 2,
+        author: "Hassan Qureshi",
+        text: "Overcharged and underperformed. Simple family visa became nightmare. Hidden costs everywhere. Final bill was double the initial quote.",
+        time: "2 months ago",
+      },
+      {
+        rating: 1,
+        author: "Michelle Brown",
+        text: "FRAUD ALERT! They claimed to be licensed immigration consultants but found out they have no proper credentials. Money lost and time wasted.",
+        time: "3 weeks ago",
+      },
+      {
+        rating: 1,
+        author: "Tariq Hussain",
+        text: "Scam operation. They collect money and documents then disappear. Office address is fake. Multiple complaints against them. WARNING!",
+        time: "1 month ago",
+      },
+    ];
+
+    // 25 Mixed reviews (3-5 stars) - Some positive experiences
+    const higherRatingReviews = [
+      {
+        rating: 4,
+        author: "Samira Khan",
+        text: "Good service overall. They helped with my tourist visa to Europe. Process took longer than expected but eventually got approved. Staff was helpful.",
+        time: "3 months ago",
+      },
+      {
+        rating: 3,
+        author: "John Anderson",
+        text: "Average experience. Got my business visa processed but had some delays. Communication could be better. Price was reasonable compared to others.",
+        time: "2 months ago",
+      },
+      {
+        rating: 5,
+        author: "Layla Ahmad",
+        text: "Excellent service! They handled my student visa to UK perfectly. Very professional team and kept me updated throughout the process. Highly recommend!",
+        time: "4 months ago",
+      },
+      {
+        rating: 3,
+        author: "Roberto Silva",
+        text: "Decent service. Had some issues initially but they resolved them. Tourist visa to Schengen was approved. Could improve response time.",
+        time: "2 months ago",
+      },
+      {
+        rating: 4,
+        author: "Nadia Osman",
+        text: "Pretty good experience. They processed my family visit visa efficiently. Staff was knowledgeable and helpful. Will use again if needed.",
+        time: "3 months ago",
+      },
+      {
+        rating: 3,
+        author: "Mike Johnson",
+        text: "Okay service. Got the job done but nothing exceptional. Work visa to Australia was approved after some back and forth. Fair pricing.",
+        time: "1 month ago",
+      },
+      {
+        rating: 4,
+        author: "Yasmin Ali",
+        text: "Good service! They helped with spouse visa application. Process was smooth and staff was patient with all my questions. Satisfied with outcome.",
+        time: "2 months ago",
+      },
+      {
+        rating: 3,
+        author: "Alex Petrov",
+        text: "Standard service. Tourist visa processed without major issues. Could be faster but got the job done. Would consider using again.",
+        time: "6 weeks ago",
+      },
+      {
+        rating: 5,
+        author: "Mariam Hassan",
+        text: "Outstanding service! They guided me through the entire immigration process step by step. Very professional and efficient. Worth every dirham!",
+        time: "3 months ago",
+      },
+      {
+        rating: 4,
+        author: "Tony Chen",
+        text: "Solid service. Business visa application was handled well. Minor delays but good communication throughout. Reasonable fees for the service provided.",
+        time: "2 months ago",
+      },
+      {
+        rating: 3,
+        author: "Rana Mahmood",
+        text: "Average experience. Student visa took longer than promised but eventually approved. Staff needs better training on current requirements.",
+        time: "1 month ago",
+      },
+      {
+        rating: 4,
+        author: "Sandra Williams",
+        text: "Good experience overall. They handled my work visa renewal efficiently. Professional staff and transparent about all requirements.",
+        time: "5 weeks ago",
+      },
+      {
+        rating: 3,
+        author: "Karim Zayed",
+        text: "Decent service. Family visa processing was okay. Had to follow up multiple times but they delivered in the end. Room for improvement.",
+        time: "2 months ago",
+      },
+      {
+        rating: 5,
+        author: "Elena Popov",
+        text: "Exceptional service! They made the visa process so easy. Very knowledgeable team and excellent customer support. Will definitely recommend!",
+        time: "4 months ago",
+      },
+      {
+        rating: 4,
+        author: "Ahmed Farid",
+        text: "Very satisfied with their service. Tourist visa to Canada processed smoothly. Good value for money and professional approach.",
+        time: "1 month ago",
+      },
+      {
+        rating: 3,
+        author: "Lisa Park",
+        text: "Acceptable service. Work visa application had some hiccups but resolved eventually. Price was competitive. Communication could improve.",
+        time: "6 weeks ago",
+      },
+      {
+        rating: 4,
+        author: "Omar Rashid",
+        text: "Good experience. They handled my business visa application professionally. Clear about requirements and timeline. Would use again.",
+        time: "2 months ago",
+      },
+      {
+        rating: 3,
+        author: "Victoria Smith",
+        text: "Okay service overall. Student visa process was lengthy but successful. Staff was helpful when available. Fair pricing structure.",
+        time: "3 weeks ago",
+      },
+      {
+        rating: 5,
+        author: "Khalil Ibrahim",
+        text: "Excellent work! They processed my family reunion visa flawlessly. Very organized and efficient team. Couldn't be happier with the service!",
+        time: "3 months ago",
+      },
+      {
+        rating: 4,
+        author: "Grace Lee",
+        text: "Satisfied with the service. Tourist visa application went smoothly. Professional staff and good follow-up. Minor delays but acceptable.",
+        time: "1 month ago",
+      },
+      {
+        rating: 3,
+        author: "Faisal Ahmed",
+        text: "Standard service. Work permit processing was okay. Met expectations but nothing extraordinary. Would consider other options next time.",
+        time: "5 weeks ago",
+      },
+      {
+        rating: 4,
+        author: "Anna Kowalski",
+        text: "Good service quality. They helped with spouse visa efficiently. Knowledgeable staff and reasonable turnaround time. Recommended.",
+        time: "2 months ago",
+      },
+      {
+        rating: 3,
+        author: "Daniel Martinez",
+        text: "Average experience. Business visa took longer than expected but approved. Staff could be more proactive in communication.",
+        time: "1 month ago",
+      },
+      {
+        rating: 5,
+        author: "Zainab Said",
+        text: "Perfect service! They made the complex immigration process simple. Very professional and supportive team. Excellent value for money!",
+        time: "4 months ago",
+      },
+      {
+        rating: 4,
+        author: "William Taylor",
+        text: "Very good service. Tourist visa processing was efficient and hassle-free. Professional approach and fair pricing. Will recommend to others.",
+        time: "6 weeks ago",
+      },
+    ];
+
+    // Combine and return reviews
+    const allReviews = [...lowRatingReviews, ...higherRatingReviews];
+    return allReviews.map((review, index) => ({
+      id: `review_${index + 1}`,
+      authorName: review.author,
+      rating: review.rating,
+      text: review.text,
+      timeAgo: review.time,
+      profilePhotoUrl: undefined,
+    }));
+  };
+
   // Fetch business data from database
   useEffect(() => {
     const fetchBusinessData = async () => {
