@@ -464,7 +464,6 @@ export default function CompanyReviews() {
             console.log("Using fallback business data from navigation state");
             const fallbackData = location.state.businessData;
             fallbackData.reviews = generateSampleReviews(fallbackData.name);
-            fallbackData.scamReports = generateSampleReports(fallbackData.name);
 
             if (!fallbackData.description) {
               fallbackData.description = `${fallbackData.name} is a visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, tourist visa applications, and business visa support. The company claims to provide professional immigration advice and document processing services for clients seeking to travel to various destinations worldwide.`;
