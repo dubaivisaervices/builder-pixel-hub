@@ -500,10 +500,21 @@ export default function CompanyReviews() {
           if (location.state?.businessData) {
             console.log("Using fallback business data from navigation state");
             const fallbackData = location.state.businessData;
-            fallbackData.reviews = generateSampleReviews(
-              fallbackData.name,
-              fallbackData.id,
-            );
+
+            // Use real reviews if available, otherwise generate samples
+            if (!fallbackData.reviews || fallbackData.reviews.length === 0) {
+              console.log(
+                "No real reviews in first fallback, generating samples",
+              );
+              fallbackData.reviews = generateSampleReviews(
+                fallbackData.name,
+                fallbackData.id,
+              );
+            } else {
+              console.log(
+                `Using ${fallbackData.reviews.length} real reviews from first fallback`,
+              );
+            }
 
             if (!fallbackData.description) {
               fallbackData.description = `${fallbackData.name} is a visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, tourist visa applications, and business visa support. The company claims to provide professional immigration advice and document processing services for clients seeking to travel to various destinations worldwide.`;
