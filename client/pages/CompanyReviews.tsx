@@ -662,64 +662,142 @@ export default function CompanyReviews() {
           </TabsContent>
 
           {/* Photos Tab */}
-          <TabsContent value="photos" className="space-y-6">
+          <TabsContent value="photos" className="space-y-4 md:space-y-6">
             <Card className="shadow-lg border-0">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
+                <CardTitle className="flex items-center space-x-2 text-lg">
                   <Camera className="h-5 w-5" />
-                  <span>Company Photos</span>
+                  <span>Business Photos</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {/* Always show photos - simplified approach */}
                 {businessData?.photos && businessData.photos.length > 0 ? (
-                  <div className="mb-4 text-sm text-green-600 bg-green-50 p-3 rounded-lg">
-                    📷 Showing {businessData.photos.length} real business photos
-                    from Google My Business
-                  </div>
+                  <>
+                    <div className="mb-4 text-sm text-green-600 bg-green-50 p-3 rounded-lg">
+                      📷 Showing {businessData.photos.length} real business
+                      photos
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                      {businessData.photos.map((photo, index) => (
+                        <div key={photo.id || index} className="space-y-2">
+                          <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden border-2 border-gray-200 group">
+                            {photo.base64 ? (
+                              <img
+                                src={`data:image/jpeg;base64,${photo.base64}`}
+                                alt={photo.caption || "Business photo"}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                              />
+                            ) : photo.url ? (
+                              <img
+                                src={photo.url}
+                                alt={photo.caption || "Business photo"}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.style.display = "none";
+                                  const placeholder =
+                                    target.parentElement?.querySelector(
+                                      ".photo-placeholder",
+                                    );
+                                  if (placeholder)
+                                    placeholder.classList.remove("hidden");
+                                }}
+                              />
+                            ) : null}
+                            <div className="photo-placeholder hidden text-center text-gray-500 flex flex-col items-center justify-center h-full">
+                              <Camera className="h-8 w-8 md:h-12 md:w-12 mb-2" />
+                              <p className="text-xs md:text-sm font-medium">
+                                {photo.caption || "Business Photo"}
+                              </p>
+                            </div>
+                          </div>
+                          {photo.caption && (
+                            <p className="text-xs md:text-sm text-muted-foreground text-center font-medium">
+                              {photo.caption}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </>
                 ) : (
-                  <div className="mb-4 text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
-                    📷 Showing placeholder photo gallery for this business
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Camera className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>No photos available for this business.</p>
+                    <p className="text-sm mt-2">
+                      Photos may be added when available from Google My
+                      Business.
+                    </p>
                   </div>
                 )}
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {company.photos.map((photo) => (
-                    <div key={photo.id} className="space-y-2">
-                      <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-200">
-                        {photo.url && businessData?.photos ? (
-                          <img
-                            src={photo.url}
-                            alt={photo.caption}
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
-                            onError={(e) => {
-                              // Fallback to placeholder if Google image fails
-                              const target = e.target as HTMLImageElement;
-                              target.style.display = "none";
-                              const placeholder =
-                                target.parentElement?.querySelector(
-                                  ".photo-placeholder",
-                                );
-                              if (placeholder)
-                                placeholder.classList.remove("hidden");
-                            }}
-                          />
-                        ) : null}
-                        <div
-                          className={`photo-placeholder text-center text-gray-500 ${photo.url && businessData?.photos ? "hidden" : ""}`}
-                        >
-                          <Camera className="h-12 w-12 mx-auto mb-2" />
-                          <p className="text-sm font-medium">{photo.caption}</p>
-                          <p className="text-xs text-gray-400">
-                            Photo placeholder
-                          </p>
-                        </div>
+          {/* Contact Tab - Mobile only */}
+          <TabsContent value="contact" className="space-y-4 md:space-y-6">
+            <Card className="shadow-lg border-0">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2 text-lg">
+                  <Phone className="h-5 w-5" />
+                  <span>Contact Information</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  {businessData.address && (
+                    <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium text-sm">Address</p>
+                        <p className="text-sm text-muted-foreground">
+                          {businessData.address}
+                        </p>
                       </div>
-                      <p className="text-sm text-muted-foreground text-center font-medium">
-                        {photo.caption}
-                      </p>
                     </div>
-                  ))}
+                  )}
+
+                  {businessData.phone && (
+                    <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <Phone className="h-5 w-5 text-primary" />
+                      <div>
+                        <p className="font-medium text-sm">Phone</p>
+                        <p className="text-sm text-muted-foreground">
+                          {businessData.phone}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {businessData.email && (
+                    <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <Mail className="h-5 w-5 text-primary" />
+                      <div>
+                        <p className="font-medium text-sm">Email</p>
+                        <p className="text-sm text-muted-foreground">
+                          {businessData.email}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {businessData.website && (
+                    <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <Globe className="h-5 w-5 text-primary" />
+                      <div>
+                        <p className="font-medium text-sm">Website</p>
+                        <a
+                          href={businessData.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-primary hover:underline flex items-center"
+                        >
+                          Visit Website
+                          <ExternalLink className="h-3 w-3 ml-1" />
+                        </a>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
