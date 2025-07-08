@@ -48,6 +48,7 @@ export function createServer() {
   app.get("/api/business/:placeId", getBusinessDetails);
   app.get("/api/business-photo/:photoReference", getBusinessPhoto);
   app.get("/api/business-db/:businessId", getBusinessById);
+  app.get("/api/debug-images/:businessId", debugImageData);
 
   // Database sync routes
   app.post("/api/sync-google-data", syncGoogleData);
