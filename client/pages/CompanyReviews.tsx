@@ -678,10 +678,9 @@ export default function CompanyReviews() {
               {/* Share Button */}
               <div className="relative">
                 <Button
-                  variant="outline"
                   size="sm"
                   onClick={() => setShowShareMenu(!showShareMenu)}
-                  className="bg-white/50 hover:bg-white/80 border-white/30 backdrop-blur-sm"
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg border-0"
                 >
                   <Share2 className="h-4 w-4 mr-2" />
                   Share
