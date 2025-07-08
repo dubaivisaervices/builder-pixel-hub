@@ -238,9 +238,7 @@ export default function BusinessDirectory() {
           setError("Database is empty - showing sample data for demonstration");
           setBusinesses(getFallbackBusinesses());
         } else {
-          console.log(
-            `📸 Image debug - checking first 3 businesses for logos/photos:`,
-          );
+          console.log(`📸 Frontend Image Debug - First 3 businesses:`);
           data.businesses
             .slice(0, 3)
             .forEach((business: any, index: number) => {
@@ -248,9 +246,23 @@ export default function BusinessDirectory() {
               console.log(
                 `     - logoUrl: ${business.logoUrl ? "present" : "not present"}`,
               );
+              if (business.logoUrl) {
+                console.log(
+                  `     - logoUrl preview: ${business.logoUrl.substring(0, 50)}...`,
+                );
+                console.log(
+                  `     - logoUrl type: ${business.logoUrl.startsWith("data:") ? "base64" : "url"}`,
+                );
+              }
               console.log(
-                `     - photos: ${business.photos ? business.photos.length : 0} items`,
+                `     - photos array: ${business.photos ? business.photos.length : 0} items`,
               );
+              if (business.photos && business.photos.length > 0) {
+                console.log(
+                  `     - photos structure:`,
+                  business.photos.slice(0, 2),
+                );
+              }
             });
 
           setBusinesses(data.businesses);
