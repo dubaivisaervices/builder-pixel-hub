@@ -448,14 +448,18 @@ export class BusinessService {
       category: business.category,
       businessStatus: business.business_status,
       photoReference: business.photo_reference,
-      logoUrl: business.logo_url,
+      logoUrl: business.logo_base64
+        ? `data:image/jpeg;base64,${business.logo_base64}`
+        : business.logo_url, // Use local base64 first, fallback to URL
       isOpen: business.is_open,
       priceLevel: business.price_level,
       hasTargetKeyword: business.has_target_keyword,
       hours: business.hours_json ? JSON.parse(business.hours_json) : undefined,
-      photos: business.photos_json
-        ? JSON.parse(business.photos_json)
-        : undefined,
+      photos: business.photos_local_json
+        ? JSON.parse(business.photos_local_json) // Use local base64 photos first
+        : business.photos_json
+          ? JSON.parse(business.photos_json)
+          : undefined, // Fallback to URL photos
       reviews: reviews,
     };
   }
