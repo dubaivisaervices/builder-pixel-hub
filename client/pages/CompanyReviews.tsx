@@ -550,6 +550,29 @@ export default function CompanyReviews() {
           `Loaded business: ${data.business.name} with ${data.business.reviews.length} reviews`,
         );
 
+        // Debug image data
+        console.log(
+          `📸 CompanyReviews - Image debug for ${data.business.name}:`,
+        );
+        console.log(
+          `  - logoUrl: ${data.business.logoUrl ? "present" : "not present"}`,
+        );
+        if (data.business.logoUrl) {
+          console.log(
+            `  - logoUrl value: ${data.business.logoUrl.substring(0, 100)}...`,
+          );
+        }
+        console.log(
+          `  - photos: ${data.business.photos ? data.business.photos.length : 0} items`,
+        );
+        if (data.business.photos && data.business.photos.length > 0) {
+          data.business.photos.forEach((photo: any, index: number) => {
+            console.log(
+              `    Photo ${index + 1}: ${photo.caption || "No caption"} - ${photo.base64 ? "base64 present" : photo.url ? "URL present" : "no image data"}`,
+            );
+          });
+        }
+
         if (!data.business.reviews || data.business.reviews.length < 50) {
           data.business.reviews = generateSampleReviews(
             data.business.name,
