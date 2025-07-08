@@ -581,6 +581,80 @@ export default function CompanyReviews() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 space-y-6 md:space-y-8">
+        {/* Photo Grid Section - Like Sample Image */}
+        {businessData?.photos && businessData.photos.length > 0 && (
+          <Card className="shadow-lg border-0 overflow-hidden">
+            <CardContent className="p-0">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
+                {businessData.photos.slice(0, 8).map((photo, index) => (
+                  <div
+                    key={photo.id || index}
+                    className={`relative overflow-hidden ${
+                      index === 0
+                        ? "col-span-2 md:col-span-2 lg:col-span-2 row-span-2"
+                        : ""
+                    }`}
+                  >
+                    <div
+                      className={`aspect-square ${index === 0 ? "aspect-[4/3]" : ""} bg-gradient-to-br from-gray-100 to-gray-200 group cursor-pointer`}
+                    >
+                      {photo.base64 ? (
+                        <img
+                          src={`data:image/jpeg;base64,${photo.base64}`}
+                          alt={photo.caption || "Business photo"}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : photo.url ? (
+                        <img
+                          src={photo.url}
+                          alt={photo.caption || "Business photo"}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
+                            const placeholder =
+                              target.parentElement?.querySelector(
+                                ".photo-placeholder",
+                              );
+                            if (placeholder)
+                              placeholder.classList.remove("hidden");
+                          }}
+                        />
+                      ) : null}
+                      <div className="photo-placeholder hidden absolute inset-0 flex flex-col items-center justify-center text-gray-500 bg-gray-100">
+                        <Camera className="h-6 w-6 md:h-8 md:w-8 mb-2" />
+                        <p className="text-xs md:text-sm font-medium text-center px-2">
+                          {photo.caption || "Business Photo"}
+                        </p>
+                      </div>
+
+                      {/* Photo overlay with caption */}
+                      {photo.caption && (
+                        <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-2 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                          <p className="text-xs md:text-sm font-medium">
+                            {photo.caption}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+                {/* More photos indicator */}
+                {businessData.photos.length > 8 && (
+                  <div className="relative aspect-square bg-black/80 flex items-center justify-center text-white cursor-pointer group">
+                    <div className="text-center">
+                      <Camera className="h-6 w-6 md:h-8 md:w-8 mx-auto mb-2" />
+                      <p className="text-xs md:text-sm font-medium">
+                        +{businessData.photos.length - 8} more
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
         {/* Scam Warning Banner - Prominent for mobile */}
         {scamAlertLevel === "high" && (
           <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white p-4 md:p-6 rounded-xl shadow-xl">
