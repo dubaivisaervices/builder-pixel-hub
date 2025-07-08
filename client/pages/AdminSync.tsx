@@ -37,6 +37,42 @@ export default function AdminSync() {
   const [dbStats, setDbStats] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const handleOfflinePhotoSync = async () => {
+    setIsOfflineSyncing(true);
+    setError(null);
+    setOfflineSyncResult(null);
+
+    try {
+      console.log("Starting offline photo sync...");
+
+      const response = await fetch("/api/sync-offline-photos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Offline photo sync completed:", result);
+
+      setOfflineSyncResult(result.stats || {});
+      await checkStatus(); // Refresh database stats
+    } catch (error) {
+      console.error("Offline photo sync failed:", error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Unknown error occurred during offline photo sync",
+      );
+    } finally {
+      setIsOfflineSyncing(false);
+    }
+  };
+
   const handleFreshSync = async () => {
     setIsFreshSyncing(true);
     setError(null);
