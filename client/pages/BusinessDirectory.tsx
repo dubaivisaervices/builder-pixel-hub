@@ -610,7 +610,8 @@ export default function BusinessDirectory() {
         "document clearing",
       ]);
 
-      let errorMessage = null; // Don't show error, just use fallback seamlessly
+      let errorMessage =
+        "⚠️ API connection issue. Showing 30+ sample visa service businesses."; // Show informative message
 
       if (err instanceof Error) {
         console.log("Error details:", err.name, err.message);
