@@ -19,6 +19,57 @@ export const getBusinessesByCategory: RequestHandler = async (req, res) => {
   }
 };
 
+// Debug endpoint to check photo data
+export const debugPhotoData: RequestHandler = async (req, res) => {
+  try {
+    const businesses = await businessService.getBusinessesPaginated(
+      50,
+      0,
+      false,
+    );
+
+    const photoStats = {
+      totalBusinesses: businesses.length,
+      withLogoUrl: 0,
+      withPhotos: 0,
+      sampleLogoUrls: [] as string[],
+      sampleBusinessesWithPhotos: [] as any[],
+    };
+
+    businesses.forEach((business) => {
+      if (business.logoUrl) {
+        photoStats.withLogoUrl++;
+        if (photoStats.sampleLogoUrls.length < 5) {
+          photoStats.sampleLogoUrls.push(business.logoUrl);
+        }
+      }
+
+      if (business.photos && business.photos.length > 0) {
+        photoStats.withPhotos++;
+        if (photoStats.sampleBusinessesWithPhotos.length < 5) {
+          photoStats.sampleBusinessesWithPhotos.push({
+            name: business.name,
+            logoUrl: business.logoUrl,
+            photosCount: business.photos.length,
+            firstPhotoUrl: business.photos[0]?.url,
+          });
+        }
+      }
+    });
+
+    res.json({
+      success: true,
+      photoStats,
+    });
+  } catch (error) {
+    console.error("Error debugging photo data:", error);
+    res.status(500).json({
+      error: "Failed to debug photo data",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+};
+
 // Update a business
 export const updateBusiness: RequestHandler = async (req, res) => {
   try {
