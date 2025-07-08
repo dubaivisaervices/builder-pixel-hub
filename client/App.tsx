@@ -29,6 +29,7 @@ const App = () => (
           <Route path="/complaint" element={<ComplaintForm />} />
           <Route path="/dubai-businesses" element={<BusinessDirectory />} />
           <Route path="/api-test" element={<ApiTest />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/admin/sync" element={<AdminSync />} />
           <Route path="/admin/manage" element={<AdminManage />} />
           <Route
