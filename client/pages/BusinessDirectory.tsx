@@ -705,7 +705,7 @@ export default function BusinessDirectory() {
                 key={business.id}
                 className="shadow-xl border-0 bg-white/60 backdrop-blur-xl hover:shadow-2xl transition-all duration-300 group hover:scale-105"
               >
-                <CardContent className="p-6">
+                <CardContent className="p-4 md:p-6">
                   {/* Business Header */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center space-x-3">
