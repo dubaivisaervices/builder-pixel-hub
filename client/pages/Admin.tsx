@@ -280,6 +280,102 @@ export default function Admin() {
           </CardContent>
         </Card>
 
+        {/* Photo and Review Status */}
+        <Card className="shadow-xl border-0 bg-gradient-to-r from-orange-50 to-red-50 backdrop-blur-xl">
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Image className="h-5 w-5 mr-2 text-orange-600" />
+              Photo & Review Sync Status
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-3 bg-white/50 rounded-lg">
+                  <div className="text-lg font-bold text-orange-800">
+                    {databaseStats.photosSaved || 0} /{" "}
+                    {databaseStats.expectedPhotos || 4072}
+                  </div>
+                  <div className="text-xs text-orange-600">
+                    Photos Saved Locally
+                  </div>
+                </div>
+                <div className="text-center p-3 bg-white/50 rounded-lg">
+                  <div className="text-lg font-bold text-green-800">
+                    {databaseStats.realReviews || 0}
+                  </div>
+                  <div className="text-xs text-green-600">Real Reviews</div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Button
+                  onClick={async () => {
+                    try {
+                      const response = await fetch(
+                        "/api/admin/download-photos",
+                        { method: "POST" },
+                      );
+                      const result = await response.json();
+                      alert(
+                        `Photos downloaded: ${result.totalPhotosDownloaded || 0}`,
+                      );
+                      loadDatabaseStats();
+                    } catch (error) {
+                      alert("Failed to download photos");
+                    }
+                  }}
+                  className="w-full bg-orange-600 hover:bg-orange-700"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Download All Photos
+                </Button>
+
+                <Button
+                  onClick={async () => {
+                    try {
+                      const response = await fetch("/api/admin/sync-reviews", {
+                        method: "POST",
+                      });
+                      const result = await response.json();
+                      alert(`Reviews synced: ${result.totalReviewsSaved || 0}`);
+                      loadDatabaseStats();
+                    } catch (error) {
+                      alert("Failed to sync reviews");
+                    }
+                  }}
+                  variant="outline"
+                  className="w-full border-green-300 text-green-700 hover:bg-green-50"
+                >
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  Sync All Reviews
+                </Button>
+
+                <Button
+                  onClick={async () => {
+                    try {
+                      const response = await fetch("/api/admin/sync-status");
+                      const status = await response.json();
+                      console.log("Sync Status:", status);
+                      alert(
+                        `Status: ${status.photos.savedLocally}/${status.photos.total} photos, ${status.reviews.total} reviews`,
+                      );
+                    } catch (error) {
+                      alert("Failed to check status");
+                    }
+                  }}
+                  variant="outline"
+                  size="sm"
+                  className="w-full"
+                >
+                  <BarChart3 className="h-4 w-4 mr-2" />
+                  Check Detailed Status
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Database Sync Section */}
           <Card className="shadow-xl border-0 bg-white/70 backdrop-blur-xl">
