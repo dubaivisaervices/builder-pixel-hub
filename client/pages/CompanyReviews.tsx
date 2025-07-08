@@ -22,6 +22,18 @@ import {
   TrendingDown,
   Filter,
   SortDesc,
+  Share2,
+  Copy,
+  Facebook,
+  Twitter,
+  MessageCircle,
+  ChevronRight,
+  Home,
+  Building2,
+  Eye,
+  Heart,
+  BookmarkPlus,
+  MoreHorizontal,
 } from "lucide-react";
 
 interface Review {
