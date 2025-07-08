@@ -26,6 +26,12 @@ import {
   deleteCategory,
   debugPhotoData,
 } from "./routes/admin";
+import {
+  getDatabaseStats,
+  syncInternalDatabase,
+  syncGoogleApi,
+  clearDatabase,
+} from "./routes/admin-sync";
 
 export function createServer() {
   const app = express();
