@@ -624,15 +624,19 @@ export default function BusinessDirectory() {
             </div>
 
             {/* View Toggle and Stats */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="flex items-center space-x-2">
+                <span className="text-xs md:text-sm text-gray-600 mr-2 hidden sm:inline">
+                  View:
+                </span>
                 <Button
                   variant={viewMode.mode === "grid" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setViewMode({ mode: "grid" })}
                   className="h-8"
                 >
-                  <Grid3X3 className="h-4 w-4" />
+                  <Grid3X3 className="h-3 w-3 md:h-4 md:w-4" />
+                  <span className="ml-1 hidden sm:inline">Grid</span>
                 </Button>
                 <Button
                   variant={viewMode.mode === "list" ? "default" : "outline"}
@@ -640,11 +644,12 @@ export default function BusinessDirectory() {
                   onClick={() => setViewMode({ mode: "list" })}
                   className="h-8"
                 >
-                  <List className="h-4 w-4" />
+                  <List className="h-3 w-3 md:h-4 md:w-4" />
+                  <span className="ml-1 hidden sm:inline">List</span>
                 </Button>
               </div>
 
-              <div className="text-sm text-gray-600">
+              <div className="text-xs md:text-sm text-gray-600 text-center sm:text-right">
                 Showing {displayedBusinesses.length} of{" "}
                 {filteredBusinesses.length} results
               </div>
