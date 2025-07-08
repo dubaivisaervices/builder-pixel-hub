@@ -967,31 +967,35 @@ export default function BusinessDirectory() {
                     </Badge>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-2">
+                  {/* Action Buttons - Improved Design */}
+                  <div className="flex flex-col sm:flex-row gap-3 mt-4">
                     <Button
-                      size="sm"
-                      className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-xs md:text-sm"
-                      onClick={() => navigateToDetails(business)}
+                      size="lg"
+                      className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg border-0 font-semibold text-sm md:text-base py-3"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigateToDetails(business);
+                      }}
                     >
-                      <Eye className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                      <Eye className="h-4 w-4 md:h-5 md:w-5 mr-2" />
                       View Details
                     </Button>
                     <Button
-                      size="sm"
+                      size="lg"
                       variant="outline"
-                      className="flex-1 border-red-200 text-red-600 hover:bg-red-50 text-xs md:text-sm"
-                      onClick={() =>
+                      className="flex-1 border-2 border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400 font-semibold text-sm md:text-base py-3 shadow-md"
+                      onClick={(e) => {
+                        e.stopPropagation();
                         navigate("/complaint", {
                           state: {
                             companyName: business.name,
                             companyLocation: business.address,
                           },
-                        })
-                      }
+                        });
+                      }}
                     >
-                      <AlertTriangle className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-                      Report
+                      <AlertTriangle className="h-4 w-4 md:h-5 md:w-5 mr-2" />
+                      Report Scam
                     </Button>
                   </div>
                 </CardContent>
