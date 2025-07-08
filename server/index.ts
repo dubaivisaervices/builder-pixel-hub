@@ -7,6 +7,7 @@ import {
   getBusinessPhoto,
   getBusinessById,
   testGoogleAPI,
+  debugImageData,
 } from "./routes/google-business";
 import {
   syncGoogleData,
