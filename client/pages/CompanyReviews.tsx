@@ -437,7 +437,10 @@ export default function CompanyReviews() {
         // Fallback to passed business data if available
         if (location.state?.businessData) {
           console.log("Using fallback business data from navigation state");
-          setBusinessData(location.state.businessData);
+          const fallbackData = location.state.businessData;
+          // Enhance with sample reviews
+          fallbackData.reviews = generateSampleReviews(fallbackData.name);
+          setBusinessData(fallbackData);
           setError(null);
         }
       } finally {
