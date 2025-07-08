@@ -30,7 +30,10 @@ const App = () => (
           <Route path="/api-test" element={<ApiTest />} />
           <Route path="/admin/sync" element={<AdminSync />} />
           <Route path="/admin/manage" element={<AdminManage />} />
-          <Route path="/reviews/:businessId" element={<CompanyReviews />} />
+          <Route
+            path="/:location/review/:companyName"
+            element={<CompanyReviews />}
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
