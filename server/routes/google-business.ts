@@ -256,6 +256,51 @@ export const getBusinessById: RequestHandler = async (req, res) => {
   }
 };
 
+// Debug endpoint to check raw database data
+export const debugImageData: RequestHandler = async (req, res) => {
+  try {
+    const { businessId } = req.params;
+
+    // Get raw database row
+    const business = await businessService.getBusinessById(businessId);
+
+    if (!business) {
+      return res.status(404).json({ error: "Business not found" });
+    }
+
+    const debugInfo = {
+      businessName: business.name,
+      logoUrl: business.logoUrl,
+      logoUrlType: business.logoUrl
+        ? business.logoUrl.startsWith("data:")
+          ? "base64"
+          : "url"
+        : "none",
+      logoUrlLength: business.logoUrl ? business.logoUrl.length : 0,
+      photosCount: business.photos ? business.photos.length : 0,
+      photosStructure: business.photos
+        ? business.photos.map((photo: any, index: number) => ({
+            index,
+            id: photo.id,
+            caption: photo.caption,
+            hasUrl: !!photo.url,
+            hasBase64: !!photo.base64,
+            urlLength: photo.url ? photo.url.length : 0,
+            base64Length: photo.base64 ? photo.base64.length : 0,
+          }))
+        : [],
+    };
+
+    res.json(debugInfo);
+  } catch (error) {
+    console.error("Debug endpoint error:", error);
+    res.status(500).json({
+      error: "Debug endpoint failed",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+};
+
 export const getBusinessPhoto: RequestHandler = async (req, res) => {
   try {
     const { photoReference } = req.params;
