@@ -337,12 +337,39 @@ export default function AdminSync() {
 
             <div className="text-center space-y-3">
               <Button
+                onClick={handleOfflinePhotoSync}
+                disabled={
+                  isLoading ||
+                  isReviewsLoading ||
+                  isClearingReviews ||
+                  isFreshSyncing ||
+                  isOfflineSyncing
+                }
+                variant="default"
+                size="lg"
+                className="min-w-[200px] bg-purple-600 hover:bg-purple-700"
+              >
+                {isOfflineSyncing ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Downloading Photos...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Photos Offline
+                  </>
+                )}
+              </Button>
+
+              <Button
                 onClick={handleFreshSync}
                 disabled={
                   isLoading ||
                   isReviewsLoading ||
                   isClearingReviews ||
-                  isFreshSyncing
+                  isFreshSyncing ||
+                  isOfflineSyncing
                 }
                 variant="default"
                 size="lg"
