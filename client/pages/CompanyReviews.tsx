@@ -573,10 +573,18 @@ export default function CompanyReviews() {
           });
         }
 
-        if (!data.business.reviews || data.business.reviews.length < 50) {
+        // Use real database reviews first, generate samples only if none exist
+        if (!data.business.reviews || data.business.reviews.length === 0) {
+          console.log(
+            "No real reviews found, generating sample reviews as fallback",
+          );
           data.business.reviews = generateSampleReviews(
             data.business.name,
             data.business.id,
+          );
+        } else {
+          console.log(
+            `Using ${data.business.reviews.length} real database reviews`,
           );
         }
 
