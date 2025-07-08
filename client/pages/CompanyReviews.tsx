@@ -1175,6 +1175,33 @@ export default function CompanyReviews() {
                     </div>
                   )}
                 </div>
+
+                {/* Temporary Debug Section */}
+                <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <h5 className="text-sm font-medium text-yellow-800 mb-2">
+                    🔍 Debug Tools
+                  </h5>
+                  <Button
+                    onClick={async () => {
+                      try {
+                        const response = await fetch(
+                          `/api/debug-images/${businessData.id}`,
+                        );
+                        const debugData = await response.json();
+                        console.log("🔍 Debug endpoint response:", debugData);
+                        alert("Check console for detailed image debug data");
+                      } catch (err) {
+                        console.error("Debug endpoint error:", err);
+                        alert("Debug endpoint failed - check console");
+                      }
+                    }}
+                    size="sm"
+                    variant="outline"
+                    className="text-xs bg-yellow-100 hover:bg-yellow-200 border-yellow-300"
+                  >
+                    🔍 Check Image Data
+                  </Button>
+                </div>
               </div>
 
               {/* Scam Reports Section */}
