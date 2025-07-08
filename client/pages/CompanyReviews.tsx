@@ -45,6 +45,16 @@ interface Review {
   profilePhotoUrl?: string;
 }
 
+interface ScamReport {
+  id: number;
+  reporterName: string;
+  date: string;
+  country: string;
+  visaType: string;
+  amountLost: string;
+  description: string;
+}
+
 interface BusinessData {
   id: string;
   name: string;
@@ -65,6 +75,7 @@ interface BusinessData {
   hours?: any;
   photos?: any[];
   description?: string;
+  scamReports?: ScamReport[];
 }
 
 export default function CompanyReviews() {
