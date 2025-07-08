@@ -155,7 +155,7 @@ const DUBAI_VISA_CATEGORIES = [
   "government approved visa Dubai",
 
   // Arabic/local terms
-  "خدمات التأشيرات دب��",
+  "خدمات التأشيرات دب����",
   "استشارات الهجرة دبي",
   "خدمات الهجرة دبي",
 ];
@@ -1096,6 +1096,144 @@ export const clearAllDataAndResync: RequestHandler = async (req, res) => {
     console.error("Error during fresh sync:", error);
     res.status(500).json({
       error: "Failed to clear and resync data",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+};
+
+export const syncWithOfflinePhotos: RequestHandler = async (req, res) => {
+  const startTime = Date.now();
+
+  try {
+    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+
+    if (!apiKey) {
+      return res.status(500).json({
+        error: "Google Places API key not configured",
+      });
+    }
+
+    console.log("🔄 Starting sync with offline photo storage...");
+
+    let totalSynced = 0;
+    let photosDownloaded = 0;
+    let businessesWithPhotos = 0;
+
+    // Get existing businesses from database
+    const existingBusinesses = await businessService.getBusinessesPaginated(
+      1000,
+      0,
+      false,
+    );
+
+    for (const business of existingBusinesses) {
+      try {
+        console.log(`📸 Processing photos for: ${business.name}`);
+
+        // Get detailed information including photos
+        const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${business.id}&fields=photos&key=${apiKey}`;
+        const detailsResponse = await fetch(detailsUrl);
+        const detailsData = await detailsResponse.json();
+
+        if (detailsData.status === "OK" && detailsData.result?.photos) {
+          const photos = detailsData.result.photos;
+          console.log(
+            `   📸 Found ${photos.length} photos for ${business.name}`,
+          );
+
+          // Download logo (first photo)
+          let logoBase64: string | undefined;
+          const logoUrl = `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photos[0].photo_reference}&maxwidth=200&key=${apiKey}`;
+          const logoResult =
+            await PhotoDownloader.downloadPhotoAsBase64(logoUrl);
+          if (logoResult.success) {
+            logoBase64 = logoResult.base64;
+            photosDownloaded++;
+          }
+
+          // Download up to 6 photos
+          const photosLocal: Array<{
+            id: number;
+            base64: string;
+            caption: string;
+          }> = [];
+          const photoUrls = photos
+            .slice(0, 6)
+            .map(
+              (photo) =>
+                `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photo.photo_reference}&maxwidth=400&key=${apiKey}`,
+            );
+
+          const photoResults =
+            await PhotoDownloader.downloadPhotosAsBase64(photoUrls);
+          photoResults.forEach((result, index) => {
+            if (result.success) {
+              photosLocal.push({
+                id: index + 1,
+                base64: result.base64,
+                caption:
+                  index === 0
+                    ? "Business Logo/Main Photo"
+                    : `Business Photo ${index + 1}`,
+              });
+              photosDownloaded++;
+            }
+          });
+
+          // Update business with local photos
+          const updatedBusiness = {
+            ...business,
+            logoBase64,
+            photosLocal: photosLocal.length > 0 ? photosLocal : undefined,
+          };
+
+          await businessService.upsertBusiness(updatedBusiness);
+          businessesWithPhotos++;
+          console.log(
+            `   ✅ Downloaded ${photosLocal.length} photos for ${business.name}`,
+          );
+        } else {
+          console.log(`   ❌ No photos available for ${business.name}`);
+        }
+
+        totalSynced++;
+
+        // Progress logging
+        if (totalSynced % 10 === 0) {
+          console.log(
+            `📊 Progress: ${totalSynced}/${existingBusinesses.length} businesses processed`,
+          );
+        }
+
+        // Small delay to be respectful to the API
+        await new Promise((resolve) => setTimeout(resolve, 200));
+      } catch (error) {
+        console.error(`Error processing photos for ${business.name}:`, error);
+      }
+    }
+
+    const endTime = Date.now();
+    const duration = Math.round((endTime - startTime) / 1000);
+
+    console.log(`🎉 Offline photo sync completed!`);
+    console.log(`📊 Total processed: ${totalSynced}`);
+    console.log(`📸 Photos downloaded: ${photosDownloaded}`);
+    console.log(`🏢 Businesses with photos: ${businessesWithPhotos}`);
+
+    res.json({
+      success: true,
+      message: "Offline photo sync completed successfully",
+      stats: {
+        totalSynced,
+        photosDownloaded,
+        businessesWithPhotos,
+        duration,
+      },
+    });
+  } catch (error) {
+    console.error("Error during offline photo sync:", error);
+    res.status(500).json({
+      error: "Failed to sync offline photos",
       details: error instanceof Error ? error.message : "Unknown error",
     });
   }
