@@ -626,24 +626,26 @@ export default function CompanyReviews() {
       {/* Modern Header with Glass Effect */}
       <div className="bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          {/* Breadcrumbs */}
-          <div className="flex items-center space-x-2 text-sm text-muted-foreground mb-4">
-            <Home className="h-4 w-4" />
+          {/* Breadcrumbs - Mobile Friendly */}
+          <div className="flex items-center space-x-1 md:space-x-2 text-xs md:text-sm text-muted-foreground mb-4 overflow-x-auto">
+            <Home className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
             <button
               onClick={() => navigate("/")}
-              className="hover:text-primary transition-colors"
+              className="hover:text-primary transition-colors whitespace-nowrap"
             >
-              Home
+              <span className="hidden sm:inline">Home</span>
+              <span className="sm:hidden">🏠</span>
             </button>
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
             <button
               onClick={() => navigate("/dubai-businesses")}
-              className="hover:text-primary transition-colors"
+              className="hover:text-primary transition-colors whitespace-nowrap"
             >
-              Dubai Businesses
+              <span className="hidden sm:inline">Dubai Businesses</span>
+              <span className="sm:hidden">Businesses</span>
             </button>
-            <ChevronRight className="h-4 w-4" />
-            <span className="text-foreground font-medium truncate">
+            <ChevronRight className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
+            <span className="text-foreground font-medium truncate max-w-[120px] md:max-w-none">
               {businessData?.name || "Business Profile"}
             </span>
           </div>
