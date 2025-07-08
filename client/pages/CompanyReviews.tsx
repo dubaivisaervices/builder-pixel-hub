@@ -372,13 +372,190 @@ export default function CompanyReviews() {
           </CardContent>
         </Card>
 
-        {/* Tabbed Content */}
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="photos">Photos</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews</TabsTrigger>
-            <TabsTrigger value="reports">Scam Reports</TabsTrigger>
+        {/* Reviews Section - Primary Focus */}
+        <Card className="shadow-lg border-0">
+          <CardHeader className="pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+              <CardTitle className="text-xl md:text-2xl">
+                Customer Reviews ({businessData.reviews.length})
+              </CardTitle>
+
+              {/* Review Filter */}
+              <div className="flex items-center space-x-2 text-sm">
+                <Filter className="h-4 w-4" />
+                <select
+                  value={reviewFilter}
+                  onChange={(e) => setReviewFilter(e.target.value as any)}
+                  className="border rounded px-2 py-1 text-sm"
+                >
+                  <option value="all">
+                    All Reviews ({businessData.reviews.length})
+                  </option>
+                  <option value="1star">1 Star ({reviewCounts[1] || 0})</option>
+                  <option value="2star">
+                    2 Stars ({reviewCounts[2] || 0})
+                  </option>
+                  <option value="3star">
+                    3 Stars ({reviewCounts[3] || 0})
+                  </option>
+                  <option value="4star">
+                    4 Stars ({reviewCounts[4] || 0})
+                  </option>
+                  <option value="5star">
+                    5 Stars ({reviewCounts[5] || 0})
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            {/* Review Distribution Bar */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>Review Distribution</span>
+                <span>{filteredReviews.length} showing</span>
+              </div>
+              <div className="grid grid-cols-5 gap-1 h-2">
+                {[1, 2, 3, 4, 5].map((rating) => {
+                  const count = reviewCounts[rating] || 0;
+                  const percentage =
+                    totalReviews > 0 ? (count / totalReviews) * 100 : 0;
+                  return (
+                    <div
+                      key={rating}
+                      className={`rounded ${
+                        rating === 1
+                          ? "bg-red-500"
+                          : rating === 2
+                            ? "bg-orange-500"
+                            : rating === 3
+                              ? "bg-yellow-500"
+                              : rating === 4
+                                ? "bg-green-400"
+                                : "bg-green-500"
+                      }`}
+                      style={{
+                        height: `${Math.max(percentage, 2)}%`,
+                        minHeight: "2px",
+                      }}
+                      title={`${rating} star: ${count} reviews (${percentage.toFixed(1)}%)`}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </CardHeader>
+
+          <CardContent className="space-y-4">
+            {/* No Reviews Message */}
+            {filteredReviews.length === 0 && (
+              <div className="text-center py-8 text-muted-foreground">
+                <User className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                <p>No reviews found for the selected filter.</p>
+                {businessData.reviews.length === 0 && (
+                  <p className="text-sm mt-2">
+                    This business has no customer reviews yet.
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Reviews List */}
+            {filteredReviews.map((review, index) => (
+              <div
+                key={review.id}
+                className={`p-4 rounded-lg border-l-4 ${
+                  review.rating === 1
+                    ? "border-l-red-500 bg-red-50"
+                    : review.rating === 2
+                      ? "border-l-orange-500 bg-orange-50"
+                      : review.rating === 3
+                        ? "border-l-yellow-500 bg-yellow-50"
+                        : review.rating === 4
+                          ? "border-l-green-400 bg-green-50"
+                          : "border-l-green-500 bg-green-50"
+                } ${index < filteredReviews.length - 1 ? "border-b pb-4 mb-4" : ""}`}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-2 sm:space-y-0 mb-3">
+                  <div className="flex items-center space-x-3">
+                    <div
+                      className={`p-2 rounded-full ${
+                        review.rating <= 2 ? "bg-red-100" : "bg-primary/10"
+                      }`}
+                    >
+                      <User
+                        className={`h-4 w-4 ${
+                          review.rating <= 2 ? "text-red-600" : "text-primary"
+                        }`}
+                      />
+                    </div>
+                    <div>
+                      <div className="font-medium text-sm md:text-base">
+                        {review.authorName}
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`h-3 w-3 md:h-4 md:w-4 ${
+                              i < review.rating
+                                ? review.rating <= 2
+                                  ? "text-red-500 fill-current"
+                                  : "text-yellow-400 fill-current"
+                                : "text-gray-300"
+                            }`}
+                          />
+                        ))}
+                        {review.rating === 1 && (
+                          <Badge variant="destructive" className="ml-2 text-xs">
+                            SCAM ALERT
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-1 text-xs md:text-sm text-muted-foreground">
+                    <Calendar className="h-3 w-3 md:h-4 md:w-4" />
+                    <span>{review.timeAgo}</span>
+                  </div>
+                </div>
+                <p
+                  className={`text-sm md:text-base leading-relaxed ${
+                    review.rating <= 2
+                      ? "text-red-900"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {review.text}
+                </p>
+
+                {/* Highlight concerning keywords for low ratings */}
+                {review.rating <= 2 && (
+                  <div className="mt-3 p-3 bg-red-100 rounded text-xs text-red-800">
+                    <Warning className="h-3 w-3 inline mr-1" />
+                    <strong>Warning:</strong> This review reports negative
+                    experiences. Exercise caution.
+                  </div>
+                )}
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Additional Info Tabs */}
+        <Tabs defaultValue="overview" className="space-y-4 md:space-y-6">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-3">
+            <TabsTrigger value="overview" className="text-xs md:text-sm">
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="photos" className="text-xs md:text-sm">
+              Photos
+            </TabsTrigger>
+            <TabsTrigger
+              value="contact"
+              className="text-xs md:text-sm hidden md:block"
+            >
+              Contact
+            </TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -562,7 +739,7 @@ export default function CompanyReviews() {
                 ) : (
                   <>
                     <div className="mb-4 text-sm text-orange-600 bg-orange-50 p-3 rounded-lg">
-                      ���️ No real Google reviews available for this business.
+                      ⚠️ No real Google reviews available for this business.
                       Please run "Sync Real Google Reviews" from the admin panel
                       to fetch authentic customer reviews.
                     </div>
