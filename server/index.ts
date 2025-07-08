@@ -20,6 +20,7 @@ import {
   getAllCategories,
   updateCategory,
   deleteCategory,
+  debugPhotoData,
 } from "./routes/admin";
 
 export function createServer() {
