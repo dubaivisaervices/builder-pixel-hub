@@ -139,6 +139,20 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     console.log(`   Categories: ${categories.length}`);
     console.log(`   Query time: ${duration} seconds`);
 
+    // Debug logging for first few businesses' images
+    if (businesses.length > 0) {
+      console.log(`📸 Image sampling for first 3 businesses:`);
+      businesses.slice(0, 3).forEach((business, index) => {
+        console.log(`  ${index + 1}. ${business.name}:`);
+        console.log(
+          `     - logoUrl: ${business.logoUrl ? "present" : "not present"}`,
+        );
+        console.log(
+          `     - photos: ${business.photos ? business.photos.length : 0} items`,
+        );
+      });
+    }
+
     res.json({
       businesses: businesses,
       total: totalCount.total,
