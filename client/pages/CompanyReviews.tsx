@@ -77,6 +77,48 @@ export default function CompanyReviews() {
   const [reviewFilter, setReviewFilter] = useState<
     "all" | "1star" | "2star" | "3star" | "4star" | "5star"
   >("all");
+  const [showShareMenu, setShowShareMenu] = useState(false);
+
+  // Share functionality
+  const shareUrl = window.location.href;
+  const shareText = businessData
+    ? `Check out ${businessData.name} - Visa Services in Dubai`
+    : "Dubai Visa Services";
+
+  const handleShare = async (platform?: string) => {
+    if (platform === "copy") {
+      await navigator.clipboard.writeText(shareUrl);
+      // You could add a toast notification here
+      return;
+    }
+
+    if (platform === "facebook") {
+      window.open(
+        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+        "_blank",
+      );
+    } else if (platform === "twitter") {
+      window.open(
+        `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`,
+        "_blank",
+      );
+    } else if (platform === "whatsapp") {
+      window.open(
+        `https://wa.me/?text=${encodeURIComponent(shareText + " " + shareUrl)}`,
+        "_blank",
+      );
+    } else if (navigator.share) {
+      try {
+        await navigator.share({
+          title: shareText,
+          url: shareUrl,
+        });
+      } catch (err) {
+        console.log("Error sharing:", err);
+      }
+    }
+    setShowShareMenu(false);
+  };
 
   // Generate sample reviews with proper distribution (25 low rating, 25 higher rating)
   const generateSampleReviews = (businessName: string): Review[] => {
