@@ -471,12 +471,13 @@ export default function CompanyReviews() {
     );
 
     return selectedReviews.map((review, index) => ({
-      id: `review_${businessId || "default"}_${index + 1}`,
+      id: `review_${businessId || "default"}_${seed}_${index + 1}`,
       authorName: review.author,
       rating: review.rating,
       text: review.text
-        .replace(/\bthey\b/gi, businessName)
-        .replace(/\bcompany\b/gi, businessName),
+        .replace(/\bthey\b/gi, `${businessName}`)
+        .replace(/\bcompany\b/gi, `${businessName}`)
+        .replace(/\bthe service\b/gi, `${businessName}'s service`),
       timeAgo: review.time,
       profilePhotoUrl: undefined,
     }));
