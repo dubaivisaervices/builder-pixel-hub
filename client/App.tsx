@@ -14,6 +14,7 @@ import ApiTest from "./pages/ApiTest";
 import AdminSync from "./pages/AdminSync";
 import AdminManage from "./pages/AdminManage";
 import Admin from "./pages/Admin";
+import DatabaseStatus from "./pages/DatabaseStatus";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
