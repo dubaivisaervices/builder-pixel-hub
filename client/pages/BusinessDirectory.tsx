@@ -436,6 +436,25 @@ export default function BusinessDirectory() {
           </div>
         </div>
 
+        {/* Error Notice */}
+        {error && (
+          <Card className="shadow-xl border-0 bg-orange-50/80 backdrop-blur-xl border-orange-200">
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-3">
+                <AlertTriangle className="h-5 w-5 text-orange-600" />
+                <div>
+                  <h4 className="font-semibold text-orange-800">Notice</h4>
+                  <p className="text-sm text-orange-700">
+                    {error.includes("Network")
+                      ? "Unable to connect to server. Showing sample businesses for demonstration."
+                      : "Showing sample data. For live data, please ensure the database is synced."}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Advanced Filters */}
         <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
           <CardContent className="p-6">
