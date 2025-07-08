@@ -438,6 +438,57 @@ export default function CompanyReviews() {
     }));
   };
 
+  // Generate sample scam reports
+  const generateSampleReports = (businessName: string) => {
+    return [
+      {
+        id: 1,
+        reporterName: "Anonymous User",
+        date: "2024-01-15",
+        country: "United States",
+        visaType: "Student Visa",
+        amountLost: "5000 AED",
+        description: `They promised guaranteed visa approval for ${businessName} for $5000 upfront. After payment, they became unresponsive and provided fake documents. Lost all my money and got visa rejection. They claimed to have special connections with embassy but it was all lies.`,
+      },
+      {
+        id: 2,
+        reporterName: "Jane D.",
+        date: "2024-01-10",
+        country: "Canada",
+        visaType: "Work Visa",
+        amountLost: "7200 AED",
+        description: `${businessName} charged excessive fees for basic document preparation that I could have done myself. They provided outdated forms and incorrect information leading to application delays. When I complained, they demanded more money for 'expedited processing'.`,
+      },
+      {
+        id: 3,
+        reporterName: "Ahmed Hassan",
+        date: "2024-01-05",
+        country: "United Kingdom",
+        visaType: "Business Visa",
+        amountLost: "8500 AED",
+        description: `Fake company with no proper licensing. ${businessName} collected personal information and money but never processed any applications. Office address was fake too. They disappeared after taking payment and blocked all communication.`,
+      },
+      {
+        id: 4,
+        reporterName: "Maria Santos",
+        date: "2023-12-28",
+        country: "Australia",
+        visaType: "Family Visa",
+        amountLost: "6800 AED",
+        description: `${businessName} forged documents for my family visa application. Could have resulted in lifetime ban from Australia. They submitted fake bank statements and employment letters without my knowledge. Reported to authorities.`,
+      },
+      {
+        id: 5,
+        reporterName: "Anonymous User",
+        date: "2023-12-20",
+        country: "Germany",
+        visaType: "Student Visa",
+        amountLost: "4500 AED",
+        description: `They lost our original documents and tried to cover it up. ${businessName} kept making excuses for 6 months while our visa deadlines passed. Had to get new documents from home country at huge expense and missed university admission.`,
+      },
+    ];
+  };
+
   // Fetch business data from database
   useEffect(() => {
     const fetchBusinessData = async () => {
