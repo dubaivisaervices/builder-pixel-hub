@@ -514,9 +514,6 @@ export default function CompanyReviews() {
           data.business.reviews = generateSampleReviews(data.business.name);
         }
 
-        // Add scam reports
-        data.business.scamReports = generateSampleReports(data.business.name);
-
         if (!data.business.description) {
           data.business.description = `${data.business.name} is a visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, tourist visa applications, and business visa support. The company claims to provide professional immigration advice and document processing services for clients seeking to travel to various destinations worldwide.`;
         }
