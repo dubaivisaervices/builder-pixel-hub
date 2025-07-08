@@ -1015,16 +1015,7 @@ export default function BusinessDirectory() {
                         className="flex-1"
                         onClick={() => {
                           // Navigate to company details page with business data
-                          const locationSlug =
-                            business.address
-                              .split(",")[0]
-                              ?.trim()
-                              .toLowerCase()
-                              .replace(/\s+/g, "-") || "dubai";
-                          const nameSlug = business.name
-                            .toLowerCase()
-                            .replace(/\s+/g, "-");
-                          navigate(`/reviews/${locationSlug}/${nameSlug}`, {
+                          navigate(`/reviews/${business.id}`, {
                             state: { businessData: business },
                           });
                         }}
