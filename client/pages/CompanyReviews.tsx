@@ -362,7 +362,7 @@ export default function CompanyReviews() {
                     variant="outline"
                     className="w-full sm:w-auto justify-center py-2 text-destructive border-destructive"
                   >
-                    <Warning className="h-4 w-4 mr-2" />
+                    <AlertTriangle className="h-4 w-4 mr-2" />
                     {oneStarCount} Scam Report{oneStarCount > 1 ? "s" : ""}
                   </Badge>
                 )}
