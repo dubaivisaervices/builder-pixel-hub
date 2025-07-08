@@ -52,6 +52,7 @@ interface BusinessData {
   reviews: Review[];
   hours?: any;
   photos?: any[];
+  description?: string;
 }
 
 export default function CompanyReviews() {
