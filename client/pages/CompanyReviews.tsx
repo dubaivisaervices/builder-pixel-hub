@@ -1,4 +1,5 @@
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +19,41 @@ import {
   Camera,
   Shield,
   ExternalLink,
+  TrendingDown,
+  Warning,
+  Filter,
+  SortDesc,
 } from "lucide-react";
+
+interface Review {
+  id: string;
+  authorName: string;
+  rating: number;
+  text: string;
+  timeAgo: string;
+  profilePhotoUrl?: string;
+}
+
+interface BusinessData {
+  id: string;
+  name: string;
+  address: string;
+  phone: string;
+  website: string;
+  email: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  rating: number;
+  reviewCount: number;
+  category: string;
+  businessStatus: string;
+  logoUrl?: string;
+  reviews: Review[];
+  hours?: any;
+  photos?: any[];
+}
 
 export default function CompanyReviews() {
   const { location: locationParam, companyName } = useParams();
