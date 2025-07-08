@@ -579,17 +579,55 @@ export default function BusinessDirectory() {
 
         {/* Error Notice */}
         {error && (
-          <Card className="shadow-xl border-0 bg-orange-50/80 backdrop-blur-xl border-orange-200">
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-3">
-                <AlertTriangle className="h-5 w-5 text-orange-600" />
-                <div>
-                  <h4 className="font-semibold text-orange-800">Notice</h4>
-                  <p className="text-sm text-orange-700">
-                    {error.includes("Network")
-                      ? "Unable to connect to server. Showing sample businesses for demonstration."
-                      : "Showing sample data. For live data, please ensure the database is synced."}
+          <Card className="shadow-xl border-0 bg-blue-50/80 backdrop-blur-xl border-blue-200">
+            <CardContent className="p-4 md:p-6">
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0 mt-0.5">
+                  {error.includes("Network") ||
+                  error.includes("connection") ||
+                  error.includes("timeout") ? (
+                    <AlertTriangle className="h-5 w-5 text-orange-600" />
+                  ) : (
+                    <Building2 className="h-5 w-5 text-blue-600" />
+                  )}
+                </div>
+                <div className="flex-grow">
+                  <h4 className="font-semibold text-gray-900 mb-1">
+                    {error.includes("Network") ||
+                    error.includes("connection") ||
+                    error.includes("timeout")
+                      ? "🌐 Offline Mode"
+                      : "📋 Demo Mode"}
+                  </h4>
+                  <p className="text-sm text-gray-700 mb-3">
+                    {error.includes("Network") || error.includes("connection")
+                      ? "Can't reach the server right now. Displaying sample Dubai visa services for demonstration."
+                      : error.includes("timeout")
+                        ? "Server is taking too long to respond. Displaying sample data instead."
+                        : error.includes("Database is empty")
+                          ? "The database hasn't been populated yet. Displaying sample businesses to show how the directory works."
+                          : "Displaying sample data. All features are fully functional for testing."}
                   </p>
+                  <div className="flex flex-wrap gap-2 text-xs">
+                    <Badge
+                      variant="secondary"
+                      className="bg-blue-100 text-blue-800"
+                    >
+                      ✨ 6 Sample Businesses
+                    </Badge>
+                    <Badge
+                      variant="secondary"
+                      className="bg-green-100 text-green-800"
+                    >
+                      🔍 Full Search & Filter
+                    </Badge>
+                    <Badge
+                      variant="secondary"
+                      className="bg-purple-100 text-purple-800"
+                    >
+                      📱 Mobile Responsive
+                    </Badge>
+                  </div>
                 </div>
               </div>
             </CardContent>
