@@ -137,53 +137,54 @@ export default function CompanyReviews() {
     };
 
     const seed = businessId ? createSeed(businessId, businessName) : Date.now();
+    // Legitimate negative reviews (no scam accusations)
     const lowRatingReviews = [
       {
-        rating: 1,
+        rating: 2,
         author: "Ahmed Hassan",
-        text: "Complete scam! They took 8000 AED upfront for UK visa and disappeared. No response to calls or emails. Documents were fake. AVOID!",
+        text: "Service was below expectations. Tourist visa processing took much longer than promised and communication was poor. Had to follow up multiple times.",
         time: "2 months ago",
       },
       {
         rating: 1,
         author: "Sarah Mitchell",
-        text: "FRAUD ALERT! Promised guaranteed Canadian visa approval. After paying 6500 AED, they provided incorrect forms and outdated information. Visa rejected and money gone.",
+        text: "Very disappointed with the service quality. Student visa application had errors and delays. Staff seemed inexperienced with current requirements.",
         time: "1 month ago",
       },
       {
-        rating: 1,
+        rating: 2,
         author: "Raj Patel",
-        text: "Worst experience ever. They charged 7200 AED for student visa to Australia. Documents they prepared were incomplete and had errors. Lost admission due to their negligence.",
+        text: "Poor customer service experience. Work visa processing was slow and they didn't keep me updated on progress. Had to chase them constantly.",
         time: "3 weeks ago",
       },
       {
         rating: 1,
         author: "Maria Santos",
-        text: "SCAM COMPANY! Took 5500 AED for family visit visa to USA. Office address is fake, phone numbers don't work. They vanished with our money.",
+        text: "Unsatisfactory service. Family visit visa application was mishandled and had to be resubmitted. Lost valuable time due to their mistakes.",
         time: "1 month ago",
       },
       {
         rating: 2,
         author: "Hassan Ali",
-        text: "Very poor service. Paid 4500 AED for tourist visa to Europe. Took 3 months longer than promised and had to do most work myself. Not worth the money.",
+        text: "Below average service. Tourist visa to Europe took longer than expected and communication was lacking. Would not recommend to others.",
         time: "2 months ago",
       },
       {
         rating: 1,
         author: "Jennifer Wong",
-        text: "Criminal behavior! They forged documents for my work visa application. Could have got me banned from entering the country. Stay away!",
+        text: "Very poor experience. Business visa documentation was incomplete and caused delays. Staff was not helpful in resolving issues promptly.",
         time: "5 weeks ago",
       },
       {
-        rating: 1,
+        rating: 2,
         author: "Mohamed Khan",
-        text: "Total fraud. Promised job visa to Germany for 9000 AED. After payment, they said job was not available and refused refund. Lawyers involved now.",
+        text: "Disappointing service quality. Student visa processing had multiple errors and required several revisions. Time-consuming and frustrating experience.",
         time: "6 weeks ago",
       },
       {
-        rating: 2,
+        rating: 1,
         author: "Lisa Thompson",
-        text: "Unprofessional and dishonest. Hidden charges kept appearing. What was quoted as 3000 AED became 6000 AED. Very aggressive sales tactics.",
+        text: "Unprofessional service. Tourist visa application process was confusing and poorly managed. Staff lacked proper knowledge of requirements.",
         time: "1 month ago",
       },
       {
