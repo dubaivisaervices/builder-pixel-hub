@@ -272,7 +272,7 @@ export default function BusinessDirectory() {
       setError(errorMessage);
 
       // Always fallback to sample data to ensure the page works
-      console.log("🏠 Using sample data to ensure page functionality");
+      console.log("�� Using sample data to ensure page functionality");
       setBusinesses(getFallbackBusinesses());
     } finally {
       if (retryCount === 0 || !setLoading) {
@@ -438,12 +438,27 @@ export default function BusinessDirectory() {
               {error && (
                 <Badge
                   variant="secondary"
-                  className="bg-orange-100 text-orange-800 text-xs"
+                  className={`text-xs ${
+                    error.includes("Network") ||
+                    error.includes("connection") ||
+                    error.includes("timeout")
+                      ? "bg-orange-100 text-orange-800"
+                      : "bg-blue-100 text-blue-800"
+                  }`}
                 >
-                  <AlertTriangle className="h-3 w-3 mr-1" />
-                  {error.includes("Network")
-                    ? "Offline Mode"
-                    : "Using Sample Data"}
+                  {error.includes("Network") ||
+                  error.includes("connection") ||
+                  error.includes("timeout") ? (
+                    <>
+                      <AlertTriangle className="h-3 w-3 mr-1" />
+                      Offline Mode
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="h-3 w-3 mr-1" />
+                      Demo Mode
+                    </>
+                  )}
                 </Badge>
               )}
             </div>
