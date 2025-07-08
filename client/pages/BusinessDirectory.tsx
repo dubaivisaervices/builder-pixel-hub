@@ -1156,6 +1156,129 @@ export default function BusinessDirectory() {
             </CardContent>
           </Card>
         )}
+
+        {/* Government Body Footer Section */}
+        <Card className="shadow-xl border-0 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 text-white">
+          <CardContent className="p-6 md:p-8">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold mb-3 bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
+                Dubai Government Partners
+              </h2>
+              <p className="text-blue-100 max-w-3xl mx-auto">
+                Our platform works in collaboration with official Dubai
+                government bodies to ensure all listed visa services comply with
+                UAE immigration regulations and standards.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-8">
+              {/* General Directorate of Residency */}
+              <div className="text-center space-y-3">
+                <div className="w-20 h-20 mx-auto bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
+                  <img
+                    src="https://images.pexels.com/photos/15652234/pexels-photo-15652234.jpeg"
+                    alt="UAE Immigration"
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                </div>
+                <h3 className="text-lg font-semibold text-white">
+                  General Directorate of Residency
+                </h3>
+                <p className="text-sm text-blue-200">
+                  Official authority for visa and residence permit regulations
+                  in Dubai
+                </p>
+                <div className="text-xs text-blue-300">
+                  📞 +971-4-313-9999 | 🌐 gdrfad.gov.ae
+                </div>
+              </div>
+
+              {/* Dubai Municipality */}
+              <div className="text-center space-y-3">
+                <div className="w-20 h-20 mx-auto bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
+                  <img
+                    src="https://images.pexels.com/photos/18294648/pexels-photo-18294648.jpeg"
+                    alt="Dubai Municipality"
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                </div>
+                <h3 className="text-lg font-semibold text-white">
+                  Dubai Municipality
+                </h3>
+                <p className="text-sm text-blue-200">
+                  Business licensing and regulation authority for visa service
+                  providers
+                </p>
+                <div className="text-xs text-blue-300">
+                  📞 +971-4-221-5555 | 🌐 dm.gov.ae
+                </div>
+              </div>
+
+              {/* Ministry of Human Resources */}
+              <div className="text-center space-y-3">
+                <div className="w-20 h-20 mx-auto bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-red-500 via-white to-green-600 rounded-full flex items-center justify-center">
+                    <span className="text-sm font-bold text-gray-800">UAE</span>
+                  </div>
+                </div>
+                <h3 className="text-lg font-semibold text-white">
+                  Ministry of Human Resources
+                </h3>
+                <p className="text-sm text-blue-200">
+                  Oversees employment visa regulations and work permit
+                  procedures
+                </p>
+                <div className="text-xs text-blue-300">
+                  📞 +971-4-394-4000 | 🌐 mohre.gov.ae
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-white/20 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="text-lg font-semibold text-white mb-3">
+                    Official Resources
+                  </h4>
+                  <ul className="space-y-2 text-sm text-blue-200">
+                    <li className="flex items-center">
+                      <span className="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
+                      UAE Visa Application Portal - visa.gov.ae
+                    </li>
+                    <li className="flex items-center">
+                      <span className="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
+                      Dubai Smart Government - dubai.ae
+                    </li>
+                    <li className="flex items-center">
+                      <span className="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
+                      UAE Immigration Guidelines - ica.gov.ae
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-white mb-3">
+                    Compliance Notice
+                  </h4>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                    <p className="text-sm text-blue-100">
+                      ⚠️ Always verify that your chosen visa service provider
+                      holds valid licensing from Dubai authorities. Report
+                      unlicensed operators to the General Directorate of
+                      Residency.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center mt-8 pt-6 border-t border-white/20">
+              <p className="text-xs text-blue-300">
+                This directory is an independent platform. For official visa
+                information, always consult government sources.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
