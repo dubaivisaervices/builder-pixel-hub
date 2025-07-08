@@ -175,25 +175,53 @@ export default function CompanyReviews() {
             <div className="flex flex-col lg:flex-row lg:items-start space-y-6 lg:space-y-0 lg:space-x-8">
               {/* Logo and Basic Info */}
               <div className="flex-shrink-0">
-                <div className="w-32 h-32 bg-gradient-to-br from-primary/10 to-primary/20 rounded-xl flex items-center justify-center mb-4 border-2 border-primary/20 overflow-hidden">
+                <div className="w-32 h-32 bg-gradient-to-br from-primary/10 to-primary/20 rounded-xl flex items-center justify-center mb-4 border-2 border-primary/20 overflow-hidden relative">
                   {businessData?.logoUrl ? (
-                    <img
-                      src={businessData.logoUrl}
-                      alt={`${company.name} logo`}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        // Fallback to letter if image fails to load
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = "none";
-                        target.nextElementSibling!.classList.remove("hidden");
-                      }}
-                    />
-                  ) : null}
-                  <div
-                    className={`text-primary text-4xl font-bold ${businessData?.logoUrl ? "hidden" : ""}`}
-                  >
-                    {company.name.charAt(0).toUpperCase()}
-                  </div>
+                    <>
+                      <img
+                        src={businessData.logoUrl}
+                        alt={`${company.name} logo`}
+                        className="w-full h-full object-cover absolute inset-0"
+                        onError={(e) => {
+                          // Hide image and show fallback letter
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = "none";
+                          const parent = target.parentElement;
+                          const fallback = parent?.querySelector(
+                            ".company-logo-fallback",
+                          ) as HTMLElement;
+                          if (fallback) {
+                            fallback.style.display = "flex";
+                          }
+                        }}
+                        onLoad={(e) => {
+                          // Hide fallback when image loads successfully
+                          const target = e.target as HTMLImageElement;
+                          const parent = target.parentElement;
+                          const fallback = parent?.querySelector(
+                            ".company-logo-fallback",
+                          ) as HTMLElement;
+                          if (fallback) {
+                            fallback.style.display = "none";
+                          }
+                        }}
+                      />
+                      <div
+                        className="company-logo-fallback absolute inset-0 flex items-center justify-center"
+                        style={{ display: "none" }}
+                      >
+                        <span className="text-primary text-4xl font-bold">
+                          {company.name.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="company-logo-fallback absolute inset-0 flex items-center justify-center">
+                      <span className="text-primary text-4xl font-bold">
+                        {company.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className="text-center lg:text-left">
                   <div className="flex items-center justify-center lg:justify-start space-x-1 mb-2">
