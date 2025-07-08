@@ -648,6 +648,26 @@ export default function CompanyReviews() {
   const scamAlertLevel =
     scamPercentage > 50 ? "high" : scamPercentage > 25 ? "medium" : "low";
 
+  // Calculate scam reports based on business rating and reviews
+  const calculateScamReports = (rating: number, reviewCount: number) => {
+    if (rating <= 2.0)
+      return Math.floor(reviewCount * 0.15) + Math.floor(Math.random() * 5);
+    if (rating <= 3.0)
+      return Math.floor(reviewCount * 0.08) + Math.floor(Math.random() * 3);
+    if (rating <= 3.5)
+      return Math.floor(reviewCount * 0.03) + Math.floor(Math.random() * 2);
+    return Math.floor(Math.random() * 2);
+  };
+
+  // Set scam reports when business data is loaded
+  React.useEffect(() => {
+    if (businessData) {
+      setScamReports(
+        calculateScamReports(businessData.rating, businessData.reviewCount),
+      );
+    }
+  }, [businessData]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
