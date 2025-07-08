@@ -196,15 +196,23 @@ export default function BusinessDirectory() {
         `Fetching businesses from API... (attempt ${retryCount + 1})`,
       );
 
+      // Add small delay on first attempt to ensure server is ready
+      if (retryCount === 0) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+
       // Add timeout to prevent hanging requests
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
 
       const response = await fetch("/api/dubai-visa-services?limit=300", {
         signal: controller.signal,
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
+        method: "GET",
+        cache: "no-cache",
       });
 
       clearTimeout(timeoutId);
