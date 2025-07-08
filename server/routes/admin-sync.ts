@@ -6,19 +6,64 @@ export const getDatabaseStats: RequestHandler = async (req, res) => {
   try {
     const stats = await businessService.getStats();
 
-    // Get additional stats
+    // Get comprehensive stats
     const businesses = await businessService.getAllBusinesses();
-    const totalPhotos = businesses.reduce((count, business) => {
-      return count + (business.photos ? business.photos.length : 0);
-    }, 0);
+
+    // Count photos by type
+    let totalPhotos = 0;
+    let photosWithUrls = 0;
+    let photosWithBase64 = 0;
+    let businessesWithPhotos = 0;
+
+    businesses.forEach((business) => {
+      if (business.photos && business.photos.length > 0) {
+        businessesWithPhotos++;
+        business.photos.forEach((photo) => {
+          totalPhotos++;
+          if (photo.url) photosWithUrls++;
+          if (photo.base64) photosWithBase64++;
+        });
+      }
+    });
+
+    // Count reviews by business
+    let totalReviewsCount = 0;
+    let businessesWithReviews = 0;
+    let realReviewsCount = 0;
+
+    for (const business of businesses) {
+      const reviews = await businessService.getBusinessReviews(business.id);
+      if (reviews && reviews.length > 0) {
+        businessesWithReviews++;
+        totalReviewsCount += reviews.length;
+        // Count real vs generated reviews (real reviews typically have specific patterns)
+        realReviewsCount += reviews.filter(
+          (r) => !r.text.includes("sample") && !r.text.includes("generated"),
+        ).length;
+      }
+    }
 
     const result = {
       totalBusinesses: stats.total,
-      totalReviews: stats.reviews || 0,
+      totalReviews: totalReviewsCount,
+      realReviews: realReviewsCount,
+      businessesWithReviews: businessesWithReviews,
       totalPhotos: totalPhotos,
+      photosWithUrls: photosWithUrls,
+      photosWithBase64: photosWithBase64,
+      businessesWithPhotos: businessesWithPhotos,
+      expectedPhotos: 4072, // Target number
+      photosSaved: photosWithBase64, // Actually saved locally
       lastSyncDate: stats.lastUpdated || "Never",
       categories: stats.categories || 0,
     };
+
+    console.log(`📊 Database Stats:
+      - Businesses: ${result.totalBusinesses}
+      - Reviews: ${result.totalReviews} (${result.realReviews} real)
+      - Photos: ${result.totalPhotos} (${result.photosWithBase64} saved locally)
+      - Expected photos: ${result.expectedPhotos}
+    `);
 
     res.json(result);
   } catch (error) {
