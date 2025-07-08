@@ -78,6 +78,8 @@ export default function CompanyReviews() {
     "all" | "1star" | "2star" | "3star" | "4star" | "5star"
   >("all");
   const [showShareMenu, setShowShareMenu] = useState(false);
+  const [scamReports, setScamReports] = useState<number>(0);
+  const [showScamReports, setShowScamReports] = useState(false);
 
   // Share functionality
   const shareUrl = window.location.href;
