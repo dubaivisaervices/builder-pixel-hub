@@ -292,6 +292,17 @@ export const syncGoogleData: RequestHandler = async (req, res) => {
                 if (detailsData.status === "OK" && detailsData.result) {
                   const details = detailsData.result;
 
+                  // Log photo availability for debugging
+                  if (details.photos && details.photos.length > 0) {
+                    console.log(
+                      `   📷 Found ${details.photos.length} photos for ${details.name || place.name}`,
+                    );
+                  } else {
+                    console.log(
+                      `   ❌ No photos found for ${details.name || place.name}`,
+                    );
+                  }
+
                   // Check for target keywords - expanded for better detection
                   const targetKeywords = [
                     "overseas services",
