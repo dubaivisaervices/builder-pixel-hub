@@ -219,11 +219,18 @@ export default function BusinessDirectory() {
       }
     } catch (err) {
       console.error("Error fetching businesses:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to load businesses",
-      );
 
-      // Fallback to sample data
+      // Determine error type for better user feedback
+      let errorMessage = "Failed to load businesses";
+      if (err instanceof TypeError && err.message.includes("fetch")) {
+        errorMessage = "Network connection issue - using offline data";
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+
+      setError(errorMessage);
+
+      // Always fallback to sample data to ensure the page works
       console.log("Using fallback sample data due to error");
       setBusinesses(getFallbackBusinesses());
     } finally {
