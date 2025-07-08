@@ -89,7 +89,7 @@ export default function ComplaintForm() {
                 onClick={() => navigate("/dubai-businesses")}
                 className="w-full"
               >
-                View Company Page
+                Browse All Companies
               </Button>
               <Button
                 variant="outline"
