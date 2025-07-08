@@ -132,7 +132,14 @@ export default function CompanyReviews() {
   };
 
   // Generate sample reviews with proper distribution (25 low rating, 25 higher rating)
-  const generateSampleReviews = (businessName: string): Review[] => {
+  const generateSampleReviews = (
+    businessName: string,
+    businessId?: string,
+  ): Review[] => {
+    // Use business ID to create unique seed for consistent but different reviews per business
+    const seed = businessId
+      ? businessId.charCodeAt(businessId.length - 1) % 10
+      : 0;
     const lowRatingReviews = [
       {
         rating: 1,
