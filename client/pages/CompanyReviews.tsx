@@ -752,101 +752,277 @@ export default function CompanyReviews() {
       )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-8">
-        {/* Photo Grid Section - Like Sample Image */}
-        {businessData?.photos && businessData.photos.length > 0 && (
-          <Card className="shadow-lg border-0 overflow-hidden">
-            <CardContent className="p-0">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
-                {businessData.photos.slice(0, 8).map((photo, index) => (
-                  <div
-                    key={photo.id || index}
-                    className={`relative overflow-hidden ${
-                      index === 0
-                        ? "col-span-2 md:col-span-2 lg:col-span-2 row-span-2"
-                        : ""
-                    }`}
-                  >
-                    <div
-                      className={`aspect-square ${index === 0 ? "aspect-[4/3]" : ""} bg-gradient-to-br from-gray-100 to-gray-200 group cursor-pointer`}
-                    >
-                      {photo.base64 ? (
-                        <img
-                          src={`data:image/jpeg;base64,${photo.base64}`}
-                          alt={photo.caption || "Business photo"}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      ) : photo.url ? (
-                        <img
-                          src={photo.url}
-                          alt={photo.caption || "Business photo"}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = "none";
-                            const placeholder =
-                              target.parentElement?.querySelector(
-                                ".photo-placeholder",
-                              );
-                            if (placeholder)
-                              placeholder.classList.remove("hidden");
-                          }}
-                        />
-                      ) : null}
-                      <div className="photo-placeholder hidden absolute inset-0 flex flex-col items-center justify-center text-gray-500 bg-gray-100">
-                        <Camera className="h-6 w-6 md:h-8 md:w-8 mb-2" />
-                        <p className="text-xs md:text-sm font-medium text-center px-2">
-                          {photo.caption || "Business Photo"}
-                        </p>
-                      </div>
-
-                      {/* Photo overlay with caption */}
-                      {photo.caption && (
-                        <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-2 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                          <p className="text-xs md:text-sm font-medium">
-                            {photo.caption}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-
-                {/* More photos indicator */}
-                {businessData.photos.length > 8 && (
-                  <div className="relative aspect-square bg-black/80 flex items-center justify-center text-white cursor-pointer group">
-                    <div className="text-center">
-                      <Camera className="h-6 w-6 md:h-8 md:w-8 mx-auto mb-2" />
-                      <p className="text-xs md:text-sm font-medium">
-                        +{businessData.photos.length - 8} more
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-        {/* Scam Warning Banner - Prominent for mobile */}
+        {/* High Risk Alert Banner */}
         {scamAlertLevel === "high" && (
-          <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white p-4 md:p-6 rounded-xl shadow-xl">
-            <div className="flex items-start space-x-3">
-              <AlertTriangle className="h-6 w-6 md:h-8 md:w-8 flex-shrink-0 mt-1" />
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-500 via-red-600 to-red-700 p-6 shadow-2xl">
+            <div className="absolute inset-0 bg-black/10"></div>
+            <div className="relative flex items-start space-x-4 text-white">
+              <div className="flex-shrink-0 p-2 bg-white/20 rounded-full backdrop-blur-sm">
+                <AlertTriangle className="h-6 w-6" />
+              </div>
               <div className="flex-grow">
-                <h2 className="text-lg md:text-xl font-bold mb-2">
-                  ⚠️ HIGH SCAM RISK ALERT
-                </h2>
-                <p className="text-sm md:text-base opacity-90">
-                  This business has {oneStarCount} negative reviews (
-                  {scamPercentage.toFixed(0)}% of all reviews). Multiple
-                  customers report fraudulent activities.
+                <h3 className="text-xl font-bold mb-2">⚠️ HIGH SCAM RISK DETECTED</h3>
+                <p className="text-white/90 text-sm leading-relaxed">
+                  This business has {oneStarCount} negative reviews ({scamPercentage.toFixed(0)}% of all reviews).
+                  Multiple customers report fraudulent activities. Exercise extreme caution.
                 </p>
               </div>
             </div>
           </div>
         )}
 
-        {/* Company Header */}
-        <Card className="shadow-xl border-0 overflow-hidden">
+        {/* Modern Photo Gallery */}
+        {businessData?.photos && businessData.photos.length > 0 && (
+          <div className="relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-xl shadow-xl border border-white/20">
+            <div className="p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                <Camera className="h-5 w-5 mr-2" />
+                Photo Gallery
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {businessData.photos.slice(0, 8).map((photo, index) => (
+                  <div
+                    key={photo.id || index}
+                    className={`relative overflow-hidden rounded-xl group cursor-pointer ${
+                      index === 0 ? "md:col-span-2 md:row-span-2" : ""
+                    }`}
+                  >
+                    <div className={`aspect-square ${index === 0 ? "md:aspect-[2/1]" : ""} bg-gradient-to-br from-gray-100 to-gray-200`}>
+                      {photo.base64 ? (
+                        <img
+                          src={`data:image/jpeg;base64,${photo.base64}`}
+                          alt={photo.caption || "Business photo"}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      ) : photo.url ? (
+                        <img
+                          src={photo.url}
+                          alt={photo.caption || "Business photo"}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex flex-col items-center justify-center text-gray-500">
+                          <Camera className="h-8 w-8 mb-2" />
+                          <p className="text-xs font-medium text-center px-2">
+                            {photo.caption || "Business Photo"}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Overlay */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end">
+                        {photo.caption && (
+                          <div className="w-full p-3 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <p className="text-sm font-medium">{photo.caption}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {businessData.photos.length > 8 && (
+                  <div className="relative aspect-square bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center text-white cursor-pointer group hover:from-gray-700 hover:to-gray-800 transition-colors">
+                    <div className="text-center">
+                      <Camera className="h-6 w-6 mx-auto mb-2" />
+                      <p className="text-sm font-medium">+{businessData.photos.length - 8}</p>
+                      <p className="text-xs">more photos</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modern Company Hero Section */}
+        <div className="relative overflow-hidden rounded-3xl bg-white/60 backdrop-blur-xl shadow-2xl border border-white/20">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-indigo-100/30"></div>
+
+          <div className="relative p-6 md:p-8 lg:p-10">
+            {/* Header with Logo and Quick Actions */}
+            <div className="flex flex-col lg:flex-row lg:items-start gap-6 mb-8">
+              {/* Logo and Basic Info */}
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                <div className="relative">
+                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br from-blue-500/10 to-indigo-600/20 flex items-center justify-center border border-blue-200/50 overflow-hidden shadow-lg">
+                    {businessData?.logoUrl ? (
+                      <>
+                        <img
+                          src={businessData.logoUrl}
+                          alt={`${businessData.name} logo`}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
+                            const parent = target.parentElement;
+                            const fallback = parent?.querySelector(".company-logo-fallback") as HTMLElement;
+                            if (fallback) fallback.style.display = "flex";
+                          }}
+                        />
+                        <div className="company-logo-fallback absolute inset-0 flex items-center justify-center" style={{ display: "none" }}>
+                          <span className="text-2xl md:text-4xl font-bold text-blue-600">
+                            {businessData.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="company-logo-fallback absolute inset-0 flex items-center justify-center">
+                        <span className="text-2xl md:text-4xl font-bold text-blue-600">
+                          {businessData.name.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Status Indicator */}
+                  <div className="absolute -bottom-2 -right-2 px-2 py-1 bg-green-500 text-white text-xs rounded-full shadow-lg">
+                    <div className="flex items-center space-x-1">
+                      <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                      <span>Active</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Company Details */}
+                <div className="text-center sm:text-left">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 leading-tight">
+                    {businessData.name}
+                  </h1>
+
+                  {/* Rating Section */}
+                  <div className="flex items-center justify-center sm:justify-start space-x-3 mb-4">
+                    <div className="flex items-center space-x-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-5 w-5 ${
+                            i < Math.floor(businessData.rating)
+                              ? "text-yellow-400 fill-current"
+                              : "text-gray-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-lg font-semibold text-gray-700">
+                      {businessData.rating.toFixed(1)}
+                    </span>
+                    <span className="text-gray-500">({businessData.reviewCount} reviews)</span>
+                    {businessData.rating <= 2.0 && (
+                      <Badge variant="destructive" className="animate-pulse">
+                        <TrendingDown className="h-3 w-3 mr-1" />
+                        Poor Rating
+                      </Badge>
+                    )}
+                  </div>
+
+                  {/* Category Badge */}
+                  <div className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-4">
+                    <Building2 className="h-4 w-4 mr-2" />
+                    {businessData.category}
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="lg:ml-auto flex flex-col sm:flex-row lg:flex-col gap-3">
+                <Button
+                  onClick={() =>
+                    navigate("/complaint", {
+                      state: {
+                        companyName: businessData.name,
+                        companyLocation: businessData.address,
+                      },
+                    })
+                  }
+                  className="bg-red-600 hover:bg-red-700 text-white shadow-lg"
+                  size="lg"
+                >
+                  <AlertTriangle className="h-4 w-4 mr-2" />
+                  Report Scam
+                </Button>
+
+                <div className="flex gap-2">
+                  <Button variant="outline" size="lg" className="bg-white/50 hover:bg-white/80">
+                    <BookmarkPlus className="h-4 w-4 mr-2" />
+                    Save
+                  </Button>
+                  <Button variant="outline" size="lg" className="bg-white/50 hover:bg-white/80">
+                    <Heart className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Information Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+              <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <MapPin className="h-5 w-5 text-blue-600" />
+                </div>
+                <div className="flex-grow min-w-0">
+                  <p className="text-xs text-gray-500 uppercase tracking-wide">Address</p>
+                  <p className="text-sm font-medium text-gray-900 truncate">{businessData.address}</p>
+                </div>
+              </div>
+
+              {businessData.phone && (
+                <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <Phone className="h-5 w-5 text-green-600" />
+                  </div>
+                  <div className="flex-grow">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">Phone</p>
+                    <p className="text-sm font-medium text-gray-900">{businessData.phone}</p>
+                  </div>
+                </div>
+              )}
+
+              {businessData.email && (
+                <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
+                  <div className="p-2 bg-purple-100 rounded-lg">
+                    <Mail className="h-5 w-5 text-purple-600" />
+                  </div>
+                  <div className="flex-grow min-w-0">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">Email</p>
+                    <p className="text-sm font-medium text-gray-900 truncate">{businessData.email}</p>
+                  </div>
+                </div>
+              )}
+
+              {businessData.website && (
+                <div className="flex items-center space-x-3 p-4 rounded-xl bg-white/40 backdrop-blur-sm border border-white/30">
+                  <div className="p-2 bg-orange-100 rounded-lg">
+                    <Globe className="h-5 w-5 text-orange-600" />
+                  </div>
+                  <div className="flex-grow min-w-0">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">Website</p>
+                    <a
+                      href={businessData.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-medium text-blue-600 hover:text-blue-800 truncate flex items-center"
+                    >
+                      Visit Site
+                      <ExternalLink className="h-3 w-3 ml-1" />
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Warning Alert for High Risk */}
+            {oneStarCount > 0 && (
+              <div className="flex items-center justify-center space-x-3 p-4 bg-red-50 border border-red-200 rounded-xl">
+                <AlertTriangle className="h-5 w-5 text-red-600" />
+                <span className="text-sm font-medium text-red-800">
+                  {oneStarCount} Scam Report{oneStarCount > 1 ? 's' : ''} Filed Against This Business
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
           <CardContent className="p-4 md:p-8">
             <div className="flex flex-col space-y-6">
               {/* Mobile-first header layout */}
