@@ -79,7 +79,7 @@ interface BusinessData {
 }
 
 export default function CompanyReviews() {
-  const { businessId } = useParams();
+  const { location: locationParam, companyName } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [businessData, setBusinessData] = useState<BusinessData | null>(null);
