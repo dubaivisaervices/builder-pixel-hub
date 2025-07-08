@@ -739,13 +739,15 @@ export default function BusinessDirectory() {
                           </div>
                         )}
                       </div>
-                      <div className="flex-grow">
-                        <h3 className="font-bold text-lg text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                      <div className="flex-grow min-w-0">
+                        <h3 className="font-bold text-base md:text-lg text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 md:line-clamp-1">
                           {business.name}
                         </h3>
-                        <p className="text-sm text-gray-600 flex items-center">
-                          <MapPin className="h-3 w-3 mr-1" />
-                          {business.address.split(",")[0]}
+                        <p className="text-xs md:text-sm text-gray-600 flex items-center truncate">
+                          <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
+                          <span className="truncate">
+                            {business.address.split(",")[0]}
+                          </span>
                         </p>
                       </div>
                     </div>
