@@ -607,8 +607,35 @@ export default function BusinessDirectory() {
                   {/* Business Header */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                        {business.name.charAt(0).toUpperCase()}
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg overflow-hidden relative">
+                        {business.logoUrl ? (
+                          <>
+                            <img
+                              src={business.logoUrl}
+                              alt={`${business.name} logo`}
+                              className="w-full h-full object-cover absolute inset-0"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = "none";
+                                const parent = target.parentElement;
+                                const fallback = parent?.querySelector(
+                                  ".logo-fallback",
+                                ) as HTMLElement;
+                                if (fallback) fallback.style.display = "flex";
+                              }}
+                            />
+                            <div
+                              className="logo-fallback absolute inset-0 flex items-center justify-center"
+                              style={{ display: "none" }}
+                            >
+                              {business.name.charAt(0).toUpperCase()}
+                            </div>
+                          </>
+                        ) : (
+                          <div className="logo-fallback absolute inset-0 flex items-center justify-center">
+                            {business.name.charAt(0).toUpperCase()}
+                          </div>
+                        )}
                       </div>
                       <div className="flex-grow">
                         <h3 className="font-bold text-lg text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-1">
