@@ -497,8 +497,8 @@ export default function BusinessDirectory() {
       </div>
 
       <div className="container mx-auto px-4 py-8 space-y-8">
-        {/* Dubai Government Logos */}
-        <Card className="shadow-xl border-0 bg-white/70 backdrop-blur-xl">
+        {/* Dubai Government Logos - Hidden on Mobile */}
+        <Card className="hidden md:block shadow-xl border-0 bg-white/70 backdrop-blur-xl">
           <CardContent className="p-4 md:p-6">
             <div className="text-center mb-4">
               <h3 className="text-sm md:text-base font-semibold text-gray-700 mb-3">
@@ -552,8 +552,8 @@ export default function BusinessDirectory() {
           </CardContent>
         </Card>
 
-        {/* Hero Section */}
-        <div className="text-center space-y-4 md:space-y-6">
+        {/* Hero Section - Hidden on Mobile */}
+        <div className="hidden md:block text-center space-y-4 md:space-y-6">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent leading-tight">
             Dubai Visa Services Directory
           </h1>
@@ -580,8 +580,8 @@ export default function BusinessDirectory() {
           </div>
         </div>
 
-        {/* Category Showcase */}
-        <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
+        {/* Category Showcase - Hidden on Mobile */}
+        <Card className="hidden md:block shadow-xl border-0 bg-white/60 backdrop-blur-xl">
           <CardContent className="p-4 md:p-6">
             <div className="text-center mb-4 md:mb-6">
               <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
@@ -677,9 +677,9 @@ export default function BusinessDirectory() {
           </CardContent>
         </Card>
 
-        {/* Error Notice */}
+        {/* Error Notice - Hidden on Mobile */}
         {error && (
-          <Card className="shadow-xl border-0 bg-blue-50/80 backdrop-blur-xl border-blue-200">
+          <Card className="hidden md:block shadow-xl border-0 bg-blue-50/80 backdrop-blur-xl border-blue-200">
             <CardContent className="p-4 md:p-6">
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 mt-0.5">
@@ -734,8 +734,8 @@ export default function BusinessDirectory() {
           </Card>
         )}
 
-        {/* Advanced Filters */}
-        <Card className="shadow-xl border-0 bg-gradient-to-r from-white/80 via-blue-50/80 to-purple-50/80 backdrop-blur-xl ring-2 ring-blue-200/50">
+        {/* Advanced Filters - Hidden on Mobile */}
+        <Card className="hidden md:block shadow-xl border-0 bg-gradient-to-r from-white/80 via-blue-50/80 to-purple-50/80 backdrop-blur-xl ring-2 ring-blue-200/50">
           <CardContent className="p-4 md:p-6">
             <div className="mb-4">
               <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
