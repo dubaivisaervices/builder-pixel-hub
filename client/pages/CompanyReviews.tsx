@@ -494,7 +494,51 @@ export default function CompanyReviews() {
         setError(null);
 
         // Try to get business ID from state, or create from URL params as fallback
-        const idToFetch = location.state?.businessData?.id;
+        let idToFetch = location.state?.businessData?.id;
+
+        // If no ID from state, try to find business by name and location
+        if (!idToFetch && companyName && locationParam) {
+          console.log(
+            `No business ID in state, searching by name: ${companyName} in ${locationParam}`,
+          );
+
+          try {
+            // Search for business by name
+            const searchResponse = await fetch(
+              `/api/dubai-visa-services?limit=1000`,
+            );
+            const searchData = await searchResponse.json();
+
+            if (searchData.businesses && searchData.businesses.length > 0) {
+              // Find business by matching name
+              const matchingBusiness = searchData.businesses.find(
+                (business: any) => {
+                  const businessSlug = business.name
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]/g, "-");
+                  const urlSlug = companyName.toLowerCase();
+                  return (
+                    businessSlug === urlSlug ||
+                    business.name
+                      .toLowerCase()
+                      .includes(companyName.replace(/-/g, " "))
+                  );
+                },
+              );
+
+              if (matchingBusiness) {
+                console.log(
+                  `Found matching business: ${matchingBusiness.name}`,
+                );
+                idToFetch = matchingBusiness.id;
+                // Also set the business data in state for future use
+                location.state = { businessData: matchingBusiness };
+              }
+            }
+          } catch (searchError) {
+            console.error("Error searching for business:", searchError);
+          }
+        }
 
         if (!idToFetch) {
           if (location.state?.businessData) {
