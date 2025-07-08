@@ -233,11 +233,36 @@ export const testGoogleAPI: RequestHandler = async (req, res) => {
     const response = await fetch(testUrl);
     const data = await response.json();
 
+    // Test photo URL if available
+    let photoTest = null;
+    if (data.results && data.results[0] && data.results[0].photos) {
+      const photoRef = data.results[0].photos[0].photo_reference;
+      const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photoRef}&maxwidth=200&key=${apiKey}`;
+
+      try {
+        const photoResponse = await fetch(photoUrl);
+        photoTest = {
+          photoReference: photoRef,
+          photoUrl: photoUrl,
+          photoStatus: photoResponse.status,
+          photoHeaders: Object.fromEntries(photoResponse.headers.entries()),
+        };
+      } catch (photoError) {
+        photoTest = {
+          error: "Failed to fetch photo",
+          details:
+            photoError instanceof Error ? photoError.message : "Unknown error",
+        };
+      }
+    }
+
     res.json({
       status: data.status,
       message: "Google Places API test",
       resultCount: data.results?.length || 0,
       sampleResult: data.results?.[0]?.name || "No results",
+      hasPhotos: data.results?.[0]?.photos?.length || 0,
+      photoTest: photoTest,
     });
   } catch (error) {
     console.error("Google API test error:", error);
