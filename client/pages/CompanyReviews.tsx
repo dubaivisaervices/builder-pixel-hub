@@ -663,10 +663,9 @@ export default function CompanyReviews() {
             {/* Header Actions */}
             <div className="flex items-center justify-between">
               <Button
-                variant="ghost"
                 size="sm"
                 onClick={() => navigate("/dubai-businesses")}
-                className="flex items-center space-x-2 hover:bg-white/50 transition-colors"
+                className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-md border-0"
               >
                 <ArrowLeft className="h-4 w-4" />
                 <span className="hidden sm:inline">Back to Directory</span>
