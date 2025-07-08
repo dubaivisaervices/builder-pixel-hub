@@ -559,61 +559,106 @@ export default function CompanyReviews() {
           </TabsList>
 
           {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-6">
-            {/* Operating Hours */}
+          <TabsContent value="overview" className="space-y-4 md:space-y-6">
+            {/* Business Information */}
             <Card className="shadow-lg border-0">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Clock className="h-5 w-5" />
-                  <span>Operating Hours</span>
+                <CardTitle className="flex items-center space-x-2 text-lg">
+                  <Shield className="h-5 w-5" />
+                  <span>Business Information</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {Object.entries(company.hours).map(([day, hours]) => (
-                    <div
-                      key={day}
-                      className="flex justify-between items-center"
-                    >
-                      <span className="font-medium capitalize">{day}</span>
-                      <span className="text-muted-foreground">{hours}</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base">
+                  <div className="space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:justify-between">
+                      <span className="font-medium">Business ID</span>
+                      <span className="text-muted-foreground font-mono text-xs md:text-sm">
+                        {businessData.id}
+                      </span>
                     </div>
-                  ))}
+                    <div className="flex flex-col sm:flex-row sm:justify-between">
+                      <span className="font-medium">Category</span>
+                      <span className="text-muted-foreground">
+                        {businessData.category}
+                      </span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row sm:justify-between">
+                      <span className="font-medium">Status</span>
+                      <span className="text-muted-foreground">
+                        {businessData.businessStatus || "Active"}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:justify-between">
+                      <span className="font-medium">Total Reviews</span>
+                      <span className="text-muted-foreground">
+                        {businessData.reviewCount}
+                      </span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row sm:justify-between">
+                      <span className="font-medium">Average Rating</span>
+                      <span className="text-muted-foreground">
+                        {businessData.rating.toFixed(1)}/5.0
+                      </span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row sm:justify-between">
+                      <span className="font-medium">Negative Reviews</span>
+                      <span
+                        className={`${oneStarCount > 0 ? "text-red-600 font-semibold" : "text-muted-foreground"}`}
+                      >
+                        {oneStarCount} (1-star reviews)
+                      </span>
+                    </div>
+                  </div>
                 </div>
+
+                {/* Warning for poor ratings */}
+                {businessData.rating < 2.5 && (
+                  <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div className="flex items-start space-x-2">
+                      <Warning className="h-5 w-5 text-yellow-600 mt-0.5" />
+                      <div>
+                        <h4 className="font-medium text-yellow-800">
+                          Low Rating Alert
+                        </h4>
+                        <p className="text-sm text-yellow-700 mt-1">
+                          This business has a low average rating of{" "}
+                          {businessData.rating.toFixed(1)}/5.0. Please review
+                          customer feedback carefully before proceeding.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
-            {/* License Information */}
-            <Card className="shadow-lg border-0">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Shield className="h-5 w-5" />
-                  <span>License & Registration</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium">DED License Number</span>
-                    <span className="text-muted-foreground">
-                      {company.licenseNumber}
-                    </span>
+            {/* Operating Hours - if available */}
+            {businessData.hours && (
+              <Card className="shadow-lg border-0">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2 text-lg">
+                    <Clock className="h-5 w-5" />
+                    <span>Operating Hours</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 text-sm md:text-base">
+                    {Object.entries(businessData.hours).map(([day, hours]) => (
+                      <div
+                        key={day}
+                        className="flex justify-between items-center"
+                      >
+                        <span className="font-medium capitalize">{day}</span>
+                        <span className="text-muted-foreground">{hours}</span>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium">Established</span>
-                    <span className="text-muted-foreground">
-                      {company.establishedYear}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium">Business Type</span>
-                    <span className="text-muted-foreground">
-                      Visa Consultation Services
-                    </span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           {/* Photos Tab */}
