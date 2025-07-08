@@ -703,7 +703,9 @@ export default function CompanyReviews() {
               </button>
               <ChevronRight className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
               <span className="text-foreground font-medium truncate max-w-[120px] md:max-w-none">
-                {businessData?.name || "Business Profile"}
+                {businessData?.name ||
+                  companyName?.replace(/-/g, " ") ||
+                  "Business Profile"}
               </span>
             </div>
 
