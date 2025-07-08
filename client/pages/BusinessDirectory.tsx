@@ -407,8 +407,38 @@ export default function BusinessDirectory() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Modern Header */}
-      <div className="bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg sticky top-0 z-50">
+      {/* Mobile-Only Search View */}
+      <div className="block md:hidden bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-lg sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4">
+          <div className="text-center mb-4">
+            <h2 className="text-lg font-bold text-gray-800 mb-1">
+              Check your Visa Consultants
+            </h2>
+            <p className="text-sm text-gray-600">
+              Find trusted visa services in Dubai
+            </p>
+          </div>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-blue-500" />
+            <Input
+              placeholder="Search visa consultants..."
+              value={filters.search}
+              onChange={(e) => handleFilterChange("search", e.target.value)}
+              className="pl-12 pr-4 py-3 text-base bg-white border-2 border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 rounded-xl shadow-lg"
+            />
+          </div>
+          {filters.search && (
+            <div className="mt-2 text-center">
+              <span className="text-sm text-gray-600">
+                {filteredBusinesses.length} consultants found
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Desktop Header */}
+      <div className="hidden md:block bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg sticky top-0 z-50">
         <div className="container mx-auto px-4 py-3 md:py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 md:space-x-4">
