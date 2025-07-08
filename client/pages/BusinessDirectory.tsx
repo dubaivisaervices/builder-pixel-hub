@@ -106,7 +106,7 @@ const getFallbackBusinesses = (): BusinessData[] => [
   },
 ];
 
-// Enhanced fallback with more comprehensive sample data
+// Enhanced fallback with more comprehensive sample data - expanded for better coverage
 const getEnhancedFallbackBusinesses = (): BusinessData[] => [
   ...getFallbackBusinesses(),
   {
