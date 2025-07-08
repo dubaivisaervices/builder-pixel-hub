@@ -624,7 +624,7 @@ export default function CompanyReviews() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Modern Header with Glass Effect */}
-      <div className="bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg sticky top-0 z-50">
+      <div className="bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg".
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           {/* Breadcrumbs */}
           <div className="flex items-center space-x-2 text-sm text-muted-foreground mb-4">
