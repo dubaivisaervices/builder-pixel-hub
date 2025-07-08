@@ -27,9 +27,11 @@ export default function AdminSync() {
   const [isLoading, setIsLoading] = useState(false);
   const [isReviewsLoading, setIsReviewsLoading] = useState(false);
   const [isClearingReviews, setIsClearingReviews] = useState(false);
+  const [isFreshSyncing, setIsFreshSyncing] = useState(false);
   const [syncResult, setSyncResult] = useState<SyncStats | null>(null);
   const [reviewsSyncResult, setReviewsSyncResult] = useState<any>(null);
   const [clearReviewsResult, setClearReviewsResult] = useState<any>(null);
+  const [freshSyncResult, setFreshSyncResult] = useState<any>(null);
   const [dbStats, setDbStats] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
