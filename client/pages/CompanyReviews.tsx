@@ -1672,8 +1672,8 @@ export default function CompanyReviews() {
         </div>
       </div>
 
-      {/* Bottom spacing for sticky button */}
-      <div className="h-24"></div>
+      {/* Bottom spacing for sticky button - More space for mobile */}
+      <div className="h-32 md:h-24"></div>
     </div>
   );
 }
