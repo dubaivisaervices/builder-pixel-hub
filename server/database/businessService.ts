@@ -72,11 +72,13 @@ export class BusinessService {
           business.businessStatus,
           business.photoReference,
           business.logoUrl,
+          business.logoBase64 || null,
           business.isOpen,
           business.priceLevel,
           business.hasTargetKeyword,
           hoursJson,
           photosJson,
+          business.photosLocal ? JSON.stringify(business.photosLocal) : null,
         ],
       );
       console.log(`Inserted new business: ${business.name}`);
