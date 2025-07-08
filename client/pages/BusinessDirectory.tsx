@@ -705,74 +705,101 @@ export default function BusinessDirectory() {
         )}
 
         {/* Advanced Filters */}
-        <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
+        <Card className="shadow-xl border-0 bg-gradient-to-r from-white/80 via-blue-50/80 to-purple-50/80 backdrop-blur-xl ring-2 ring-blue-200/50">
           <CardContent className="p-4 md:p-6">
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
+                <Filter className="h-5 w-5 mr-2 text-blue-600" />
+                Search & Filter Options
+              </h3>
+              <p className="text-sm text-gray-600">
+                Use the filters below to find the perfect visa service for your
+                needs
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4">
-              {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="Search businesses..."
-                  value={filters.search}
-                  onChange={(e) => handleFilterChange("search", e.target.value)}
-                  className="pl-10 bg-white/50 backdrop-blur-sm border-white/30"
-                />
+              {/* Search - Enhanced with highlighting */}
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-blue-500 z-10" />
+                  <Input
+                    placeholder="Search businesses..."
+                    value={filters.search}
+                    onChange={(e) =>
+                      handleFilterChange("search", e.target.value)
+                    }
+                    className="pl-10 bg-white/90 backdrop-blur-sm border-2 border-blue-200/50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 hover:border-blue-300 transition-all duration-300 shadow-lg relative"
+                  />
+                </div>
               </div>
 
-              {/* Category Filter */}
-              <Select
-                value={filters.category}
-                onValueChange={(value) => handleFilterChange("category", value)}
-              >
-                <SelectTrigger className="bg-white/50 backdrop-blur-sm border-white/30">
-                  <SelectValue placeholder="All Categories" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category.charAt(0).toUpperCase() + category.slice(1)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {/* Category Filter - Enhanced with highlighting */}
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-blue-600 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+                <Select
+                  value={filters.category}
+                  onValueChange={(value) =>
+                    handleFilterChange("category", value)
+                  }
+                >
+                  <SelectTrigger className="bg-white/90 backdrop-blur-sm border-2 border-green-200/50 focus:border-green-500 focus:ring-2 focus:ring-green-200 hover:border-green-300 transition-all duration-300 shadow-lg relative">
+                    <SelectValue placeholder="All Categories" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    {categories.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-              {/* Rating Filter */}
-              <Select
-                value={filters.ratingFilter.toString()}
-                onValueChange={(value) =>
-                  handleFilterChange("ratingFilter", parseInt(value))
-                }
-              >
-                <SelectTrigger className="bg-white/50 backdrop-blur-sm border-white/30">
-                  <SelectValue placeholder="Any Rating" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="0">Any Rating</SelectItem>
-                  <SelectItem value="4">4+ Stars</SelectItem>
-                  <SelectItem value="3">3+ Stars</SelectItem>
-                  <SelectItem value="2">2+ Stars</SelectItem>
-                  <SelectItem value="1">1+ Stars</SelectItem>
-                </SelectContent>
-              </Select>
+              {/* Rating Filter - Enhanced with highlighting */}
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+                <Select
+                  value={filters.ratingFilter.toString()}
+                  onValueChange={(value) =>
+                    handleFilterChange("ratingFilter", parseInt(value))
+                  }
+                >
+                  <SelectTrigger className="bg-white/90 backdrop-blur-sm border-2 border-yellow-200/50 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 hover:border-yellow-300 transition-all duration-300 shadow-lg relative">
+                    <SelectValue placeholder="Any Rating" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">⭐ Any Rating</SelectItem>
+                    <SelectItem value="4">⭐⭐⭐⭐ 4+ Stars</SelectItem>
+                    <SelectItem value="3">⭐⭐⭐ 3+ Stars</SelectItem>
+                    <SelectItem value="2">⭐⭐ 2+ Stars</SelectItem>
+                    <SelectItem value="1">⭐ 1+ Stars</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-              {/* Sort By */}
-              <Select
-                value={filters.sortBy}
-                onValueChange={(value) =>
-                  handleFilterChange("sortBy", value as FilterState["sortBy"])
-                }
-              >
-                <SelectTrigger className="bg-white/50 backdrop-blur-sm border-white/30">
-                  <SelectValue placeholder="Sort By" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="rating">Highest Rated</SelectItem>
-                  <SelectItem value="reviews">Most Reviews</SelectItem>
-                  <SelectItem value="name">Name A-Z</SelectItem>
-                  <SelectItem value="newest">Recently Added</SelectItem>
-                </SelectContent>
-              </Select>
+              {/* Sort By - Enhanced styling */}
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+                <Select
+                  value={filters.sortBy}
+                  onValueChange={(value) =>
+                    handleFilterChange("sortBy", value as FilterState["sortBy"])
+                  }
+                >
+                  <SelectTrigger className="bg-white/90 backdrop-blur-sm border-2 border-purple-200/50 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 hover:border-purple-300 transition-all duration-300 shadow-lg relative">
+                    <SelectValue placeholder="Sort By" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="rating">🏆 Highest Rated</SelectItem>
+                    <SelectItem value="reviews">💬 Most Reviews</SelectItem>
+                    <SelectItem value="name">🔤 Name A-Z</SelectItem>
+                    <SelectItem value="newest">🆕 Recently Added</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {/* View Toggle and Stats */}
