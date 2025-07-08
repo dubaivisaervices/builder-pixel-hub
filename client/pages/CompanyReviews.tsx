@@ -20,7 +20,6 @@ import {
   Shield,
   ExternalLink,
   TrendingDown,
-  Warning,
   Filter,
   SortDesc,
 } from "lucide-react";
