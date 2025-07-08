@@ -825,6 +825,61 @@ export default function CompanyReviews() {
         )}
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-8">
+          {/* Dubai Government Recognition */}
+          <Card className="shadow-xl border-0 bg-white/70 backdrop-blur-xl">
+            <CardContent className="p-4 md:p-6">
+              <div className="text-center mb-4">
+                <h3 className="text-sm md:text-base font-semibold text-gray-700 mb-3">
+                  Dubai Government Regulated Service Provider
+                </h3>
+                <div className="flex items-center justify-center gap-6 md:gap-8">
+                  <div className="flex flex-col items-center group">
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-lg shadow-md p-2 group-hover:shadow-lg transition-all duration-300">
+                      <img
+                        src="https://images.pexels.com/photos/15652234/pexels-photo-15652234.jpeg"
+                        alt="UAE Flag"
+                        className="w-full h-full object-cover rounded"
+                      />
+                    </div>
+                    <span className="text-xs text-gray-600 mt-2 font-medium">
+                      UAE Government
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col items-center group">
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-lg shadow-md p-2 group-hover:shadow-lg transition-all duration-300">
+                      <img
+                        src="https://images.pexels.com/photos/18294648/pexels-photo-18294648.jpeg"
+                        alt="Dubai Municipality"
+                        className="w-full h-full object-cover rounded"
+                      />
+                    </div>
+                    <span className="text-xs text-gray-600 mt-2 font-medium">
+                      Dubai Municipality
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col items-center group">
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-red-500 via-white to-green-600 rounded-lg shadow-md p-1 group-hover:shadow-lg transition-all duration-300 flex items-center justify-center">
+                      <div className="bg-white rounded w-full h-full flex items-center justify-center">
+                        <span className="text-sm md:text-base font-bold bg-gradient-to-r from-red-500 to-green-600 bg-clip-text text-transparent">
+                          UAE
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-xs text-gray-600 mt-2 font-medium">
+                      Immigration Dept
+                    </span>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 mt-3 max-w-lg mx-auto">
+                  This service provider operates under Dubai government
+                  regulations and licensing requirements
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* High Risk Alert Banner */}
           {scamAlertLevel === "high" && (
             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-500 via-red-600 to-red-700 p-6 shadow-2xl">
