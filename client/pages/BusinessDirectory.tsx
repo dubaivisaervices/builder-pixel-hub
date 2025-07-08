@@ -666,8 +666,8 @@ export default function BusinessDirectory() {
           </Card>
         )}
 
-        {/* Advanced Filters - Hidden on Mobile */}
-        <Card className="hidden md:block shadow-xl border-0 bg-gradient-to-r from-white/80 via-blue-50/80 to-purple-50/80 backdrop-blur-xl ring-2 ring-blue-200/50">
+        {/* Advanced Filters */}
+        <Card className="shadow-xl border-0 bg-gradient-to-r from-white/80 via-blue-50/80 to-purple-50/80 backdrop-blur-xl ring-2 ring-blue-200/50">
           <CardContent className="p-4 md:p-6">
             <div className="mb-4">
               <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
