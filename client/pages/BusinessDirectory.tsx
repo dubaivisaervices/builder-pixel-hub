@@ -409,32 +409,129 @@ export default function BusinessDirectory() {
 
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Hero Section */}
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        <div className="text-center space-y-4 md:space-y-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent leading-tight">
             Dubai Visa Services Directory
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
             Discover and evaluate visa consultation services in Dubai. Read
             reviews, compare ratings, and make informed decisions.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-500">
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs md:text-sm text-gray-500">
             <span className="flex items-center gap-1">
-              <Users className="h-4 w-4" />
+              <Users className="h-3 w-3 md:h-4 md:w-4" />
               {businesses.length} total businesses
             </span>
-            <span>•</span>
+            <span className="hidden sm:inline">•</span>
             <span className="flex items-center gap-1">
-              <Star className="h-4 w-4" />
+              <Star className="h-3 w-3 md:h-4 md:w-4" />
               Real customer reviews
             </span>
-            <span>•</span>
+            <span className="hidden sm:inline">•</span>
             <span className="flex items-center gap-1">
-              <AlertTriangle className="h-4 w-4" />
+              <AlertTriangle className="h-3 w-3 md:h-4 md:w-4" />
               Scam alerts included
             </span>
           </div>
         </div>
+
+        {/* Category Showcase */}
+        <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
+          <CardContent className="p-4 md:p-6">
+            <div className="text-center mb-4 md:mb-6">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
+                Immigration Services Categories
+              </h2>
+              <p className="text-sm md:text-base text-gray-600">
+                Browse services by category to find the right provider for your
+                needs
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+              {[
+                {
+                  name: "Visa Consulting",
+                  icon: "🛂",
+                  count: businesses.filter((b) =>
+                    b.category.includes("visa consulting"),
+                  ).length,
+                },
+                {
+                  name: "Immigration",
+                  icon: "✈️",
+                  count: businesses.filter((b) =>
+                    b.category.includes("immigration"),
+                  ).length,
+                },
+                {
+                  name: "Work Permits",
+                  icon: "💼",
+                  count: businesses.filter(
+                    (b) =>
+                      b.category.includes("work") ||
+                      b.category.includes("employment"),
+                  ).length,
+                },
+                {
+                  name: "Student Visas",
+                  icon: "🎓",
+                  count: businesses.filter(
+                    (b) =>
+                      b.category.includes("student") ||
+                      b.category.includes("education"),
+                  ).length,
+                },
+                {
+                  name: "Tourist Visas",
+                  icon: "🏖️",
+                  count: businesses.filter(
+                    (b) =>
+                      b.category.includes("tourist") ||
+                      b.category.includes("visit"),
+                  ).length,
+                },
+                {
+                  name: "Business Setup",
+                  icon: "🏢",
+                  count: businesses.filter(
+                    (b) =>
+                      b.category.includes("business") ||
+                      b.category.includes("company"),
+                  ).length,
+                },
+              ].map((category, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    if (category.name === "Visa Consulting") {
+                      handleFilterChange(
+                        "category",
+                        "visa consulting services",
+                      );
+                    } else if (category.name === "Immigration") {
+                      handleFilterChange("category", "immigration consultancy");
+                    } else {
+                      handleFilterChange("category", "all");
+                    }
+                  }}
+                  className="flex flex-col items-center p-3 md:p-4 bg-white/50 backdrop-blur-sm rounded-xl border border-white/30 hover:bg-white/80 hover:scale-105 transition-all duration-300 group"
+                >
+                  <div className="text-2xl md:text-3xl mb-2 group-hover:scale-110 transition-transform">
+                    {category.icon}
+                  </div>
+                  <h3 className="font-semibold text-xs md:text-sm text-gray-900 text-center leading-tight">
+                    {category.name}
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {category.count || businesses.length} services
+                  </p>
+                </button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Error Notice */}
         {error && (
