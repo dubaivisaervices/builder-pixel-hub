@@ -33,6 +33,7 @@ const App = () => (
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/sync" element={<AdminSync />} />
           <Route path="/admin/manage" element={<AdminManage />} />
+          <Route path="/admin/status" element={<DatabaseStatus />} />
           <Route
             path="/:location/review/:companyName"
             element={<CompanyReviews />}
