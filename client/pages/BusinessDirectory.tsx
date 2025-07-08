@@ -707,9 +707,9 @@ export default function BusinessDirectory() {
               >
                 <CardContent className="p-4 md:p-6">
                   {/* Business Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg overflow-hidden relative">
+                  <div className="flex items-start justify-between mb-3 md:mb-4">
+                    <div className="flex items-center space-x-2 md:space-x-3 flex-1 min-w-0">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-lg overflow-hidden relative flex-shrink-0">
                         {business.logoUrl ? (
                           <>
                             <img
