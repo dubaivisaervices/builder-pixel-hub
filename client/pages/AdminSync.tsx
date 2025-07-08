@@ -299,8 +299,38 @@ export default function AdminSync() {
 
             <div className="text-center space-y-3">
               <Button
+                onClick={handleFreshSync}
+                disabled={
+                  isLoading ||
+                  isReviewsLoading ||
+                  isClearingReviews ||
+                  isFreshSyncing
+                }
+                variant="default"
+                size="lg"
+                className="min-w-[200px] bg-green-600 hover:bg-green-700"
+              >
+                {isFreshSyncing ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Fresh Syncing...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Fresh Sync (Clear & Reload)
+                  </>
+                )}
+              </Button>
+
+              <Button
                 onClick={handleSync}
-                disabled={isLoading || isReviewsLoading || isClearingReviews}
+                disabled={
+                  isLoading ||
+                  isReviewsLoading ||
+                  isClearingReviews ||
+                  isFreshSyncing
+                }
                 size="lg"
                 className="min-w-[200px]"
               >
@@ -319,7 +349,12 @@ export default function AdminSync() {
 
               <Button
                 onClick={handleClearFakeReviews}
-                disabled={isLoading || isReviewsLoading || isClearingReviews}
+                disabled={
+                  isLoading ||
+                  isReviewsLoading ||
+                  isClearingReviews ||
+                  isFreshSyncing
+                }
                 variant="destructive"
                 size="lg"
                 className="min-w-[200px]"
@@ -339,7 +374,12 @@ export default function AdminSync() {
 
               <Button
                 onClick={handleReviewsSync}
-                disabled={isLoading || isReviewsLoading || isClearingReviews}
+                disabled={
+                  isLoading ||
+                  isReviewsLoading ||
+                  isClearingReviews ||
+                  isFreshSyncing
+                }
                 variant="outline"
                 size="lg"
                 className="min-w-[200px]"
