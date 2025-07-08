@@ -241,6 +241,22 @@ export const getBusinessById: RequestHandler = async (req, res) => {
       });
     }
 
+    console.log(`📝 Review Debug Info for ${business.name}:`);
+    console.log(
+      `  - reviews in business object: ${business.reviews ? business.reviews.length : 0} items`,
+    );
+    if (business.reviews && business.reviews.length > 0) {
+      console.log(
+        `  - First review: ${business.reviews[0].authorName} - ${business.reviews[0].rating} stars`,
+      );
+      console.log(
+        `  - Last review: ${business.reviews[business.reviews.length - 1].authorName} - ${business.reviews[business.reviews.length - 1].rating} stars`,
+      );
+      console.log(
+        `  - Review text sample: "${business.reviews[0].text.substring(0, 100)}..."`,
+      );
+    }
+
     res.json({
       success: true,
       business: business,
