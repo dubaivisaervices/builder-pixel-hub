@@ -392,9 +392,14 @@ export default function BusinessDirectory() {
               </Badge>
 
               {error && (
-                <Badge variant="destructive" className="text-xs">
+                <Badge
+                  variant="secondary"
+                  className="bg-orange-100 text-orange-800 text-xs"
+                >
                   <AlertTriangle className="h-3 w-3 mr-1" />
-                  Using Fallback Data
+                  {error.includes("Network")
+                    ? "Offline Mode"
+                    : "Using Sample Data"}
                 </Badge>
               )}
             </div>
