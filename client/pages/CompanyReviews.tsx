@@ -1023,20 +1023,6 @@ export default function CompanyReviews() {
             )}
           </div>
         </div>
-          <CardContent className="p-4 md:p-8">
-            <div className="flex flex-col space-y-6">
-              {/* Mobile-first header layout */}
-              <div className="flex flex-col sm:flex-row sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
-                {/* Logo */}
-                <div className="flex-shrink-0 self-center sm:self-start">
-                  <div className="w-20 h-20 md:w-32 md:h-32 bg-gradient-to-br from-primary/10 to-primary/20 rounded-xl flex items-center justify-center border-2 border-primary/20 overflow-hidden relative">
-                    {businessData?.logoUrl ? (
-                      <>
-                        <img
-                          src={businessData.logoUrl}
-                          alt={`${businessData.name} logo`}
-                          className="w-full h-full object-cover absolute inset-0"
-                          onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             target.style.display = "none";
                             const parent = target.parentElement;
