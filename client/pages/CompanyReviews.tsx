@@ -802,201 +802,48 @@ export default function CompanyReviews() {
               </CardContent>
             </Card>
           </TabsContent>
-
-          {/* Reviews Tab */}
-          <TabsContent value="reviews" className="space-y-6">
-            <Card className="shadow-lg border-0">
-              <CardHeader>
-                <CardTitle>
-                  Customer Reviews (
-                  {businessData?.reviews?.length || company.totalReviews})
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Show real reviews from business data if available */}
-                {businessData?.reviews && businessData.reviews.length > 0 ? (
-                  <>
-                    <div className="mb-4 text-sm text-green-600 bg-green-50 p-3 rounded-lg">
-                      ⭐ Showing {businessData.reviews.length} real Google
-                      reviews from verified customers
-                    </div>
-                    {businessData.reviews.map((review) => (
-                      <div
-                        key={review.id}
-                        className="border-b pb-6 last:border-b-0"
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center space-x-3">
-                            <div className="bg-primary/10 p-2 rounded-full">
-                              <User className="h-4 w-4 text-primary" />
-                            </div>
-                            <div>
-                              <div className="font-medium">
-                                {review.authorName}
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                {[...Array(5)].map((_, i) => (
-                                  <Star
-                                    key={i}
-                                    className={`h-4 w-4 ${
-                                      i < review.rating
-                                        ? "text-yellow-400 fill-current"
-                                        : "text-gray-300"
-                                    }`}
-                                  />
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-1 text-sm text-muted-foreground">
-                            <Calendar className="h-4 w-4" />
-                            <span>{review.timeAgo}</span>
-                          </div>
-                        </div>
-                        <p className="text-muted-foreground leading-relaxed">
-                          {review.text}
-                        </p>
-                      </div>
-                    ))}
-                  </>
-                ) : (
-                  <>
-                    <div className="mb-4 text-sm text-orange-600 bg-orange-50 p-3 rounded-lg">
-                      ⚠️ No real Google reviews available for this business.
-                      Please run "Sync Real Google Reviews" from the admin panel
-                      to fetch authentic customer reviews.
-                    </div>
-                    {company.positiveReviews.map((review) => (
-                      <div
-                        key={review.id}
-                        className="border-b pb-6 last:border-b-0"
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center space-x-3">
-                            <div className="bg-primary/10 p-2 rounded-full">
-                              <User className="h-4 w-4 text-primary" />
-                            </div>
-                            <div>
-                              <div className="font-medium">
-                                {review.reviewerName}
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                {[...Array(5)].map((_, i) => (
-                                  <Star
-                                    key={i}
-                                    className={`h-4 w-4 ${
-                                      i < review.rating
-                                        ? "text-yellow-400 fill-current"
-                                        : "text-gray-300"
-                                    }`}
-                                  />
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-1 text-sm text-muted-foreground">
-                            <Calendar className="h-4 w-4" />
-                            <span>
-                              {new Date(review.date).toLocaleDateString()}
-                            </span>
-                          </div>
-                        </div>
-                        <p className="text-muted-foreground leading-relaxed">
-                          {review.comment}
-                        </p>
-                      </div>
-                    ))}
-                  </>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Scam Reports Tab */}
-          <TabsContent value="reports" className="space-y-6">
-            {/* Warning Banner */}
-            <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-6">
-              <div className="flex items-start space-x-3">
-                <AlertTriangle className="h-6 w-6 text-destructive mt-0.5" />
-                <div>
-                  <h3 className="font-semibold text-destructive mb-2">
-                    ⚠️ Warning: Multiple Fraud Reports
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    This company has multiple reports of fraudulent activity.
-                    Exercise extreme caution before engaging their services or
-                    providing any personal information or payments.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Reports */}
-            <div className="space-y-6">
-              <h3 className="text-xl font-semibold text-foreground">
-                Reported Scams ({company.totalReports})
-              </h3>
-
-              {company.reports.map((report) => (
-                <Card key={report.id} className="shadow-md border-0">
-                  <CardHeader className="pb-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
-                      <div className="flex items-center space-x-3">
-                        <div className="bg-destructive/10 p-2 rounded-full">
-                          <User className="h-4 w-4 text-destructive" />
-                        </div>
-                        <div>
-                          <div className="font-medium">
-                            {report.reporterName}
-                          </div>
-                          <div className="text-sm text-muted-foreground">
-                            Applied for {report.visaType} to {report.country}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-1 text-sm text-muted-foreground">
-                        <Calendar className="h-4 w-4" />
-                        <span>
-                          {new Date(report.date).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-foreground leading-relaxed">
-                      {report.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
         </Tabs>
 
         {/* Call to Action */}
-        <Card className="shadow-lg border-0 mt-12">
-          <CardContent className="pt-6 text-center">
-            <h3 className="text-xl font-semibold mb-4">
-              Have you been scammed by this company?
-            </h3>
-            <p className="text-muted-foreground mb-6">
-              Help protect others by sharing your experience. Your report can
-              prevent others from becoming victims.
-            </p>
-            <Button
-              size="lg"
-              onClick={() =>
-                navigate("/complaint", {
-                  state: {
-                    companyName: company.name,
-                    companyLocation: company.location,
-                  },
-                })
-              }
-              className="bg-primary hover:bg-primary/90"
-            >
-              File a Report Against This Company
-            </Button>
+        <Card className="shadow-lg border-0 bg-gradient-to-r from-red-50 to-orange-50">
+          <CardContent className="p-4 md:p-6 text-center">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+              <div className="flex-grow text-center sm:text-left">
+                <h3 className="text-lg md:text-xl font-semibold mb-2">
+                  Have Experience with This Business?
+                </h3>
+                <p className="text-sm md:text-base text-muted-foreground">
+                  Help protect others by sharing your experience. Your report
+                  can prevent others from becoming victims of scams.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  size="lg"
+                  onClick={() =>
+                    navigate("/complaint", {
+                      state: {
+                        companyName: businessData.name,
+                        companyLocation: businessData.address,
+                      },
+                    })
+                  }
+                  className="bg-destructive hover:bg-destructive/90 w-full sm:w-auto"
+                >
+                  <AlertTriangle className="h-4 w-4 mr-2" />
+                  Report Scam
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => navigate("/")}
+                  className="w-full sm:w-auto"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Directory
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
