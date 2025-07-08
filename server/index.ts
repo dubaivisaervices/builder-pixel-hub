@@ -12,6 +12,7 @@ import {
   getSyncStatus,
   syncReviewsOnly,
   clearFakeReviewsAndSyncReal,
+  clearAllDataAndResync,
 } from "./routes/sync-google-data";
 import {
   getBusinessesByCategory,
