@@ -51,6 +51,7 @@ export function createServer() {
   app.post("/api/sync-reviews", syncReviewsOnly);
   app.post("/api/clear-fake-reviews", clearFakeReviewsAndSyncReal);
   app.post("/api/clear-and-resync", clearAllDataAndResync);
+  app.post("/api/sync-offline-photos", syncWithOfflinePhotos);
   app.get("/api/sync-status", getSyncStatus);
 
   // Admin routes for business and category management
