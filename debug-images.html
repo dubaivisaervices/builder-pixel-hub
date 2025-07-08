@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Image Debug Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .business {
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid #ccc;
+      }
+      .logo {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #ddd;
+        margin: 10px;
+      }
+      .photo {
+        width: 150px;
+        height: 100px;
+        border: 1px solid #ddd;
+        margin: 5px;
+      }
+      .debug {
+        background: #f0f0f0;
+        padding: 10px;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Dubai Business Images Debug</h1>
+    <div id="results"></div>
+
+    <script>
+      async function testImages() {
+        try {
+          // Fetch business data
+          const response = await fetch("/api/dubai-visa-services?limit=3");
+          const data = await response.json();
+
+          console.log("API Response:", data);
+
+          const resultsDiv = document.getElementById("results");
+
+          data.businesses.forEach((business, index) => {
+            const businessDiv = document.createElement("div");
+            businessDiv.className = "business";
+
+            businessDiv.innerHTML = `
+                        <h3>${business.name}</h3>
+                        
+                        <div class="debug">
+                            <strong>Debug Info:</strong><br>
+                            Logo URL: ${business.logoUrl ? "Present" : "Not present"}<br>
+                            ${business.logoUrl ? `Logo Type: ${business.logoUrl.startsWith("data:") ? "Base64" : "URL"}<br>` : ""}
+                            Photos: ${business.photos ? business.photos.length : 0} items<br>
+                        </div>
+                        
+                        <div>
+                            <strong>Logo:</strong><br>
+                            ${
+                              business.logoUrl
+                                ? `<img src="${business.logoUrl}" alt="Logo" class="logo" onerror="this.style.border='2px solid red'; this.alt='FAILED TO LOAD';">`
+                                : '<div class="logo" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center;">No Logo</div>'
+                            }
+                        </div>
+                        
+                        <div>
+                            <strong>Photos:</strong><br>
+                            ${
+                              business.photos && business.photos.length > 0
+                                ? business.photos
+                                    .slice(0, 3)
+                                    .map((photo) =>
+                                      photo.base64
+                                        ? `<img src="data:image/jpeg;base64,${photo.base64}" alt="${photo.caption}" class="photo" onerror="this.style.border='2px solid red'; this.alt='FAILED';">`
+                                        : photo.url
+                                          ? `<img src="${photo.url}" alt="${photo.caption}" class="photo" onerror="this.style.border='2px solid red'; this.alt='FAILED';">`
+                                          : `<div class="photo" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center;">${photo.caption}</div>`,
+                                    )
+                                    .join("")
+                                : "<div>No photos</div>"
+                            }
+                        </div>
+                    `;
+
+            resultsDiv.appendChild(businessDiv);
+          });
+        } catch (error) {
+          console.error("Error:", error);
+          document.getElementById("results").innerHTML =
+            `<div style="color: red;">Error: ${error.message}</div>`;
+        }
+      }
+
+      // Run test when page loads
+      testImages();
+    </script>
+  </body>
+</html>
