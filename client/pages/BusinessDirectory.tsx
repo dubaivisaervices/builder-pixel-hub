@@ -494,7 +494,7 @@ export default function BusinessDirectory() {
                 },
                 {
                   name: "Business Setup",
-                  icon: "����",
+                  icon: "🏢",
                   count: businesses.filter(
                     (b) =>
                       b.category.includes("business") ||
@@ -826,19 +826,19 @@ export default function BusinessDirectory() {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex space-x-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <Button
                       size="sm"
-                      className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                      className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-xs md:text-sm"
                       onClick={() => navigateToDetails(business)}
                     >
-                      <Eye className="h-4 w-4 mr-2" />
+                      <Eye className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
                       View Details
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
-                      className="flex-1 border-red-200 text-red-600 hover:bg-red-50"
+                      className="flex-1 border-red-200 text-red-600 hover:bg-red-50 text-xs md:text-sm"
                       onClick={() =>
                         navigate("/complaint", {
                           state: {
@@ -848,7 +848,7 @@ export default function BusinessDirectory() {
                         })
                       }
                     >
-                      <AlertTriangle className="h-4 w-4 mr-2" />
+                      <AlertTriangle className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
                       Report
                     </Button>
                   </div>
