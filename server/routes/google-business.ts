@@ -193,6 +193,41 @@ export const getBusinessDetails: RequestHandler = async (req, res) => {
   }
 };
 
+export const getBusinessById: RequestHandler = async (req, res) => {
+  try {
+    const { businessId } = req.params;
+
+    console.log(`Fetching business details for ID: ${businessId}`);
+
+    // Get business from database with reviews
+    const business = await businessService.getBusinessById(businessId);
+
+    if (!business) {
+      return res.status(404).json({
+        error: "Business not found",
+        details: `No business found with ID: ${businessId}`,
+      });
+    }
+
+    console.log(
+      `Found business: ${business.name} with ${business.reviews.length} reviews`,
+    );
+
+    res.json({
+      success: true,
+      business: business,
+      reviews: business.reviews,
+      reviewCount: business.reviews.length,
+    });
+  } catch (error) {
+    console.error("Error fetching business by ID:", error);
+    res.status(500).json({
+      error: "Failed to fetch business details",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+};
+
 export const getBusinessPhoto: RequestHandler = async (req, res) => {
   try {
     const { photoReference } = req.params;
