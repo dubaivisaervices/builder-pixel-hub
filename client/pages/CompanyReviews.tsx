@@ -539,7 +539,10 @@ export default function CompanyReviews() {
         );
 
         if (!data.business.reviews || data.business.reviews.length < 50) {
-          data.business.reviews = generateSampleReviews(data.business.name);
+          data.business.reviews = generateSampleReviews(
+            data.business.name,
+            data.business.id,
+          );
         }
 
         if (!data.business.description) {
