@@ -547,25 +547,43 @@ export default function CompanyReviews() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {[
-                    { caption: "Office Reception", id: 1 },
-                    { caption: "Consultation Room", id: 2 },
-                    { caption: "Document Center", id: 3 },
-                    { caption: "Waiting Area", id: 4 },
-                    { caption: "Office Exterior", id: 5 },
-                    { caption: "Meeting Room", id: 6 },
-                  ].map((photo) => (
-                    <div key={photo.id} className="space-y-2">
-                      <div className="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center">
-                        <Camera className="h-8 w-8 text-gray-400" />
+                {businessData.photos && businessData.photos.length > 0 ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {businessData.photos.slice(0, 6).map((photo, index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg overflow-hidden">
+                          <img
+                            src={
+                              photo.photo_reference
+                                ? `/api/business-photo/${photo.photo_reference}`
+                                : photo.url ||
+                                  `https://images.pexels.com/photos/416320/pexels-photo-416320.jpeg?auto=compress&cs=tinysrgb&w=400`
+                            }
+                            alt={`${businessData.name} photo ${index + 1}`}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            onError={(e) => {
+                              e.currentTarget.src = `https://images.pexels.com/photos/416320/pexels-photo-416320.jpeg?auto=compress&cs=tinysrgb&w=400`;
+                            }}
+                          />
+                        </div>
+                        <p className="text-sm text-gray-600 text-center">
+                          Business Photo {index + 1}
+                        </p>
                       </div>
-                      <p className="text-sm text-gray-600 text-center">
-                        {photo.caption}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <Camera className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600">
+                      No photos available for this business
+                    </p>
+                    <p className="text-sm text-gray-500 mt-2">
+                      Photos will be displayed when available from Google
+                      Business
+                    </p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
