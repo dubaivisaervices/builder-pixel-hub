@@ -8,7 +8,7 @@ export default function CompanyReviewsWorking() {
 
   useEffect(() => {
     // Redirect to new modern profile page
-    const newPath = `/modern-profile/${locationParam}/${companyName}`;
+    const newPath = `/${locationParam}/${companyName}`;
     navigate(newPath, { replace: true });
   }, [locationParam, companyName, navigate]);
 

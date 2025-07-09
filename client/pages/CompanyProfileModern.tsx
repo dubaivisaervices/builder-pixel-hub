@@ -240,7 +240,7 @@ export default function CompanyProfileModern() {
     };
 
     loadBusiness();
-  }, [locationParam, companyName, location.state]);
+  }, [city, companyName, location.state]);
 
   const handleReportSubmit = async () => {
     try {
