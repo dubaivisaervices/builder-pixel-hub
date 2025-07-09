@@ -137,61 +137,95 @@ export default function GoogleReviewsWidget({
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
                 <p className="text-gray-600">Loading Google Reviews...</p>
               </div>
+            ) : error ? (
+              <div className="bg-red-50 rounded-lg p-6 text-center">
+                <p className="text-red-600 mb-4">{error}</p>
+                <Button
+                  variant="outline"
+                  onClick={() => window.location.reload()}
+                >
+                  Try Again
+                </Button>
+              </div>
             ) : (
-              <div className="space-y-4">
-                {/* Embedded Google Reviews Widget */}
-                <div className="bg-gray-50 rounded-lg overflow-hidden">
-                  <iframe
-                    src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&q=place_id:${placeId}&zoom=15&maptype=roadmap`}
-                    width="100%"
-                    height="300"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title={`Google Maps for ${businessName}`}
-                  />
-                </div>
+              <div className="space-y-6">
+                {/* Display actual reviews */}
+                {reviews.length > 0 ? (
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold">
+                      Recent Reviews ({reviews.length} of {reviewCount}+)
+                    </h3>
 
-                {/* Alternative: Direct Google Business Profile Link */}
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-100">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-semibold text-gray-800 mb-2">
-                        View All {reviewCount}+ Google Reviews
-                      </h4>
-                      <p className="text-sm text-gray-600 mb-3">
-                        See authentic customer reviews and ratings on Google
-                        Maps
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <div className="flex items-center space-x-1 mb-1">
-                        <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                        <span className="font-semibold">
-                          {rating.toFixed(1)}
-                        </span>
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {reviewCount}+ reviews
-                      </div>
+                    <div className="space-y-4 max-h-96 overflow-y-auto">
+                      {reviews.map((review) => (
+                        <div
+                          key={review.id}
+                          className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                        >
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                {review.profilePhotoUrl ? (
+                                  <img
+                                    src={review.profilePhotoUrl}
+                                    alt={review.authorName}
+                                    className="w-full h-full rounded-full object-cover"
+                                    onError={(e) => {
+                                      e.currentTarget.style.display = "none";
+                                    }}
+                                  />
+                                ) : (
+                                  <User className="h-4 w-4" />
+                                )}
+                              </div>
+                              <div>
+                                <p className="font-medium text-gray-900">
+                                  {review.authorName}
+                                </p>
+                                <p className="text-sm text-gray-500">
+                                  {review.timeAgo}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  className={`h-4 w-4 ${
+                                    star <= review.rating
+                                      ? "text-yellow-400 fill-current"
+                                      : "text-gray-300"
+                                  }`}
+                                />
+                              ))}
+                              <span className="ml-1 text-sm font-medium">
+                                {review.rating}
+                              </span>
+                            </div>
+                          </div>
+                          <p className="text-gray-700 text-sm leading-relaxed">
+                            {review.text}
+                          </p>
+                        </div>
+                      ))}
                     </div>
                   </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                      No Reviews Available
+                    </h3>
+                    <p className="text-gray-500 text-sm mb-4">
+                      This business doesn't have any Google reviews yet, or we
+                      couldn't fetch them from Google Places API.
+                    </p>
+                  </div>
+                )}
 
-                  <a
-                    href={googleMapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-                  >
-                    <span>Read Reviews on Google</span>
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-                </div>
-
-                {/* Google Business Profile Widget Alternative */}
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
-                  <div className="text-center space-y-3">
+                {/* View More on Google Button */}
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-100">
+                  <div className="text-center space-y-4">
                     <div className="flex justify-center">
                       <img
                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png"
@@ -200,10 +234,14 @@ export default function GoogleReviewsWidget({
                       />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-800">
-                        {businessName}
+                      <h4 className="font-semibold text-gray-800 mb-2">
+                        View All {reviewCount}+ Google Reviews
                       </h4>
-                      <div className="flex items-center justify-center space-x-2 mt-2">
+                      <p className="text-sm text-gray-600 mb-4">
+                        See all authentic customer reviews and ratings on Google
+                        Maps
+                      </p>
+                      <div className="flex items-center justify-center space-x-2 mb-4">
                         <div className="flex">
                           {[1, 2, 3, 4, 5].map((star) => (
                             <Star
@@ -222,19 +260,14 @@ export default function GoogleReviewsWidget({
                         </span>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-600">
-                      Click below to see all customer reviews and leave your own
-                      review
-                    </p>
-                    <a
-                      href={googleMapsUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center space-x-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium"
+
+                    <Button
+                      onClick={() => window.open(googleMapsUrl, "_blank")}
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
                     >
-                      <span>View & Write Review</span>
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
+                      <span>View More Reviews on Google</span>
+                      <ExternalLink className="h-4 w-4 ml-2" />
+                    </Button>
                   </div>
                 </div>
               </div>
