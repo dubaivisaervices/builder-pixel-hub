@@ -74,45 +74,102 @@ export default function CompanyReviews() {
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [reviews, setReviews] = useState<any[]>([]);
 
-  // Generate sample reviews
+  // Generate comprehensive reviews with at least 50 entries
   const generateReviews = (businessName: string) => {
-    return [
-      {
-        id: 1,
-        authorName: "Ahmed Hassan",
-        rating: 5,
-        text: `Excellent service from ${businessName}. They helped me with my work visa application and the process was smooth and professional. Highly recommend their services for anyone looking for visa assistance in Dubai.`,
-        timeAgo: "2 weeks ago",
-      },
-      {
-        id: 2,
-        authorName: "Sarah Mitchell",
-        rating: 4,
-        text: `Good experience with ${businessName}. Professional staff and helpful throughout the process. Some minor delays but overall satisfied with the service quality.`,
-        timeAgo: "1 month ago",
-      },
-      {
-        id: 3,
-        authorName: "Raj Patel",
-        rating: 5,
-        text: `Outstanding service! ${businessName} made the visa application process so easy. Staff was knowledgeable and provided great guidance throughout.`,
-        timeAgo: "3 weeks ago",
-      },
-      {
-        id: 4,
-        authorName: "Maria Santos",
-        rating: 4,
-        text: `Reliable visa service. ${businessName} helped with my family visa and everything went smoothly. Professional approach and fair pricing.`,
-        timeAgo: "2 months ago",
-      },
-      {
-        id: 5,
-        authorName: "Hassan Ali",
-        rating: 3,
-        text: `Decent service overall. Got the job done but took longer than expected. Communication could be improved but final result was satisfactory.`,
-        timeAgo: "1 month ago",
-      },
+    const authors = [
+      "Ahmed Hassan",
+      "Sarah Mitchell",
+      "Raj Patel",
+      "Maria Santos",
+      "Hassan Ali",
+      "Jennifer Clark",
+      "Mohammed Khalil",
+      "Lisa Anderson",
+      "Omar Farouk",
+      "Emma Wilson",
+      "David Brown",
+      "Fatima Al-Zahra",
+      "John Smith",
+      "Aisha Patel",
+      "Robert Johnson",
+      "Nadia Khan",
+      "Michael Davis",
+      "Yasmin Ali",
+      "James Wilson",
+      "Zahra Mohamed",
+      "Carlos Rodriguez",
+      "Priya Sharma",
+      "Mark Thompson",
+      "Leila Mansour",
+      "Peter Chen",
+      "Sofia Petrov",
+      "Abdul Rahman",
+      "Anna Kowalski",
+      "Daniel Kim",
+      "Maya Gupta",
     ];
+
+    const reviewTemplates = [
+      `Excellent service from ${businessName}. They helped me with my work visa application and the process was smooth and professional. Highly recommend their services for anyone looking for visa assistance in Dubai.`,
+      `Good experience with ${businessName}. Professional staff and helpful throughout the process. Some minor delays but overall satisfied with the service quality.`,
+      `Outstanding service! ${businessName} made the visa application process so easy. Staff was knowledgeable and provided great guidance throughout.`,
+      `Reliable visa service. ${businessName} helped with my family visa and everything went smoothly. Professional approach and fair pricing.`,
+      `Decent service overall. Got the job done but took longer than expected. Communication could be improved but final result was satisfactory.`,
+      `Fantastic experience with ${businessName}! They guided me through every step of my student visa application. Very professional and efficient team.`,
+      `Good visa consultancy. ${businessName} helped with my business visa renewal. Process was straightforward and staff was helpful.`,
+      `Exceptional service! ${businessName} processed my tourist visa quickly and efficiently. Would definitely use their services again.`,
+      `Professional service from ${businessName}. They handled my family reunion visa with care and attention to detail.`,
+      `Highly recommend ${businessName}! Their team is knowledgeable and made the complex visa process seem simple.`,
+      `Top-notch visa services. ${businessName} exceeded my expectations with their attention to detail and customer care.`,
+      `Efficient and reliable. ${businessName} helped me navigate the visa requirements with ease. Great communication throughout.`,
+      `Very satisfied with ${businessName}. They made the visa application stress-free and completed everything on time.`,
+      `Professional consultancy. ${businessName} provided excellent guidance for my work permit application. Highly recommended.`,
+      `Great experience! ${businessName} staff was friendly and knowledgeable. They answered all my questions promptly.`,
+    ];
+
+    const timeOptions = [
+      "2 days ago",
+      "1 week ago",
+      "2 weeks ago",
+      "3 weeks ago",
+      "1 month ago",
+      "2 months ago",
+      "3 months ago",
+      "4 months ago",
+      "5 months ago",
+      "6 months ago",
+    ];
+
+    const reviews = [];
+    const targetReviews = Math.max(50, businessData?.reviewCount || 25);
+
+    for (let i = 0; i < targetReviews; i++) {
+      const authorIndex = i % authors.length;
+      const templateIndex = i % reviewTemplates.length;
+      const timeIndex = i % timeOptions.length;
+
+      // Generate ratings with realistic distribution (mostly 4-5 stars)
+      const ratingRand = Math.random();
+      let rating;
+      if (ratingRand < 0.5)
+        rating = 5; // 50% 5-star
+      else if (ratingRand < 0.8)
+        rating = 4; // 30% 4-star
+      else if (ratingRand < 0.95)
+        rating = 3; // 15% 3-star
+      else rating = 2; // 5% 2-star
+
+      reviews.push({
+        id: i + 1,
+        authorName: authors[authorIndex],
+        rating: rating,
+        text: reviewTemplates[templateIndex],
+        timeAgo: timeOptions[timeIndex],
+        profilePhotoUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(authors[authorIndex])}&background=random`,
+      });
+    }
+
+    return reviews;
   };
 
   useEffect(() => {
