@@ -384,15 +384,85 @@ export default function Index() {
 
             {/* Mobile Menu Button */}
             <div className="md:hidden">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate("/services")}
-                className="flex items-center space-x-2"
-              >
-                <Building2 className="h-5 w-5" />
-                <span>Menu</span>
-              </Button>
+              <div className="relative group">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center space-x-2"
+                >
+                  <Building2 className="h-5 w-5" />
+                  <span>Menu</span>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </Button>
+                <div className="absolute top-full right-0 mt-1 w-56 bg-white rounded-lg shadow-xl border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div className="py-2">
+                    <button
+                      onClick={() => navigate("/services")}
+                      className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100"
+                    >
+                      <div className="font-medium">All Services</div>
+                      <div className="text-xs text-gray-500">
+                        Browse all visa services
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => navigate("/dubai-businesses")}
+                      className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100"
+                    >
+                      <div className="font-medium">Business Directory</div>
+                      <div className="text-xs text-gray-500">
+                        View all businesses
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => navigate("/services/work-visa")}
+                      className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100"
+                    >
+                      <div className="font-medium">Work Visa Services</div>
+                      <div className="text-xs text-gray-500">
+                        Employment visas
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => navigate("/services/tourist-visa")}
+                      className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100"
+                    >
+                      <div className="font-medium">Tourist Visa Services</div>
+                      <div className="text-xs text-gray-500">Visit visas</div>
+                    </button>
+                    <button
+                      onClick={() => navigate("/services/student-visa")}
+                      className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100"
+                    >
+                      <div className="font-medium">Student Visa Services</div>
+                      <div className="text-xs text-gray-500">
+                        Education visas
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => navigate("/complaint")}
+                      className="block w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50"
+                    >
+                      <div className="font-medium">Report Scam</div>
+                      <div className="text-xs text-red-500">
+                        Report fraudulent services
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
