@@ -184,6 +184,8 @@ export const downloadAllPhotos: RequestHandler = async (req, res) => {
       error: "Photo download failed",
       details: error instanceof Error ? error.message : "Unknown error",
     });
+  } finally {
+    downloadInProgress = false;
   }
 };
 
