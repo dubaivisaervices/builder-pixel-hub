@@ -107,6 +107,8 @@ export function createServer() {
 
   // Photo and review sync routes
   app.post("/api/admin/download-photos", downloadAllPhotos);
+  app.post("/api/admin/stop-download", stopPhotoDownload);
+  app.get("/api/admin/download-status", getDownloadStatus);
   app.post("/api/admin/sync-reviews", syncAllReviews);
   app.get("/api/admin/sync-status", checkSyncStatus);
 
