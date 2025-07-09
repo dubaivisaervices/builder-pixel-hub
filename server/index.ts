@@ -50,6 +50,11 @@ import {
   exportAllData,
 } from "./routes/data-persistence";
 import { getBusinessReviews } from "./routes/business-reviews";
+import {
+  syncAllGoogleReviews,
+  syncBusinessReviews,
+  getReviewSyncStats,
+} from "./routes/sync-google-reviews";
 
 export function createServer() {
   const app = express();
@@ -117,8 +122,11 @@ export function createServer() {
   app.get("/api/admin/persistence-status", getDataPersistenceStatus);
   app.get("/api/admin/export-data", exportAllData);
 
-  // Business reviews route - Get real Google reviews
+  // Business reviews routes - Get and sync real Google reviews
   app.get("/api/business-reviews/:businessId", getBusinessReviews);
+  app.post("/api/admin/sync-all-reviews", syncAllGoogleReviews);
+  app.post("/api/admin/sync-business-reviews/:businessId", syncBusinessReviews);
+  app.get("/api/admin/review-sync-stats", getReviewSyncStats);
 
   return app;
 }
