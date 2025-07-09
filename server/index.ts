@@ -34,6 +34,8 @@ import {
 } from "./routes/admin-sync";
 import {
   downloadAllPhotos,
+  stopPhotoDownload,
+  getDownloadStatus,
   syncAllReviews,
   checkSyncStatus,
 } from "./routes/photo-sync";
