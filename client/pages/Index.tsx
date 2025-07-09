@@ -270,10 +270,13 @@ export default function Index() {
 
     if (value.length >= 3) {
       const filtered = allBusinesses
-        .filter((business) =>
-          business.name.toLowerCase().includes(value.toLowerCase()),
+        .filter(
+          (business) =>
+            business.name.toLowerCase().includes(value.toLowerCase()) ||
+            business.address.toLowerCase().includes(value.toLowerCase()) ||
+            business.category.toLowerCase().includes(value.toLowerCase()),
         )
-        .slice(0, 5);
+        .sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically
       setSearchSuggestions(filtered);
       setShowSuggestions(true);
     } else {
@@ -303,10 +306,13 @@ export default function Index() {
 
     if (value.length >= 2) {
       const filtered = allBusinesses
-        .filter((business) =>
-          business.name.toLowerCase().includes(value.toLowerCase()),
+        .filter(
+          (business) =>
+            business.name.toLowerCase().includes(value.toLowerCase()) ||
+            business.address.toLowerCase().includes(value.toLowerCase()) ||
+            business.category.toLowerCase().includes(value.toLowerCase()),
         )
-        .slice(0, 5);
+        .sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically
       setProtectCommunitySuggestions(filtered);
       setShowProtectSuggestions(true);
     } else {
@@ -526,7 +532,10 @@ export default function Index() {
 
                 {/* Search Suggestions */}
                 {showSuggestions && searchSuggestions.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-80 overflow-y-auto">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-96 overflow-y-auto">
+                    <div className="p-3 border-b border-gray-100 bg-gray-50 text-sm text-gray-600 font-medium">
+                      {searchSuggestions.length} businesses found
+                    </div>
                     {searchSuggestions.map((business) => (
                       <div
                         key={business.id}
