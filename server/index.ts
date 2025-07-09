@@ -43,6 +43,12 @@ import {
   getCompanyRequests,
   updateCompanyRequestStatus,
 } from "./routes/add-company-request";
+import {
+  saveAllBusinessData,
+  saveBusinessImagesToGitHub,
+  getDataPersistenceStatus,
+  exportAllData,
+} from "./routes/data-persistence";
 
 export function createServer() {
   const app = express();
