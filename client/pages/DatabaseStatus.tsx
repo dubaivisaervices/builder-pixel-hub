@@ -171,7 +171,7 @@ export default function DatabaseStatus() {
         )}
 
         <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Button onClick={loadStats} disabled={loading}>
               {loading ? "Loading..." : "Refresh Stats"}
             </Button>
@@ -182,6 +182,10 @@ export default function DatabaseStatus() {
 
             <Button onClick={downloadPhotos} variant="outline">
               Download All Photos
+            </Button>
+
+            <Button onClick={stopDownload} variant="destructive">
+              Stop Download
             </Button>
           </div>
 
