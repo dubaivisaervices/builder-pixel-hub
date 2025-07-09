@@ -51,39 +51,66 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
       try {
         console.log(`🔍 Fetching Google reviews for place ID: ${business.id}`);
 
-        const googleResponse = await fetch(
+        // Try multiple API calls to get more reviews
+        const reviewSources = [
+          // Standard call
           `https://maps.googleapis.com/maps/api/place/details/json?place_id=${business.id}&fields=reviews,rating,user_ratings_total&key=${process.env.GOOGLE_PLACES_API_KEY}`,
-        );
+          // With language parameter to potentially get different reviews
+          `https://maps.googleapis.com/maps/api/place/details/json?place_id=${business.id}&fields=reviews&language=en&key=${process.env.GOOGLE_PLACES_API_KEY}`,
+        ];
 
-        if (googleResponse.ok) {
-          const googleData = await googleResponse.json();
-          console.log("📊 Google API Response:", {
-            status: googleData.status,
-            totalReviews: googleData.result?.user_ratings_total || 0,
-            fetchedReviews: googleData.result?.reviews?.length || 0,
-          });
+        const allReviewsMap = new Map(); // To avoid duplicates
 
-          if (googleData.result && googleData.result.reviews) {
-            googleReviews = googleData.result.reviews.map(
-              (review: any, index: number) => ({
-                id: `google_${business.id}_${index}`,
-                businessId: businessId,
-                authorName: review.author_name,
-                rating: review.rating,
-                text: review.text || "No review text provided",
-                timeAgo: review.relative_time_description || "Recently",
-                profilePhotoUrl:
-                  review.profile_photo_url ||
-                  `https://ui-avatars.com/api/?name=${encodeURIComponent(review.author_name)}&background=random`,
-                isReal: true, // Mark as real Google review
-                googleReviewId: review.author_name + "_" + review.time,
-                createdAt: new Date().toISOString(),
-              }),
-            );
+        for (const url of reviewSources) {
+          try {
+            const googleResponse = await fetch(url);
 
-            console.log(
-              `✅ Processed ${googleReviews.length} REAL Google reviews`,
-            );
+            if (googleResponse.ok) {
+              const googleData = await googleResponse.json();
+
+              if (googleData.result && googleData.result.reviews) {
+                googleData.result.reviews.forEach((review: any) => {
+                  const reviewKey = `${review.author_name}_${review.time}`;
+                  if (!allReviewsMap.has(reviewKey) && allReviewsMap.size < 30) {
+                    allReviewsMap.set(reviewKey, review);
+                  }
+                });
+              }
+            }
+          } catch (err) {
+            console.log(`⚠️ Error with one API call: ${err}`);
+          }
+        }
+
+        // Convert collected reviews to final format
+        const collectedReviews = Array.from(allReviewsMap.values());
+
+        console.log("📊 Google API Response:", {
+          totalReviewsCollected: collectedReviews.length,
+          maxPossible: 30,
+        });
+
+        if (collectedReviews.length > 0) {
+          googleReviews = collectedReviews.map(
+            (review: any, index: number) => ({
+              id: `google_${business.id}_${index}`,
+              businessId: businessId,
+              authorName: review.author_name,
+              rating: review.rating,
+              text: review.text || "No review text provided",
+              timeAgo: review.relative_time_description || "Recently",
+              profilePhotoUrl:
+                review.profile_photo_url ||
+                `https://ui-avatars.com/api/?name=${encodeURIComponent(review.author_name)}&background=random`,
+              isReal: true, // Mark as real Google review
+              googleReviewId: review.author_name + "_" + review.time,
+              createdAt: new Date().toISOString(),
+            }),
+          );
+
+          console.log(
+            `✅ Processed ${googleReviews.length} REAL Google reviews (max 30)`,
+          );
 
             // Save Google reviews to database for future use
             if (googleReviews.length > 0) {
@@ -131,7 +158,7 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
             }
           }
         } else {
-          console.log(`❌ Google API error: ${googleResponse.status}`);
+          console.log(`📭 No reviews found in any API calls`);
         }
       } catch (error) {
         console.log("📡 Google Places API error:", error);
@@ -142,15 +169,17 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
       );
     }
 
-    // Return only real Google reviews if found
+    // Return only real Google reviews if found (max 30)
     if (googleReviews.length > 0) {
-      console.log(`✅ Returning ${googleReviews.length} REAL Google reviews`);
+      console.log(`✅ Returning ${googleReviews.length} REAL Google reviews (max 30)`);
       return res.json({
         success: true,
         reviews: googleReviews,
         source: "google_api_real",
         count: googleReviews.length,
+        maxPossible: 30,
         isReal: true,
+        note: `Showing ${googleReviews.length} real Google reviews (limited to maximum 30)`,
       });
     }
 
