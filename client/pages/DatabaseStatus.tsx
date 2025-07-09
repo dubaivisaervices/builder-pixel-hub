@@ -60,6 +60,16 @@ export default function DatabaseStatus() {
       const response = await fetch("/api/admin/download-photos", {
         method: "POST",
       });
+
+      if (!response.ok) {
+        const error = await response.json();
+        if (response.status === 409) {
+          alert(`Download already in progress: ${error.message}`);
+          return;
+        }
+        throw new Error(error.message || `HTTP ${response.status}`);
+      }
+
       const data = await response.json();
       console.log("Download Result:", data);
       alert(
@@ -68,7 +78,26 @@ export default function DatabaseStatus() {
       loadStats(); // Refresh stats
     } catch (error) {
       console.error("Failed to download photos:", error);
-      alert("Failed to download photos");
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+      alert(`Failed to download photos: ${errorMessage}`);
+    }
+  };
+
+  const stopDownload = async () => {
+    if (!confirm("Stop the current photo download process?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/admin/stop-download", {
+        method: "POST",
+      });
+      const data = await response.json();
+      alert(data.message);
+    } catch (error) {
+      console.error("Failed to stop download:", error);
+      alert("Failed to stop download");
     }
   };
 
