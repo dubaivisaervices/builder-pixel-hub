@@ -26,6 +26,7 @@ import {
   Clock,
   Award,
   TrendingUp,
+  Send,
 } from "lucide-react";
 
 interface BusinessData {
@@ -253,6 +254,26 @@ export default function CompanyReviews() {
         `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`,
         "_blank",
       );
+    } else if (platform === "whatsapp") {
+      window.open(
+        `https://wa.me/?text=${encodeURIComponent(shareText + " " + shareUrl)}`,
+        "_blank",
+      );
+    } else if (platform === "telegram") {
+      window.open(
+        `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`,
+        "_blank",
+      );
+    } else if (platform === "linkedin") {
+      window.open(
+        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
+        "_blank",
+      );
+    } else if (platform === "email") {
+      window.open(
+        `mailto:?subject=${encodeURIComponent(shareText)}&body=${encodeURIComponent(shareText + "\n\n" + shareUrl)}`,
+        "_blank",
+      );
     }
     setShowShareMenu(false);
   };
@@ -349,7 +370,7 @@ export default function CompanyReviews() {
               </Button>
 
               {showShareMenu && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border py-2 z-50">
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border py-2 z-50 max-h-80 overflow-y-auto">
                   <button
                     onClick={() => handleShare("copy")}
                     className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center space-x-2"
@@ -358,18 +379,46 @@ export default function CompanyReviews() {
                     <span>Copy Link</span>
                   </button>
                   <button
+                    onClick={() => handleShare("whatsapp")}
+                    className="w-full px-4 py-2 text-left hover:bg-green-50 flex items-center space-x-2 text-green-600"
+                  >
+                    <MessageSquare className="h-4 w-4" />
+                    <span>WhatsApp</span>
+                  </button>
+                  <button
                     onClick={() => handleShare("facebook")}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center space-x-2"
+                    className="w-full px-4 py-2 text-left hover:bg-blue-50 flex items-center space-x-2 text-blue-600"
                   >
                     <Facebook className="h-4 w-4" />
                     <span>Facebook</span>
                   </button>
                   <button
                     onClick={() => handleShare("twitter")}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center space-x-2"
+                    className="w-full px-4 py-2 text-left hover:bg-blue-50 flex items-center space-x-2 text-blue-400"
                   >
                     <Twitter className="h-4 w-4" />
                     <span>Twitter</span>
+                  </button>
+                  <button
+                    onClick={() => handleShare("linkedin")}
+                    className="w-full px-4 py-2 text-left hover:bg-blue-50 flex items-center space-x-2 text-blue-700"
+                  >
+                    <Building2 className="h-4 w-4" />
+                    <span>LinkedIn</span>
+                  </button>
+                  <button
+                    onClick={() => handleShare("telegram")}
+                    className="w-full px-4 py-2 text-left hover:bg-blue-50 flex items-center space-x-2 text-blue-500"
+                  >
+                    <Send className="h-4 w-4" />
+                    <span>Telegram</span>
+                  </button>
+                  <button
+                    onClick={() => handleShare("email")}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center space-x-2 text-gray-600"
+                  >
+                    <Mail className="h-4 w-4" />
+                    <span>Email</span>
                   </button>
                 </div>
               )}
