@@ -270,6 +270,16 @@ export class BusinessService {
     );
   }
 
+  async saveBusinessReviews(
+    businessId: string,
+    reviews: BusinessReview[],
+  ): Promise<void> {
+    await this.upsertReviews(businessId, reviews);
+    console.log(
+      `✅ Saved ${reviews.length} Google reviews for business ${businessId}`,
+    );
+  }
+
   // Clear all businesses
   async clearAllBusinesses(): Promise<void> {
     await database.run("DELETE FROM businesses");
