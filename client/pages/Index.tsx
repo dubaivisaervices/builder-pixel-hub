@@ -726,7 +726,7 @@ export default function Index() {
               size="lg"
               className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-xl px-8 py-3 text-lg"
             >
-              View All Services
+              🏢 Dubai Business Directory
               <ArrowRight className="h-5 w-5 ml-2" />
             </Button>
           </div>
@@ -811,8 +811,8 @@ export default function Index() {
                       className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
                       onClick={() => navigate("/dubai-businesses")}
                     >
-                      <Eye className="h-4 w-4 mr-2" />
-                      View Details
+                      <Building2 className="h-4 w-4 mr-2" />
+                      Dubai Business Directory
                     </Button>
                   </CardContent>
                 </Card>
