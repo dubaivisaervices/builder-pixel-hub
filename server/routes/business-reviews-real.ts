@@ -49,6 +49,10 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
       return res.status(404).json({ error: "Business not found" });
     }
 
+    console.log(
+      `💰 No cached reviews found, calling Google API (THIS COSTS MONEY)...`,
+    );
+
     // Try to fetch from Google Places API if we have the place ID
     let googleReviews = [];
     if (business.id && process.env.GOOGLE_PLACES_API_KEY) {
