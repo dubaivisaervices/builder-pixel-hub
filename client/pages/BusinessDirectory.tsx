@@ -252,11 +252,11 @@ export default function BusinessDirectory() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Header */}
-      <div className="bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-3 md:py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 md:space-x-4">
+      {/* Mobile-Friendly Header */}
+      <div className="bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-lg">
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-2 md:space-y-0">
+            <div className="flex items-center space-x-2 md:space-x-3">
               <Button
                 variant="ghost"
                 size="sm"
@@ -268,10 +268,10 @@ export default function BusinessDirectory() {
                 <span className="sm:hidden">Back</span>
               </Button>
               <div>
-                <h1 className="text-xl md:text-2xl font-bold text-gray-900">
+                <h1 className="text-lg md:text-xl font-bold text-gray-900">
                   Dubai Visa Services Directory
                 </h1>
-                <p className="text-sm md:text-base text-gray-600">
+                <p className="text-xs md:text-sm text-gray-600">
                   {filteredBusinesses.length} verified visa services from 840+
                   database
                 </p>
@@ -282,6 +282,49 @@ export default function BusinessDirectory() {
       </div>
 
       <div className="container mx-auto px-4 py-6 md:py-8">
+        {/* Directory Introduction */}
+        <div className="mb-8">
+          <Card className="shadow-xl border-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white">
+            <CardContent className="p-6 md:p-8">
+              <div className="text-center mb-6">
+                <h2 className="text-2xl md:text-3xl font-bold mb-3">
+                  🏢 Complete Dubai Visa Services Directory
+                </h2>
+                <p className="text-blue-100 max-w-3xl mx-auto mb-4">
+                  Browse through our comprehensive database of verified visa and
+                  immigration services in Dubai. Find trusted companies, read
+                  authentic reviews, and make informed decisions for your visa
+                  needs.
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                    <div className="text-2xl mb-1">🏆</div>
+                    <div className="text-lg font-bold">
+                      {filteredBusinesses.length}
+                    </div>
+                    <div className="text-xs opacity-90">Active Services</div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                    <div className="text-2xl mb-1">⭐</div>
+                    <div className="text-lg font-bold">4.2+</div>
+                    <div className="text-xs opacity-90">Avg Rating</div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                    <div className="text-2xl mb-1">✅</div>
+                    <div className="text-lg font-bold">100%</div>
+                    <div className="text-xs opacity-90">Verified</div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                    <div className="text-2xl mb-1">🔒</div>
+                    <div className="text-lg font-bold">24/7</div>
+                    <div className="text-xs opacity-90">Protection</div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Search and Filters */}
         <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl mb-8">
           <CardContent className="p-4 md:p-6">
@@ -335,9 +378,33 @@ export default function BusinessDirectory() {
                   {/* Business Header */}
                   <div className="flex items-start justify-between mb-3 md:mb-4">
                     <div className="flex items-center space-x-2 md:space-x-3 flex-1 min-w-0">
-                      <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-lg group-hover:shadow-xl transition-shadow">
-                        {business.name.charAt(0).toUpperCase()}
-                      </div>
+                      {business.logoUrl || business.logoBase64 ? (
+                        <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow">
+                          <img
+                            src={business.logoBase64 || business.logoUrl}
+                            alt={`${business.name} logo`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              // Fallback to initial if image fails to load
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = "none";
+                              const fallback =
+                                target.nextElementSibling as HTMLElement;
+                              if (fallback) fallback.style.display = "flex";
+                            }}
+                          />
+                          <div
+                            className="w-full h-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-lg group-hover:shadow-xl transition-shadow"
+                            style={{ display: "none" }}
+                          >
+                            {business.name.charAt(0).toUpperCase()}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-lg group-hover:shadow-xl transition-shadow">
+                          {business.name.charAt(0).toUpperCase()}
+                        </div>
+                      )}
                       <div className="flex-grow min-w-0">
                         <h3 className="font-bold text-base md:text-lg text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-1">
                           {business.name}
