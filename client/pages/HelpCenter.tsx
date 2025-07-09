@@ -386,6 +386,163 @@ export default function HelpCenter() {
           </div>
         </div>
       )}
+
+      {/* Footer with Government Logos */}
+      <footer className="bg-gray-900 text-white py-16 mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-lg">
+                  <Shield className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-xl font-bold">Dubai Visa Services</span>
+              </div>
+              <p className="text-gray-400">
+                Dubai's trusted platform for finding verified visa services and
+                protecting against immigration scams.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Services</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <button
+                    onClick={() => navigate("/services/work-visa")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Work Visa Services
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/services/tourist-visa")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Tourist Visa Services
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/services/student-visa")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Student Visa Services
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/services/business-visa")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Business Visa Services
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Support</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <button
+                    onClick={() => navigate("/complaint")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Report Scam
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/help-center")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Help Center
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/dubai-businesses")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Business Directory
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/services")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    All Services
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Contact</h3>
+              <div className="space-y-2 text-gray-400">
+                <div className="flex items-center space-x-2">
+                  <Phone className="h-4 w-4" />
+                  <span>+971 4 XXX XXXX</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Mail className="h-4 w-4" />
+                  <span>support@dubaivisaservices.ae</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <MapPin className="h-4 w-4" />
+                  <span>Dubai, UAE</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-800 mt-12 pt-8">
+            {/* Government Logos Section */}
+            <div className="mb-8">
+              <h3 className="text-center text-white font-semibold mb-6">
+                Authorized Government Partners
+              </h3>
+              <div className="flex flex-wrap items-center justify-center gap-8">
+                <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F2ed6c7a907ce48b1888b4efbd194a50d?format=webp&width=800"
+                    alt="Dubai Economy and Tourism"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F31c2a2a281cf498b96a79a162670a913?format=webp&width=800"
+                    alt="Ministry of Human Resources & Emiratisation"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F337069ef95604c42b94d28b0b67e055f?format=webp&width=800"
+                    alt="Amer Center"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2Fa33633cdd357445196e3405ed84b236c?format=webp&width=800"
+                    alt="Tas-heel"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center text-gray-400">
+              <p>&copy; 2024 Dubai Visa Services. All rights reserved.</p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
