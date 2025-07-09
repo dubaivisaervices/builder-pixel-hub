@@ -1261,25 +1261,39 @@ export default function Index() {
 
       {/* Add Company Popup Modal */}
       {showAddCompanyPopup && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-3 md:p-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowAddCompanyPopup(false);
+              setCompanyNotFound(false);
+            }
+          }}
+        >
+          <div
+            className="bg-white rounded-xl md:rounded-2xl shadow-2xl max-w-md w-full max-h-[95vh] md:max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-4 md:p-6">
               {/* Header */}
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">
+              <div className="flex items-center justify-between mb-4 md:mb-6">
+                <h2 className="text-lg md:text-2xl font-bold text-gray-900">
                   Add New Company
                 </h2>
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     setShowAddCompanyPopup(false);
                     setCompanyNotFound(false);
                   }}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-gray-500 hover:text-gray-700 touch-manipulation p-2"
+                  style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   <svg
-                    className="w-6 h-6"
+                    className="w-5 h-5 md:w-6 md:h-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -1295,7 +1309,7 @@ export default function Index() {
               </div>
 
               {/* Form */}
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Company Name *
@@ -1309,7 +1323,8 @@ export default function Index() {
                         name: e.target.value,
                       })
                     }
-                    className="w-full"
+                    className="w-full h-11 md:h-10 text-base md:text-sm touch-manipulation"
+                    placeholder="Enter complete company name"
                     required
                   />
                 </div>
@@ -1328,7 +1343,7 @@ export default function Index() {
                       })
                     }
                     placeholder="Enter complete address"
-                    className="w-full"
+                    className="w-full h-11 md:h-10 text-base md:text-sm touch-manipulation"
                     required
                   />
                 </div>
@@ -1346,7 +1361,8 @@ export default function Index() {
                         city: e.target.value,
                       })
                     }
-                    className="w-full"
+                    className="w-full h-11 md:h-10 text-base md:text-sm touch-manipulation"
+                    placeholder="e.g., Dubai, Abu Dhabi"
                     required
                   />
                 </div>
@@ -1363,33 +1379,41 @@ export default function Index() {
                         description: e.target.value,
                       })
                     }
-                    placeholder="Brief description about the company..."
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Brief description about the company services..."
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm touch-manipulation resize-none"
                     rows={3}
                   />
                 </div>
               </div>
 
               {/* Buttons */}
-              <div className="flex space-x-3 mt-6">
+              <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 mt-4 md:mt-6">
                 <Button
                   variant="outline"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     setShowAddCompanyPopup(false);
                     setCompanyNotFound(false);
                   }}
-                  className="flex-1"
+                  className="flex-1 h-11 md:h-10 text-base md:text-sm touch-manipulation"
+                  style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   Cancel
                 </Button>
                 <Button
-                  onClick={handleAddCompanyRequest}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleAddCompanyRequest();
+                  }}
                   disabled={
                     !newCompanyData.name ||
                     !newCompanyData.address ||
                     !newCompanyData.city
                   }
-                  className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                  className="flex-1 h-11 md:h-10 text-base md:text-sm bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white touch-manipulation"
+                  style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   Submit to Admin
                 </Button>
