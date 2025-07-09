@@ -82,16 +82,20 @@ import {
   PhoneCall,
 } from "lucide-react";
 
-// Reports Section Component
-interface ReportsSectionProps {
+// Beautiful Community Reports Component
+interface CommunityReportsSectionProps {
   businessId?: string;
   businessName?: string;
 }
 
-function ReportsSection({ businessId, businessName }: ReportsSectionProps) {
+function CommunityReportsSection({
+  businessId,
+  businessName,
+}: CommunityReportsSectionProps) {
   const [reports, setReports] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [expandedReport, setExpandedReport] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -132,7 +136,6 @@ function ReportsSection({ businessId, businessName }: ReportsSectionProps) {
       const data = await response.json();
 
       if (data.success) {
-        // Update local state with new vote counts
         setReports((prev) =>
           prev.map((report) =>
             report.id === reportId
@@ -146,145 +149,310 @@ function ReportsSection({ businessId, businessName }: ReportsSectionProps) {
     }
   };
 
-  const getIssueIcon = (issueType: string) => {
+  const getIssueDetails = (issueType: string) => {
     switch (issueType) {
       case "poor_service":
-        return "⚠️";
+        return {
+          icon: "⚠️",
+          label: "Poor Service",
+          gradient: "from-red-400 to-pink-500",
+        };
       case "hidden_fees":
-        return "💰";
+        return {
+          icon: "💰",
+          label: "Hidden Fees",
+          gradient: "from-yellow-400 to-orange-500",
+        };
       case "document_issues":
-        return "📄";
+        return {
+          icon: "📄",
+          label: "Document Issues",
+          gradient: "from-blue-400 to-indigo-500",
+        };
       case "delayed_processing":
-        return "🕐";
+        return {
+          icon: "🕐",
+          label: "Delayed Processing",
+          gradient: "from-purple-400 to-purple-600",
+        };
       case "scam":
-        return "🚨";
+        return {
+          icon: "🚨",
+          label: "Scam/Fraud",
+          gradient: "from-red-500 to-red-700",
+        };
       default:
-        return "❗";
+        return {
+          icon: "❗",
+          label: "Other Issue",
+          gradient: "from-gray-400 to-gray-600",
+        };
     }
   };
 
-  const getIssueColor = (issueType: string) => {
-    switch (issueType) {
-      case "poor_service":
-        return "bg-red-100 text-red-700 border-red-200";
-      case "hidden_fees":
-        return "bg-yellow-100 text-yellow-700 border-yellow-200";
-      case "document_issues":
-        return "bg-blue-100 text-blue-700 border-blue-200";
-      case "delayed_processing":
-        return "bg-purple-100 text-purple-700 border-purple-200";
-      case "scam":
-        return "bg-red-100 text-red-700 border-red-200";
-      default:
-        return "bg-gray-100 text-gray-700 border-gray-200";
-    }
+  const getReportSentiment = () => {
+    if (reports.length === 0)
+      return { color: "text-green-600", message: "Excellent reputation!" };
+    if (reports.length <= 2)
+      return { color: "text-yellow-600", message: "Some concerns reported" };
+    return { color: "text-red-600", message: "Multiple issues reported" };
   };
 
   return (
-    <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
-      <CardHeader>
-        <CardTitle className="text-lg flex items-center space-x-2">
-          <MessageCircleQuestion className="h-5 w-5 text-orange-600" />
-          <span>Community Reports</span>
+    <Card className="shadow-xl border-0 bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 backdrop-blur-sm overflow-hidden">
+      <div className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-600 px-6 py-4">
+        <CardTitle className="text-xl text-white flex items-center space-x-3">
+          <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm">
+            <MessageCircleQuestion className="h-6 w-6" />
+          </div>
+          <div>
+            <span className="block">Community Reports</span>
+            <span className="text-white/80 text-sm font-normal">
+              {reports.length === 0
+                ? "No reports filed"
+                : `${reports.length} verified reports`}
+            </span>
+          </div>
         </CardTitle>
-      </CardHeader>
-      <CardContent>
+      </div>
+
+      <CardContent className="p-6">
         {loading ? (
-          <div className="text-center py-6">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-600 mx-auto mb-2"></div>
-            <p className="text-sm text-gray-600">Loading reports...</p>
+          <div className="text-center py-12">
+            <div className="relative">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-200 border-t-orange-600 mx-auto mb-4"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <MessageCircleQuestion className="h-6 w-6 text-orange-600" />
+              </div>
+            </div>
+            <p className="text-gray-600 font-medium">
+              Loading community feedback...
+            </p>
+            <p className="text-sm text-gray-500 mt-1">
+              Gathering verified reports
+            </p>
           </div>
         ) : error ? (
-          <div className="text-center py-6">
-            <AlertCircle className="h-8 w-8 text-red-500 mx-auto mb-2" />
+          <div className="text-center py-12">
+            <div className="bg-red-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <AlertCircle className="h-8 w-8 text-red-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-red-800 mb-2">
+              Unable to Load Reports
+            </h3>
             <p className="text-sm text-red-600">{error}</p>
           </div>
         ) : reports.length === 0 ? (
-          <div className="text-center py-6">
-            <CheckCircle className="h-8 w-8 text-green-500 mx-auto mb-2" />
-            <p className="text-sm text-gray-600">
-              No reports for this business
+          <div className="text-center py-12">
+            <div className="bg-gradient-to-br from-green-400 to-emerald-500 rounded-full p-4 w-20 h-20 mx-auto mb-6 flex items-center justify-center shadow-lg">
+              <CheckCircle className="h-10 w-10 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-green-800 mb-3">
+              Clean Record!
+            </h3>
+            <p className="text-green-700 mb-2">
+              No community reports have been filed for this business.
             </p>
-            <p className="text-xs text-gray-500 mt-1">This is a good sign!</p>
+            <p className="text-sm text-green-600">
+              This indicates a trustworthy service provider.
+            </p>
+
+            <div className="mt-8 bg-white/50 rounded-xl p-4 border border-green-200">
+              <div className="flex items-center justify-center space-x-6 text-sm">
+                <div className="flex items-center space-x-2 text-green-700">
+                  <Shield className="h-4 w-4" />
+                  <span>Verified Business</span>
+                </div>
+                <div className="flex items-center space-x-2 text-green-700">
+                  <Award className="h-4 w-4" />
+                  <span>No Complaints</span>
+                </div>
+                <div className="flex items-center space-x-2 text-green-700">
+                  <Users className="h-4 w-4" />
+                  <span>Community Trusted</span>
+                </div>
+              </div>
+            </div>
           </div>
         ) : (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between mb-4">
-              <Badge
-                variant="outline"
-                className="text-xs bg-orange-100 text-orange-700"
-              >
-                {reports.length} Total Reports
-              </Badge>
-            </div>
-
-            <div className="space-y-3 max-h-96 overflow-y-auto">
-              {reports.map((report) => (
-                <div key={report.id} className="bg-white p-3 rounded-lg border">
-                  <div className="flex items-start justify-between mb-2">
-                    <Badge
-                      variant="outline"
-                      className={`text-xs ${getIssueColor(report.issueType)}`}
-                    >
-                      {getIssueIcon(report.issueType)}{" "}
-                      {report.issueType.replace("_", " ")}
-                    </Badge>
-                    <span className="text-xs text-gray-500">
-                      {new Date(report.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-
-                  <p className="text-sm text-gray-700 mb-3 line-clamp-3">
-                    {report.description}
+          <div className="space-y-6">
+            {/* Reports Summary */}
+            <div className="bg-white/60 rounded-xl p-6 border border-orange-200">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h4 className="font-bold text-lg text-gray-900">
+                    {reports.length} Community{" "}
+                    {reports.length === 1 ? "Report" : "Reports"}
+                  </h4>
+                  <p
+                    className={`text-sm font-medium ${getReportSentiment().color}`}
+                  >
+                    {getReportSentiment().message}
                   </p>
+                </div>
 
-                  {report.amountLost && (
-                    <div className="text-xs text-red-600 mb-2">
-                      Amount lost: {report.amountLost}
+                <div className="flex items-center space-x-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-red-600 border-red-300 hover:bg-red-50"
+                    onClick={() => window.open("/complaint", "_blank")}
+                  >
+                    <Flag className="h-4 w-4 mr-2" />
+                    Report Issue
+                  </Button>
+                </div>
+              </div>
+
+              {/* Report Type Summary */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {Object.entries(
+                  reports.reduce((acc: any, report) => {
+                    acc[report.issueType] = (acc[report.issueType] || 0) + 1;
+                    return acc;
+                  }, {}),
+                ).map(([type, count]) => {
+                  const details = getIssueDetails(type);
+                  return (
+                    <div
+                      key={type}
+                      className="text-center p-3 bg-white rounded-lg border border-gray-200"
+                    >
+                      <div
+                        className={`w-8 h-8 bg-gradient-to-r ${details.gradient} rounded-lg flex items-center justify-center mx-auto mb-2 text-white text-sm font-bold shadow-md`}
+                      >
+                        {count}
+                      </div>
+                      <p className="text-xs font-medium text-gray-700">
+                        {details.label}
+                      </p>
                     </div>
-                  )}
+                  );
+                })}
+              </div>
+            </div>
 
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-green-600 flex items-center">
-                      <CheckCircle className="h-3 w-3 mr-1" />
-                      Admin Verified
-                    </span>
-                    <div className="flex items-center space-x-3 text-xs">
-                      <button
-                        onClick={() => handleVote(report.id, "helpful")}
-                        className="flex items-center space-x-1 text-green-600 hover:text-green-700"
+            {/* Individual Reports */}
+            <div className="space-y-4">
+              <h5 className="font-semibold text-gray-900 flex items-center space-x-2">
+                <Eye className="h-5 w-5 text-orange-600" />
+                <span>Detailed Reports</span>
+              </h5>
+
+              {reports.map((report, index) => {
+                const details = getIssueDetails(report.issueType);
+                const isExpanded = expandedReport === report.id;
+
+                return (
+                  <div
+                    key={report.id}
+                    className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center space-x-3">
+                          <div
+                            className={`w-10 h-10 bg-gradient-to-r ${details.gradient} rounded-lg flex items-center justify-center text-white text-lg shadow-md`}
+                          >
+                            {details.icon}
+                          </div>
+                          <div>
+                            <h6 className="font-semibold text-gray-900">
+                              {details.label}
+                            </h6>
+                            <p className="text-sm text-gray-500">
+                              Reported{" "}
+                              {new Date(report.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center space-x-2">
+                          <Badge className="bg-green-100 text-green-800 border-green-200">
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                            Verified
+                          </Badge>
+                        </div>
+                      </div>
+
+                      <p
+                        className={`text-gray-700 leading-relaxed ${isExpanded ? "" : "line-clamp-3"}`}
                       >
-                        <ThumbsUp className="h-3 w-3" />
-                        <span>{report.votes.helpful}</span>
-                      </button>
-                      <button
-                        onClick={() => handleVote(report.id, "notHelpful")}
-                        className="flex items-center space-x-1 text-red-600 hover:text-red-700"
-                      >
-                        <ThumbsDown className="h-3 w-3" />
-                        <span>{report.votes.notHelpful}</span>
-                      </button>
+                        {report.description}
+                      </p>
+
+                      {report.description.length > 150 && (
+                        <button
+                          onClick={() =>
+                            setExpandedReport(isExpanded ? null : report.id)
+                          }
+                          className="text-orange-600 hover:text-orange-700 text-sm font-medium mt-2"
+                        >
+                          {isExpanded ? "Show less" : "Read more"}
+                        </button>
+                      )}
+
+                      {report.amountLost && (
+                        <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+                          <div className="flex items-center space-x-2 text-red-700">
+                            <DollarSign className="h-4 w-4" />
+                            <span className="font-semibold">
+                              Financial Loss: {report.amountLost}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
+                        <div className="flex items-center space-x-2 text-sm text-gray-500">
+                          <Users className="h-4 w-4" />
+                          <span>By {report.reporterName}</span>
+                        </div>
+
+                        <div className="flex items-center space-x-4">
+                          <button
+                            onClick={() => handleVote(report.id, "helpful")}
+                            className="flex items-center space-x-2 px-3 py-1 rounded-lg text-green-600 hover:bg-green-50 transition-colors"
+                          >
+                            <ThumbsUp className="h-4 w-4" />
+                            <span className="font-medium">
+                              {report.votes.helpful}
+                            </span>
+                            <span className="text-xs">Helpful</span>
+                          </button>
+
+                          <button
+                            onClick={() => handleVote(report.id, "notHelpful")}
+                            className="flex items-center space-x-2 px-3 py-1 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+                          >
+                            <ThumbsDown className="h-4 w-4" />
+                            <span className="font-medium">
+                              {report.votes.notHelpful}
+                            </span>
+                            <span className="text-xs">Not Helpful</span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
+                );
+              })}
+            </div>
+
+            {/* Trust Notice */}
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+              <div className="flex items-start space-x-3">
+                <Info className="h-5 w-5 text-blue-600 mt-0.5" />
+                <div className="text-sm text-blue-800">
+                  <p className="font-semibold mb-1">Community Trust & Safety</p>
+                  <p>
+                    All reports are manually reviewed and verified by our admin
+                    team before being published. This ensures accuracy and
+                    prevents false claims. We protect both businesses and
+                    consumers.
+                  </p>
                 </div>
-              ))}
-            </div>
-
-            <div className="mt-4 pt-3 border-t">
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full text-orange-600 border-orange-200 hover:bg-orange-50"
-                onClick={() => window.open("/complaint", "_blank")}
-              >
-                <Flag className="h-4 w-4 mr-2" />
-                Report This Business
-              </Button>
-            </div>
-
-            <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
-              <Info className="h-3 w-3 inline mr-1" />
-              All reports are verified by admin before being displayed.
+              </div>
             </div>
           </div>
         )}
@@ -738,15 +906,7 @@ export default function CompanyProfileModern() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid lg:grid-cols-4 gap-8">
-          {/* Left Sidebar - Reports */}
-          <div className="lg:col-span-1 space-y-6">
-            <ReportsSection
-              businessId={businessData?.id}
-              businessName={businessData?.name}
-            />
-          </div>
-
+        <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             <Tabs
@@ -854,6 +1014,12 @@ export default function CompanyProfileModern() {
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* Community Reports Section - Beautiful Design */}
+                <CommunityReportsSection
+                  businessId={businessData?.id}
+                  businessName={businessData?.name}
+                />
 
                 {/* Business Photos */}
                 <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
