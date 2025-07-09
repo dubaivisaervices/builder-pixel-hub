@@ -90,6 +90,94 @@ export default function Index() {
           </Card>
         </div>
 
+        {/* Immigration Services Categories */}
+        <Card className="mb-12 border-0 shadow-xl bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/40">
+          <CardContent className="p-8">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
+                Immigration Services Categories
+              </h3>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Explore verified visa and immigration consultants across
+                different service categories in Dubai
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {[
+                {
+                  name: "Visa Consulting",
+                  icon: "🛂",
+                  description: "Expert visa guidance",
+                  color: "from-blue-500 to-blue-600",
+                },
+                {
+                  name: "Immigration",
+                  icon: "✈️",
+                  description: "Complete immigration support",
+                  color: "from-green-500 to-green-600",
+                },
+                {
+                  name: "Work Permits",
+                  icon: "💼",
+                  description: "Employment visa assistance",
+                  color: "from-purple-500 to-purple-600",
+                },
+                {
+                  name: "Student Visas",
+                  icon: "🎓",
+                  description: "Education visa processing",
+                  color: "from-orange-500 to-orange-600",
+                },
+                {
+                  name: "Tourist Visas",
+                  icon: "🏖️",
+                  description: "Visit visa services",
+                  color: "from-teal-500 to-teal-600",
+                },
+                {
+                  name: "Business Setup",
+                  icon: "🏢",
+                  description: "Business visa solutions",
+                  color: "from-indigo-500 to-indigo-600",
+                },
+              ].map((category, index) => (
+                <button
+                  key={index}
+                  onClick={() => navigate("/dubai-businesses")}
+                  className="group relative p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-white/40 hover:bg-white/80 hover:scale-105 hover:shadow-lg transition-all duration-300"
+                >
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 rounded-xl transition-opacity duration-300`}
+                  ></div>
+
+                  <div className="relative z-10">
+                    <div className="text-2xl md:text-3xl mb-2 group-hover:scale-110 transition-transform duration-300">
+                      {category.icon}
+                    </div>
+                    <h4 className="font-bold text-xs md:text-sm text-gray-900 mb-1 leading-tight">
+                      {category.name}
+                    </h4>
+                    <p className="text-xs text-gray-600 mb-2">
+                      {category.description}
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <div className="text-center mt-6">
+              <Button
+                onClick={() => navigate("/dubai-businesses")}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 font-semibold"
+                size="lg"
+              >
+                View All Consultants
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Report Form */}
         <Card className="max-w-2xl mx-auto shadow-xl border-0">
           <CardHeader className="text-center pb-6">
