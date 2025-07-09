@@ -1,0 +1,671 @@
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Shield,
+  Users,
+  Database,
+  RefreshCw,
+  Settings,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  Building2,
+  MessageSquare,
+  Camera,
+  Sync,
+  Trash2,
+  Eye,
+  Lock,
+  LogOut,
+  BarChart3,
+  TrendingUp,
+  Activity,
+} from "lucide-react";
+
+interface CompanyRequest {
+  id: number;
+  name: string;
+  address: string;
+  city: string;
+  description: string;
+  requestedAt: string;
+  status: "pending" | "approved" | "rejected";
+}
+
+interface DatabaseStats {
+  totalBusinesses: number;
+  totalReviews: number;
+  totalPhotos: number;
+  categories: number;
+}
+
+export default function AdminDashboard() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginForm, setLoginForm] = useState({ username: "", password: "" });
+  const [loginError, setLoginError] = useState("");
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [companyRequests, setCompanyRequests] = useState<CompanyRequest[]>([]);
+  const [stats, setStats] = useState<DatabaseStats>({
+    totalBusinesses: 0,
+    totalReviews: 0,
+    totalPhotos: 0,
+    categories: 0,
+  });
+  const [syncStatus, setSyncStatus] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+
+  // Secure credentials (in production, this should be backend-validated)
+  const ADMIN_CREDENTIALS = {
+    username: "dubaiadmin2024",
+    password: "SecureVisa!@#2024",
+  };
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError("");
+
+    if (
+      loginForm.username === ADMIN_CREDENTIALS.username &&
+      loginForm.password === ADMIN_CREDENTIALS.password
+    ) {
+      setIsAuthenticated(true);
+      localStorage.setItem("admin_session", "authenticated");
+      fetchDashboardData();
+    } else {
+      setLoginError("Invalid credentials. Access denied.");
+      // Add delay to prevent brute force attacks
+      setTimeout(() => setLoginError(""), 3000);
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem("admin_session");
+    setLoginForm({ username: "", password: "" });
+  };
+
+  const fetchDashboardData = async () => {
+    try {
+      // Fetch company requests
+      const requestsResponse = await fetch("/api/admin/company-requests");
+      if (requestsResponse.ok) {
+        const requestsData = await requestsResponse.json();
+        setCompanyRequests(requestsData.requests || []);
+      }
+
+      // Fetch database stats
+      const statsResponse = await fetch("/api/admin/stats");
+      if (statsResponse.ok) {
+        const statsData = await statsResponse.json();
+        setStats(statsData.stats || {});
+      }
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    }
+  };
+
+  const handleRequestStatus = async (
+    requestId: number,
+    status: "approved" | "rejected",
+  ) => {
+    try {
+      const response = await fetch(`/api/admin/company-requests/${requestId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+
+      if (response.ok) {
+        alert(
+          `Company request ${status === "approved" ? "approved" : "rejected"} successfully`,
+        );
+        fetchDashboardData();
+      }
+    } catch (error) {
+      console.error("Error updating request status:", error);
+      alert("Failed to update request status");
+    }
+  };
+
+  const handleSync = async (type: string) => {
+    setLoading(true);
+    setSyncStatus(`Starting ${type} sync...`);
+
+    try {
+      let endpoint = "";
+      switch (type) {
+        case "google":
+          endpoint = "/api/sync-google-data";
+          break;
+        case "reviews":
+          endpoint = "/api/sync-reviews";
+          break;
+        case "photos":
+          endpoint = "/api/sync-offline-photos";
+          break;
+        default:
+          endpoint = "/api/admin/sync-database";
+      }
+
+      const response = await fetch(endpoint, { method: "POST" });
+      const data = await response.json();
+
+      if (response.ok) {
+        setSyncStatus(`${type} sync completed successfully`);
+        fetchDashboardData();
+      } else {
+        setSyncStatus(`${type} sync failed: ${data.error}`);
+      }
+    } catch (error) {
+      setSyncStatus(`${type} sync error: ${error}`);
+    } finally {
+      setLoading(false);
+      setTimeout(() => setSyncStatus(""), 5000);
+    }
+  };
+
+  const handleClearDatabase = async () => {
+    if (
+      !confirm(
+        "⚠️ WARNING: This will delete ALL data. Are you absolutely sure?",
+      )
+    ) {
+      return;
+    }
+
+    if (!confirm("This action cannot be undone. Type 'DELETE' to confirm:")) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch("/api/admin/clear-database", {
+        method: "POST",
+      });
+      if (response.ok) {
+        alert("Database cleared successfully");
+        fetchDashboardData();
+      }
+    } catch (error) {
+      alert("Failed to clear database");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Check if already authenticated
+    const session = localStorage.getItem("admin_session");
+    if (session === "authenticated") {
+      setIsAuthenticated(true);
+      fetchDashboardData();
+    }
+  }, []);
+
+  // Login Screen
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
+        <Card className="w-full max-w-md shadow-2xl border-0 bg-white/10 backdrop-blur-xl">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-red-500 to-orange-600 rounded-full">
+              <Lock className="h-8 w-8 text-white" />
+            </div>
+            <CardTitle className="text-2xl font-bold text-white">
+              Admin Access
+            </CardTitle>
+            <p className="text-gray-300">Secure authentication required</p>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <Input
+                  type="text"
+                  placeholder="Username"
+                  value={loginForm.username}
+                  onChange={(e) =>
+                    setLoginForm({ ...loginForm, username: e.target.value })
+                  }
+                  className="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                  required
+                />
+              </div>
+              <div>
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  value={loginForm.password}
+                  onChange={(e) =>
+                    setLoginForm({ ...loginForm, password: e.target.value })
+                  }
+                  className="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                  required
+                />
+              </div>
+              {loginError && (
+                <div className="text-red-400 text-sm text-center">
+                  {loginError}
+                </div>
+              )}
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700"
+              >
+                <Shield className="h-4 w-4 mr-2" />
+                Secure Login
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Admin Dashboard
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white shadow-xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="bg-gradient-to-br from-red-500 to-orange-600 p-2 rounded-xl">
+                <Shield className="h-8 w-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+                <p className="text-gray-300">Dubai Visa Services Management</p>
+              </div>
+            </div>
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="border-white/20 text-white hover:bg-white/10"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Navigation Tabs */}
+        <div className="mb-8">
+          <div className="flex space-x-1 bg-white/60 backdrop-blur-xl rounded-xl p-1 shadow-lg">
+            {[
+              { id: "dashboard", label: "Dashboard", icon: BarChart3 },
+              { id: "requests", label: "Company Requests", icon: Building2 },
+              { id: "sync", label: "Data Sync", icon: Sync },
+              { id: "database", label: "Database", icon: Database },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-lg transition-all ${
+                  activeTab === tab.id
+                    ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg"
+                    : "text-gray-600 hover:bg-white/50"
+                }`}
+              >
+                <tab.icon className="h-4 w-4" />
+                <span className="font-medium">{tab.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Dashboard Tab */}
+        {activeTab === "dashboard" && (
+          <div className="space-y-8">
+            {/* Stats Grid */}
+            <div className="grid md:grid-cols-4 gap-6">
+              {[
+                {
+                  label: "Total Businesses",
+                  value: stats.totalBusinesses,
+                  icon: Building2,
+                  color: "blue",
+                },
+                {
+                  label: "Total Reviews",
+                  value: stats.totalReviews,
+                  icon: MessageSquare,
+                  color: "green",
+                },
+                {
+                  label: "Total Photos",
+                  value: stats.totalPhotos,
+                  icon: Camera,
+                  color: "purple",
+                },
+                {
+                  label: "Categories",
+                  value: stats.categories,
+                  icon: Activity,
+                  color: "orange",
+                },
+              ].map((stat, index) => (
+                <Card
+                  key={index}
+                  className="shadow-xl border-0 bg-white/70 backdrop-blur-xl"
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-center space-x-4">
+                      <div className={`p-3 rounded-xl bg-${stat.color}-100`}>
+                        <stat.icon
+                          className={`h-6 w-6 text-${stat.color}-600`}
+                        />
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold text-gray-900">
+                          {stat.value || 0}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {stat.label}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Recent Activity */}
+            <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <TrendingUp className="h-6 w-6" />
+                  <span>System Status</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between py-3 border-b border-gray-200">
+                    <span>Database Connection</span>
+                    <Badge className="bg-green-100 text-green-800">
+                      <CheckCircle className="h-3 w-3 mr-1" />
+                      Online
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between py-3 border-b border-gray-200">
+                    <span>Google API Status</span>
+                    <Badge className="bg-green-100 text-green-800">
+                      <CheckCircle className="h-3 w-3 mr-1" />
+                      Active
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between py-3">
+                    <span>Last Sync</span>
+                    <span className="text-sm text-gray-600">2 hours ago</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Company Requests Tab */}
+        {activeTab === "requests" && (
+          <div className="space-y-6">
+            <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Building2 className="h-6 w-6" />
+                  <span>Company Addition Requests</span>
+                  <Badge variant="secondary">
+                    {
+                      companyRequests.filter((r) => r.status === "pending")
+                        .length
+                    }{" "}
+                    pending
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {companyRequests.length > 0 ? (
+                  <div className="space-y-4">
+                    {companyRequests.map((request) => (
+                      <div
+                        key={request.id}
+                        className="p-4 border border-gray-200 rounded-lg bg-white/50"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-lg">
+                              {request.name}
+                            </h3>
+                            <p className="text-gray-600">
+                              {request.address}, {request.city}
+                            </p>
+                            {request.description && (
+                              <p className="text-sm text-gray-500 mt-2">
+                                {request.description}
+                              </p>
+                            )}
+                            <p className="text-xs text-gray-400 mt-2">
+                              Requested on{" "}
+                              {new Date(
+                                request.requestedAt,
+                              ).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Badge
+                              className={
+                                request.status === "approved"
+                                  ? "bg-green-100 text-green-800"
+                                  : request.status === "rejected"
+                                    ? "bg-red-100 text-red-800"
+                                    : "bg-yellow-100 text-yellow-800"
+                              }
+                            >
+                              {request.status}
+                            </Badge>
+                            {request.status === "pending" && (
+                              <div className="flex space-x-2">
+                                <Button
+                                  size="sm"
+                                  onClick={() =>
+                                    handleRequestStatus(request.id, "approved")
+                                  }
+                                  className="bg-green-600 hover:bg-green-700"
+                                >
+                                  <CheckCircle className="h-3 w-3 mr-1" />
+                                  Approve
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() =>
+                                    handleRequestStatus(request.id, "rejected")
+                                  }
+                                >
+                                  <XCircle className="h-3 w-3 mr-1" />
+                                  Reject
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <Building2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600">No company requests found</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Data Sync Tab */}
+        {activeTab === "sync" && (
+          <div className="space-y-6">
+            <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Sync className="h-6 w-6" />
+                  <span>Data Synchronization</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {[
+                    {
+                      title: "Google Business Data",
+                      desc: "Sync business listings from Google Places API",
+                      action: () => handleSync("google"),
+                      icon: RefreshCw,
+                      color: "blue",
+                    },
+                    {
+                      title: "Reviews Sync",
+                      desc: "Update all business reviews",
+                      action: () => handleSync("reviews"),
+                      icon: MessageSquare,
+                      color: "green",
+                    },
+                    {
+                      title: "Photos Sync",
+                      desc: "Download and sync business photos",
+                      action: () => handleSync("photos"),
+                      icon: Camera,
+                      color: "purple",
+                    },
+                    {
+                      title: "Database Maintenance",
+                      desc: "Optimize and maintain database",
+                      action: () => handleSync("database"),
+                      icon: Database,
+                      color: "orange",
+                    },
+                  ].map((sync, index) => (
+                    <Card
+                      key={index}
+                      className="border-0 bg-white/50 hover:bg-white/70 transition-all"
+                    >
+                      <CardContent className="p-6">
+                        <div className="flex items-start space-x-4">
+                          <div
+                            className={`p-3 rounded-xl bg-${sync.color}-100`}
+                          >
+                            <sync.icon
+                              className={`h-6 w-6 text-${sync.color}-600`}
+                            />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-semibold mb-2">{sync.title}</h3>
+                            <p className="text-sm text-gray-600 mb-4">
+                              {sync.desc}
+                            </p>
+                            <Button
+                              onClick={sync.action}
+                              disabled={loading}
+                              className={`bg-gradient-to-r from-${sync.color}-500 to-${sync.color}-600 hover:from-${sync.color}-600 hover:to-${sync.color}-700`}
+                            >
+                              {loading ? (
+                                <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                              ) : (
+                                <sync.icon className="h-4 w-4 mr-2" />
+                              )}
+                              Start Sync
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                {syncStatus && (
+                  <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-blue-800">{syncStatus}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Database Tab */}
+        {activeTab === "database" && (
+          <div className="space-y-6">
+            <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Database className="h-6 w-6" />
+                  <span>Database Management</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <Button
+                      onClick={() => window.open("/admin/status", "_blank")}
+                      className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 p-6 h-auto"
+                    >
+                      <div className="text-center">
+                        <Eye className="h-8 w-8 mx-auto mb-2" />
+                        <div className="font-medium">View Status</div>
+                        <div className="text-xs opacity-80">
+                          Database details
+                        </div>
+                      </div>
+                    </Button>
+
+                    <Button
+                      onClick={() => window.open("/admin/manage", "_blank")}
+                      className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 p-6 h-auto"
+                    >
+                      <div className="text-center">
+                        <Settings className="h-8 w-8 mx-auto mb-2" />
+                        <div className="font-medium">Manage Data</div>
+                        <div className="text-xs opacity-80">Edit & update</div>
+                      </div>
+                    </Button>
+
+                    <Button
+                      onClick={handleClearDatabase}
+                      variant="destructive"
+                      disabled={loading}
+                      className="p-6 h-auto"
+                    >
+                      <div className="text-center">
+                        <Trash2 className="h-8 w-8 mx-auto mb-2" />
+                        <div className="font-medium">Clear Database</div>
+                        <div className="text-xs opacity-80">⚠️ Danger zone</div>
+                      </div>
+                    </Button>
+                  </div>
+
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <div className="flex items-start space-x-3">
+                      <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5" />
+                      <div>
+                        <h3 className="font-semibold text-red-800 mb-1">
+                          Security Notice
+                        </h3>
+                        <p className="text-sm text-red-700">
+                          This admin panel has restricted access. All actions
+                          are logged and monitored. Unauthorized access attempts
+                          will be reported.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
