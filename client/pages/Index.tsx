@@ -776,10 +776,32 @@ export default function Index() {
                       type="text"
                       placeholder="Enter company name to report"
                       value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
+                      onChange={(e) => {
+                        setCompanyName(e.target.value);
+                        setCompanyNotFound(false);
+                      }}
                       className="h-12 bg-white border-2 border-red-200 focus:border-red-400 rounded-xl"
                       required
                     />
+
+                    {companyNotFound && (
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+                        <div className="text-center">
+                          <p className="text-yellow-800 mb-3">
+                            Company "{newCompanyData.name}" not found in our
+                            database.
+                          </p>
+                          <Button
+                            type="button"
+                            onClick={() => setShowAddCompanyPopup(true)}
+                            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                          >
+                            Add This Company - Request Admin
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+
                     <Button
                       type="submit"
                       size="lg"
@@ -1104,6 +1126,146 @@ export default function Index() {
           <span className="font-semibold">Report Scam</span>
         </Button>
       </div>
+
+      {/* Add Company Popup Modal */}
+      {showAddCompanyPopup && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Add New Company
+                </h2>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setShowAddCompanyPopup(false);
+                    setCompanyNotFound(false);
+                  }}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </Button>
+              </div>
+
+              {/* Form */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Company Name *
+                  </label>
+                  <Input
+                    type="text"
+                    value={newCompanyData.name}
+                    onChange={(e) =>
+                      setNewCompanyData({
+                        ...newCompanyData,
+                        name: e.target.value,
+                      })
+                    }
+                    className="w-full"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Address *
+                  </label>
+                  <Input
+                    type="text"
+                    value={newCompanyData.address}
+                    onChange={(e) =>
+                      setNewCompanyData({
+                        ...newCompanyData,
+                        address: e.target.value,
+                      })
+                    }
+                    placeholder="Enter complete address"
+                    className="w-full"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    City *
+                  </label>
+                  <Input
+                    type="text"
+                    value={newCompanyData.city}
+                    onChange={(e) =>
+                      setNewCompanyData({
+                        ...newCompanyData,
+                        city: e.target.value,
+                      })
+                    }
+                    className="w-full"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Description (Optional)
+                  </label>
+                  <textarea
+                    value={newCompanyData.description}
+                    onChange={(e) =>
+                      setNewCompanyData({
+                        ...newCompanyData,
+                        description: e.target.value,
+                      })
+                    }
+                    placeholder="Brief description about the company..."
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    rows={3}
+                  />
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex space-x-3 mt-6">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowAddCompanyPopup(false);
+                    setCompanyNotFound(false);
+                  }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleAddCompanyRequest}
+                  disabled={
+                    !newCompanyData.name ||
+                    !newCompanyData.address ||
+                    !newCompanyData.city
+                  }
+                  className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                >
+                  Submit to Admin
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
