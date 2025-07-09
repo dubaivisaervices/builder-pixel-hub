@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ComplaintForm from "./pages/ComplaintForm";
-import CompanyReviews from "./pages/CompanyReviews";
+import CompanyReviews from "./pages/CompanyReviewsNew";
 import BusinessDirectory from "./pages/BusinessDirectory";
 import BusinessListing from "./pages/BusinessListing";
 import ApiTest from "./pages/ApiTest";
