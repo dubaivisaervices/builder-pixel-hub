@@ -11,10 +11,10 @@ import {
   AlertTriangle,
   Star,
   Download,
-  Sync,
   Database,
   BarChart3,
   Clock,
+  RotateCcw,
 } from "lucide-react";
 
 interface SyncStats {
@@ -117,7 +117,7 @@ export default function ReviewsSync() {
               </Button>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900 flex items-center space-x-2">
-                  <Sync className="h-6 w-6" />
+                  <RotateCcw className="h-6 w-6" />
                   <span>Google Reviews Sync</span>
                 </h1>
                 <p className="text-gray-600">
