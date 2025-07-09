@@ -2019,6 +2019,25 @@ export default function CompanyReviews() {
         </Card>
       </div>
 
+      {/* Mobile-Only Sticky Report Button */}
+      <div className="md:hidden fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50">
+        <Button
+          onClick={() =>
+            navigate("/complaint", {
+              state: {
+                companyName: businessData.name,
+                companyLocation: businessData.address,
+              },
+            })
+          }
+          className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-2xl px-8 py-4 text-lg font-bold rounded-full border-2 border-white animate-pulse"
+          size="lg"
+        >
+          <AlertTriangle className="h-5 w-5 mr-2" />
+          Report Scam
+        </Button>
+      </div>
+
       {/* Bottom spacing for sticky footer */}
       <div className="h-24 md:h-20"></div>
     </div>
