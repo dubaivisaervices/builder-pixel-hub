@@ -1,0 +1,11 @@
+{
+  "name": "dubai-visa-services-scripts",
+  "version": "1.0.0",
+  "description": "Setup scripts for Dubai Visa Services platform",
+  "scripts": {
+    "setup-github": "node setup-github-storage.js"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}
