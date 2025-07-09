@@ -56,6 +56,7 @@ export function createServer() {
 
   // Google Business API routes
   app.get("/api/test-google-api", testGoogleAPI);
+  app.get("/api/businesses", searchDubaiVisaServices); // Simpler route for businesses
   app.get("/api/dubai-visa-services", searchDubaiVisaServices);
   app.get("/api/business/:placeId", getBusinessDetails);
   app.get("/api/business-photo/:photoReference", getBusinessPhoto);
