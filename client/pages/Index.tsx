@@ -318,66 +318,20 @@ export default function Index() {
             </div>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-8">
-              <div className="relative group">
-                <Button variant="ghost" className="flex items-center space-x-1">
-                  <span>Browse</span>
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </Button>
-                <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-xl border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                  <div className="py-2">
-                    <button
-                      onClick={() => navigate("/services")}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                    >
-                      All Services
-                    </button>
-                    <button
-                      onClick={() => navigate("/dubai-businesses")}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                    >
-                      Business Directory
-                    </button>
-                    <button
-                      onClick={() => navigate("/services/work-visa")}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                    >
-                      Work Visa Services
-                    </button>
-                    <button
-                      onClick={() => navigate("/services/tourist-visa")}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                    >
-                      Tourist Visa Services
-                    </button>
-                    <button
-                      onClick={() => navigate("/services/student-visa")}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                    >
-                      Student Visa Services
-                    </button>
-                    <button
-                      onClick={() => navigate("/services/family-visa")}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                    >
-                      Family Visa Services
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <Button variant="ghost" onClick={() => navigate("/complaint")}>
+            <div className="hidden md:flex items-center space-x-6">
+              <Button
+                variant="ghost"
+                onClick={() => navigate("/dubai-businesses")}
+                className="flex items-center space-x-2"
+              >
+                <Building2 className="h-4 w-4" />
+                <span>Directory</span>
+              </Button>
+              <Button
+                onClick={() => navigate("/complaint")}
+                className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg"
+              >
+                <AlertTriangle className="h-4 w-4 mr-2" />
                 Report Scam
               </Button>
             </div>
