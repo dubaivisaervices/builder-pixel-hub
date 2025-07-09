@@ -249,6 +249,27 @@ export class BusinessService {
     console.log("✅ Cleared all existing reviews from database");
   }
 
+  async clearBusinessReviews(businessId: string): Promise<void> {
+    await database.run("DELETE FROM reviews WHERE business_id = ?", [
+      businessId,
+    ]);
+    console.log(`✅ Cleared reviews for business ${businessId}`);
+  }
+
+  async updateBusinessRating(
+    businessId: string,
+    rating: number,
+    reviewCount: number,
+  ): Promise<void> {
+    await database.run(
+      "UPDATE businesses SET rating = ?, review_count = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+      [rating, reviewCount, businessId],
+    );
+    console.log(
+      `✅ Updated business ${businessId} rating to ${rating} (${reviewCount} reviews)`,
+    );
+  }
+
   // Clear all businesses
   async clearAllBusinesses(): Promise<void> {
     await database.run("DELETE FROM businesses");
