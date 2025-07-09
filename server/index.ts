@@ -49,6 +49,7 @@ import {
   getDataPersistenceStatus,
   exportAllData,
 } from "./routes/data-persistence";
+import { getBusinessReviews } from "./routes/business-reviews";
 
 export function createServer() {
   const app = express();
@@ -115,6 +116,9 @@ export function createServer() {
   app.post("/api/admin/save-images/:businessId", saveBusinessImagesToGitHub);
   app.get("/api/admin/persistence-status", getDataPersistenceStatus);
   app.get("/api/admin/export-data", exportAllData);
+
+  // Business reviews route - Get real Google reviews
+  app.get("/api/business-reviews/:businessId", getBusinessReviews);
 
   return app;
 }
