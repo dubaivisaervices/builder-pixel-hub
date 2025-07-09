@@ -39,6 +39,7 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
           maxPossible: 30,
           isReal: true,
           fromCache: true,
+          message: "Reviews served from database cache - no Google API cost",
         });
       }
     }
