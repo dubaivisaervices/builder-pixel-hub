@@ -765,14 +765,6 @@ export default function CompanyReviews() {
       {} as Record<number, number>,
     ) || {};
 
-  // Calculate scam alert level based on 1-star reviews
-  const oneStarCount = reviewCounts[1] || 0;
-  const totalReviews = businessData?.reviews.length || 0;
-  const scamPercentage =
-    totalReviews > 0 ? (oneStarCount / totalReviews) * 100 : 0;
-  const scamAlertLevel =
-    scamPercentage > 50 ? "high" : scamPercentage > 25 ? "medium" : "low";
-
   // Set scam reports when business data is loaded
   React.useEffect(() => {
     // Business data loaded successfully
