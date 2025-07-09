@@ -94,9 +94,12 @@ export default function CompanyReviews() {
         });
         if (data.reviews && data.reviews.length > 0) {
           console.log(
-            `✅ Loaded ${data.reviews.length} reviews from API (${data.source})`,
+            `✅ Loaded ${data.reviews.length} REAL reviews from API (${data.source})`,
           );
-          return data.reviews; // Return all reviews from API
+          return data.reviews; // Return only real reviews from API
+        } else {
+          console.log(`📭 No real reviews available from API`);
+          return []; // Return empty array if no real reviews
         }
       } else {
         console.log(`❌ API Response error: ${response.status}`);
@@ -105,9 +108,9 @@ export default function CompanyReviews() {
       console.log("📡 Google reviews API error:", error);
     }
 
-    // Fallback: Generate minimum 30 realistic reviews locally
-    console.log("📝 Generating fallback reviews locally");
-    return generateLocalReviews(businessName);
+    // No real reviews available
+    console.log("📭 No real reviews found - returning empty array");
+    return [];
 
     // Generate local reviews as fallback
     const generateLocalReviews = (businessName: string) => {
@@ -791,72 +794,90 @@ export default function CompanyReviews() {
 
                   {/* Review List with Scrollbar */}
                   <div className="max-h-96 overflow-y-auto space-y-4 pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                    {reviews.map((review) => (
-                      <div
-                        key={review.id}
-                        className={`border rounded-lg p-4 ${
-                          review.rating === 1
-                            ? "border-red-200 bg-red-50/50"
-                            : "border-gray-200 bg-white"
-                        }`}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center space-x-3">
-                            <div
-                              className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
-                                review.rating === 1
-                                  ? "bg-red-500"
-                                  : "bg-blue-500"
-                              }`}
-                            >
-                              {review.authorName.charAt(0)}
-                            </div>
-                            <span className="font-medium">
-                              {review.authorName}
-                            </span>
-                            {review.rating === 1 && (
-                              <Badge variant="destructive" className="text-xs">
-                                SCAM REPORT
-                              </Badge>
-                            )}
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <div className="flex">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <Star
-                                  key={star}
-                                  className={`h-4 w-4 ${
-                                    star <= review.rating
-                                      ? review.rating === 1
-                                        ? "text-red-400 fill-current"
-                                        : "text-yellow-400 fill-current"
-                                      : "text-gray-300"
-                                  }`}
-                                />
-                              ))}
-                            </div>
-                            <span className="text-sm text-gray-500">
-                              {review.timeAgo}
-                            </span>
-                          </div>
-                        </div>
-                        <p
-                          className={`${
+                    {reviews.length === 0 ? (
+                      <div className="text-center py-8">
+                        <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                          No Real Reviews Available
+                        </h3>
+                        <p className="text-gray-500 text-sm">
+                          This business doesn't have any Google reviews yet, or
+                          we couldn't fetch them from Google Places API.
+                        </p>
+                      </div>
+                    ) : (
+                      reviews.map((review) => (
+                        <div
+                          key={review.id}
+                          className={`border rounded-lg p-4 ${
                             review.rating === 1
-                              ? "text-red-700 font-medium"
-                              : "text-gray-700"
+                              ? "border-red-200 bg-red-50/50"
+                              : "border-gray-200 bg-white"
                           }`}
                         >
-                          {review.text}
-                        </p>
-                        {review.rating === 1 && (
-                          <div className="mt-2 flex items-center space-x-2 text-xs text-red-600">
-                            <AlertTriangle className="h-3 w-3" />
-                            <span>This review reports fraudulent activity</span>
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center space-x-3">
+                              <div
+                                className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
+                                  review.rating === 1
+                                    ? "bg-red-500"
+                                    : "bg-blue-500"
+                                }`}
+                              >
+                                {review.authorName.charAt(0)}
+                              </div>
+                              <span className="font-medium">
+                                {review.authorName}
+                              </span>
+                              {review.rating === 1 && (
+                                <Badge
+                                  variant="destructive"
+                                  className="text-xs"
+                                >
+                                  SCAM REPORT
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <div className="flex">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <Star
+                                    key={star}
+                                    className={`h-4 w-4 ${
+                                      star <= review.rating
+                                        ? review.rating === 1
+                                          ? "text-red-400 fill-current"
+                                          : "text-yellow-400 fill-current"
+                                        : "text-gray-300"
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                              <span className="text-sm text-gray-500">
+                                {review.timeAgo}
+                              </span>
+                            </div>
                           </div>
-                        )}
-                      </div>
-                    ))}
+                          <p
+                            className={`${
+                              review.rating === 1
+                                ? "text-red-700 font-medium"
+                                : "text-gray-700"
+                            }`}
+                          >
+                            {review.text}
+                          </p>
+                          {review.rating === 1 && (
+                            <div className="mt-2 flex items-center space-x-2 text-xs text-red-600">
+                              <AlertTriangle className="h-3 w-3" />
+                              <span>
+                                This review reports fraudulent activity
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
               </CardContent>
