@@ -189,6 +189,25 @@ export const downloadAllPhotos: RequestHandler = async (req, res) => {
   }
 };
 
+// Stop any running download process
+export const stopPhotoDownload: RequestHandler = async (req, res) => {
+  downloadInProgress = false;
+  res.json({
+    success: true,
+    message: "Photo download process stopped",
+  });
+};
+
+// Get download status
+export const getDownloadStatus: RequestHandler = async (req, res) => {
+  res.json({
+    inProgress: downloadInProgress,
+    message: downloadInProgress
+      ? "Photo download in progress"
+      : "No download in progress",
+  });
+};
+
 // Sync all reviews from Google API and save to database
 export const syncAllReviews: RequestHandler = async (req, res) => {
   try {
