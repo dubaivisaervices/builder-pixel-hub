@@ -37,6 +37,7 @@ import {
   syncAllReviews,
   checkSyncStatus,
 } from "./routes/photo-sync";
+import { fixBusinessEmailsAndWebsites } from "./routes/fix-business-data";
 
 export function createServer() {
   const app = express();
@@ -88,6 +89,9 @@ export function createServer() {
   app.post("/api/admin/download-photos", downloadAllPhotos);
   app.post("/api/admin/sync-reviews", syncAllReviews);
   app.get("/api/admin/sync-status", checkSyncStatus);
+
+  // Fix business data
+  app.post("/api/admin/fix-business-data", fixBusinessEmailsAndWebsites);
 
   return app;
 }
