@@ -288,7 +288,13 @@ export default function CompanyReviews() {
           }
 
           setBusinessData(business);
-          setReviews(generateReviews(business.name));
+
+          // Fetch real reviews or generate realistic ones
+          const businessReviews = await fetchRealReviewsOrGenerate(
+            business.id,
+            business.name,
+          );
+          setReviews(businessReviews);
         } else {
           throw new Error("No businesses found");
         }
