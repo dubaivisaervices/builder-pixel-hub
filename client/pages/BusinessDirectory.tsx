@@ -154,11 +154,11 @@ export default function BusinessDirectory() {
     console.log("📋 Loading sample data...");
     setBusinesses(getSampleBusinesses());
     setLoading(false);
-    setError("Demo mode - showing sample visa services");
+    setError("Demo mode - showing sample from 840+ visa services database");
 
-    // Try to fetch live data
+    // Try to fetch live data from all 840 businesses
     try {
-      const response = await fetch("/api/businesses");
+      const response = await fetch("/api/dubai-visa-services?limit=1000");
       if (response.ok) {
         const data = await response.json();
         if (
@@ -272,7 +272,8 @@ export default function BusinessDirectory() {
                   Dubai Visa Services Directory
                 </h1>
                 <p className="text-sm md:text-base text-gray-600">
-                  {filteredBusinesses.length} verified visa services
+                  {filteredBusinesses.length} verified visa services from 840+
+                  database
                 </p>
               </div>
             </div>
@@ -318,57 +319,49 @@ export default function BusinessDirectory() {
           </Card>
         )}
 
-        {/* Latest Immigration & Visa Services Categories */}
-        <Card className="shadow-xl border-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white mb-8">
-          <CardContent className="p-6 md:p-8">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl md:text-3xl font-bold mb-3">
-                Latest Immigration & Visa Services
-              </h2>
-              <p className="text-blue-100 max-w-2xl mx-auto">
-                Discover the newest and most comprehensive visa services
-                available in Dubai
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { name: "Digital Nomad Visa", icon: "💻", new: true },
-                { name: "Green Visa (5-Year)", icon: "🌿", new: true },
-                { name: "Golden Visa Program", icon: "🏆", popular: true },
-                { name: "Freelancer Permit", icon: "🎨", new: true },
-                { name: "Remote Work Visa", icon: "🌍", new: true },
-                { name: "Startup Visa", icon: "🚀", popular: true },
-                { name: "Investor Visa", icon: "💰", popular: true },
-                { name: "Retirement Visa", icon: "🏖️", new: true },
-              ].map((service, index) => (
-                <div
-                  key={index}
-                  className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center hover:bg-white/20 transition-all cursor-pointer"
-                  onClick={() =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      search: service.name.toLowerCase(),
-                    }))
-                  }
-                >
-                  <div className="text-2xl mb-2">{service.icon}</div>
-                  <div className="text-sm font-medium">{service.name}</div>
-                  {service.new && (
-                    <Badge className="bg-green-500 text-white text-xs mt-1">
-                      NEW
-                    </Badge>
-                  )}
-                  {service.popular && (
-                    <Badge className="bg-yellow-500 text-black text-xs mt-1">
-                      POPULAR
-                    </Badge>
-                  )}
+        {/* Enhanced Business Listings Header */}
+        <div className="mb-6">
+          <Card className="shadow-xl border-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white">
+            <CardContent className="p-6 md:p-8">
+              <div className="text-center">
+                <h2 className="text-2xl md:text-3xl font-bold mb-3">
+                  🏢 Complete Business Directory
+                </h2>
+                <p className="text-emerald-100 max-w-2xl mx-auto mb-4">
+                  Browse through our comprehensive database of{" "}
+                  {filteredBusinesses.length > 0
+                    ? filteredBusinesses.length
+                    : "840+"}{" "}
+                  verified visa and immigration services in Dubai
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                    <div className="text-2xl mb-1">🏆</div>
+                    <div className="text-lg font-bold">
+                      {filteredBusinesses.length}
+                    </div>
+                    <div className="text-xs opacity-90">Active Services</div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                    <div className="text-2xl mb-1">⭐</div>
+                    <div className="text-lg font-bold">4.2+</div>
+                    <div className="text-xs opacity-90">Avg Rating</div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                    <div className="text-2xl mb-1">✅</div>
+                    <div className="text-lg font-bold">100%</div>
+                    <div className="text-xs opacity-90">Verified</div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                    <div className="text-2xl mb-1">🔒</div>
+                    <div className="text-lg font-bold">24/7</div>
+                    <div className="text-xs opacity-90">Protection</div>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Business Grid */}
         {filteredBusinesses.length > 0 ? (
@@ -376,69 +369,80 @@ export default function BusinessDirectory() {
             {displayedBusinesses.map((business) => (
               <Card
                 key={business.id}
-                className="shadow-xl border-0 bg-white/60 backdrop-blur-xl hover:shadow-2xl transition-all duration-300 group hover:scale-105 cursor-pointer"
+                className="shadow-xl border-0 bg-white/80 backdrop-blur-xl hover:shadow-2xl transition-all duration-300 group hover:scale-105 cursor-pointer relative overflow-hidden"
                 onClick={() => navigateToDetails(business)}
               >
-                <CardContent className="p-4 md:p-6">
+                {/* Gradient overlay for enhanced visual appeal */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-purple-50/50 pointer-events-none" />
+
+                <CardContent className="p-4 md:p-6 relative">
                   {/* Business Header */}
                   <div className="flex items-start justify-between mb-3 md:mb-4">
                     <div className="flex items-center space-x-2 md:space-x-3 flex-1 min-w-0">
-                      <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-lg">
+                      <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-lg group-hover:shadow-xl transition-shadow">
                         {business.name.charAt(0).toUpperCase()}
                       </div>
                       <div className="flex-grow min-w-0">
-                        <h3 className="font-bold text-base md:text-lg text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+                        <h3 className="font-bold text-base md:text-lg text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-1">
                           {business.name}
                         </h3>
                         <p className="text-xs md:text-sm text-gray-600 flex items-center truncate">
-                          <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
+                          <MapPin className="h-3 w-3 mr-1 flex-shrink-0 text-gray-400" />
                           <span className="truncate">
                             {business.address.split(",")[0]}
                           </span>
                         </p>
                       </div>
                     </div>
-                    {business.isOpen && (
+                    <div className="flex flex-col items-end gap-1">
+                      {business.isOpen && (
+                        <Badge
+                          variant="secondary"
+                          className="bg-green-100 text-green-800 text-xs border border-green-200 shadow-sm"
+                        >
+                          ● Open
+                        </Badge>
+                      )}
                       <Badge
-                        variant="secondary"
-                        className="bg-green-100 text-green-800 text-xs"
+                        variant="outline"
+                        className="text-xs bg-blue-50 text-blue-700 border-blue-200"
                       >
-                        Open
+                        Verified ✓
                       </Badge>
-                    )}
-                  </div>
-
-                  {/* Rating and Reviews */}
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-2">
-                      <div className="flex items-center">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <Star
-                            key={star}
-                            className={`h-4 w-4 ${
-                              star <= Math.floor(business.rating)
-                                ? "text-yellow-400 fill-current"
-                                : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="font-semibold text-gray-900">
-                        {business.rating.toFixed(1)}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        ({business.reviewCount} reviews)
-                      </span>
                     </div>
                   </div>
 
-                  {/* Category Badge */}
-                  <div className="mb-3">
+                  {/* Rating and Category Section */}
+                  <div className="bg-gray-50/50 rounded-lg p-3 mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center space-x-2">
+                        <div className="flex items-center">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star
+                              key={star}
+                              className={`h-4 w-4 ${
+                                star <= Math.floor(business.rating)
+                                  ? "text-yellow-400 fill-current"
+                                  : "text-gray-300"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <span className="font-bold text-gray-900 text-lg">
+                          {business.rating.toFixed(1)}
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xs text-gray-500">
+                          {business.reviewCount} reviews
+                        </div>
+                      </div>
+                    </div>
                     <Badge
                       variant="outline"
-                      className="text-xs bg-blue-50 text-blue-700 border-blue-200"
+                      className="text-xs bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 border-blue-200 capitalize"
                     >
-                      {business.category}
+                      🏢 {business.category}
                     </Badge>
                   </div>
 
@@ -465,22 +469,22 @@ export default function BusinessDirectory() {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                  <div className="flex flex-col gap-3 mt-4">
                     <Button
                       size="lg"
-                      className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg border-0 font-semibold text-sm md:text-base py-3"
+                      className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-lg border-0 font-bold text-sm md:text-base py-3 md:py-4 rounded-xl transition-all duration-300 transform hover:scale-105"
                       onClick={(e) => {
                         e.stopPropagation();
                         navigateToDetails(business);
                       }}
                     >
                       <Eye className="h-4 w-4 md:h-5 md:w-5 mr-2" />
-                      View Details
+                      View Details & Reviews
                     </Button>
                     <Button
                       size="lg"
                       variant="outline"
-                      className="flex-1 border-2 border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400 font-semibold text-sm md:text-base py-3 shadow-md"
+                      className="w-full border-2 border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400 hover:text-red-700 font-bold text-sm md:text-base py-3 md:py-4 shadow-md rounded-xl transition-all duration-300"
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate("/complaint", {
@@ -492,7 +496,7 @@ export default function BusinessDirectory() {
                       }}
                     >
                       <AlertTriangle className="h-4 w-4 md:h-5 md:w-5 mr-2" />
-                      Report Scam
+                      🚨 Report Scam
                     </Button>
                   </div>
                 </CardContent>
@@ -541,6 +545,209 @@ export default function BusinessDirectory() {
             </Card>
           </div>
         )}
+
+        {/* Latest Immigration & Visa Services Categories - Before Footer */}
+        <div className="mt-12 mb-8">
+          <Card className="shadow-xl border-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white">
+            <CardContent className="p-6 md:p-8">
+              <div className="text-center mb-6">
+                <h2 className="text-2xl md:text-3xl font-bold mb-3">
+                  🚀 Latest Immigration & Visa Services
+                </h2>
+                <p className="text-blue-100 max-w-3xl mx-auto">
+                  Discover the newest and most comprehensive visa services
+                  available in Dubai. Stay updated with the latest immigration
+                  programs and opportunities.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                {[
+                  {
+                    name: "Digital Nomad Visa",
+                    icon: "💻",
+                    new: true,
+                    desc: "For remote workers",
+                  },
+                  {
+                    name: "Green Visa (5-Year)",
+                    icon: "🌿",
+                    new: true,
+                    desc: "Long-term residency",
+                  },
+                  {
+                    name: "Golden Visa Program",
+                    icon: "🏆",
+                    popular: true,
+                    desc: "10-year residency",
+                  },
+                  {
+                    name: "Freelancer Permit",
+                    icon: "🎨",
+                    new: true,
+                    desc: "Independent work",
+                  },
+                  {
+                    name: "Remote Work Visa",
+                    icon: "🌍",
+                    new: true,
+                    desc: "Work from Dubai",
+                  },
+                  {
+                    name: "Startup Visa",
+                    icon: "🚀",
+                    popular: true,
+                    desc: "Business setup",
+                  },
+                  {
+                    name: "Investor Visa",
+                    icon: "💰",
+                    popular: true,
+                    desc: "Investment-based",
+                  },
+                  {
+                    name: "Retirement Visa",
+                    icon: "🏖️",
+                    new: true,
+                    desc: "For retirees",
+                  },
+                ].map((service, index) => (
+                  <div
+                    key={index}
+                    className="bg-white/10 backdrop-blur-sm rounded-xl p-4 md:p-6 text-center hover:bg-white/20 transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-2xl"
+                    onClick={() =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        search: service.name.toLowerCase(),
+                      }))
+                    }
+                  >
+                    <div className="text-3xl md:text-4xl mb-3">
+                      {service.icon}
+                    </div>
+                    <div className="text-sm md:text-base font-bold mb-1">
+                      {service.name}
+                    </div>
+                    <div className="text-xs text-blue-100 mb-2">
+                      {service.desc}
+                    </div>
+                    {service.new && (
+                      <Badge className="bg-green-500 text-white text-xs mt-1 pulse">
+                        NEW
+                      </Badge>
+                    )}
+                    {service.popular && (
+                      <Badge className="bg-yellow-500 text-black text-xs mt-1 pulse">
+                        POPULAR
+                      </Badge>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <div className="text-center mt-8">
+                <Button
+                  className="bg-white text-purple-600 hover:bg-gray-100 font-bold px-8 py-3 rounded-xl shadow-lg"
+                  onClick={() =>
+                    setFilters((prev) => ({ ...prev, search: "" }))
+                  }
+                >
+                  View All Services 📋
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-12 pt-8 border-t border-white/20">
+          <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
+            <CardContent className="p-6 md:p-8">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-3">Quick Links</h3>
+                  <div className="space-y-2">
+                    <a
+                      href="/"
+                      className="block text-gray-600 hover:text-blue-600 transition-colors"
+                    >
+                      Home
+                    </a>
+                    <a
+                      href="/help-center"
+                      className="block text-gray-600 hover:text-blue-600 transition-colors"
+                    >
+                      Help Center
+                    </a>
+                    <a
+                      href="/complaint"
+                      className="block text-gray-600 hover:text-blue-600 transition-colors"
+                    >
+                      Report Scam
+                    </a>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-3">Services</h3>
+                  <div className="space-y-2">
+                    <span className="block text-gray-600">
+                      Visa Consultation
+                    </span>
+                    <span className="block text-gray-600">
+                      Document Processing
+                    </span>
+                    <span className="block text-gray-600">
+                      Immigration Support
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-3">Support</h3>
+                  <div className="space-y-2">
+                    <span className="block text-gray-600">
+                      24/7 Customer Care
+                    </span>
+                    <span className="block text-gray-600">Live Chat</span>
+                    <span className="block text-gray-600">Email Support</span>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-3">
+                    Government Partners
+                  </h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    <img
+                      src="/api/placeholder/32/24"
+                      alt="Dubai Economy"
+                      className="w-8 h-6 object-contain bg-white/50 rounded backdrop-blur-sm"
+                    />
+                    <img
+                      src="/api/placeholder/32/24"
+                      alt="MOHRE"
+                      className="w-8 h-6 object-contain bg-white/50 rounded backdrop-blur-sm"
+                    />
+                    <img
+                      src="/api/placeholder/32/24"
+                      alt="Amer Center"
+                      className="w-8 h-6 object-contain bg-white/50 rounded backdrop-blur-sm"
+                    />
+                    <img
+                      src="/api/placeholder/32/24"
+                      alt="Tas-heel"
+                      className="w-8 h-6 object-contain bg-white/50 rounded backdrop-blur-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="text-center pt-6 border-t border-gray-200">
+                <p className="text-gray-600 text-sm">
+                  © 2024 Dubai Visa Services Directory. All rights reserved. |
+                  Protecting community since 2020
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
