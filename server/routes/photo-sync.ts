@@ -2,6 +2,9 @@ import { RequestHandler } from "express";
 import { businessService } from "../database/businessService";
 import fetch from "node-fetch";
 
+// Track if download is in progress to prevent multiple simultaneous downloads
+let downloadInProgress = false;
+
 interface PhotoDownloadResult {
   businessId: string;
   businessName: string;
