@@ -53,6 +53,14 @@ import {
   getCostReport,
   testApiConnection,
 } from "./routes/api-control";
+import {
+  checkCompanyExists,
+  submitNewCompany,
+  submitReport,
+  getCompanyReports,
+  voteOnReport,
+  getReportsStats,
+} from "./routes/company-reports";
 import { fixBusinessEmailsAndWebsites } from "./routes/fix-business-data";
 import {
   addCompanyRequest,
@@ -139,6 +147,14 @@ export function createServer() {
   app.post("/api/admin/api-reset-counters", resetCounters);
   app.get("/api/admin/api-cost-report", getCostReport);
   app.post("/api/admin/api-test-connection", testApiConnection);
+
+  // Company Reports System
+  app.post("/api/companies/check", checkCompanyExists);
+  app.post("/api/companies/submit", submitNewCompany);
+  app.post("/api/reports/submit", submitReport);
+  app.get("/api/reports/company/:companyId", getCompanyReports);
+  app.post("/api/reports/:reportId/vote", voteOnReport);
+  app.get("/api/admin/reports/stats", getReportsStats);
 
   // Fix business data
   app.post("/api/admin/fix-business-data", fixBusinessEmailsAndWebsites);

@@ -12,6 +12,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import {
   ArrowLeft,
@@ -76,6 +83,13 @@ export default function ComplaintForm() {
   const [submitted, setSubmitted] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
+  // Company verification states
+  const [companyExists, setCompanyExists] = useState<boolean | null>(null);
+  const [verifiedCompany, setVerifiedCompany] = useState<any>(null);
+  const [isCheckingCompany, setIsCheckingCompany] = useState(false);
+  const [showAddCompanyDialog, setShowAddCompanyDialog] = useState(false);
+  const [addCompanySubmitted, setAddCompanySubmitted] = useState(false);
+
   // Animation states
   const [fadeIn, setFadeIn] = useState(false);
   const [slideIn, setSlideIn] = useState(false);
@@ -94,6 +108,67 @@ export default function ComplaintForm() {
 
   const handleFileChange = (field: string, file: File | null) => {
     setFiles((prev) => ({ ...prev, [field]: file }));
+  };
+
+  const checkCompanyInDatabase = async (companyName: string) => {
+    if (!companyName.trim()) return;
+
+    setIsCheckingCompany(true);
+    try {
+      const response = await fetch("/api/companies/check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ companyName }),
+      });
+
+      const data = await response.json();
+
+      if (data.exists) {
+        setCompanyExists(true);
+        setVerifiedCompany(data.company);
+        console.log("✅ Company found:", data.company);
+      } else {
+        setCompanyExists(false);
+        setVerifiedCompany(null);
+        console.log("❌ Company not found");
+      }
+    } catch (error) {
+      console.error("Error checking company:", error);
+      setCompanyExists(false);
+    } finally {
+      setIsCheckingCompany(false);
+    }
+  };
+
+  const handleAddNewCompany = async () => {
+    try {
+      const response = await fetch("/api/companies/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          companyName: formData.companyName,
+          companyLocation: formData.companyLocation,
+          companyWebsite: formData.companyWebsite,
+          companyEmail: formData.companyEmail,
+          companyPhone: formData.companyPhone,
+          reporterName: formData.reporterName,
+          reporterEmail: formData.reporterEmail,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setAddCompanySubmitted(true);
+        setShowAddCompanyDialog(false);
+        alert(
+          "Company submitted for admin approval! You'll be notified in 24-48 hours.",
+        );
+      }
+    } catch (error) {
+      console.error("Error adding company:", error);
+      alert("Failed to submit company. Please try again.");
+    }
   };
 
   const validateStep = (step: number) => {
@@ -310,15 +385,72 @@ export default function ComplaintForm() {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="companyName">Company Name *</Label>
-                    <Input
-                      id="companyName"
-                      value={formData.companyName}
-                      onChange={(e) =>
-                        handleInputChange("companyName", e.target.value)
-                      }
-                      className={formErrors.companyName ? "border-red-500" : ""}
-                      placeholder="Enter company name"
-                    />
+                    <div className="relative">
+                      <Input
+                        id="companyName"
+                        value={formData.companyName}
+                        onChange={(e) => {
+                          handleInputChange("companyName", e.target.value);
+                          // Reset verification when name changes
+                          setCompanyExists(null);
+                          setVerifiedCompany(null);
+                        }}
+                        onBlur={() =>
+                          checkCompanyInDatabase(formData.companyName)
+                        }
+                        className={
+                          formErrors.companyName ? "border-red-500" : ""
+                        }
+                        placeholder="Enter company name"
+                      />
+                      {isCheckingCompany && (
+                        <div className="absolute right-3 top-3">
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Company verification status */}
+                    {companyExists === true && verifiedCompany && (
+                      <div className="mt-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div className="flex items-center space-x-2">
+                          <CheckCircle className="h-4 w-4 text-green-600" />
+                          <span className="text-sm text-green-700 font-medium">
+                            Company found in our database
+                          </span>
+                        </div>
+                        <div className="mt-1 text-xs text-green-600">
+                          {verifiedCompany.name} - {verifiedCompany.address}
+                        </div>
+                      </div>
+                    )}
+
+                    {companyExists === false && (
+                      <div className="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                            <span className="text-sm text-yellow-700 font-medium">
+                              Company not found in our database
+                            </span>
+                          </div>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setShowAddCompanyDialog(true)}
+                            className="text-yellow-700 border-yellow-300 hover:bg-yellow-100"
+                          >
+                            Add Company
+                          </Button>
+                        </div>
+                        <div className="mt-1 text-xs text-yellow-600">
+                          Add this company for admin review to submit your
+                          report
+                        </div>
+                      </div>
+                    )}
+
                     {formErrors.companyName && (
                       <p className="text-red-500 text-sm mt-1">
                         {formErrors.companyName}
@@ -806,6 +938,87 @@ export default function ComplaintForm() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Add Company Dialog */}
+      <Dialog
+        open={showAddCompanyDialog}
+        onOpenChange={setShowAddCompanyDialog}
+      >
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2">
+              <Building className="h-5 w-5 text-blue-600" />
+              <span>Add New Company</span>
+            </DialogTitle>
+            <DialogDescription>
+              This company will be added to our database after admin approval
+              (24-48 hours).
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <h4 className="font-medium text-blue-900 mb-2">
+                Company Details
+              </h4>
+              <div className="space-y-2 text-sm text-blue-800">
+                <div>
+                  <strong>Name:</strong> {formData.companyName}
+                </div>
+                <div>
+                  <strong>Location:</strong> {formData.companyLocation}
+                </div>
+                {formData.companyWebsite && (
+                  <div>
+                    <strong>Website:</strong> {formData.companyWebsite}
+                  </div>
+                )}
+                {formData.companyEmail && (
+                  <div>
+                    <strong>Email:</strong> {formData.companyEmail}
+                  </div>
+                )}
+                {formData.companyPhone && (
+                  <div>
+                    <strong>Phone:</strong> {formData.companyPhone}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+              <div className="flex items-start space-x-2">
+                <Clock className="h-4 w-4 text-yellow-600 mt-0.5" />
+                <div className="text-sm text-yellow-700">
+                  <strong>What happens next:</strong>
+                  <ul className="list-disc list-inside mt-1 space-y-1">
+                    <li>Our admin team will verify this company exists</li>
+                    <li>You'll receive email confirmation once approved</li>
+                    <li>You can then submit your report for this company</li>
+                    <li>Estimated approval time: 24-48 hours</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex space-x-3">
+              <Button
+                variant="outline"
+                onClick={() => setShowAddCompanyDialog(false)}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleAddNewCompany}
+                className="flex-1 bg-blue-600 hover:bg-blue-700"
+              >
+                Submit for Approval
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Homepage Footer */}
       <footer className="bg-gray-900 text-white py-16 mt-20">

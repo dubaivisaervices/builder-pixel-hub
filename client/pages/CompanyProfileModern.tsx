@@ -82,6 +82,217 @@ import {
   PhoneCall,
 } from "lucide-react";
 
+// Reports Section Component
+interface ReportsSectionProps {
+  businessId?: string;
+  businessName?: string;
+}
+
+function ReportsSection({ businessId, businessName }: ReportsSectionProps) {
+  const [reports, setReports] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      if (!businessId) return;
+
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/reports/company/${businessId}`);
+        const data = await response.json();
+
+        if (data.success) {
+          setReports(data.reports || []);
+        } else {
+          setError("Failed to load reports");
+        }
+      } catch (err) {
+        setError("Error loading reports");
+        console.error("Error fetching reports:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReports();
+  }, [businessId]);
+
+  const handleVote = async (
+    reportId: string,
+    voteType: "helpful" | "notHelpful",
+  ) => {
+    try {
+      const response = await fetch(`/api/reports/${reportId}/vote`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ voteType }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Update local state with new vote counts
+        setReports((prev) =>
+          prev.map((report) =>
+            report.id === reportId
+              ? { ...report, votes: data.newVotes }
+              : report,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error("Error voting:", error);
+    }
+  };
+
+  const getIssueIcon = (issueType: string) => {
+    switch (issueType) {
+      case "poor_service":
+        return "⚠️";
+      case "hidden_fees":
+        return "💰";
+      case "document_issues":
+        return "📄";
+      case "delayed_processing":
+        return "🕐";
+      case "scam":
+        return "🚨";
+      default:
+        return "❗";
+    }
+  };
+
+  const getIssueColor = (issueType: string) => {
+    switch (issueType) {
+      case "poor_service":
+        return "bg-red-100 text-red-700 border-red-200";
+      case "hidden_fees":
+        return "bg-yellow-100 text-yellow-700 border-yellow-200";
+      case "document_issues":
+        return "bg-blue-100 text-blue-700 border-blue-200";
+      case "delayed_processing":
+        return "bg-purple-100 text-purple-700 border-purple-200";
+      case "scam":
+        return "bg-red-100 text-red-700 border-red-200";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-200";
+    }
+  };
+
+  return (
+    <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+      <CardHeader>
+        <CardTitle className="text-lg flex items-center space-x-2">
+          <MessageCircleQuestion className="h-5 w-5 text-orange-600" />
+          <span>Community Reports</span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {loading ? (
+          <div className="text-center py-6">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-600 mx-auto mb-2"></div>
+            <p className="text-sm text-gray-600">Loading reports...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-6">
+            <AlertCircle className="h-8 w-8 text-red-500 mx-auto mb-2" />
+            <p className="text-sm text-red-600">{error}</p>
+          </div>
+        ) : reports.length === 0 ? (
+          <div className="text-center py-6">
+            <CheckCircle className="h-8 w-8 text-green-500 mx-auto mb-2" />
+            <p className="text-sm text-gray-600">
+              No reports for this business
+            </p>
+            <p className="text-xs text-gray-500 mt-1">This is a good sign!</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between mb-4">
+              <Badge
+                variant="outline"
+                className="text-xs bg-orange-100 text-orange-700"
+              >
+                {reports.length} Total Reports
+              </Badge>
+            </div>
+
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {reports.map((report) => (
+                <div key={report.id} className="bg-white p-3 rounded-lg border">
+                  <div className="flex items-start justify-between mb-2">
+                    <Badge
+                      variant="outline"
+                      className={`text-xs ${getIssueColor(report.issueType)}`}
+                    >
+                      {getIssueIcon(report.issueType)}{" "}
+                      {report.issueType.replace("_", " ")}
+                    </Badge>
+                    <span className="text-xs text-gray-500">
+                      {new Date(report.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+
+                  <p className="text-sm text-gray-700 mb-3 line-clamp-3">
+                    {report.description}
+                  </p>
+
+                  {report.amountLost && (
+                    <div className="text-xs text-red-600 mb-2">
+                      Amount lost: {report.amountLost}
+                    </div>
+                  )}
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-green-600 flex items-center">
+                      <CheckCircle className="h-3 w-3 mr-1" />
+                      Admin Verified
+                    </span>
+                    <div className="flex items-center space-x-3 text-xs">
+                      <button
+                        onClick={() => handleVote(report.id, "helpful")}
+                        className="flex items-center space-x-1 text-green-600 hover:text-green-700"
+                      >
+                        <ThumbsUp className="h-3 w-3" />
+                        <span>{report.votes.helpful}</span>
+                      </button>
+                      <button
+                        onClick={() => handleVote(report.id, "notHelpful")}
+                        className="flex items-center space-x-1 text-red-600 hover:text-red-700"
+                      >
+                        <ThumbsDown className="h-3 w-3" />
+                        <span>{report.votes.notHelpful}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-4 pt-3 border-t">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full text-orange-600 border-orange-200 hover:bg-orange-50"
+                onClick={() => window.open("/complaint", "_blank")}
+              >
+                <Flag className="h-4 w-4 mr-2" />
+                Report This Business
+              </Button>
+            </div>
+
+            <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
+              <Info className="h-3 w-3 inline mr-1" />
+              All reports are verified by admin before being displayed.
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 interface Review {
   id: string;
   authorName: string;
@@ -527,7 +738,15 @@ export default function CompanyProfileModern() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-4 gap-8">
+          {/* Left Sidebar - Reports */}
+          <div className="lg:col-span-1 space-y-6">
+            <ReportsSection
+              businessId={businessData?.id}
+              businessName={businessData?.name}
+            />
+          </div>
+
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             <Tabs
