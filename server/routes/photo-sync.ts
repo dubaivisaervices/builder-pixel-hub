@@ -65,7 +65,7 @@ export const downloadAllPhotos: RequestHandler = async (req, res) => {
       );
       result.photosProcessed = business.photos.length;
 
-      const updatedPhotos = [];
+      let updatedPhotos = [];
 
       // Use enhanced batch download with fallback system
       const photoUrls = business.photos
