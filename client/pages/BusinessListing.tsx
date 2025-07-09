@@ -41,14 +41,49 @@ export default function BusinessListing() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Category mapping for filtering businesses
-  const categoryMap: { [key: string]: string } = {
-    "work-visa": "work",
-    "tourist-visa": "tourist",
-    "student-visa": "student",
-    "family-visa": "family",
-    "business-visa": "business",
-    "residence-visa": "residence",
+  // Category mapping for filtering businesses - using broader terms to get more results
+  const categoryMap: { [key: string]: string[] } = {
+    "work-visa": ["work", "employment", "job", "labor", "visa", "permit"],
+    "tourist-visa": [
+      "tourist",
+      "visit",
+      "tourism",
+      "vacation",
+      "travel",
+      "visitor",
+    ],
+    "student-visa": [
+      "student",
+      "education",
+      "study",
+      "university",
+      "college",
+      "academic",
+    ],
+    "family-visa": [
+      "family",
+      "spouse",
+      "dependent",
+      "relative",
+      "reunion",
+      "marriage",
+    ],
+    "business-visa": [
+      "business",
+      "investor",
+      "trade",
+      "commercial",
+      "entrepreneur",
+      "company",
+    ],
+    "residence-visa": [
+      "residence",
+      "permanent",
+      "settlement",
+      "residency",
+      "long-term",
+      "expatriate",
+    ],
   };
 
   // Category titles for display
@@ -72,18 +107,25 @@ export default function BusinessListing() {
 
         // Filter by category if specified
         if (category && categoryMap[category]) {
-          const searchTerm = categoryMap[category];
+          const searchTerms = categoryMap[category];
           const filtered = data.businesses.filter((business: BusinessData) => {
             const categoryLower = business.category.toLowerCase();
-            return (
-              categoryLower.includes(searchTerm) ||
-              (categoryLower.includes("visa") &&
-                categoryLower.includes(searchTerm))
+            const nameLower = business.name.toLowerCase();
+            const addressLower = business.address.toLowerCase();
+
+            // Check if any of the search terms match in category, name, or address
+            return searchTerms.some(
+              (term) =>
+                categoryLower.includes(term.toLowerCase()) ||
+                nameLower.includes(term.toLowerCase()) ||
+                addressLower.includes(term.toLowerCase()) ||
+                (categoryLower.includes("visa") &&
+                  categoryLower.includes(term.toLowerCase())),
             );
           });
           setFilteredBusinesses(filtered);
           console.log(
-            `🔍 Filtered ${filtered.length} businesses for category: ${searchTerm}`,
+            `🔍 Filtered ${filtered.length} businesses for category: ${category} using terms: ${searchTerms.join(", ")}`,
           );
         } else {
           setFilteredBusinesses(data.businesses || []);
@@ -110,13 +152,20 @@ export default function BusinessListing() {
       setFilteredBusinesses(filtered);
     } else {
       if (category && categoryMap[category]) {
-        const searchTerm = categoryMap[category];
+        const searchTerms = categoryMap[category];
         const filtered = businesses.filter((business) => {
           const categoryLower = business.category.toLowerCase();
-          return (
-            categoryLower.includes(searchTerm) ||
-            (categoryLower.includes("visa") &&
-              categoryLower.includes(searchTerm))
+          const nameLower = business.name.toLowerCase();
+          const addressLower = business.address.toLowerCase();
+
+          // Check if any of the search terms match in category, name, or address
+          return searchTerms.some(
+            (term) =>
+              categoryLower.includes(term.toLowerCase()) ||
+              nameLower.includes(term.toLowerCase()) ||
+              addressLower.includes(term.toLowerCase()) ||
+              (categoryLower.includes("visa") &&
+                categoryLower.includes(term.toLowerCase())),
           );
         });
         setFilteredBusinesses(filtered);
