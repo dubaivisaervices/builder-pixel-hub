@@ -864,15 +864,9 @@ export default function BusinessDirectory() {
           </Card>
         )}
 
-        {/* Business Grid/List */}
+        {/* Business Grid */}
         {filteredBusinesses.length > 0 && (
-          <div
-            className={`grid gap-4 md:gap-6 ${
-              viewMode.mode === "grid"
-                ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-                : "grid-cols-1"
-            }`}
-          >
+          <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {displayedBusinesses.map((business, index) => (
               <Card
                 key={business.id}
