@@ -319,50 +319,6 @@ export default function BusinessDirectory() {
           </Card>
         )}
 
-        {/* Enhanced Business Listings Header */}
-        <div className="mb-6">
-          <Card className="shadow-xl border-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white">
-            <CardContent className="p-6 md:p-8">
-              <div className="text-center">
-                <h2 className="text-2xl md:text-3xl font-bold mb-3">
-                  🏢 Complete Business Directory
-                </h2>
-                <p className="text-emerald-100 max-w-2xl mx-auto mb-4">
-                  Browse through our comprehensive database of{" "}
-                  {filteredBusinesses.length > 0
-                    ? filteredBusinesses.length
-                    : "840+"}{" "}
-                  verified visa and immigration services in Dubai
-                </p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                    <div className="text-2xl mb-1">🏆</div>
-                    <div className="text-lg font-bold">
-                      {filteredBusinesses.length}
-                    </div>
-                    <div className="text-xs opacity-90">Active Services</div>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                    <div className="text-2xl mb-1">⭐</div>
-                    <div className="text-lg font-bold">4.2+</div>
-                    <div className="text-xs opacity-90">Avg Rating</div>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                    <div className="text-2xl mb-1">✅</div>
-                    <div className="text-lg font-bold">100%</div>
-                    <div className="text-xs opacity-90">Verified</div>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                    <div className="text-2xl mb-1">🔒</div>
-                    <div className="text-lg font-bold">24/7</div>
-                    <div className="text-xs opacity-90">Protection</div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Business Grid */}
         {filteredBusinesses.length > 0 ? (
           <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
