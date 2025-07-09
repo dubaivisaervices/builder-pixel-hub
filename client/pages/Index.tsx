@@ -110,11 +110,11 @@ export default function Index() {
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
-      navigate("/dubai-businesses", {
+      navigate("/services", {
         state: { searchTerm: searchTerm.trim() },
       });
     } else {
-      navigate("/dubai-businesses");
+      navigate("/services");
     }
   };
 
@@ -132,6 +132,55 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      {/* Navigation Header */}
+      <nav className="bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-lg sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            {/* Logo */}
+            <div className="flex items-center space-x-3">
+              <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-xl">
+                <Shield className="h-8 w-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">
+                  Dubai Visa Services
+                </h1>
+                <p className="text-xs text-gray-600">Trusted Directory</p>
+              </div>
+            </div>
+
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center space-x-8">
+              <Button variant="ghost" onClick={() => navigate("/services")}>
+                Browse Services
+              </Button>
+              <Button variant="ghost" onClick={() => navigate("/complaint")}>
+                Report Scam
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => navigate("/dubai-businesses")}
+              >
+                All Businesses
+              </Button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/services")}
+                className="flex items-center space-x-2"
+              >
+                <Building2 className="h-5 w-5" />
+                <span>Menu</span>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <section
         className={`relative overflow-hidden transition-all duration-1000 ${fadeIn ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
@@ -166,22 +215,47 @@ export default function Index() {
             {/* Search Bar */}
             <div className="max-w-2xl mx-auto">
               <div className="relative group">
-                <Input
-                  type="text"
-                  placeholder="Search visa services, company names, or locations..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-                  className="h-16 pl-6 pr-32 text-lg bg-white/90 backdrop-blur-sm border-2 border-gray-200 focus:border-blue-400 rounded-2xl shadow-xl group-hover:shadow-2xl transition-all duration-300"
-                />
-                <Button
-                  onClick={handleSearch}
-                  size="lg"
-                  className="absolute right-2 top-2 h-12 px-8 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-xl shadow-lg"
-                >
-                  <Search className="h-5 w-5 mr-2" />
-                  Search
-                </Button>
+                {/* Desktop Search */}
+                <div className="hidden md:block">
+                  <Input
+                    type="text"
+                    placeholder="Search visa services, company names, or locations..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                    className="h-16 pl-6 pr-32 text-lg bg-white/90 backdrop-blur-sm border-2 border-gray-200 focus:border-blue-400 rounded-2xl shadow-xl group-hover:shadow-2xl transition-all duration-300"
+                  />
+                  <Button
+                    onClick={handleSearch}
+                    size="lg"
+                    className="absolute right-2 top-2 h-12 px-8 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-xl shadow-lg"
+                  >
+                    <Search className="h-5 w-5 mr-2" />
+                    Search
+                  </Button>
+                </div>
+
+                {/* Mobile Search */}
+                <div className="md:hidden space-y-4">
+                  <Input
+                    type="text"
+                    placeholder="Search visa services..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                    className="h-14 px-4 text-base bg-white/90 backdrop-blur-sm border-2 border-gray-200 focus:border-blue-400 rounded-xl shadow-xl"
+                  />
+                  <div className="flex justify-center">
+                    <Button
+                      onClick={handleSearch}
+                      size="lg"
+                      className="px-12 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-xl shadow-lg"
+                    >
+                      <Search className="h-5 w-5 mr-2" />
+                      Search Services
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -296,6 +370,12 @@ export default function Index() {
               <Card
                 key={index}
                 className="group hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer border-0 bg-white/70 backdrop-blur-sm"
+                onClick={() => {
+                  const categorySlug = service.title
+                    .toLowerCase()
+                    .replace(/\s/g, "-");
+                  navigate(`/services/${categorySlug}`);
+                }}
               >
                 <CardContent className="p-8">
                   <div className="flex items-start space-x-4">
@@ -509,6 +589,109 @@ export default function Index() {
               </div>
             </CardContent>
           </Card>
+        </div>
+      </section>
+
+      {/* Dubai Government Section */}
+      <section className="py-16 bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+              Government Authorized Services
+            </h2>
+            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+              All listed visa services are registered and comply with UAE
+              government regulations and Dubai municipality standards.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            {/* UAE Government */}
+            <div className="text-center space-y-4">
+              <div className="w-20 h-20 mx-auto bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
+                <img
+                  src="https://images.pexels.com/photos/15652234/pexels-photo-15652234.jpeg"
+                  alt="UAE Flag"
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+              </div>
+              <div className="text-white">
+                <h3 className="text-xl font-bold mb-2">UAE Government</h3>
+                <p className="text-blue-100 text-sm">
+                  Federal Authority for Identity & Citizenship
+                </p>
+                <p className="text-blue-200 text-xs mt-1">www.government.ae</p>
+              </div>
+            </div>
+
+            {/* Dubai Municipality */}
+            <div className="text-center space-y-4">
+              <div className="w-20 h-20 mx-auto bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
+                <img
+                  src="https://images.pexels.com/photos/18294648/pexels-photo-18294648.jpeg"
+                  alt="Dubai Municipality"
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+              </div>
+              <div className="text-white">
+                <h3 className="text-xl font-bold mb-2">Dubai Municipality</h3>
+                <p className="text-blue-100 text-sm">
+                  Business Registration & Licensing Authority
+                </p>
+                <p className="text-blue-200 text-xs mt-1">www.dm.gov.ae</p>
+              </div>
+            </div>
+
+            {/* Immigration Department */}
+            <div className="text-center space-y-4">
+              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-red-500 via-white to-green-600 rounded-full p-1 flex items-center justify-center">
+                <div className="bg-white rounded-full w-full h-full flex items-center justify-center">
+                  <span className="text-lg font-bold bg-gradient-to-r from-red-500 to-green-600 bg-clip-text text-transparent">
+                    UAE
+                  </span>
+                </div>
+              </div>
+              <div className="text-white">
+                <h3 className="text-xl font-bold mb-2">Immigration Dept</h3>
+                <p className="text-blue-100 text-sm">
+                  General Directorate of Residency & Foreign Affairs
+                </p>
+                <p className="text-blue-200 text-xs mt-1">www.gdrfad.gov.ae</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center">
+            <div className="flex items-center justify-center space-x-2 mb-4">
+              <Shield className="h-6 w-6 text-green-400" />
+              <h3 className="text-xl font-bold text-white">
+                Compliance Guarantee
+              </h3>
+            </div>
+            <p className="text-blue-100 max-w-2xl mx-auto">
+              Every visa service listed on our platform is verified to hold
+              valid trade licenses and comply with UAE federal laws and Dubai
+              local regulations for immigration services.
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 text-sm">
+              <div className="text-blue-200">
+                <div className="font-semibold text-white">150+</div>
+                <div>Licensed Services</div>
+              </div>
+              <div className="text-blue-200">
+                <div className="font-semibold text-white">100%</div>
+                <div>Government Compliant</div>
+              </div>
+              <div className="text-blue-200">
+                <div className="font-semibold text-white">24/7</div>
+                <div>Support Available</div>
+              </div>
+              <div className="text-blue-200">
+                <div className="font-semibold text-white">99%</div>
+                <div>Success Rate</div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

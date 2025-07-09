@@ -210,7 +210,7 @@ export default function ComplaintForm() {
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-pink-50">
       {/* Animated Header */}
       <div
-        className={`bg-white/80 backdrop-blur-xl border-b border-red-100 shadow-xl sticky top-0 z-50 transition-all duration-700 ${fadeIn ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"}`}
+        className={`bg-white/80 backdrop-blur-xl border-b border-red-100 shadow-xl transition-all duration-700 ${fadeIn ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
@@ -251,7 +251,7 @@ export default function ComplaintForm() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-8 pb-16">
         {/* Progress Bar */}
         <div
           className={`mb-8 transition-all duration-1000 delay-300 ${slideIn ? "translate-x-0 opacity-100" : "translate-x-10 opacity-0"}`}
@@ -843,7 +843,7 @@ export default function ComplaintForm() {
 
         {/* Community Impact Section */}
         <div
-          className={`mt-8 grid md:grid-cols-3 gap-6 transition-all duration-1000 delay-700 ${slideIn ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+          className={`mt-8 mb-8 grid md:grid-cols-3 gap-6 transition-all duration-1000 delay-700 ${slideIn ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
         >
           <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
             <CardContent className="p-6 text-center">

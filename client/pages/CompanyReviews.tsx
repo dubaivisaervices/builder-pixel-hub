@@ -557,10 +557,10 @@ export default function CompanyReviews() {
           }
         }
 
-        if (!idToFetch) {
-          if (location.state?.businessData) {
-            console.log("Using fallback business data from navigation state");
-            const fallbackData = location.state.businessData;
+        // If API failed or no ID, try fallback data
+        if (location.state?.businessData) {
+          console.log("Using fallback business data from navigation state");
+          const fallbackData = location.state.businessData;
 
             // Use real reviews if available, otherwise generate samples
             if (!fallbackData.reviews || fallbackData.reviews.length === 0) {
