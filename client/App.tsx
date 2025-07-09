@@ -9,7 +9,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ComplaintForm from "./pages/ComplaintForm";
 import CompanyReviews from "./pages/CompanyReviewsWorking";
-import BusinessDirectory from "./pages/BusinessDirectory";
+import BusinessDirectory from "./pages/BusinessDirectoryFixed";
 import BusinessListing from "./pages/BusinessListing";
 import HelpCenter from "./pages/HelpCenter";
 import ApiTest from "./pages/ApiTest";
