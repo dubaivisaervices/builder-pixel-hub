@@ -666,21 +666,36 @@ export default function CompanyReviews() {
                     </div>
                   </div>
 
-                  {/* Review List */}
-                  <div className="space-y-4">
+                  {/* Review List with Scrollbar */}
+                  <div className="max-h-96 overflow-y-auto space-y-4 pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                     {reviews.map((review) => (
                       <div
                         key={review.id}
-                        className="border border-gray-200 rounded-lg p-4"
+                        className={`border rounded-lg p-4 ${
+                          review.rating === 1
+                            ? "border-red-200 bg-red-50/50"
+                            : "border-gray-200 bg-white"
+                        }`}
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                          <div className="flex items-center space-x-3">
+                            <div
+                              className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
+                                review.rating === 1
+                                  ? "bg-red-500"
+                                  : "bg-blue-500"
+                              }`}
+                            >
                               {review.authorName.charAt(0)}
                             </div>
                             <span className="font-medium">
                               {review.authorName}
                             </span>
+                            {review.rating === 1 && (
+                              <Badge variant="destructive" className="text-xs">
+                                SCAM REPORT
+                              </Badge>
+                            )}
                           </div>
                           <div className="flex items-center space-x-2">
                             <div className="flex">
@@ -689,7 +704,9 @@ export default function CompanyReviews() {
                                   key={star}
                                   className={`h-4 w-4 ${
                                     star <= review.rating
-                                      ? "text-yellow-400 fill-current"
+                                      ? review.rating === 1
+                                        ? "text-red-400 fill-current"
+                                        : "text-yellow-400 fill-current"
                                       : "text-gray-300"
                                   }`}
                                 />
@@ -700,7 +717,21 @@ export default function CompanyReviews() {
                             </span>
                           </div>
                         </div>
-                        <p className="text-gray-700">{review.text}</p>
+                        <p
+                          className={`${
+                            review.rating === 1
+                              ? "text-red-700 font-medium"
+                              : "text-gray-700"
+                          }`}
+                        >
+                          {review.text}
+                        </p>
+                        {review.rating === 1 && (
+                          <div className="mt-2 flex items-center space-x-2 text-xs text-red-600">
+                            <AlertTriangle className="h-3 w-3" />
+                            <span>This review reports fraudulent activity</span>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
