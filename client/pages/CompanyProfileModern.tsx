@@ -142,7 +142,7 @@ const generateContactInfo = (business: BusinessData) => {
 };
 
 export default function CompanyProfileModern() {
-  const { city, companyName } = useParams();
+  const { location: locationParam, companyName } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [businessData, setBusinessData] = useState<BusinessData | null>(null);
@@ -240,7 +240,7 @@ export default function CompanyProfileModern() {
     };
 
     loadBusiness();
-  }, [city, companyName, location.state]);
+  }, [locationParam, companyName, location.state]);
 
   const handleReportSubmit = async () => {
     try {
