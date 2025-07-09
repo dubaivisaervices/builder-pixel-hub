@@ -615,95 +615,179 @@ export default function BusinessDirectory() {
           </Card>
         </div>
 
-        {/* Footer */}
-        <div className="mt-12 pt-8 border-t border-white/20">
-          <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
-            <CardContent className="p-6 md:p-8">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-                <div>
-                  <h3 className="font-bold text-gray-900 mb-3">Quick Links</h3>
-                  <div className="space-y-2">
-                    <a
-                      href="/"
-                      className="block text-gray-600 hover:text-blue-600 transition-colors"
+        {/* Footer - Same as Homepage */}
+        <footer className="bg-gray-900 text-white py-16 mt-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <div>
+                <h3 className="text-xl font-bold mb-6">Quick Links</h3>
+                <ul className="space-y-3">
+                  <li>
+                    <button
+                      onClick={() => navigate("/")}
+                      className="text-gray-300 hover:text-white transition-colors text-left"
                     >
                       Home
-                    </a>
-                    <a
-                      href="/help-center"
-                      className="block text-gray-600 hover:text-blue-600 transition-colors"
-                    >
-                      Help Center
-                    </a>
-                    <a
-                      href="/complaint"
-                      className="block text-gray-600 hover:text-blue-600 transition-colors"
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => navigate("/complaint")}
+                      className="text-gray-300 hover:text-white transition-colors text-left"
                     >
                       Report Scam
-                    </a>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => navigate("/help-center")}
+                      className="text-gray-300 hover:text-white transition-colors text-left"
+                    >
+                      Help Center
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => navigate("/dubai-businesses")}
+                      className="text-gray-300 hover:text-white transition-colors text-left"
+                    >
+                      Business Directory
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold mb-6">Services</h3>
+                <ul className="space-y-3">
+                  <li>
+                    <button
+                      onClick={() => navigate("/services/work-visa")}
+                      className="text-gray-300 hover:text-white transition-colors text-left"
+                    >
+                      Work Visa Services
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => navigate("/services/tourist-visa")}
+                      className="text-gray-300 hover:text-white transition-colors text-left"
+                    >
+                      Tourist Visa Services
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => navigate("/services/student-visa")}
+                      className="text-gray-300 hover:text-white transition-colors text-left"
+                    >
+                      Student Visa Services
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => navigate("/services/business-visa")}
+                      className="text-gray-300 hover:text-white transition-colors text-left"
+                    >
+                      Business Visa Services
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold mb-6">Support</h3>
+                <ul className="space-y-3">
+                  <li>
+                    <button
+                      onClick={() => navigate("/complaint")}
+                      className="text-gray-300 hover:text-white transition-colors text-left"
+                    >
+                      Report Scam
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => navigate("/help-center")}
+                      className="text-gray-300 hover:text-white transition-colors text-left"
+                    >
+                      Help Center
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => navigate("/dubai-businesses")}
+                      className="text-gray-300 hover:text-white transition-colors text-left"
+                    >
+                      Business Directory
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => navigate("/services")}
+                      className="text-gray-300 hover:text-white transition-colors text-left"
+                    >
+                      All Services
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold mb-6">Contact</h3>
+                <div className="space-y-3 text-gray-300">
+                  <div className="flex items-center space-x-2">
+                    <MapPin className="h-4 w-4" />
+                    <span>Dubai, UAE</span>
                   </div>
                 </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 mb-3">Services</h3>
-                  <div className="space-y-2">
-                    <span className="block text-gray-600">
-                      Visa Consultation
-                    </span>
-                    <span className="block text-gray-600">
-                      Document Processing
-                    </span>
-                    <span className="block text-gray-600">
-                      Immigration Support
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 mb-3">Support</h3>
-                  <div className="space-y-2">
-                    <span className="block text-gray-600">
-                      24/7 Customer Care
-                    </span>
-                    <span className="block text-gray-600">Live Chat</span>
-                    <span className="block text-gray-600">Email Support</span>
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 mb-3">
-                    Government Partners
-                  </h3>
-                  <div className="grid grid-cols-2 gap-2">
+              </div>
+            </div>
+
+            <div className="border-t border-gray-800 mt-12 pt-8">
+              {/* Government Logos Section */}
+              <div className="mb-8">
+                <h3 className="text-center text-white font-semibold mb-6">
+                  Authorized Government Partners
+                </h3>
+                <div className="flex flex-wrap items-center justify-center gap-8">
+                  <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
                     <img
-                      src="/api/placeholder/32/24"
-                      alt="Dubai Economy"
-                      className="w-8 h-6 object-contain bg-white/50 rounded backdrop-blur-sm"
+                      src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F2ed6c7a907ce48b1888b4efbd194a50d?format=webp&width=800"
+                      alt="Dubai Economy and Tourism"
+                      className="max-w-full max-h-full object-contain"
                     />
+                  </div>
+                  <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
                     <img
-                      src="/api/placeholder/32/24"
-                      alt="MOHRE"
-                      className="w-8 h-6 object-contain bg-white/50 rounded backdrop-blur-sm"
+                      src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F31c2a2a281cf498b96a79a162670a913?format=webp&width=800"
+                      alt="Ministry of Human Resources & Emiratisation"
+                      className="max-w-full max-h-full object-contain"
                     />
+                  </div>
+                  <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
                     <img
-                      src="/api/placeholder/32/24"
+                      src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F337069ef95604c42b94d28b0b67e055f?format=webp&width=800"
                       alt="Amer Center"
-                      className="w-8 h-6 object-contain bg-white/50 rounded backdrop-blur-sm"
+                      className="max-w-full max-h-full object-contain"
                     />
+                  </div>
+                  <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
                     <img
-                      src="/api/placeholder/32/24"
+                      src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2Fa33633cdd357445196e3405ed84b236c?format=webp&width=800"
                       alt="Tas-heel"
-                      className="w-8 h-6 object-contain bg-white/50 rounded backdrop-blur-sm"
+                      className="max-w-full max-h-full object-contain"
                     />
                   </div>
                 </div>
               </div>
-              <div className="text-center pt-6 border-t border-gray-200">
-                <p className="text-gray-600 text-sm">
-                  © 2024 Dubai Visa Services Directory. All rights reserved. |
-                  Protecting community since 2020
-                </p>
+
+              <div className="text-center text-gray-400">
+                <p>&copy; 2024 Dubai Visa Services. All rights reserved.</p>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   );

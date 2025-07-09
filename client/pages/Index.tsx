@@ -559,7 +559,7 @@ export default function Index() {
                       className="h-14 px-4 text-base bg-white/90 backdrop-blur-sm border-2 border-gray-200 focus:border-blue-400 rounded-xl shadow-xl"
                     />
                   </div>
-                  <div className="flex justify-center">
+                  <div className="flex flex-col sm:flex-row justify-center gap-4">
                     <Button
                       onClick={handleSearch}
                       size="lg"
@@ -567,6 +567,15 @@ export default function Index() {
                     >
                       <Search className="h-5 w-5 mr-2" />
                       Search Services
+                    </Button>
+                    <Button
+                      onClick={() => navigate("/dubai-businesses")}
+                      size="lg"
+                      variant="outline"
+                      className="border-2 border-blue-500 text-blue-600 hover:bg-blue-50 shadow-lg px-8 py-3 rounded-xl font-semibold"
+                    >
+                      <Building2 className="h-5 w-5 mr-2" />
+                      All Dubai Visa Services Directory
                     </Button>
                   </div>
                 </div>
