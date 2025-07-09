@@ -41,7 +41,7 @@ export default function BusinessListing() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Category mapping
+  // Category mapping for filtering businesses
   const categoryMap: { [key: string]: string } = {
     "work-visa": "work",
     "tourist-visa": "tourist",
@@ -49,6 +49,16 @@ export default function BusinessListing() {
     "family-visa": "family",
     "business-visa": "business",
     "residence-visa": "residence",
+  };
+
+  // Category titles for display
+  const categoryTitles: { [key: string]: string } = {
+    "work-visa": "Work Visa Services",
+    "tourist-visa": "Tourist Visa Services",
+    "student-visa": "Student Visa Services",
+    "family-visa": "Family Visa Services",
+    "business-visa": "Business Visa Services",
+    "residence-visa": "Residence Visa Services",
   };
 
   useEffect(() => {
@@ -62,10 +72,19 @@ export default function BusinessListing() {
 
         // Filter by category if specified
         if (category && categoryMap[category]) {
-          const filtered = data.businesses.filter((business: BusinessData) =>
-            business.category.toLowerCase().includes(categoryMap[category]),
-          );
+          const searchTerm = categoryMap[category];
+          const filtered = data.businesses.filter((business: BusinessData) => {
+            const categoryLower = business.category.toLowerCase();
+            return (
+              categoryLower.includes(searchTerm) ||
+              (categoryLower.includes("visa") &&
+                categoryLower.includes(searchTerm))
+            );
+          });
           setFilteredBusinesses(filtered);
+          console.log(
+            `🔍 Filtered ${filtered.length} businesses for category: ${searchTerm}`,
+          );
         } else {
           setFilteredBusinesses(data.businesses || []);
         }
@@ -91,9 +110,15 @@ export default function BusinessListing() {
       setFilteredBusinesses(filtered);
     } else {
       if (category && categoryMap[category]) {
-        const filtered = businesses.filter((business) =>
-          business.category.toLowerCase().includes(categoryMap[category]),
-        );
+        const searchTerm = categoryMap[category];
+        const filtered = businesses.filter((business) => {
+          const categoryLower = business.category.toLowerCase();
+          return (
+            categoryLower.includes(searchTerm) ||
+            (categoryLower.includes("visa") &&
+              categoryLower.includes(searchTerm))
+          );
+        });
         setFilteredBusinesses(filtered);
       } else {
         setFilteredBusinesses(businesses);
@@ -121,17 +146,7 @@ export default function BusinessListing() {
 
   const getCategoryTitle = () => {
     if (!category) return "All Services";
-
-    const titles: { [key: string]: string } = {
-      "work-visa": "Work Visa Services",
-      "tourist-visa": "Tourist Visa Services",
-      "student-visa": "Student Visa Services",
-      "family-visa": "Family Visa Services",
-      "business-visa": "Business Visa Services",
-      "residence-visa": "Residence Visa Services",
-    };
-
-    return titles[category] || "Services";
+    return categoryTitles[category] || "Services";
   };
 
   if (loading) {

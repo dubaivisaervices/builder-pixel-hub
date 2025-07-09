@@ -39,6 +39,11 @@ interface BusinessData {
 export default function Index() {
   const [companyName, setCompanyName] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchSuggestions, setSearchSuggestions] = useState<BusinessData[]>(
+    [],
+  );
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [allBusinesses, setAllBusinesses] = useState<BusinessData[]>([]);
   const [stats, setStats] = useState({
     totalBusinesses: 0,
     totalReviews: 0,
@@ -58,7 +63,11 @@ export default function Index() {
       try {
         // Fetch real business data
         const response = await fetch("/api/businesses");
-        const businesses = await response.json();
+        const data = await response.json();
+        const businesses = data.businesses || [];
+
+        // Store all businesses for search
+        setAllBusinesses(businesses);
 
         // Calculate real statistics
         const totalReviews = businesses.reduce(
@@ -66,10 +75,12 @@ export default function Index() {
           0,
         );
         const avgRating =
-          businesses.reduce(
-            (sum: number, b: BusinessData) => sum + b.rating,
-            0,
-          ) / businesses.length;
+          businesses.length > 0
+            ? businesses.reduce(
+                (sum: number, b: BusinessData) => sum + b.rating,
+                0,
+              ) / businesses.length
+            : 0;
         const uniqueLocations = [
           ...new Set(
             businesses.map((b: BusinessData) => b.address.split(",")[0]),
@@ -81,7 +92,7 @@ export default function Index() {
           totalReviews,
           avgRating: parseFloat(avgRating.toFixed(1)),
           locations: uniqueLocations,
-          scamReports: Math.floor(businesses.length * 0.15), // Estimate based on low ratings
+          scamReports: Math.floor(businesses.length * 0.15),
         });
 
         // Get top rated businesses for featured section
@@ -116,6 +127,39 @@ export default function Index() {
     } else {
       navigate("/services");
     }
+    setShowSuggestions(false);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+
+    if (value.length >= 3) {
+      const filtered = allBusinesses
+        .filter((business) =>
+          business.name.toLowerCase().includes(value.toLowerCase()),
+        )
+        .slice(0, 5);
+      setSearchSuggestions(filtered);
+      setShowSuggestions(true);
+    } else {
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSuggestionClick = (business: BusinessData) => {
+    const locationSlug =
+      business.address
+        .split(",")[0]
+        ?.trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "-") || "dubai";
+    const nameSlug = business.name.toLowerCase().replace(/[^a-z0-9]/g, "-");
+
+    navigate(`/${locationSlug}/review/${nameSlug}`, {
+      state: { businessData: business },
+    });
+    setShowSuggestions(false);
+    setSearchTerm("");
   };
 
   const handleQuickReport = (e: React.FormEvent) => {
@@ -212,7 +256,7 @@ export default function Index() {
               </p>
             </div>
 
-            {/* Search Bar */}
+            {/* Search Bar with Autocomplete */}
             <div className="max-w-2xl mx-auto">
               <div className="relative group">
                 {/* Desktop Search */}
@@ -221,8 +265,14 @@ export default function Index() {
                     type="text"
                     placeholder="Search visa services, company names, or locations..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) => handleSearchChange(e.target.value)}
                     onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                    onFocus={() =>
+                      searchTerm.length >= 3 && setShowSuggestions(true)
+                    }
+                    onBlur={() =>
+                      setTimeout(() => setShowSuggestions(false), 200)
+                    }
                     className="h-16 pl-6 pr-32 text-lg bg-white/90 backdrop-blur-sm border-2 border-gray-200 focus:border-blue-400 rounded-2xl shadow-xl group-hover:shadow-2xl transition-all duration-300"
                   />
                   <Button
@@ -237,14 +287,22 @@ export default function Index() {
 
                 {/* Mobile Search */}
                 <div className="md:hidden space-y-4">
-                  <Input
-                    type="text"
-                    placeholder="Search visa services..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-                    className="h-14 px-4 text-base bg-white/90 backdrop-blur-sm border-2 border-gray-200 focus:border-blue-400 rounded-xl shadow-xl"
-                  />
+                  <div className="relative">
+                    <Input
+                      type="text"
+                      placeholder="Search visa services..."
+                      value={searchTerm}
+                      onChange={(e) => handleSearchChange(e.target.value)}
+                      onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                      onFocus={() =>
+                        searchTerm.length >= 3 && setShowSuggestions(true)
+                      }
+                      onBlur={() =>
+                        setTimeout(() => setShowSuggestions(false), 200)
+                      }
+                      className="h-14 px-4 text-base bg-white/90 backdrop-blur-sm border-2 border-gray-200 focus:border-blue-400 rounded-xl shadow-xl"
+                    />
+                  </div>
                   <div className="flex justify-center">
                     <Button
                       onClick={handleSearch}
@@ -256,6 +314,40 @@ export default function Index() {
                     </Button>
                   </div>
                 </div>
+
+                {/* Search Suggestions */}
+                {showSuggestions && searchSuggestions.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-80 overflow-y-auto">
+                    {searchSuggestions.map((business) => (
+                      <div
+                        key={business.id}
+                        onClick={() => handleSuggestionClick(business)}
+                        className="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                            {business.name.charAt(0)}
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-gray-900">
+                              {business.name}
+                            </h4>
+                            <p className="text-sm text-gray-600 flex items-center">
+                              <MapPin className="h-3 w-3 mr-1" />
+                              {business.address.split(",")[0]}
+                            </p>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                            <span className="text-sm font-medium">
+                              {business.rating.toFixed(1)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -371,9 +463,17 @@ export default function Index() {
                 key={index}
                 className="group hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer border-0 bg-white/70 backdrop-blur-sm"
                 onClick={() => {
-                  const categorySlug = service.title
-                    .toLowerCase()
-                    .replace(/\s/g, "-");
+                  // Map service titles to specific category filters
+                  const categoryMap: { [key: string]: string } = {
+                    "Work Visa Services": "work-visa",
+                    "Tourist Visa Services": "tourist-visa",
+                    "Student Visa Services": "student-visa",
+                    "Family Visa Services": "family-visa",
+                    "Business Visa Services": "business-visa",
+                    "Residence Visa Services": "residence-visa",
+                  };
+
+                  const categorySlug = categoryMap[service.title] || "all";
                   navigate(`/services/${categorySlug}`);
                 }}
               >

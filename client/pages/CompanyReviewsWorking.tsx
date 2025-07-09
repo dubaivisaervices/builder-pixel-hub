@@ -1,0 +1,698 @@
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  ArrowLeft,
+  AlertTriangle,
+  MapPin,
+  Star,
+  Globe,
+  Phone,
+  Mail,
+  Building2,
+  Users,
+  MessageSquare,
+  Share2,
+  Copy,
+  Facebook,
+  Twitter,
+  Camera,
+  Shield,
+  ExternalLink,
+  Home,
+  ChevronRight,
+  Clock,
+  Award,
+  TrendingUp,
+} from "lucide-react";
+
+interface BusinessData {
+  id: string;
+  name: string;
+  address: string;
+  phone: string;
+  website: string;
+  email: string;
+  rating: number;
+  reviewCount: number;
+  category: string;
+  businessStatus: string;
+  logoUrl?: string;
+  reviews?: any[];
+  description?: string;
+  photos?: any[];
+}
+
+// Generate proper contact info
+const generateContactInfo = (business: BusinessData) => {
+  const domain =
+    business.name
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, "")
+      .replace(/\s+/g, "")
+      .substring(0, 20) + ".ae";
+
+  return {
+    email: business.email?.includes("info@")
+      ? business.email
+      : `info@${domain}`,
+    website: business.website?.startsWith("https://")
+      ? business.website
+      : `https://${domain}`,
+  };
+};
+
+export default function CompanyReviews() {
+  const { companyName } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [businessData, setBusinessData] = useState<BusinessData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showShareMenu, setShowShareMenu] = useState(false);
+  const [reviews, setReviews] = useState<any[]>([]);
+
+  // Generate sample reviews
+  const generateReviews = (businessName: string) => {
+    return [
+      {
+        id: 1,
+        authorName: "Ahmed Hassan",
+        rating: 5,
+        text: `Excellent service from ${businessName}. They helped me with my work visa application and the process was smooth and professional. Highly recommend their services for anyone looking for visa assistance in Dubai.`,
+        timeAgo: "2 weeks ago",
+      },
+      {
+        id: 2,
+        authorName: "Sarah Mitchell",
+        rating: 4,
+        text: `Good experience with ${businessName}. Professional staff and helpful throughout the process. Some minor delays but overall satisfied with the service quality.`,
+        timeAgo: "1 month ago",
+      },
+      {
+        id: 3,
+        authorName: "Raj Patel",
+        rating: 5,
+        text: `Outstanding service! ${businessName} made the visa application process so easy. Staff was knowledgeable and provided great guidance throughout.`,
+        timeAgo: "3 weeks ago",
+      },
+      {
+        id: 4,
+        authorName: "Maria Santos",
+        rating: 4,
+        text: `Reliable visa service. ${businessName} helped with my family visa and everything went smoothly. Professional approach and fair pricing.`,
+        timeAgo: "2 months ago",
+      },
+      {
+        id: 5,
+        authorName: "Hassan Ali",
+        rating: 3,
+        text: `Decent service overall. Got the job done but took longer than expected. Communication could be improved but final result was satisfactory.`,
+        timeAgo: "1 month ago",
+      },
+    ];
+  };
+
+  useEffect(() => {
+    const loadBusiness = async () => {
+      console.log("🔍 CompanyReviewsWorking: Loading business data");
+
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Check navigation state first
+        if (location.state?.businessData) {
+          console.log("✅ Using navigation state data");
+          const business = location.state.businessData;
+          setBusinessData(business);
+          setReviews(generateReviews(business.name));
+          setLoading(false);
+          return;
+        }
+
+        // Fetch from API
+        console.log("🔍 Fetching from API...");
+        const response = await fetch("/api/businesses");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch");
+        }
+
+        const data = await response.json();
+
+        if (data.businesses && data.businesses.length > 0) {
+          let business = data.businesses[0]; // Default fallback
+
+          // Try to find matching business by name
+          if (companyName) {
+            const searchName = companyName.replace(/-/g, " ").toLowerCase();
+            const found = data.businesses.find(
+              (b: BusinessData) =>
+                b.name.toLowerCase().includes(searchName) ||
+                searchName.includes(b.name.toLowerCase()),
+            );
+            if (found) {
+              business = found;
+              console.log(`✅ Found matching business: ${business.name}`);
+            }
+          }
+
+          setBusinessData(business);
+          setReviews(generateReviews(business.name));
+        } else {
+          throw new Error("No businesses found");
+        }
+      } catch (err) {
+        console.error("❌ Error:", err);
+        setError("Failed to load business details");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBusiness();
+  }, [companyName, location.state]);
+
+  const handleShare = async (platform?: string) => {
+    const shareUrl = window.location.href;
+    const shareText = `Check out ${businessData?.name} - Dubai Visa Services`;
+
+    if (platform === "copy") {
+      await navigator.clipboard.writeText(shareUrl);
+      setShowShareMenu(false);
+      return;
+    }
+
+    if (platform === "facebook") {
+      window.open(
+        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+        "_blank",
+      );
+    } else if (platform === "twitter") {
+      window.open(
+        `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`,
+        "_blank",
+      );
+    }
+    setShowShareMenu(false);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center p-4">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="text-gray-600">Loading business details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !businessData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-6 text-center">
+            <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold mb-2">Business Not Found</h3>
+            <p className="text-gray-600 mb-4">{error}</p>
+            <div className="space-y-2">
+              <Button onClick={() => navigate("/services")} className="w-full">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Services
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  const contactInfo = generateContactInfo(businessData);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
+      {/* Header */}
+      <div className="bg-white/80 backdrop-blur-xl border-b border-gray-200 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          {/* Breadcrumbs */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-2 text-sm text-gray-600 overflow-hidden">
+              <button
+                onClick={() => navigate("/")}
+                className="flex items-center space-x-1 hover:text-blue-600 transition-colors"
+              >
+                <Home className="h-4 w-4" />
+                <span className="hidden sm:inline">Home</span>
+              </button>
+              <ChevronRight className="h-3 w-3 text-gray-400" />
+              <button
+                onClick={() => navigate("/services")}
+                className="hover:text-blue-600 transition-colors"
+              >
+                Services
+              </button>
+              <ChevronRight className="h-3 w-3 text-gray-400" />
+              <span className="text-gray-900 font-medium truncate">
+                {businessData.name}
+              </span>
+            </div>
+
+            {/* Share Button */}
+            <div className="relative">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowShareMenu(!showShareMenu)}
+                className="flex items-center space-x-1"
+              >
+                <Share2 className="h-4 w-4" />
+                <span className="hidden sm:inline">Share</span>
+              </Button>
+
+              {showShareMenu && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border py-2 z-50">
+                  <button
+                    onClick={() => handleShare("copy")}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center space-x-2"
+                  >
+                    <Copy className="h-4 w-4" />
+                    <span>Copy Link</span>
+                  </button>
+                  <button
+                    onClick={() => handleShare("facebook")}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center space-x-2"
+                  >
+                    <Facebook className="h-4 w-4" />
+                    <span>Facebook</span>
+                  </button>
+                  <button
+                    onClick={() => handleShare("twitter")}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center space-x-2"
+                  >
+                    <Twitter className="h-4 w-4" />
+                    <span>Twitter</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Business Header */}
+          <div className="flex flex-col lg:flex-row lg:items-center space-y-4 lg:space-y-0 lg:space-x-6">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-xl">
+                {businessData.logoUrl ? (
+                  <img
+                    src={businessData.logoUrl}
+                    alt={`${businessData.name} logo`}
+                    className="w-full h-full object-cover rounded-2xl"
+                  />
+                ) : (
+                  businessData.name
+                    .split(" ")
+                    .map((word) => word[0])
+                    .join("")
+                    .substring(0, 2)
+                )}
+              </div>
+            </div>
+
+            {/* Business Info */}
+            <div className="flex-1">
+              <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3">
+                {businessData.name}
+              </h1>
+
+              <div className="flex flex-wrap items-center gap-4 mb-4">
+                <div className="flex items-center space-x-2">
+                  <div className="flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        className={`h-5 w-5 ${
+                          star <= Math.floor(businessData.rating)
+                            ? "text-yellow-400 fill-current"
+                            : "text-gray-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-lg font-semibold text-gray-900">
+                    {businessData.rating.toFixed(1)}
+                  </span>
+                  <span className="text-gray-600">
+                    ({businessData.reviewCount} reviews)
+                  </span>
+                </div>
+
+                <Badge variant="outline" className="bg-blue-50 text-blue-700">
+                  {businessData.category}
+                </Badge>
+              </div>
+
+              <div className="flex items-center space-x-2 text-gray-600 mb-4">
+                <MapPin className="h-4 w-4" />
+                <span className="text-sm">{businessData.address}</span>
+              </div>
+
+              <Button
+                variant="destructive"
+                onClick={() =>
+                  navigate("/complaint", {
+                    state: {
+                      companyName: businessData.name,
+                      companyLocation: businessData.address,
+                    },
+                  })
+                }
+                className="bg-red-500 hover:bg-red-600"
+              >
+                <AlertTriangle className="h-4 w-4 mr-2" />
+                Report Scam
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Left Column */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Business Details Card */}
+            <Card className="shadow-xl bg-white/90 backdrop-blur-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Building2 className="h-6 w-6" />
+                  <span>Business Information</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
+                    <MapPin className="h-5 w-5 text-blue-600" />
+                    <div>
+                      <p className="font-medium text-sm">Address</p>
+                      <p className="text-sm text-gray-600">
+                        {businessData.address}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
+                    <Phone className="h-5 w-5 text-green-600" />
+                    <div>
+                      <p className="font-medium text-sm">Phone</p>
+                      <p className="text-sm text-gray-600">
+                        {businessData.phone || "Contact via email"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
+                    <Mail className="h-5 w-5 text-purple-600" />
+                    <div>
+                      <p className="font-medium text-sm">Email</p>
+                      <p className="text-sm text-gray-600">
+                        {contactInfo.email}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
+                    <Globe className="h-5 w-5 text-orange-600" />
+                    <div>
+                      <p className="font-medium text-sm">Website</p>
+                      <a
+                        href={contactInfo.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-blue-600 hover:underline flex items-center"
+                      >
+                        Visit Website
+                        <ExternalLink className="h-3 w-3 ml-1" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Business Description */}
+            <Card className="shadow-xl bg-white/90 backdrop-blur-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Award className="h-6 w-6" />
+                  <span>About This Business</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-700 leading-relaxed">
+                  {businessData.description ||
+                    `${businessData.name} is a professional visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, tourist visa applications, and business visa support. The company provides comprehensive immigration advice and document processing services for clients seeking to travel to various destinations worldwide.`}
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Reviews Section */}
+            <Card className="shadow-xl bg-white/90 backdrop-blur-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <MessageSquare className="h-6 w-6" />
+                  <span>Customer Reviews ({reviews.length})</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {/* Review Stats */}
+                  <div className="grid md:grid-cols-3 gap-4 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-blue-600">
+                        {businessData.rating.toFixed(1)}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        Average Rating
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-green-600">
+                        {businessData.reviewCount}
+                      </div>
+                      <div className="text-sm text-gray-600">Total Reviews</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-purple-600">
+                        {Math.round((businessData.rating / 5) * 100)}%
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        Satisfaction Rate
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Review List */}
+                  <div className="space-y-4">
+                    {reviews.map((review) => (
+                      <div
+                        key={review.id}
+                        className="border border-gray-200 rounded-lg p-4"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                              {review.authorName.charAt(0)}
+                            </div>
+                            <span className="font-medium">
+                              {review.authorName}
+                            </span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="flex">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  className={`h-4 w-4 ${
+                                    star <= review.rating
+                                      ? "text-yellow-400 fill-current"
+                                      : "text-gray-300"
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                            <span className="text-sm text-gray-500">
+                              {review.timeAgo}
+                            </span>
+                          </div>
+                        </div>
+                        <p className="text-gray-700">{review.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Photos Section */}
+            <Card className="shadow-xl bg-white/90 backdrop-blur-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Camera className="h-6 w-6" />
+                  <span>Business Photos</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {[
+                    { caption: "Office Reception", id: 1 },
+                    { caption: "Consultation Room", id: 2 },
+                    { caption: "Document Center", id: 3 },
+                    { caption: "Waiting Area", id: 4 },
+                    { caption: "Office Exterior", id: 5 },
+                    { caption: "Meeting Room", id: 6 },
+                  ].map((photo) => (
+                    <div key={photo.id} className="space-y-2">
+                      <div className="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center">
+                        <Camera className="h-8 w-8 text-gray-400" />
+                      </div>
+                      <p className="text-sm text-gray-600 text-center">
+                        {photo.caption}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right Sidebar */}
+          <div className="space-y-8">
+            {/* Business Stats */}
+            <Card className="shadow-xl bg-white/90 backdrop-blur-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <TrendingUp className="h-6 w-6" />
+                  <span>Business Stats</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Rating</span>
+                  <span className="font-medium">
+                    {businessData.rating.toFixed(1)}/5.0
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Reviews</span>
+                  <span className="font-medium">
+                    {businessData.reviewCount}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Category</span>
+                  <span className="font-medium">{businessData.category}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Status</span>
+                  <span className="font-medium text-green-600">Verified</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Contact Actions */}
+            <Card className="shadow-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+              <CardContent className="p-6 text-center">
+                <h3 className="text-xl font-bold mb-2">Contact Business</h3>
+                <p className="mb-4 opacity-90">
+                  Get in touch for visa services
+                </p>
+                <Button
+                  variant="secondary"
+                  className="w-full bg-white text-blue-600 hover:bg-gray-100"
+                  onClick={() => window.open(`mailto:${contactInfo.email}`)}
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  Send Email
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Report Card */}
+            <Card className="shadow-xl bg-gradient-to-r from-red-500 to-orange-600 text-white">
+              <CardContent className="p-6 text-center">
+                <h3 className="text-xl font-bold mb-2">Report Issues</h3>
+                <p className="mb-4 opacity-90">Help protect the community</p>
+                <Button
+                  variant="secondary"
+                  className="w-full bg-white text-red-600 hover:bg-gray-100"
+                  onClick={() =>
+                    navigate("/complaint", {
+                      state: {
+                        companyName: businessData.name,
+                        companyLocation: businessData.address,
+                      },
+                    })
+                  }
+                >
+                  <AlertTriangle className="h-4 w-4 mr-2" />
+                  Report Scam
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+
+      {/* Sticky Footer - Mobile Responsive */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t shadow-2xl p-3 md:p-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-3 gap-2 md:gap-4">
+            <Button
+              variant="outline"
+              onClick={() => navigate("/services")}
+              className="flex items-center justify-center text-xs md:text-sm"
+            >
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Back</span>
+              <span className="sm:hidden">Back</span>
+            </Button>
+
+            <Button
+              onClick={() => handleShare()}
+              className="flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 text-xs md:text-sm"
+            >
+              <Share2 className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Share</span>
+              <span className="sm:hidden">Share</span>
+            </Button>
+
+            <Button
+              variant="destructive"
+              onClick={() =>
+                navigate("/complaint", {
+                  state: {
+                    companyName: businessData.name,
+                    companyLocation: businessData.address,
+                  },
+                })
+              }
+              className="flex items-center justify-center text-xs md:text-sm"
+            >
+              <AlertTriangle className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Report</span>
+              <span className="sm:hidden">Report</span>
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom padding for sticky footer */}
+      <div className="h-16 md:h-20"></div>
+    </div>
+  );
+}
