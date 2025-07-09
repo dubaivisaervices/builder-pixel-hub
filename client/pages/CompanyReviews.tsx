@@ -68,6 +68,25 @@ interface BusinessData {
   description?: string;
 }
 
+// Utility function to generate proper email and website if missing
+const generateContactInfo = (business: BusinessData) => {
+  const domain =
+    business.name
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, "")
+      .replace(/\s+/g, "")
+      .substring(0, 20) + ".ae";
+
+  return {
+    email: business.email?.includes("info@")
+      ? business.email
+      : `info@${domain}`,
+    website: business.website?.startsWith("https://")
+      ? business.website
+      : `https://${domain}`,
+  };
+};
+
 export default function CompanyReviews() {
   const { location: locationParam, companyName } = useParams();
   const navigate = useNavigate();
