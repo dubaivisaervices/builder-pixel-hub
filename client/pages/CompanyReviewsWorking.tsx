@@ -74,16 +74,6 @@ export default function CompanyReviews() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showShareMenu, setShowShareMenu] = useState(false);
-  const [reviews, setReviews] = useState<any[]>([]);
-
-  // Fetch real Google reviews or generate realistic ones
-  const fetchRealReviewsOrGenerate = async (
-    businessId: string,
-    businessName: string,
-  ) => {
-    try {
-      // Try to fetch real reviews from Google API
-      const response = await fetch(`/api/business-reviews/${businessId}`);
       if (response.ok) {
         const data = await response.json();
         console.log(`📊 API Response:`, {
