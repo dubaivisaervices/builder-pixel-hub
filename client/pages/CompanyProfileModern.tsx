@@ -161,62 +161,86 @@ export default function CompanyProfileModern() {
   const [imageGalleryOpen, setImageGalleryOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Sample enhanced business data - in real app this would come from API
-  const sampleBusinessData: BusinessData = {
-    id: "sample-business-1",
-    name: "Cross Border Visa Services LLC",
-    address:
-      "Office 1205, Al Attar Business Tower, Sheikh Zayed Road, Dubai, UAE",
-    phone: "+971 4 321 5432",
-    website: "https://crossbordervisaservices.ae",
-    email: "info@crossbordervisaservices.ae",
-    location: { lat: 25.2048, lng: 55.2708 },
-    rating: 4.6,
-    reviewCount: 127,
-    category: "Visa Services",
-    businessStatus: "OPERATIONAL",
-    logoUrl: "/api/placeholder/120/120",
-    description:
-      "Professional visa and immigration services with over 10 years of experience. We specialize in UAE visas, work permits, family visas, and business setup services. Our certified consultants provide personalized assistance for all your immigration needs.",
-    services: [
-      "Work Visa Processing",
-      "Tourist Visa Services",
-      "Family Visa Applications",
-      "Business Visa Assistance",
-      "Visa Renewal Services",
-      "Document Attestation",
-      "Emirates ID Services",
-      "PRO Services",
-    ],
-    established: "2014",
-    license: "MOHRE License #12345",
-    languages: ["English", "Arabic", "Hindi", "Urdu"],
-    hours: {
-      monday: "9:00 AM - 6:00 PM",
-      tuesday: "9:00 AM - 6:00 PM",
-      wednesday: "9:00 AM - 6:00 PM",
-      thursday: "9:00 AM - 6:00 PM",
-      friday: "9:00 AM - 6:00 PM",
-      saturday: "10:00 AM - 4:00 PM",
-      sunday: "Closed",
-    },
-    photos: [
-      { id: 1, url: "/api/placeholder/400/300", caption: "Office Reception" },
-      { id: 2, url: "/api/placeholder/400/300", caption: "Consultation Room" },
-      {
-        id: 3,
-        url: "/api/placeholder/400/300",
-        caption: "Documents Processing Area",
-      },
-      { id: 4, url: "/api/placeholder/400/300", caption: "Team Photo" },
-    ],
-  };
-
   useEffect(() => {
-    // In real app, fetch business data from API based on params
-    setBusinessData(sampleBusinessData);
-    setLoading(false);
-  }, [locationParam, companyName]);
+    const loadBusiness = async () => {
+      console.log("🔍 Loading business data for modern profile");
+
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Check navigation state first
+        if (location.state?.businessData) {
+          console.log("✅ Using navigation state data");
+          const business = location.state.businessData;
+          setBusinessData(business);
+          setLoading(false);
+          return;
+        }
+
+        // Fetch from API
+        console.log("🔍 Fetching from API...");
+        const response = await fetch("/api/businesses");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch businesses");
+        }
+
+        const data = await response.json();
+
+        if (data.businesses && data.businesses.length > 0) {
+          let business = data.businesses[0]; // Default fallback
+
+          // Try to find matching business by name
+          if (companyName) {
+            const searchName = companyName.replace(/-/g, " ").toLowerCase();
+            const found = data.businesses.find(
+              (b: BusinessData) =>
+                b.name.toLowerCase().includes(searchName) ||
+                searchName.includes(b.name.toLowerCase()),
+            );
+            if (found) {
+              business = found;
+              console.log(`✅ Found matching business: ${business.name}`);
+            } else {
+              console.log(
+                `⚠️ No exact match found for "${companyName}", using first business: ${business.name}`,
+              );
+            }
+          }
+
+          // Enhance business data with additional info
+          const enhancedBusiness = {
+            ...business,
+            description:
+              business.description ||
+              `${business.name} is a professional service provider in Dubai specializing in ${business.category.toLowerCase()}. We provide comprehensive solutions and expert consultation for all your business needs with years of experience in the industry.`,
+            services: business.services || [
+              `${business.category} Consultation`,
+              "Document Processing",
+              "Application Support",
+              "Legal Compliance",
+              "Customer Support",
+            ],
+            established: business.established || "2020",
+            license: business.license || "Dubai Trade License",
+            languages: business.languages || ["English", "Arabic"],
+          };
+
+          setBusinessData(enhancedBusiness);
+        } else {
+          setError("No businesses found");
+        }
+      } catch (err) {
+        console.error("❌ Error loading business:", err);
+        setError(err instanceof Error ? err.message : "Failed to load data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBusiness();
+  }, [locationParam, companyName, location.state]);
 
   const handleReportSubmit = async () => {
     try {
@@ -617,11 +641,16 @@ export default function CompanyProfileModern() {
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
                       <Star className="h-5 w-5 text-yellow-600" />
-                      <span>Customer Reviews</span>
+                      <span>Google Reviews</span>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <GoogleReviewsWidget placeId={businessData.id} />
+                    <GoogleReviewsWidget
+                      businessName={businessData.name}
+                      placeId={businessData.id}
+                      rating={businessData.rating}
+                      reviewCount={businessData.reviewCount}
+                    />
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -633,7 +662,7 @@ export default function CompanyProfileModern() {
                     <CardTitle className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <Star className="h-5 w-5 text-yellow-600" />
-                        <span>Customer Reviews</span>
+                        <span>Google Reviews</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Button variant="outline" size="sm">
@@ -648,7 +677,12 @@ export default function CompanyProfileModern() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <GoogleReviewsWidget placeId={businessData.id} />
+                    <GoogleReviewsWidget
+                      businessName={businessData.name}
+                      placeId={businessData.id}
+                      rating={businessData.rating}
+                      reviewCount={businessData.reviewCount}
+                    />
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -667,7 +701,7 @@ export default function CompanyProfileModern() {
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                         {businessData.photos.map((photo, index) => (
                           <div
-                            key={photo.id}
+                            key={photo.id || index}
                             className="relative group cursor-pointer rounded-lg overflow-hidden aspect-square"
                             onClick={() => {
                               setCurrentImageIndex(index);
@@ -675,16 +709,26 @@ export default function CompanyProfileModern() {
                             }}
                           >
                             <img
-                              src={photo.url}
-                              alt={photo.caption}
+                              src={
+                                photo.base64
+                                  ? `data:image/jpeg;base64,${photo.base64}`
+                                  : photo.url ||
+                                    `https://picsum.photos/400/300?random=${index}`
+                              }
+                              alt={
+                                photo.caption || `Business Photo ${index + 1}`
+                              }
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              onError={(e) => {
+                                e.currentTarget.src = `https://picsum.photos/400/300?random=${index}`;
+                              }}
                             />
                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                               <Eye className="h-6 w-6 text-white" />
                             </div>
                             <div className="absolute bottom-2 left-2 right-2">
                               <p className="text-white text-xs bg-black/50 px-2 py-1 rounded">
-                                {photo.caption}
+                                {photo.caption || `Business Photo ${index + 1}`}
                               </p>
                             </div>
                           </div>
@@ -694,6 +738,10 @@ export default function CompanyProfileModern() {
                       <div className="text-center py-12">
                         <ImageIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                         <p className="text-gray-500">No photos available</p>
+                        <p className="text-sm text-gray-400 mt-2">
+                          Photos will be displayed when uploaded by the business
+                          owner
+                        </p>
                       </div>
                     )}
                   </CardContent>
@@ -1001,6 +1049,96 @@ export default function CompanyProfileModern() {
               </CardContent>
             </Card>
 
+            {/* View Approved Reports */}
+            <Card className="shadow-lg border-0 bg-orange-50/80 backdrop-blur-sm border-orange-100">
+              <CardHeader>
+                <CardTitle className="text-lg text-orange-800 flex items-center space-x-2">
+                  <Eye className="h-5 w-5" />
+                  <span>Community Reports</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-sm text-orange-700">
+                  View verified reports from the community (admin approved
+                  only).
+                </p>
+
+                {/* Sample approved reports */}
+                <div className="space-y-3">
+                  <div className="bg-white p-3 rounded-lg border border-orange-200">
+                    <div className="flex items-start justify-between mb-2">
+                      <Badge
+                        variant="outline"
+                        className="text-xs bg-red-100 text-red-700"
+                      >
+                        ⚠️ Poor Service
+                      </Badge>
+                      <span className="text-xs text-gray-500">2 days ago</span>
+                    </div>
+                    <p className="text-sm text-gray-700">
+                      "Long waiting times and unprofessional staff. Documents
+                      were delayed without proper communication."
+                    </p>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-xs text-green-600 flex items-center">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Admin Verified
+                      </span>
+                      <div className="flex items-center space-x-2 text-xs text-gray-500">
+                        <ThumbsUp className="h-3 w-3" />
+                        <span>12</span>
+                        <ThumbsDown className="h-3 w-3" />
+                        <span>2</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-3 rounded-lg border border-orange-200">
+                    <div className="flex items-start justify-between mb-2">
+                      <Badge
+                        variant="outline"
+                        className="text-xs bg-yellow-100 text-yellow-700"
+                      >
+                        💰 Hidden Fees
+                      </Badge>
+                      <span className="text-xs text-gray-500">1 week ago</span>
+                    </div>
+                    <p className="text-sm text-gray-700">
+                      "They quoted one price but charged extra fees that were
+                      not mentioned initially."
+                    </p>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-xs text-green-600 flex items-center">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Admin Verified
+                      </span>
+                      <div className="flex items-center space-x-2 text-xs text-gray-500">
+                        <ThumbsUp className="h-3 w-3" />
+                        <span>8</span>
+                        <ThumbsDown className="h-3 w-3" />
+                        <span>1</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full text-orange-600"
+                >
+                  <Eye className="h-4 w-4 mr-2" />
+                  View All Reports (5)
+                </Button>
+
+                <div className="text-xs text-gray-500 bg-white p-2 rounded border">
+                  <Info className="h-3 w-3 inline mr-1" />
+                  Only reports verified by our admin team are displayed here to
+                  ensure accuracy.
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Trust & Safety */}
             <Card className="shadow-lg border-0 bg-blue-50/80 backdrop-blur-sm border-blue-100">
               <CardHeader>
@@ -1135,6 +1273,163 @@ export default function CompanyProfileModern() {
 
       {/* Bottom Padding for Fixed Header */}
       <div className="h-20"></div>
+
+      {/* Homepage Footer */}
+      <footer className="bg-gray-900 text-white py-16 mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-lg">
+                  <Shield className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-xl font-bold">Dubai Visa Services</span>
+              </div>
+              <p className="text-gray-400">
+                Dubai's trusted platform for finding verified visa services and
+                protecting against immigration scams.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Services</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <button
+                    onClick={() => navigate("/services/work-visa")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Work Visa Services
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/services/tourist-visa")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Tourist Visa Services
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/services/student-visa")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Student Visa Services
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/services/business-visa")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Business Visa Services
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Support</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <button
+                    onClick={() => navigate("/complaint")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Report Scam
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/help-center")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Help Center
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/dubai-businesses")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Business Directory
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/services")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    All Services
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Contact</h3>
+              <div className="space-y-2 text-gray-400">
+                <div className="flex items-center space-x-2">
+                  <Phone className="h-4 w-4" />
+                  <span>+971 4 XXX XXXX</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Mail className="h-4 w-4" />
+                  <span>support@dubaivisaservices.ae</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <MapPin className="h-4 w-4" />
+                  <span>Dubai, UAE</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-800 mt-12 pt-8">
+            {/* Government Logos Section */}
+            <div className="mb-8">
+              <h3 className="text-center text-white font-semibold mb-6">
+                Authorized Government Partners
+              </h3>
+              <div className="flex flex-wrap items-center justify-center gap-8">
+                <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F2ed6c7a907ce48b1888b4efbd194a50d?format=webp&width=800"
+                    alt="Dubai Economy and Tourism"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F31c2a2a281cf498b96a79a162670a913?format=webp&width=800"
+                    alt="Ministry of Human Resources & Emiratisation"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F337069ef95604c42b94d28b0b67e055f?format=webp&width=800"
+                    alt="Amer Center"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2Fa33633cdd357445196e3405ed84b236c?format=webp&width=800"
+                    alt="Tas-heel"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center text-gray-400">
+              <p>&copy; 2024 Dubai Visa Services. All rights reserved.</p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
