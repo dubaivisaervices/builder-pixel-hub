@@ -1257,8 +1257,8 @@ export default function Index() {
         </div>
       </footer>
 
-      {/* Sticky Report Scam Button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      {/* Sticky Report Scam Button - Mobile: Bottom Center, Desktop: Bottom Right */}
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 md:left-auto md:right-6 md:transform-none z-50">
         <Button
           onClick={() => navigate("/complaint")}
           className="bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white shadow-2xl px-6 py-3 rounded-full flex items-center space-x-2 transition-all duration-300"
