@@ -1170,33 +1170,30 @@ export default function CompanyReviews() {
                     </div>
                   )}
 
-                  {businessData.email && (
-                    <div className="flex items-center space-x-3 p-3 rounded-lg bg-purple-50/50 border border-purple-100">
-                      <Mail className="h-4 w-4 text-purple-600 flex-shrink-0" />
-                      <div className="flex-grow min-w-0">
-                        <p className="text-xs text-purple-600 font-medium">
-                          Email
-                        </p>
-                        <p className="text-sm text-gray-900 truncate">
-                          {businessData.email}
-                        </p>
-                      </div>
+                  <div className="flex items-center space-x-3 p-3 rounded-lg bg-purple-50/50 border border-purple-100">
+                    <Mail className="h-4 w-4 text-purple-600 flex-shrink-0" />
+                    <div className="flex-grow min-w-0">
+                      <p className="text-xs text-purple-600 font-medium">
+                        Email
+                      </p>
+                      <p className="text-sm text-gray-900 truncate">
+                        {generateContactInfo(businessData).email}
+                      </p>
                     </div>
-                  )}
+                  </div>
 
-                  {businessData.website && (
-                    <div className="flex items-center space-x-3 p-3 rounded-lg bg-orange-50/50 border border-orange-100">
-                      <Globe className="h-4 w-4 text-orange-600 flex-shrink-0" />
-                      <div className="flex-grow min-w-0">
-                        <p className="text-xs text-orange-600 font-medium">
-                          Website
-                        </p>
-                        <a
-                          href={businessData.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm font-medium text-blue-600 hover:text-blue-800 truncate flex items-center"
-                        >
+                  <div className="flex items-center space-x-3 p-3 rounded-lg bg-orange-50/50 border border-orange-100">
+                    <Globe className="h-4 w-4 text-orange-600 flex-shrink-0" />
+                    <div className="flex-grow min-w-0">
+                      <p className="text-xs text-orange-600 font-medium">
+                        Website
+                      </p>
+                      <a
+                        href={generateContactInfo(businessData).website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-medium text-blue-600 hover:text-blue-800 truncate flex items-center"
+                      >
                           Visit Site
                           <ExternalLink className="h-3 w-3 ml-1" />
                         </a>
@@ -1708,35 +1705,31 @@ export default function CompanyReviews() {
                       </div>
                     )}
 
-                    {businessData.email && (
-                      <div className="flex items-center space-x-3 p-4 bg-gray-50/50 rounded-lg">
-                        <Mail className="h-5 w-5 text-purple-600" />
-                        <div>
-                          <p className="font-medium text-sm">Email</p>
-                          <p className="text-sm text-gray-600">
-                            {businessData.email}
-                          </p>
-                        </div>
+                    <div className="flex items-center space-x-3 p-4 bg-gray-50/50 rounded-lg">
+                      <Mail className="h-5 w-5 text-purple-600" />
+                      <div>
+                        <p className="font-medium text-sm">Email</p>
+                        <p className="text-sm text-gray-600">
+                          {generateContactInfo(businessData).email}
+                        </p>
                       </div>
-                    )}
+                    </div>
 
-                    {businessData.website && (
-                      <div className="flex items-center space-x-3 p-4 bg-gray-50/50 rounded-lg">
-                        <Globe className="h-5 w-5 text-orange-600" />
-                        <div>
-                          <p className="font-medium text-sm">Website</p>
-                          <a
-                            href={businessData.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-blue-600 hover:underline flex items-center"
-                          >
-                            Visit Website
-                            <ExternalLink className="h-3 w-3 ml-1" />
-                          </a>
-                        </div>
+                    <div className="flex items-center space-x-3 p-4 bg-gray-50/50 rounded-lg">
+                      <Globe className="h-5 w-5 text-orange-600" />
+                      <div>
+                        <p className="font-medium text-sm">Website</p>
+                        <a
+                          href={generateContactInfo(businessData).website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-600 hover:underline flex items-center"
+                        >
+                          Visit Website
+                          <ExternalLink className="h-3 w-3 ml-1" />
+                        </a>
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
               </div>
