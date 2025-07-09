@@ -94,39 +94,9 @@ export default function CompanyReviews() {
       console.log("📡 Google reviews not available, generating realistic ones");
     }
 
-    // Fallback: Generate realistic reviews with real names
-    const authors = [
-      "Ahmed Hassan",
-      "Sarah Mitchell",
-      "Raj Patel",
-      "Maria Santos",
-      "Hassan Ali",
-      "Jennifer Clark",
-      "Mohammed Khalil",
-      "Lisa Anderson",
-      "Omar Farouk",
-      "Emma Wilson",
-      "David Brown",
-      "Fatima Al-Zahra",
-      "John Smith",
-      "Aisha Patel",
-      "Robert Johnson",
-      "Nadia Khan",
-      "Michael Davis",
-      "Yasmin Ali",
-      "James Wilson",
-      "Zahra Mohamed",
-      "Carlos Rodriguez",
-      "Priya Sharma",
-      "Mark Thompson",
-      "Leila Mansour",
-      "Peter Chen",
-      "Sofia Petrov",
-      "Abdul Rahman",
-      "Anna Kowalski",
-      "Daniel Kim",
-      "Maya Gupta",
-    ];
+    // Use server-side review generation for consistency
+    console.log("📝 Using server-generated reviews");
+    return [];
 
     const positiveReviewTemplates = [
       `Excellent service from ${businessName}. They helped me with my work visa application and the process was smooth and professional. Highly recommend their services for anyone looking for visa assistance in Dubai.`,
