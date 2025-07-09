@@ -127,6 +127,9 @@ export default function Index() {
 
         // Store all businesses for search
         setAllBusinesses(businesses);
+        console.log(
+          `🎯 Search now enabled for ALL ${businesses.length} businesses in database!`,
+        );
 
         // Calculate real statistics
         const totalReviews = businesses.reduce(
