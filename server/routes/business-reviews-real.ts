@@ -14,7 +14,13 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
 
     console.log(`🔍 Fetching ONLY REAL reviews for business: ${businessId}`);
 
-    // First try to get real reviews from database
+    // Check API manager decision first
+    const apiDecision = await googleApiManager.shouldMakeApiCall(
+      businessId,
+      "reviews",
+    );
+
+    // Always try to get reviews from database first
     const dbReviews = await businessService.getBusinessReviews(businessId);
     if (dbReviews && dbReviews.length > 0) {
       // Filter to keep only real reviews (not generated ones)
@@ -40,9 +46,27 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
           maxPossible: 30,
           isReal: true,
           fromCache: true,
+          apiEnabled: googleApiManager.isApiEnabled(),
           message: "Reviews served from database cache - no Google API cost",
         });
       }
+    }
+
+    // If API is disabled and no cache, return empty but explain
+    if (!apiDecision.allowed) {
+      console.log(`🔴 API DISABLED - ${apiDecision.reason}`);
+      return res.json({
+        success: true,
+        reviews: [],
+        source: "cache_only_mode",
+        count: 0,
+        maxPossible: 30,
+        isReal: true,
+        fromCache: false,
+        apiEnabled: false,
+        message:
+          "Google API is disabled. Enable API to fetch new reviews from Google.",
+      });
     }
 
     // Get business details
