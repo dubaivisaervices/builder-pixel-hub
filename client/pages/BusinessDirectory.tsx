@@ -734,6 +734,30 @@ export default function BusinessDirectory() {
                     </Badge>
                   </div>
 
+                  {/* Rating and Reviews */}
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-2">
+                      <div className="flex items-center">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star
+                            key={star}
+                            className={`h-4 w-4 ${
+                              star <= Math.floor(business.rating)
+                                ? "text-yellow-400 fill-current"
+                                : "text-gray-300"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="font-semibold text-gray-900">
+                        {business.rating.toFixed(1)}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        ({business.reviewCount} reviews)
+                      </span>
+                    </div>
+                  </div>
+
                   {/* Contact Info */}
                   <div className="space-y-1 md:space-y-2 mb-3 md:mb-4">
                     {business.phone && (
