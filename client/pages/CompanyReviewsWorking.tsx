@@ -74,34 +74,6 @@ export default function CompanyReviews() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showShareMenu, setShowShareMenu] = useState(false);
-      if (response.ok) {
-        const data = await response.json();
-        console.log(`📊 API Response:`, {
-          success: data.success,
-          count: data.count,
-          source: data.source,
-          originalCount: data.originalCount,
-          generatedCount: data.generatedCount,
-        });
-        if (data.reviews && data.reviews.length > 0) {
-          console.log(
-            `✅ Loaded ${data.reviews.length} REAL reviews from API (${data.source})`,
-          );
-          return data.reviews; // Return only real reviews from API
-        } else {
-          console.log(`📭 No real reviews available from API`);
-          return []; // Return empty array if no real reviews
-        }
-      } else {
-        console.log(`❌ API Response error: ${response.status}`);
-      }
-    } catch (error) {
-      console.log("📡 Google reviews API error:", error);
-    }
-
-    // No real reviews available
-    console.log("📭 No real reviews found - returning empty array");
-    return [];
 
     // Generate local reviews as fallback
     const generateLocalReviews = (businessName: string) => {
