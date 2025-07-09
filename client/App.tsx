@@ -51,7 +51,7 @@ const App = () => (
             element={<CompanyReviews />}
           />
           <Route
-            path="/modern-profile/:location/:companyName"
+            path="/:city/:companyName"
             element={<CompanyProfileModern />}
           />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

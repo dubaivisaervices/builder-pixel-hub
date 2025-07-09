@@ -142,7 +142,7 @@ const generateContactInfo = (business: BusinessData) => {
 };
 
 export default function CompanyProfileModern() {
-  const { location: locationParam, companyName } = useParams();
+  const { city, companyName } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [businessData, setBusinessData] = useState<BusinessData | null>(null);
@@ -354,7 +354,7 @@ export default function CompanyProfileModern() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Hero Header */}
-      <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white overflow-hidden">
+      <div className="relative bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute inset-0 bg-[url('/api/placeholder/1920/400')] bg-cover bg-center opacity-10"></div>
 
@@ -636,6 +636,133 @@ export default function CompanyProfileModern() {
                   </CardContent>
                 </Card>
 
+                {/* Business Photos */}
+                <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2">
+                      <Camera className="h-5 w-5 text-purple-600" />
+                      <span>Business Photos</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {businessData.photos && businessData.photos.length > 0 ? (
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {businessData.photos.slice(0, 6).map((photo, index) => (
+                          <div
+                            key={photo.id || index}
+                            className="relative group cursor-pointer rounded-lg overflow-hidden aspect-square"
+                            onClick={() => {
+                              setCurrentImageIndex(index);
+                              setImageGalleryOpen(true);
+                            }}
+                          >
+                            <img
+                              src={
+                                photo.base64
+                                  ? `data:image/jpeg;base64,${photo.base64}`
+                                  : photo.url ||
+                                    `https://picsum.photos/400/300?random=${index}`
+                              }
+                              alt={
+                                photo.caption || `Business Photo ${index + 1}`
+                              }
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              onError={(e) => {
+                                e.currentTarget.src = `https://picsum.photos/400/300?random=${index}`;
+                              }}
+                            />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                              <Eye className="h-6 w-6 text-white" />
+                            </div>
+                            <div className="absolute bottom-2 left-2 right-2">
+                              <p className="text-white text-xs bg-black/50 px-2 py-1 rounded">
+                                {photo.caption || `Business Photo ${index + 1}`}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <ImageIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                        <p className="text-gray-500">No photos available</p>
+                        <p className="text-sm text-gray-400 mt-2">
+                          Photos will be displayed when uploaded by the business
+                          owner
+                        </p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Government Authorization Section */}
+                <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2">
+                      <Shield className="h-5 w-5 text-green-600" />
+                      <span>Government Authorization</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-center space-y-6">
+                      <p className="text-gray-700 text-sm">
+                        This business is registered and authorized by UAE
+                        government authorities
+                      </p>
+
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="flex items-center justify-center bg-gray-50 rounded-lg p-3 h-16">
+                          <img
+                            src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F2ed6c7a907ce48b1888b4efbd194a50d?format=webp&width=800"
+                            alt="Dubai Economy and Tourism"
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        </div>
+                        <div className="flex items-center justify-center bg-gray-50 rounded-lg p-3 h-16">
+                          <img
+                            src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F31c2a2a281cf498b96a79a162670a913?format=webp&width=800"
+                            alt="Ministry of Human Resources & Emiratisation"
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        </div>
+                        <div className="flex items-center justify-center bg-gray-50 rounded-lg p-3 h-16">
+                          <img
+                            src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F337069ef95604c42b94d28b0b67e055f?format=webp&width=800"
+                            alt="Amer Center"
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        </div>
+                        <div className="flex items-center justify-center bg-gray-50 rounded-lg p-3 h-16">
+                          <img
+                            src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2Fa33633cdd357445196e3405ed84b236c?format=webp&width=800"
+                            alt="Tas-heel"
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-4 pt-4">
+                        <div className="flex items-center space-x-2 text-sm text-green-700">
+                          <CheckCircle className="h-4 w-4" />
+                          <span>Trade License Verified</span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm text-green-700">
+                          <Shield className="h-4 w-4" />
+                          <span>Government Registered</span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm text-green-700">
+                          <Verified className="h-4 w-4" />
+                          <span>Compliance Verified</span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm text-green-700">
+                          <Award className="h-4 w-4" />
+                          <span>Quality Assured</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
                 {/* Google Reviews Widget */}
                 <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
                   <CardHeader>
@@ -898,27 +1025,116 @@ export default function CompanyProfileModern() {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Quick Contact */}
+            {/* Contact Information */}
             <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-lg">Quick Contact</CardTitle>
+                <CardTitle className="text-lg flex items-center space-x-2">
+                  <PhoneCall className="h-5 w-5 text-blue-600" />
+                  <span>Contact Details</span>
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  className="w-full bg-green-600 hover:bg-green-700"
-                  size="lg"
-                >
-                  <Phone className="h-5 w-5 mr-2" />
-                  Call Now
-                </Button>
-                <Button variant="outline" className="w-full" size="lg">
-                  <MailIcon className="h-5 w-5 mr-2" />
-                  Send Email
-                </Button>
-                <Button variant="outline" className="w-full" size="lg">
-                  <MessageSquare className="h-5 w-5 mr-2" />
-                  WhatsApp
-                </Button>
+              <CardContent className="space-y-4">
+                {businessData.phone && (
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <Phone className="h-5 w-5 text-blue-600" />
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-900">Phone</p>
+                      <a
+                        href={`tel:${businessData.phone}`}
+                        className="text-blue-600 hover:underline text-sm"
+                      >
+                        {businessData.phone}
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                {contactInfo.email && (
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <MailIcon className="h-5 w-5 text-green-600" />
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-900">Email</p>
+                      <a
+                        href={`mailto:${contactInfo.email}`}
+                        className="text-blue-600 hover:underline text-sm"
+                      >
+                        {contactInfo.email}
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                {contactInfo.website && (
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <Globe className="h-5 w-5 text-purple-600" />
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-900">Website</p>
+                      <a
+                        href={contactInfo.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline text-sm flex items-center"
+                      >
+                        Visit Website
+                        <ExternalLink className="h-3 w-3 ml-1" />
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                {businessData.address && (
+                  <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <MapPinned className="h-5 w-5 text-red-600 mt-1" />
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-900">Address</p>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {businessData.address}
+                      </p>
+                      <Button variant="outline" size="sm" className="mt-2">
+                        <Navigation className="h-4 w-4 mr-2" />
+                        Get Directions
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-3 space-y-2">
+                  <Button
+                    className="w-full bg-green-600 hover:bg-green-700"
+                    size="lg"
+                    onClick={() =>
+                      window.open(`tel:${businessData.phone}`, "_self")
+                    }
+                  >
+                    <Phone className="h-5 w-5 mr-2" />
+                    Call Now
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    size="lg"
+                    onClick={() =>
+                      window.open(`mailto:${contactInfo.email}`, "_self")
+                    }
+                  >
+                    <MailIcon className="h-5 w-5 mr-2" />
+                    Send Email
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    size="lg"
+                    onClick={() =>
+                      window.open(
+                        `https://wa.me/${businessData.phone?.replace(/[^0-9]/g, "")}`,
+                        "_blank",
+                      )
+                    }
+                  >
+                    <MessageSquare className="h-5 w-5 mr-2" />
+                    WhatsApp
+                  </Button>
+                </div>
               </CardContent>
             </Card>
 
