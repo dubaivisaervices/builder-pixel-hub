@@ -43,7 +43,11 @@ export default function GoogleReviewsWidget({
           if (data.reviews && data.reviews.length > 0) {
             // Limit to first 10 reviews for display
             setReviews(data.reviews.slice(0, 10));
-            console.log(`✅ Loaded ${data.reviews.length} reviews for display`);
+            const source = data.fromCache ? "cached database" : "Google API";
+            const cost = data.fromCache ? "(FREE)" : "(COST MONEY)";
+            console.log(
+              `✅ Loaded ${data.reviews.length} reviews from ${source} ${cost}`,
+            );
           } else {
             console.log("📭 No reviews available from API");
             setReviews([]);
