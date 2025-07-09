@@ -18,6 +18,7 @@ import AdminManage from "./pages/AdminManage";
 import Admin from "./pages/Admin";
 import AdminDashboard from "./pages/AdminDashboard";
 import DataPersistence from "./pages/DataPersistence";
+import ReviewsSync from "./pages/ReviewsSync";
 import DatabaseStatus from "./pages/DatabaseStatus";
 import NotFound from "./pages/NotFound";
 
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/admin/manage" element={<AdminManage />} />
           <Route path="/admin/status" element={<DatabaseStatus />} />
           <Route path="/data-persistence" element={<DataPersistence />} />
+          <Route path="/reviews-sync" element={<ReviewsSync />} />
           <Route
             path="/:location/review/:companyName"
             element={<CompanyReviews />}
