@@ -110,7 +110,7 @@ export default function CompanyReviews() {
       "Maya Gupta",
     ];
 
-    const reviewTemplates = [
+    const positiveReviewTemplates = [
       `Excellent service from ${businessName}. They helped me with my work visa application and the process was smooth and professional. Highly recommend their services for anyone looking for visa assistance in Dubai.`,
       `Good experience with ${businessName}. Professional staff and helpful throughout the process. Some minor delays but overall satisfied with the service quality.`,
       `Outstanding service! ${businessName} made the visa application process so easy. Staff was knowledgeable and provided great guidance throughout.`,
@@ -121,11 +121,39 @@ export default function CompanyReviews() {
       `Exceptional service! ${businessName} processed my tourist visa quickly and efficiently. Would definitely use their services again.`,
       `Professional service from ${businessName}. They handled my family reunion visa with care and attention to detail.`,
       `Highly recommend ${businessName}! Their team is knowledgeable and made the complex visa process seem simple.`,
-      `Top-notch visa services. ${businessName} exceeded my expectations with their attention to detail and customer care.`,
-      `Efficient and reliable. ${businessName} helped me navigate the visa requirements with ease. Great communication throughout.`,
-      `Very satisfied with ${businessName}. They made the visa application stress-free and completed everything on time.`,
-      `Professional consultancy. ${businessName} provided excellent guidance for my work permit application. Highly recommended.`,
-      `Great experience! ${businessName} staff was friendly and knowledgeable. They answered all my questions promptly.`,
+    ];
+
+    const negativeReviewTemplates = [
+      `Terrible experience with ${businessName}. They took my money and disappeared. After paying 5000 AED for work visa processing, they stopped responding to calls and emails. Complete fraud - stay away!`,
+      `SCAM ALERT! ${businessName} promised job visa in 2 weeks, took 8000 AED upfront, and nothing happened for 3 months. When I asked for refund, they blocked my number. Don't trust them!`,
+      `Worst visa service ever. ${businessName} gave false promises about guaranteed visa approval. Paid 6000 AED and visa was rejected. They refuse to refund and blame it on "system issues".`,
+      `Complete waste of money. ${businessName} charged 4500 AED for tourist visa which I could get myself for 300 AED. They provide no real service, just take advantage of people's desperation.`,
+      `AVOID AT ALL COSTS! ${businessName} is running a scam operation. They promise work permits that don't exist and take large amounts of money. Lost 7000 AED and got nothing in return.`,
+      `Fraudulent company. ${businessName} showed fake documents and promised embassy connections. After payment of 5500 AED, they said visa was "under process" for 6 months. Total scam!`,
+      `DO NOT USE THEM! ${businessName} took 9000 AED for family visa and gave fake receipt. When I went to their office, it was empty. They are criminals, not visa consultants.`,
+      `Biggest mistake of my life trusting ${businessName}. They promised golden visa for 15000 AED, took the money and gave fake documents. Now I'm in legal trouble because of their fraud.`,
+      `WARNING: ${businessName} is a scam! They collect money for visa services that don't exist. Lost 6500 AED and when I complained, they threatened me. Stay away from these criminals!`,
+      `Horrible experience. ${businessName} promised investor visa in 30 days for 12000 AED. After 4 months of lies and excuses, I realized they are just scammers. Never got visa or refund.`,
+      `SCAM COMPANY! ${businessName} uses fake testimonials and forged documents. They took 8500 AED for work visa and disappeared. Office address is fake too. Report them to police!`,
+      `Total fraud operation. ${businessName} promised student visa with job guarantee. Paid 7500 AED and got fake admission letter. University never heard of them. Complete scam!`,
+      `Don't fall for their lies! ${businessName} promised spouse visa in 15 days for 5000 AED. After 3 months of fake updates, I discovered they never even applied. Thieves!`,
+      `BEWARE: ${businessName} is running illegal visa scam. They promise government connections and guaranteed approvals. Took 11000 AED and provided nothing. File police complaint!`,
+      `Worst experience ever. ${businessName} took 4000 AED for visit visa renewal and gave fake stamps. Got detained at airport because of their fraudulent documents. Criminals!`,
+      `SCAM ALERT! ${businessName} promises work visa with salary 8000 AED. After paying 6000 AED fees, they say job was "cancelled" and refuse refund. It's all fake from start!`,
+      `Complete criminals. ${businessName} took 9500 AED for business visa and provided forged bank statements. Almost got banned from UAE because of their illegal activities.`,
+      `DO NOT TRUST! ${businessName} shows fake office photos and uses stolen testimonials. They took 7000 AED for family visa and disappeared after 2 weeks. Pure scam operation!`,
+      `Warning to everyone: ${businessName} is fraud company. They promise visa processing but just collect money and make excuses. Lost 5500 AED and 6 months of time. Avoid them!`,
+      `Terrible scam! ${businessName} promised freelance visa for 4500 AED and gave fake trade license. When authorities checked, everything was forged. Now facing legal issues because of them.`,
+      `FRAUD COMPANY! ${businessName} took 8000 AED for golden visa and provided fake investment certificates. Emirates ID application was rejected because documents were forged.`,
+      `Biggest scammers in Dubai! ${businessName} promise easy visa solutions but deliver nothing. They took 6000 AED and gave fake receipts. Office is just empty room with fake furniture.`,
+      `Don't believe their promises! ${businessName} said they have government contracts for fast visa processing. After paying 7500 AED, found out they are not even registered company.`,
+      `SCAM WARNING! ${businessName} uses fake reviews and testimonials to fool people. They took 5000 AED for work permit and provided photocopied fake documents. Total fraud!`,
+      `Horrible criminals! ${businessName} promised student visa with scholarship. Paid 9000 AED and got fake university letter. Almost got deported because of their forged documents.`,
+      `AVOID THIS SCAM! ${businessName} takes money upfront and disappears. They promised employment visa in 10 days for 6500 AED. After 4 months, no visa and no refund.`,
+      `Complete fraud! ${businessName} showed fake Emirates ID office and promised immediate visa. Paid 8500 AED and they gave photocopied fake stamps. Police should arrest them!`,
+      `WARNING: ${businessName} is illegal operation. They promise visa guarantees that no legitimate company can give. Lost 7000 AED and learned they are just professional scammers.`,
+      `Don't trust these criminals! ${businessName} took 5500 AED for tourist visa extension and provided fake immigration stamps. Got banned from UAE because of their fraud.`,
+      `SCAM COMPANY! ${businessName} promises work visa with accommodation. After paying 10000 AED, found out the company sponsorship was fake and accommodation address doesn't exist.`,
     ];
 
     const timeOptions = [
@@ -142,35 +170,53 @@ export default function CompanyReviews() {
     ];
 
     const reviews = [];
-    const targetReviews = Math.max(50, businessData?.reviewCount || 25);
+    const targetReviews = Math.max(60, businessData?.reviewCount || 30);
 
-    for (let i = 0; i < targetReviews; i++) {
+    // Add 30 negative reviews first (1-star)
+    for (let i = 0; i < 30; i++) {
       const authorIndex = i % authors.length;
-      const templateIndex = i % reviewTemplates.length;
+      const templateIndex = i % negativeReviewTemplates.length;
       const timeIndex = i % timeOptions.length;
-
-      // Generate ratings with realistic distribution (mostly 4-5 stars)
-      const ratingRand = Math.random();
-      let rating;
-      if (ratingRand < 0.5)
-        rating = 5; // 50% 5-star
-      else if (ratingRand < 0.8)
-        rating = 4; // 30% 4-star
-      else if (ratingRand < 0.95)
-        rating = 3; // 15% 3-star
-      else rating = 2; // 5% 2-star
 
       reviews.push({
         id: i + 1,
         authorName: authors[authorIndex],
-        rating: rating,
-        text: reviewTemplates[templateIndex],
+        rating: 1, // All 1-star reviews
+        text: negativeReviewTemplates[templateIndex],
         timeAgo: timeOptions[timeIndex],
         profilePhotoUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(authors[authorIndex])}&background=random`,
       });
     }
 
-    return reviews;
+    // Add remaining positive reviews
+    for (let i = 30; i < targetReviews; i++) {
+      const authorIndex = i % authors.length;
+      const templateIndex = (i - 30) % positiveReviewTemplates.length;
+      const timeIndex = i % timeOptions.length;
+
+      // Generate ratings with distribution for remaining reviews
+      const ratingRand = Math.random();
+      let rating;
+      if (ratingRand < 0.4)
+        rating = 5; // 40% 5-star
+      else if (ratingRand < 0.7)
+        rating = 4; // 30% 4-star
+      else if (ratingRand < 0.9)
+        rating = 3; // 20% 3-star
+      else rating = 2; // 10% 2-star
+
+      reviews.push({
+        id: i + 1,
+        authorName: authors[authorIndex],
+        rating: rating,
+        text: positiveReviewTemplates[templateIndex],
+        timeAgo: timeOptions[timeIndex],
+        profilePhotoUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(authors[authorIndex])}&background=random`,
+      });
+    }
+
+    // Shuffle reviews to mix negative and positive
+    return reviews.sort(() => Math.random() - 0.5);
   };
 
   useEffect(() => {
