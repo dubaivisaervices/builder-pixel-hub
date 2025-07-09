@@ -29,15 +29,16 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
 
       if (realDbReviews.length > 0) {
         console.log(
-          `✅ Found ${realDbReviews.length} REAL reviews in database (max 30)`,
+          `✅ Found ${realDbReviews.length} REAL reviews in database (max 30) - SERVED FROM CACHE (NO API COST)`,
         );
         return res.json({
           success: true,
           reviews: realDbReviews,
-          source: "database_real",
+          source: "database_cached",
           count: realDbReviews.length,
           maxPossible: 30,
           isReal: true,
+          fromCache: true,
         });
       }
     }
