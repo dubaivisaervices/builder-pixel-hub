@@ -85,12 +85,21 @@ export default function CompanyReviews() {
       const response = await fetch(`/api/business-reviews/${businessId}`);
       if (response.ok) {
         const data = await response.json();
+        console.log(`📊 API Response:`, {
+          success: data.success,
+          count: data.count,
+          source: data.source,
+          originalCount: data.originalCount,
+          generatedCount: data.generatedCount,
+        });
         if (data.reviews && data.reviews.length > 0) {
           console.log(
             `✅ Loaded ${data.reviews.length} reviews from API (${data.source})`,
           );
           return data.reviews; // Return all reviews from API
         }
+      } else {
+        console.log(`❌ API Response error: ${response.status}`);
       }
     } catch (error) {
       console.log("📡 Google reviews API error:", error);
