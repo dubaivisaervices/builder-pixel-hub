@@ -54,6 +54,16 @@ export default function Index() {
   const [featuredBusinesses, setFeaturedBusinesses] = useState<BusinessData[]>(
     [],
   );
+  const [topCategories, setTopCategories] = useState<
+    Array<{
+      category: string;
+      count: number;
+      title: string;
+      description: string;
+      icon: string;
+      color: string;
+    }>
+  >([]);
   const [loading, setLoading] = useState(true);
   const [fadeIn, setFadeIn] = useState(false);
   const navigate = useNavigate();
@@ -100,6 +110,120 @@ export default function Index() {
           .sort((a: BusinessData, b: BusinessData) => b.rating - a.rating)
           .slice(0, 3);
         setFeaturedBusinesses(topBusinesses);
+
+        // Calculate category distribution and get top categories
+        const categoryCount: { [key: string]: number } = {};
+        businesses.forEach((business: BusinessData) => {
+          const category = business.category.toLowerCase();
+          // Group similar categories together
+          if (
+            category.includes("work") ||
+            category.includes("employment") ||
+            category.includes("job")
+          ) {
+            categoryCount["work"] = (categoryCount["work"] || 0) + 1;
+          } else if (
+            category.includes("tourist") ||
+            category.includes("visit") ||
+            category.includes("travel")
+          ) {
+            categoryCount["tourist"] = (categoryCount["tourist"] || 0) + 1;
+          } else if (
+            category.includes("student") ||
+            category.includes("education") ||
+            category.includes("study")
+          ) {
+            categoryCount["student"] = (categoryCount["student"] || 0) + 1;
+          } else if (
+            category.includes("family") ||
+            category.includes("spouse") ||
+            category.includes("dependent")
+          ) {
+            categoryCount["family"] = (categoryCount["family"] || 0) + 1;
+          } else if (
+            category.includes("business") ||
+            category.includes("investor") ||
+            category.includes("trade")
+          ) {
+            categoryCount["business"] = (categoryCount["business"] || 0) + 1;
+          } else if (
+            category.includes("residence") ||
+            category.includes("permanent") ||
+            category.includes("settlement")
+          ) {
+            categoryCount["residence"] = (categoryCount["residence"] || 0) + 1;
+          } else {
+            // Default grouping for other visa services
+            categoryCount["other"] = (categoryCount["other"] || 0) + 1;
+          }
+        });
+
+        // Sort categories by count and get top 6
+        const sortedCategories = Object.entries(categoryCount)
+          .sort(([, a], [, b]) => b - a)
+          .slice(0, 6);
+
+        // Map to display format
+        const categoryDetails: {
+          [key: string]: {
+            title: string;
+            description: string;
+            icon: string;
+            color: string;
+          };
+        } = {
+          work: {
+            title: "Work Visa Services",
+            description:
+              "Employment visa processing and work permit assistance",
+            icon: "💼",
+            color: "from-blue-500 to-blue-600",
+          },
+          tourist: {
+            title: "Tourist Visa Services",
+            description: "Visit visa and tourist visa applications",
+            icon: "🏖️",
+            color: "from-green-500 to-green-600",
+          },
+          student: {
+            title: "Student Visa Services",
+            description: "Education visa and university applications",
+            icon: "🎓",
+            color: "from-purple-500 to-purple-600",
+          },
+          family: {
+            title: "Family Visa Services",
+            description: "Family reunion and dependent visa processing",
+            icon: "👨‍👩‍👧‍👦",
+            color: "from-pink-500 to-pink-600",
+          },
+          business: {
+            title: "Business Visa Services",
+            description: "Investor visa and business setup assistance",
+            icon: "🏢",
+            color: "from-orange-500 to-orange-600",
+          },
+          residence: {
+            title: "Residence Visa Services",
+            description: "Permanent residence and citizenship support",
+            icon: "🏡",
+            color: "from-indigo-500 to-indigo-600",
+          },
+          other: {
+            title: "Other Visa Services",
+            description: "Additional visa services and consultation",
+            icon: "📋",
+            color: "from-gray-500 to-gray-600",
+          },
+        };
+
+        const topCategoriesData = sortedCategories.map(([category, count]) => ({
+          category,
+          count,
+          ...categoryDetails[category],
+        }));
+
+        setTopCategories(topCategoriesData);
       } catch (error) {
         console.error("Error fetching data:", error);
         // Fallback to sample data
@@ -177,9 +301,9 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Navigation Header */}
-      <nav className="bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-lg sticky top-0 z-50">
+      <nav className="bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-lg md:sticky md:top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+          <div className="flex justify-between items-center py-2 md:py-4">
             {/* Logo */}
             <div className="flex items-center space-x-3">
               <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-xl">
@@ -195,17 +319,66 @@ export default function Index() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-8">
-              <Button variant="ghost" onClick={() => navigate("/services")}>
-                Browse Services
-              </Button>
+              <div className="relative group">
+                <Button variant="ghost" className="flex items-center space-x-1">
+                  <span>Browse</span>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </Button>
+                <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-xl border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div className="py-2">
+                    <button
+                      onClick={() => navigate("/services")}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      All Services
+                    </button>
+                    <button
+                      onClick={() => navigate("/dubai-businesses")}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      Business Directory
+                    </button>
+                    <button
+                      onClick={() => navigate("/services/work-visa")}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      Work Visa Services
+                    </button>
+                    <button
+                      onClick={() => navigate("/services/tourist-visa")}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      Tourist Visa Services
+                    </button>
+                    <button
+                      onClick={() => navigate("/services/student-visa")}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      Student Visa Services
+                    </button>
+                    <button
+                      onClick={() => navigate("/services/family-visa")}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      Family Visa Services
+                    </button>
+                  </div>
+                </div>
+              </div>
               <Button variant="ghost" onClick={() => navigate("/complaint")}>
                 Report Scam
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={() => navigate("/dubai-businesses")}
-              >
-                All Businesses
               </Button>
             </div>
 
@@ -414,66 +587,23 @@ export default function Index() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Work Visa Services",
-                description:
-                  "Employment visa processing and work permit assistance",
-                icon: "💼",
-                count: Math.floor(stats.totalBusinesses * 0.35),
-                color: "from-blue-500 to-blue-600",
-              },
-              {
-                title: "Tourist Visa Services",
-                description: "Visit visa and tourist visa applications",
-                icon: "🏖️",
-                count: Math.floor(stats.totalBusinesses * 0.25),
-                color: "from-green-500 to-green-600",
-              },
-              {
-                title: "Student Visa Services",
-                description: "Education visa and university applications",
-                icon: "🎓",
-                count: Math.floor(stats.totalBusinesses * 0.2),
-                color: "from-purple-500 to-purple-600",
-              },
-              {
-                title: "Family Visa Services",
-                description: "Family reunion and dependent visa processing",
-                icon: "👨‍👩‍👧‍👦",
-                count: Math.floor(stats.totalBusinesses * 0.15),
-                color: "from-pink-500 to-pink-600",
-              },
-              {
-                title: "Business Visa Services",
-                description: "Investor visa and business setup assistance",
-                icon: "🏢",
-                count: Math.floor(stats.totalBusinesses * 0.18),
-                color: "from-orange-500 to-orange-600",
-              },
-              {
-                title: "Residence Visa Services",
-                description: "Permanent residence and citizenship support",
-                icon: "🏡",
-                count: Math.floor(stats.totalBusinesses * 0.12),
-                color: "from-indigo-500 to-indigo-600",
-              },
-            ].map((service, index) => (
+            {topCategories.map((service, index) => (
               <Card
                 key={index}
                 className="group hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer border-0 bg-white/70 backdrop-blur-sm"
                 onClick={() => {
-                  // Map service titles to specific category filters
+                  // Map service categories to URL slugs
                   const categoryMap: { [key: string]: string } = {
-                    "Work Visa Services": "work-visa",
-                    "Tourist Visa Services": "tourist-visa",
-                    "Student Visa Services": "student-visa",
-                    "Family Visa Services": "family-visa",
-                    "Business Visa Services": "business-visa",
-                    "Residence Visa Services": "residence-visa",
+                    work: "work-visa",
+                    tourist: "tourist-visa",
+                    student: "student-visa",
+                    family: "family-visa",
+                    business: "business-visa",
+                    residence: "residence-visa",
+                    other: "all",
                   };
 
-                  const categorySlug = categoryMap[service.title] || "all";
+                  const categorySlug = categoryMap[service.category] || "all";
                   navigate(`/services/${categorySlug}`);
                 }}
               >
@@ -851,11 +981,61 @@ export default function Index() {
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Dubai Visa Services. All rights reserved.</p>
+          <div className="border-t border-gray-800 mt-12 pt-8">
+            {/* Government Logos Section */}
+            <div className="mb-8">
+              <h3 className="text-center text-white font-semibold mb-6">
+                Authorized Government Partners
+              </h3>
+              <div className="flex flex-wrap items-center justify-center gap-8">
+                <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F2ed6c7a907ce48b1888b4efbd194a50d?format=webp&width=800"
+                    alt="Dubai Economy and Tourism"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F31c2a2a281cf498b96a79a162670a913?format=webp&width=800"
+                    alt="Ministry of Human Resources & Emiratisation"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F337069ef95604c42b94d28b0b67e055f?format=webp&width=800"
+                    alt="Amer Center"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <div className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4 w-32 h-24">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2Fa33633cdd357445196e3405ed84b236c?format=webp&width=800"
+                    alt="Tas-heel"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center text-gray-400">
+              <p>&copy; 2024 Dubai Visa Services. All rights reserved.</p>
+            </div>
           </div>
         </div>
       </footer>
+
+      {/* Sticky Report Scam Button */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <Button
+          onClick={() => navigate("/complaint")}
+          className="bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white shadow-2xl px-6 py-3 rounded-full flex items-center space-x-2 animate-pulse hover:animate-none transition-all duration-300"
+        >
+          <AlertTriangle className="h-5 w-5" />
+          <span className="font-semibold">Report Scam</span>
+        </Button>
+      </div>
     </div>
   );
 }
