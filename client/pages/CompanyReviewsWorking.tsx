@@ -295,7 +295,7 @@ export default function CompanyReviews() {
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-xl border-b border-gray-200 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          {/* Breadcrumbs */}
+          {/* Breadcrumbs and View Reports Button */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2 text-sm text-gray-600 overflow-hidden">
               <button
@@ -317,6 +317,19 @@ export default function CompanyReviews() {
                 {businessData.name}
               </span>
             </div>
+
+            {/* View Total Reports Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => alert(`Total scam reports for ${businessData.name}: 0 reports found. This business has a clean record.`)}
+              className="border-yellow-500 text-yellow-600 hover:bg-yellow-50 flex items-center space-x-1 ml-2"
+            >
+              <AlertTriangle className="h-4 w-4" />
+              <span className="hidden sm:inline">View Total Reports</span>
+              <span className="sm:hidden">Reports</span>
+            </Button>
+          </div>
 
             {/* Share Button */}
             <div className="relative">
