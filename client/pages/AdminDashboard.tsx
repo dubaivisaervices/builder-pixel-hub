@@ -15,7 +15,7 @@ import {
   Building2,
   MessageSquare,
   Camera,
-  Sync,
+  RotateCw,
   Trash2,
   Eye,
   Lock,
@@ -299,7 +299,7 @@ export default function AdminDashboard() {
             {[
               { id: "dashboard", label: "Dashboard", icon: BarChart3 },
               { id: "requests", label: "Company Requests", icon: Building2 },
-              { id: "sync", label: "Data Sync", icon: Sync },
+              { id: "sync", label: "Data Sync", icon: RotateCw },
               { id: "database", label: "Database", icon: Database },
             ].map((tab) => (
               <button
@@ -511,7 +511,7 @@ export default function AdminDashboard() {
             <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Sync className="h-6 w-6" />
+                  <RotateCw className="h-6 w-6" />
                   <span>Data Synchronization</span>
                 </CardTitle>
               </CardHeader>
