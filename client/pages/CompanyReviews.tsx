@@ -562,45 +562,49 @@ export default function CompanyReviews() {
           console.log("Using fallback business data from navigation state");
           const fallbackData = location.state.businessData;
 
-            // Use real reviews if available, otherwise generate samples
-            if (!fallbackData.reviews || fallbackData.reviews.length === 0) {
-              console.log(
-                "No real reviews in first fallback, generating samples",
-              );
-              fallbackData.reviews = generateSampleReviews(
-                fallbackData.name,
-                fallbackData.id,
-              );
-            } else {
-              console.log(
-                `Using ${fallbackData.reviews.length} real reviews from first fallback`,
-              );
-            }
-
-            if (!fallbackData.description) {
-              fallbackData.description = `${fallbackData.name} is a visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, tourist visa applications, and business visa support. The company claims to provide professional immigration advice and document processing services for clients seeking to travel to various destinations worldwide.`;
-            }
-
-            if (!fallbackData.photos || fallbackData.photos.length === 0) {
-              fallbackData.photos = [
-                {
-                  id: 1,
-                  caption: "Office Reception Area",
-                  url: "https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F9ae29db9dce64d21a464c6d8ac374b23?format=webp&width=800",
-                },
-                { id: 2, caption: "Consultation Room" },
-                { id: 3, caption: "Document Processing Center" },
-                { id: 4, caption: "Client Waiting Area" },
-                { id: 5, caption: "Office Building Exterior" },
-                { id: 6, caption: "Team Meeting Room" },
-              ];
-            }
-
-            setBusinessData(fallbackData);
-            setLoading(false);
-            return;
+          // Use real reviews if available, otherwise generate samples
+          if (!fallbackData.reviews || fallbackData.reviews.length === 0) {
+            console.log(
+              "No real reviews in first fallback, generating samples",
+            );
+            fallbackData.reviews = generateSampleReviews(
+              fallbackData.name,
+              fallbackData.id,
+            );
+          } else {
+            console.log(
+              `Using ${fallbackData.reviews.length} real reviews from first fallback`,
+            );
           }
-          throw new Error("No business ID provided");
+
+          if (!fallbackData.description) {
+            fallbackData.description = `${fallbackData.name} is a visa consultancy service operating in Dubai, providing immigration and visa services for various countries. They offer consultation for student visas, work permits, tourist visa applications, and business visa support. The company claims to provide professional immigration advice and document processing services for clients seeking to travel to various destinations worldwide.`;
+          }
+
+          if (!fallbackData.photos || fallbackData.photos.length === 0) {
+            fallbackData.photos = [
+              {
+                id: 1,
+                caption: "Office Reception Area",
+                url: "https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F9ae29db9dce64d21a464c6d8ac374b23?format=webp&width=800",
+              },
+              { id: 2, caption: "Consultation Room" },
+              { id: 3, caption: "Document Processing Center" },
+              { id: 4, caption: "Client Waiting Area" },
+              { id: 5, caption: "Office Building Exterior" },
+              { id: 6, caption: "Team Meeting Room" },
+            ];
+          }
+
+          setBusinessData(fallbackData);
+          setLoading(false);
+          return;
+        }
+
+        if (!idToFetch) {
+          setError("Business not found - invalid URL or missing data");
+          setLoading(false);
+          return;
         }
 
         console.log(`Fetching business data for ID: ${idToFetch}`);
