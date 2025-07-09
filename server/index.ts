@@ -49,7 +49,7 @@ import {
   getDataPersistenceStatus,
   exportAllData,
 } from "./routes/data-persistence";
-import { getBusinessReviews } from "./routes/business-reviews";
+import { getBusinessReviews } from "./routes/business-reviews-real";
 import {
   syncAllGoogleReviews,
   syncBusinessReviews,
