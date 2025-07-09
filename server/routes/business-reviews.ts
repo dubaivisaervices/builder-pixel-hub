@@ -15,14 +15,20 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
 
     // First try to get reviews from database
     const dbReviews = await businessService.getBusinessReviews(businessId);
-    if (dbReviews && dbReviews.length > 0) {
-      console.log(`✅ Found ${dbReviews.length} reviews in database`);
+    if (dbReviews && dbReviews.length >= 30) {
+      console.log(
+        `✅ Found ${dbReviews.length} reviews in database (sufficient)`,
+      );
       return res.json({
         success: true,
         reviews: dbReviews,
         source: "database",
         count: dbReviews.length,
       });
+    } else if (dbReviews && dbReviews.length > 0) {
+      console.log(
+        `📊 Found ${dbReviews.length} reviews in database (insufficient - will supplement)`,
+      );
     }
 
     // Get business details first
@@ -129,10 +135,16 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
       );
     }
 
-    // If we have Google reviews, supplement with generated reviews if needed
+    // If we have Google reviews or database reviews, supplement with generated reviews if needed
     let finalReviews = [...googleReviews];
 
-    if (googleReviews.length > 0) {
+    // If we have database reviews but no new Google reviews, start with database reviews
+    if (googleReviews.length === 0 && dbReviews && dbReviews.length > 0) {
+      finalReviews = [...dbReviews];
+      console.log(`📋 Starting with ${dbReviews.length} database reviews`);
+    }
+
+    if (finalReviews.length > 0) {
       // If we have some Google reviews but less than 30, supplement with generated ones
       if (googleReviews.length < 30) {
         const additionalCount = 30 - googleReviews.length;
