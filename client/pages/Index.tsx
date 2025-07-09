@@ -46,6 +46,9 @@ export default function Index() {
   const [allBusinesses, setAllBusinesses] = useState<BusinessData[]>([]);
   const [showAddCompanyPopup, setShowAddCompanyPopup] = useState(false);
   const [companyNotFound, setCompanyNotFound] = useState(false);
+  const [protectCommunitySuggestions, setProtectCommunitySuggestions] =
+    useState<BusinessData[]>([]);
+  const [showProtectSuggestions, setShowProtectSuggestions] = useState(false);
   const [newCompanyData, setNewCompanyData] = useState({
     name: "",
     address: "",
@@ -294,6 +297,34 @@ export default function Index() {
     setSearchTerm("");
   };
 
+  const handleProtectCommunitySearch = (value: string) => {
+    setCompanyName(value);
+    setCompanyNotFound(false);
+
+    if (value.length >= 2) {
+      const filtered = allBusinesses
+        .filter((business) =>
+          business.name.toLowerCase().includes(value.toLowerCase()),
+        )
+        .slice(0, 5);
+      setProtectCommunitySuggestions(filtered);
+      setShowProtectSuggestions(true);
+    } else {
+      setShowProtectSuggestions(false);
+    }
+  };
+
+  const handleProtectSuggestionClick = (business: BusinessData) => {
+    setCompanyName(business.name);
+    setShowProtectSuggestions(false);
+    navigate("/complaint", {
+      state: {
+        companyName: business.name,
+        companyLocation: business.address,
+      },
+    });
+  };
+
   const handleQuickReport = (e: React.FormEvent) => {
     e.preventDefault();
     if (companyName.trim()) {
@@ -388,24 +419,15 @@ export default function Index() {
               </Button>
             </div>
 
-            {/* Mobile Menu */}
-            <div className="md:hidden flex items-center space-x-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate("/dubai-businesses")}
-                className="flex items-center space-x-1 text-xs px-2 py-1"
-              >
-                <Building2 className="h-3 w-3" />
-                <span>Directory</span>
-              </Button>
+            {/* Mobile Menu - Only Report Scam */}
+            <div className="md:hidden">
               <Button
                 size="sm"
                 onClick={() => navigate("/complaint")}
-                className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-xs px-2 py-1"
+                className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-xs px-3 py-2"
               >
                 <AlertTriangle className="h-3 w-3 mr-1" />
-                <span>Report</span>
+                <span>Report Scam</span>
               </Button>
             </div>
           </div>
@@ -774,17 +796,62 @@ export default function Index() {
 
                 <form onSubmit={handleQuickReport} className="max-w-md mx-auto">
                   <div className="space-y-4">
-                    <Input
-                      type="text"
-                      placeholder="Enter company name to report"
-                      value={companyName}
-                      onChange={(e) => {
-                        setCompanyName(e.target.value);
-                        setCompanyNotFound(false);
-                      }}
-                      className="h-12 bg-white border-2 border-red-200 focus:border-red-400 rounded-xl"
-                      required
-                    />
+                    <div className="relative">
+                      <Input
+                        type="text"
+                        placeholder="Enter company name to report"
+                        value={companyName}
+                        onChange={(e) =>
+                          handleProtectCommunitySearch(e.target.value)
+                        }
+                        onFocus={() =>
+                          companyName.length >= 2 &&
+                          setShowProtectSuggestions(true)
+                        }
+                        onBlur={() =>
+                          setTimeout(
+                            () => setShowProtectSuggestions(false),
+                            200,
+                          )
+                        }
+                        className="h-12 bg-white border-2 border-red-200 focus:border-red-400 rounded-xl"
+                        required
+                      />
+
+                      {/* Protect Community Search Suggestions */}
+                      {showProtectSuggestions &&
+                        protectCommunitySuggestions.length > 0 && (
+                          <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-60 overflow-y-auto">
+                            {protectCommunitySuggestions.map((business) => (
+                              <div
+                                key={business.id}
+                                onClick={() =>
+                                  handleProtectSuggestionClick(business)
+                                }
+                                className="p-3 hover:bg-red-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                              >
+                                <div className="flex items-center space-x-3">
+                                  <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-orange-600 rounded-lg flex items-center justify-center text-white font-bold text-xs">
+                                    {business.name.charAt(0)}
+                                  </div>
+                                  <div className="flex-1">
+                                    <h4 className="font-semibold text-gray-900 text-sm">
+                                      {business.name}
+                                    </h4>
+                                    <p className="text-xs text-gray-600 flex items-center">
+                                      <MapPin className="h-3 w-3 mr-1" />
+                                      {business.address.split(",")[0]}
+                                    </p>
+                                  </div>
+                                  <div className="text-xs text-red-600 font-medium">
+                                    Report →
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                    </div>
 
                     {companyNotFound && (
                       <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
