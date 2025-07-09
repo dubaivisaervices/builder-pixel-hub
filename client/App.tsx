@@ -11,6 +11,7 @@ import ComplaintForm from "./pages/ComplaintForm";
 import CompanyReviews from "./pages/CompanyReviewsWorking";
 import BusinessDirectory from "./pages/BusinessDirectory";
 import BusinessListing from "./pages/BusinessListing";
+import HelpCenter from "./pages/HelpCenter";
 import ApiTest from "./pages/ApiTest";
 import AdminSync from "./pages/AdminSync";
 import AdminManage from "./pages/AdminManage";
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/dubai-businesses" element={<BusinessDirectory />} />
           <Route path="/services" element={<BusinessListing />} />
           <Route path="/services/:category" element={<BusinessListing />} />
+          <Route path="/help-center" element={<HelpCenter />} />
           <Route path="/api-test" element={<ApiTest />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/sync" element={<AdminSync />} />
