@@ -86,63 +86,172 @@ export default function CompanyReviews() {
       if (response.ok) {
         const data = await response.json();
         if (data.reviews && data.reviews.length > 0) {
-          console.log(`✅ Loaded ${data.reviews.length} real Google reviews`);
-          return data.reviews.slice(0, 50); // Max 50 reviews
+          console.log(
+            `✅ Loaded ${data.reviews.length} reviews from API (${data.source})`,
+          );
+          return data.reviews; // Return all reviews from API
         }
       }
     } catch (error) {
-      console.log("📡 Google reviews not available, generating realistic ones");
+      console.log("📡 Google reviews API error:", error);
     }
 
-    // Use server-side review generation for consistency
-    console.log("📝 Using server-generated reviews");
-    return [];
+    // Fallback: Generate minimum 30 realistic reviews locally
+    console.log("📝 Generating fallback reviews locally");
+    return generateLocalReviews(businessName);
 
-    const positiveReviewTemplates = [
-      `Excellent service from ${businessName}. They helped me with my work visa application and the process was smooth and professional. Highly recommend their services for anyone looking for visa assistance in Dubai.`,
-      `Good experience with ${businessName}. Professional staff and helpful throughout the process. Some minor delays but overall satisfied with the service quality.`,
-      `Outstanding service! ${businessName} made the visa application process so easy. Staff was knowledgeable and provided great guidance throughout.`,
-      `Reliable visa service. ${businessName} helped with my family visa and everything went smoothly. Professional approach and fair pricing.`,
-      `Decent service overall. Got the job done but took longer than expected. Communication could be improved but final result was satisfactory.`,
-      `Fantastic experience with ${businessName}! They guided me through every step of my student visa application. Very professional and efficient team.`,
-      `Good visa consultancy. ${businessName} helped with my business visa renewal. Process was straightforward and staff was helpful.`,
-      `Exceptional service! ${businessName} processed my tourist visa quickly and efficiently. Would definitely use their services again.`,
-      `Professional service from ${businessName}. They handled my family reunion visa with care and attention to detail.`,
-      `Highly recommend ${businessName}! Their team is knowledgeable and made the complex visa process seem simple.`,
-    ];
+    // Generate local reviews as fallback
+    const generateLocalReviews = (businessName: string) => {
+      const authors = [
+        "Ahmed Hassan",
+        "Sarah Mitchell",
+        "Raj Patel",
+        "Maria Santos",
+        "Hassan Ali",
+        "Jennifer Clark",
+        "Mohammed Khalil",
+        "Lisa Anderson",
+        "Omar Farouk",
+        "Emma Wilson",
+        "David Brown",
+        "Fatima Al-Zahra",
+        "John Smith",
+        "Aisha Patel",
+        "Robert Johnson",
+        "Nadia Khan",
+        "Michael Davis",
+        "Yasmin Ali",
+        "James Wilson",
+        "Zahra Mohamed",
+        "Carlos Rodriguez",
+        "Priya Sharma",
+        "Mark Thompson",
+        "Leila Mansour",
+        "Peter Chen",
+        "Sofia Petrov",
+        "Abdul Rahman",
+        "Anna Kowalski",
+        "Daniel Kim",
+        "Maya Gupta",
+        "Ali Mohamed",
+        "Jessica Wong",
+        "Ryan O'Connor",
+        "Fatima Ahmed",
+        "Chris Taylor",
+      ];
 
-    const negativeReviewTemplates = [
-      `Terrible experience with ${businessName}. They took my money and disappeared. After paying 5000 AED for work visa processing, they stopped responding to calls and emails. Complete fraud - stay away!`,
-      `SCAM ALERT! ${businessName} promised job visa in 2 weeks, took 8000 AED upfront, and nothing happened for 3 months. When I asked for refund, they blocked my number. Don't trust them!`,
-      `Worst visa service ever. ${businessName} gave false promises about guaranteed visa approval. Paid 6000 AED and visa was rejected. They refuse to refund and blame it on "system issues".`,
-      `Complete waste of money. ${businessName} charged 4500 AED for tourist visa which I could get myself for 300 AED. They provide no real service, just take advantage of people's desperation.`,
-      `AVOID AT ALL COSTS! ${businessName} is running a scam operation. They promise work permits that don't exist and take large amounts of money. Lost 7000 AED and got nothing in return.`,
-      `Fraudulent company. ${businessName} showed fake documents and promised embassy connections. After payment of 5500 AED, they said visa was "under process" for 6 months. Total scam!`,
-      `DO NOT USE THEM! ${businessName} took 9000 AED for family visa and gave fake receipt. When I went to their office, it was empty. They are criminals, not visa consultants.`,
-      `Biggest mistake of my life trusting ${businessName}. They promised golden visa for 15000 AED, took the money and gave fake documents. Now I'm in legal trouble because of their fraud.`,
-      `WARNING: ${businessName} is a scam! They collect money for visa services that don't exist. Lost 6500 AED and when I complained, they threatened me. Stay away from these criminals!`,
-      `Horrible experience. ${businessName} promised investor visa in 30 days for 12000 AED. After 4 months of lies and excuses, I realized they are just scammers. Never got visa or refund.`,
-      `SCAM COMPANY! ${businessName} uses fake testimonials and forged documents. They took 8500 AED for work visa and disappeared. Office address is fake too. Report them to police!`,
-      `Total fraud operation. ${businessName} promised student visa with job guarantee. Paid 7500 AED and got fake admission letter. University never heard of them. Complete scam!`,
-      `Don't fall for their lies! ${businessName} promised spouse visa in 15 days for 5000 AED. After 3 months of fake updates, I discovered they never even applied. Thieves!`,
-      `BEWARE: ${businessName} is running illegal visa scam. They promise government connections and guaranteed approvals. Took 11000 AED and provided nothing. File police complaint!`,
-      `Worst experience ever. ${businessName} took 4000 AED for visit visa renewal and gave fake stamps. Got detained at airport because of their fraudulent documents. Criminals!`,
-      `SCAM ALERT! ${businessName} promises work visa with salary 8000 AED. After paying 6000 AED fees, they say job was "cancelled" and refuse refund. It's all fake from start!`,
-      `Complete criminals. ${businessName} took 9500 AED for business visa and provided forged bank statements. Almost got banned from UAE because of their illegal activities.`,
-      `DO NOT TRUST! ${businessName} shows fake office photos and uses stolen testimonials. They took 7000 AED for family visa and disappeared after 2 weeks. Pure scam operation!`,
-      `Warning to everyone: ${businessName} is fraud company. They promise visa processing but just collect money and make excuses. Lost 5500 AED and 6 months of time. Avoid them!`,
-      `Terrible scam! ${businessName} promised freelance visa for 4500 AED and gave fake trade license. When authorities checked, everything was forged. Now facing legal issues because of them.`,
-      `FRAUD COMPANY! ${businessName} took 8000 AED for golden visa and provided fake investment certificates. Emirates ID application was rejected because documents were forged.`,
-      `Biggest scammers in Dubai! ${businessName} promise easy visa solutions but deliver nothing. They took 6000 AED and gave fake receipts. Office is just empty room with fake furniture.`,
-      `Don't believe their promises! ${businessName} said they have government contracts for fast visa processing. After paying 7500 AED, found out they are not even registered company.`,
-      `SCAM WARNING! ${businessName} uses fake reviews and testimonials to fool people. They took 5000 AED for work permit and provided photocopied fake documents. Total fraud!`,
-      `Horrible criminals! ${businessName} promised student visa with scholarship. Paid 9000 AED and got fake university letter. Almost got deported because of their forged documents.`,
-      `AVOID THIS SCAM! ${businessName} takes money upfront and disappears. They promised employment visa in 10 days for 6500 AED. After 4 months, no visa and no refund.`,
-      `Complete fraud! ${businessName} showed fake Emirates ID office and promised immediate visa. Paid 8500 AED and they gave photocopied fake stamps. Police should arrest them!`,
-      `WARNING: ${businessName} is illegal operation. They promise visa guarantees that no legitimate company can give. Lost 7000 AED and learned they are just professional scammers.`,
-      `Don't trust these criminals! ${businessName} took 5500 AED for tourist visa extension and provided fake immigration stamps. Got banned from UAE because of their fraud.`,
-      `SCAM COMPANY! ${businessName} promises work visa with accommodation. After paying 10000 AED, found out the company sponsorship was fake and accommodation address doesn't exist.`,
-    ];
+      const positiveReviewTemplates = [
+        `Excellent service from ${businessName}. They helped me with my work visa application and the process was smooth and professional. Highly recommend their services for anyone looking for visa assistance in Dubai.`,
+        `Good experience with ${businessName}. Professional staff and helpful throughout the process. Some minor delays but overall satisfied with the service quality.`,
+        `Outstanding service! ${businessName} made the visa application process so easy. Staff was knowledgeable and provided great guidance throughout.`,
+        `Reliable visa service. ${businessName} helped with my family visa and everything went smoothly. Professional approach and fair pricing.`,
+        `Decent service overall. Got the job done but took longer than expected. Communication could be improved but final result was satisfactory.`,
+        `Fantastic experience with ${businessName}! They guided me through every step of my student visa application. Very professional and efficient team.`,
+        `Good visa consultancy. ${businessName} helped with my business visa renewal. Process was straightforward and staff was helpful.`,
+        `Exceptional service! ${businessName} processed my tourist visa quickly and efficiently. Would definitely use their services again.`,
+        `Professional service from ${businessName}. They handled my family reunion visa with care and attention to detail.`,
+        `Highly recommend ${businessName}! Their team is knowledgeable and made the complex visa process seem simple.`,
+      ];
+
+      const negativeReviewTemplates = [
+        `Terrible experience with ${businessName}. They took my money and disappeared. After paying 5000 AED for work visa processing, they stopped responding to calls and emails. Complete fraud - stay away!`,
+        `SCAM ALERT! ${businessName} promised job visa in 2 weeks, took 8000 AED upfront, and nothing happened for 3 months. When I asked for refund, they blocked my number. Don't trust them!`,
+        `Worst visa service ever. ${businessName} gave false promises about guaranteed visa approval. Paid 6000 AED and visa was rejected. They refuse to refund and blame it on "system issues".`,
+        `Complete waste of money. ${businessName} charged 4500 AED for tourist visa which I could get myself for 300 AED. They provide no real service, just take advantage of people's desperation.`,
+        `AVOID AT ALL COSTS! ${businessName} is running a scam operation. They promise work permits that don't exist and take large amounts of money. Lost 7000 AED and got nothing in return.`,
+        `Fraudulent company. ${businessName} showed fake documents and promised embassy connections. After payment of 5500 AED, they said visa was "under process" for 6 months. Total scam!`,
+        `DO NOT USE THEM! ${businessName} took 9000 AED for family visa and gave fake receipt. When I went to their office, it was empty. They are criminals, not visa consultants.`,
+        `Biggest mistake of my life trusting ${businessName}. They promised golden visa for 15000 AED, took the money and gave fake documents. Now I'm in legal trouble because of their fraud.`,
+        `WARNING: ${businessName} is a scam! They collect money for visa services that don't exist. Lost 6500 AED and when I complained, they threatened me. Stay away from these criminals!`,
+        `Horrible experience. ${businessName} promised investor visa in 30 days for 12000 AED. After 4 months of lies and excuses, I realized they are just scammers. Never got visa or refund.`,
+        `SCAM COMPANY! ${businessName} uses fake testimonials and forged documents. They took 8500 AED for work visa and disappeared. Office address is fake too. Report them to police!`,
+        `Total fraud operation. ${businessName} promised student visa with job guarantee. Paid 7500 AED and got fake admission letter. University never heard of them. Complete scam!`,
+        `Don't fall for their lies! ${businessName} promised spouse visa in 15 days for 5000 AED. After 3 months of fake updates, I discovered they never even applied. Thieves!`,
+        `BEWARE: ${businessName} is running illegal visa scam. They promise government connections and guaranteed approvals. Took 11000 AED and provided nothing. File police complaint!`,
+        `Worst experience ever. ${businessName} took 4000 AED for visit visa renewal and gave fake stamps. Got detained at airport because of their fraudulent documents. Criminals!`,
+        `SCAM ALERT! ${businessName} promises work visa with salary 8000 AED. After paying 6000 AED fees, they say job was "cancelled" and refuse refund. It's all fake from start!`,
+        `Complete criminals. ${businessName} took 9500 AED for business visa and provided forged bank statements. Almost got banned from UAE because of their illegal activities.`,
+        `DO NOT TRUST! ${businessName} shows fake office photos and uses stolen testimonials. They took 7000 AED for family visa and disappeared after 2 weeks. Pure scam operation!`,
+        `Warning to everyone: ${businessName} is fraud company. They promise visa processing but just collect money and make excuses. Lost 5500 AED and 6 months of time. Avoid them!`,
+        `Terrible scam! ${businessName} promised freelance visa for 4500 AED and gave fake trade license. When authorities checked, everything was forged. Now facing legal issues because of them.`,
+        `FRAUD COMPANY! ${businessName} took 8000 AED for golden visa and provided fake investment certificates. Emirates ID application was rejected because documents were forged.`,
+        `Biggest scammers in Dubai! ${businessName} promise easy visa solutions but deliver nothing. They took 6000 AED and gave fake receipts. Office is just empty room with fake furniture.`,
+        `Don't believe their promises! ${businessName} said they have government contracts for fast visa processing. After paying 7500 AED, found out they are not even registered company.`,
+        `SCAM WARNING! ${businessName} uses fake reviews and testimonials to fool people. They took 5000 AED for work permit and provided photocopied fake documents. Total fraud!`,
+        `Horrible criminals! ${businessName} promised student visa with scholarship. Paid 9000 AED and got fake university letter. Almost got deported because of their forged documents.`,
+        `AVOID THIS SCAM! ${businessName} takes money upfront and disappears. They promised employment visa in 10 days for 6500 AED. After 4 months, no visa and no refund.`,
+        `Complete fraud! ${businessName} showed fake Emirates ID office and promised immediate visa. Paid 8500 AED and they gave photocopied fake stamps. Police should arrest them!`,
+        `WARNING: ${businessName} is illegal operation. They promise visa guarantees that no legitimate company can give. Lost 7000 AED and learned they are just professional scammers.`,
+        `Don't trust these criminals! ${businessName} took 5500 AED for tourist visa extension and provided fake immigration stamps. Got banned from UAE because of their fraud.`,
+        `SCAM COMPANY! ${businessName} promises work visa with accommodation. After paying 10000 AED, found out the company sponsorship was fake and accommodation address doesn't exist.`,
+      ];
+
+      const timeOptions = [
+        "2 days ago",
+        "1 week ago",
+        "2 weeks ago",
+        "3 weeks ago",
+        "1 month ago",
+        "2 months ago",
+        "3 months ago",
+        "4 months ago",
+        "5 months ago",
+        "6 months ago",
+        "1 year ago",
+        "Recently",
+        "Last month",
+        "Few weeks ago",
+        "Last week",
+      ];
+
+      const reviews = [];
+      const targetReviews = 35; // Generate 35 reviews to ensure good coverage
+
+      for (let i = 0; i < targetReviews; i++) {
+        const authorIndex = i % authors.length;
+        const timeIndex = i % timeOptions.length;
+
+        // Realistic rating distribution
+        const ratingRand = Math.random();
+        let rating, templateIndex;
+
+        if (ratingRand < 0.15) {
+          // 15% negative (1-2 star)
+          rating = Math.random() < 0.7 ? 1 : 2;
+          templateIndex = i % negativeReviewTemplates.length;
+        } else if (ratingRand < 0.25) {
+          // 10% neutral (3 star)
+          rating = 3;
+          templateIndex = i % positiveReviewTemplates.length;
+        } else if (ratingRand < 0.65) {
+          // 40% good (4 star)
+          rating = 4;
+          templateIndex = i % positiveReviewTemplates.length;
+        } else {
+          // 35% excellent (5 star)
+          rating = 5;
+          templateIndex = i % positiveReviewTemplates.length;
+        }
+
+        const reviewText =
+          rating <= 2
+            ? negativeReviewTemplates[templateIndex]
+            : positiveReviewTemplates[templateIndex];
+
+        reviews.push({
+          id: `local_${i + 1}`,
+          authorName: authors[authorIndex],
+          rating: rating,
+          text: reviewText,
+          timeAgo: timeOptions[timeIndex],
+          profilePhotoUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(authors[authorIndex])}&background=random`,
+          isReal: false,
+        });
+      }
+
+      console.log(`📝 Generated ${reviews.length} local fallback reviews`);
+      return reviews.sort(() => Math.random() - 0.5); // Shuffle reviews
+    };
 
     const timeOptions = [
       "2 days ago",
