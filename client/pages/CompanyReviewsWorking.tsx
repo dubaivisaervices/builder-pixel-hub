@@ -220,10 +220,13 @@ export default function CompanyReviews() {
           const business = location.state.businessData;
           setBusinessData(business);
 
-          // Fetch real reviews or generate realistic ones
+          // Fetch real reviews or generate realistic ones (minimum 30)
           const businessReviews = await fetchRealReviewsOrGenerate(
             business.id,
             business.name,
+          );
+          console.log(
+            `📊 Loaded ${businessReviews.length} reviews for ${business.name}`,
           );
           setReviews(businessReviews);
           setLoading(false);
@@ -259,10 +262,13 @@ export default function CompanyReviews() {
 
           setBusinessData(business);
 
-          // Fetch real reviews or generate realistic ones
+          // Fetch real reviews or generate realistic ones (minimum 30)
           const businessReviews = await fetchRealReviewsOrGenerate(
             business.id,
             business.name,
+          );
+          console.log(
+            `📊 Loaded ${businessReviews.length} reviews for ${business.name}`,
           );
           setReviews(businessReviews);
         } else {
