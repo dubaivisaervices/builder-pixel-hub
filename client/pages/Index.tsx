@@ -82,10 +82,14 @@ export default function Index() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch real business data
-        const response = await fetch("/api/businesses");
+        // Fetch ALL business data from database (not just target keyword businesses)
+        const response = await fetch("/api/businesses?limit=1000");
         const data = await response.json();
         const businesses = data.businesses || [];
+
+        console.log(
+          `🔍 Loaded ${businesses.length} total businesses for search from database`,
+        );
 
         // Store all businesses for search
         setAllBusinesses(businesses);
