@@ -605,10 +605,6 @@ export default function CompanyReviews() {
           `Loaded business: ${data.business.name} with ${data.business.reviews.length} reviews`,
         );
 
-        // Debug image data
-        console.log(
-          `📸 CompanyReviews - Image debug for ${data.business.name}:`,
-        );
         console.log(
           `  - logoUrl: ${data.business.logoUrl ? "present" : "not present"}`,
         );
@@ -1234,33 +1230,6 @@ export default function CompanyReviews() {
                       </div>
                     </div>
                   )}
-                </div>
-
-                {/* Temporary Debug Section */}
-                <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <h5 className="text-sm font-medium text-yellow-800 mb-2">
-                    🔍 Debug Tools
-                  </h5>
-                  <Button
-                    onClick={async () => {
-                      try {
-                        const response = await fetch(
-                          `/api/debug-images/${businessData.id}`,
-                        );
-                        const debugData = await response.json();
-                        console.log("🔍 Debug endpoint response:", debugData);
-                        alert("Check console for detailed image debug data");
-                      } catch (err) {
-                        console.error("Debug endpoint error:", err);
-                        alert("Debug endpoint failed - check console");
-                      }
-                    }}
-                    size="sm"
-                    variant="outline"
-                    className="text-xs bg-yellow-100 hover:bg-yellow-200 border-yellow-300"
-                  >
-                    🔍 Check Image Data
-                  </Button>
                 </div>
               </div>
 
@@ -2017,25 +1986,6 @@ export default function CompanyReviews() {
             </div>
           </CardContent>
         </Card>
-      </div>
-
-      {/* Mobile-Only Sticky Report Button */}
-      <div className="md:hidden fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50">
-        <Button
-          onClick={() =>
-            navigate("/complaint", {
-              state: {
-                companyName: businessData.name,
-                companyLocation: businessData.address,
-              },
-            })
-          }
-          className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-2xl px-8 py-4 text-lg font-bold rounded-full border-2 border-white animate-pulse"
-          size="lg"
-        >
-          <AlertTriangle className="h-5 w-5 mr-2" />
-          Report Scam
-        </Button>
       </div>
 
       {/* Bottom spacing for sticky footer */}
