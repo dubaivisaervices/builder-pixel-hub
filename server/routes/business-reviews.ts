@@ -35,66 +35,146 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
     let googleReviews = [];
     if (business.id && process.env.GOOGLE_PLACES_API_KEY) {
       try {
+        console.log(`🔍 Fetching Google reviews for place ID: ${business.id}`);
+
+        // Fetch with expanded fields to get all available reviews
         const googleResponse = await fetch(
-          `https://maps.googleapis.com/maps/api/place/details/json?place_id=${business.id}&fields=reviews&key=${process.env.GOOGLE_PLACES_API_KEY}`,
+          `https://maps.googleapis.com/maps/api/place/details/json?place_id=${business.id}&fields=reviews,rating,user_ratings_total&key=${process.env.GOOGLE_PLACES_API_KEY}`,
         );
 
         if (googleResponse.ok) {
           const googleData = await googleResponse.json();
+          console.log("📊 Google API Response:", {
+            status: googleData.status,
+            totalReviews: googleData.result?.user_ratings_total || 0,
+            fetchedReviews: googleData.result?.reviews?.length || 0,
+          });
+
           if (googleData.result && googleData.result.reviews) {
             googleReviews = googleData.result.reviews.map(
               (review: any, index: number) => ({
-                id: `google_${index}`,
+                id: `google_${business.id}_${index}`,
+                businessId: businessId,
                 authorName: review.author_name,
                 rating: review.rating,
-                text: review.text,
-                timeAgo: review.relative_time_description,
-                profilePhotoUrl: review.profile_photo_url,
+                text: review.text || "No review text provided",
+                timeAgo: review.relative_time_description || "Recently",
+                profilePhotoUrl:
+                  review.profile_photo_url ||
+                  `https://ui-avatars.com/api/?name=${encodeURIComponent(review.author_name)}&background=random`,
                 isReal: true,
+                googleReviewId: review.author_name + "_" + review.time,
+                createdAt: new Date().toISOString(),
               }),
             );
 
             console.log(
-              `✅ Fetched ${googleReviews.length} real Google reviews`,
+              `✅ Processed ${googleReviews.length} real Google reviews`,
             );
 
-            // Save to database for future use
+            // Save ALL Google reviews to database for future use
             if (googleReviews.length > 0) {
-              await businessService.saveBusinessReviews(
-                businessId,
-                googleReviews,
-              );
+              try {
+                // Clear existing reviews for this business first
+                await businessService.clearBusinessReviews(businessId);
+
+                // Save new Google reviews
+                await businessService.saveBusinessReviews(
+                  businessId,
+                  googleReviews,
+                );
+
+                console.log(
+                  `💾 Saved ${googleReviews.length} Google reviews to database`,
+                );
+              } catch (saveError) {
+                console.error(
+                  "❌ Error saving Google reviews to database:",
+                  saveError,
+                );
+              }
+            }
+
+            // Update business rating info if available
+            if (
+              googleData.result.rating &&
+              googleData.result.user_ratings_total
+            ) {
+              try {
+                await businessService.updateBusinessRating(
+                  businessId,
+                  googleData.result.rating,
+                  googleData.result.user_ratings_total,
+                );
+                console.log(
+                  `📊 Updated business rating: ${googleData.result.rating} (${googleData.result.user_ratings_total} reviews)`,
+                );
+              } catch (updateError) {
+                console.error(
+                  "❌ Error updating business rating:",
+                  updateError,
+                );
+              }
             }
           }
+        } else {
+          console.log(`❌ Google API error: ${googleResponse.status}`);
         }
       } catch (error) {
-        console.log("📡 Google Places API not available:", error);
+        console.log("📡 Google Places API error:", error);
       }
+    } else {
+      console.log(
+        "⚠️ Google Places API key not configured or business ID missing",
+      );
     }
 
-    // If we have Google reviews, return them
+    // If we have Google reviews, supplement with generated reviews if needed
+    let finalReviews = [...googleReviews];
+
     if (googleReviews.length > 0) {
+      // If we have some Google reviews but less than 30, supplement with generated ones
+      if (googleReviews.length < 30) {
+        const additionalCount = 30 - googleReviews.length;
+        const supplementalReviews = generateFallbackReviews(
+          business.name,
+          additionalCount,
+          true, // Mark as supplemental
+        );
+        finalReviews = [...googleReviews, ...supplementalReviews];
+        console.log(
+          `📝 Supplemented ${googleReviews.length} Google reviews with ${additionalCount} generated reviews`,
+        );
+      }
+
       return res.json({
         success: true,
-        reviews: googleReviews.slice(0, 50), // Limit to 50 reviews
-        source: "google_api",
-        count: googleReviews.length,
+        reviews: finalReviews.slice(0, 50), // Limit to 50 total reviews
+        source:
+          googleReviews.length >= 30 ? "google_api" : "google_plus_generated",
+        count: finalReviews.length,
+        googleCount: googleReviews.length,
+        generatedCount: finalReviews.length - googleReviews.length,
       });
     }
 
-    // Generate realistic reviews as fallback
+    // Generate realistic reviews as fallback (minimum 30)
     const fallbackReviews = generateFallbackReviews(
       business.name,
-      business.reviewCount || 0,
+      Math.max(30, business.reviewCount || 30),
     );
 
-    console.log(`📝 Generated ${fallbackReviews.length} fallback reviews`);
+    console.log(
+      `📝 Generated ${fallbackReviews.length} fallback reviews (no Google reviews available)`,
+    );
 
     res.json({
       success: true,
       reviews: fallbackReviews,
       source: "generated",
       count: fallbackReviews.length,
+      googleCount: 0,
+      generatedCount: fallbackReviews.length,
     });
   } catch (error) {
     console.error("Error fetching business reviews:", error);
@@ -106,7 +186,11 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
 };
 
 // Generate realistic fallback reviews when no real ones are available
-function generateFallbackReviews(businessName: string, reviewCount: number) {
+function generateFallbackReviews(
+  businessName: string,
+  reviewCount: number,
+  isSupplemental: boolean = false,
+) {
   const authors = [
     "Ahmed Hassan",
     "Sarah Mitchell",
@@ -141,29 +225,49 @@ function generateFallbackReviews(businessName: string, reviewCount: number) {
   ];
 
   const positiveTemplates = [
-    `Great service from ${businessName}. Professional team and smooth visa processing.`,
-    `Excellent experience with ${businessName}. They made the visa application very easy.`,
-    `Highly recommend ${businessName}. Knowledgeable staff and efficient service.`,
-    `Very satisfied with ${businessName}. Quick processing and good communication.`,
-    `Outstanding service! ${businessName} helped me get my visa without any hassle.`,
-    `Professional and reliable. ${businessName} delivered exactly what they promised.`,
-    `Good experience overall. ${businessName} staff was helpful throughout the process.`,
-    `Efficient visa service. ${businessName} processed my application quickly and professionally.`,
-    `Recommended! ${businessName} has a knowledgeable team and good customer service.`,
-    `Smooth process with ${businessName}. They guided me through every step clearly.`,
+    `Great service from ${businessName}. Professional team and smooth visa processing. They helped me get my work visa in just 2 weeks.`,
+    `Excellent experience with ${businessName}. They made the visa application very easy and explained every step clearly.`,
+    `Highly recommend ${businessName}. Knowledgeable staff and efficient service. Got my family visa without any complications.`,
+    `Very satisfied with ${businessName}. Quick processing and good communication throughout the entire process.`,
+    `Outstanding service! ${businessName} helped me get my visa without any hassle. Worth every dirham spent.`,
+    `Professional and reliable. ${businessName} delivered exactly what they promised within the timeline given.`,
+    `Good experience overall. ${businessName} staff was helpful throughout the process and answered all my questions.`,
+    `Efficient visa service. ${businessName} processed my application quickly and professionally. Highly recommended.`,
+    `Recommended! ${businessName} has a knowledgeable team and good customer service. They made everything simple.`,
+    `Smooth process with ${businessName}. They guided me through every step clearly and got my tourist visa approved.`,
+    `Amazing team at ${businessName}! They processed my business visa renewal efficiently and kept me updated.`,
+    `Top-notch service from ${businessName}. They helped with my student visa and made the whole process stress-free.`,
+    `Perfect experience with ${businessName}. Professional, quick, and reliable. Got my work permit without issues.`,
+    `Fantastic service! ${businessName} team was very helpful and processed my visa application faster than expected.`,
+    `Excellent consultation from ${businessName}. They guided me through the Golden Visa process step by step.`,
+    `Outstanding work by ${businessName}. They helped my entire family get residence visas efficiently.`,
+    `Great communication and service from ${businessName}. They kept me informed throughout the visa process.`,
+    `Reliable and trustworthy. ${businessName} delivered on their promises and got my visa approved quickly.`,
+    `Professional service from ${businessName}. They handled my investment visa application with expertise.`,
+    `Highly satisfied with ${businessName}. Clean process, good communication, and successful visa approval.`,
   ];
 
   const negativeTemplates = [
-    `Poor experience with ${businessName}. Delayed processing and poor communication.`,
-    `Not satisfied with the service. ${businessName} promised faster processing but it took months.`,
-    `Had issues with ${businessName}. They were not responsive to my queries and concerns.`,
-    `Disappointing service from ${businessName}. Expected better for the fees they charge.`,
-    `Would not recommend ${businessName}. Too many delays and unclear communication.`,
-    `Had problems with ${businessName}. They made mistakes in my application that caused delays.`,
-    `Not happy with the service quality. ${businessName} needs to improve their customer service.`,
-    `Faced difficulties with ${businessName}. The process was much longer than they initially said.`,
-    `Poor communication from ${businessName}. Had to follow up multiple times for updates.`,
-    `Unsatisfactory experience. ${businessName} did not meet the expectations they set.`,
+    `Poor experience with ${businessName}. Delayed processing and poor communication. Took 3 months for a simple tourist visa.`,
+    `Not satisfied with the service. ${businessName} promised faster processing but it took months longer than expected.`,
+    `Had issues with ${businessName}. They were not responsive to my queries and concerns about document requirements.`,
+    `Disappointing service from ${businessName}. Expected better for the high fees they charge. Very unprofessional.`,
+    `Would not recommend ${businessName}. Too many delays and unclear communication about visa status.`,
+    `Had problems with ${businessName}. They made mistakes in my application that caused unnecessary delays.`,
+    `Not happy with the service quality. ${businessName} needs to improve their customer service and responsiveness.`,
+    `Faced difficulties with ${businessName}. The process was much longer than they initially said it would be.`,
+    `Poor communication from ${businessName}. Had to follow up multiple times for updates on my application.`,
+    `Unsatisfactory experience. ${businessName} did not meet the expectations they set during initial consultation.`,
+    `Terrible service from ${businessName}. They charged extra fees that were not mentioned initially.`,
+    `Avoid ${businessName}! They gave me wrong information about visa requirements and wasted my time.`,
+    `Bad experience with ${businessName}. They lost my documents and I had to resubmit everything twice.`,
+    `Unprofessional service from ${businessName}. They didn't return my calls and were very rude when I visited.`,
+    `Waste of money! ${businessName} couldn't deliver what they promised and refused to refund the fees.`,
+    `Poor handling by ${businessName}. My visa application was rejected due to their incomplete documentation.`,
+    `Frustrated with ${businessName}. They kept changing requirements and asking for additional documents.`,
+    `Dishonest service from ${businessName}. They promised guaranteed approval but my visa was rejected.`,
+    `Terrible experience! ${businessName} staff was unprofessional and didn't know proper visa procedures.`,
+    `Do not trust ${businessName}! They charge high fees but provide substandard service and fake promises.`,
   ];
 
   const timeOptions = [
@@ -180,28 +284,36 @@ function generateFallbackReviews(businessName: string, reviewCount: number) {
   ];
 
   const reviews = [];
-  // Use actual review count or default to 30-40 range
+  // Ensure minimum 30 reviews, maximum 50
   const targetReviews = Math.min(50, Math.max(30, reviewCount || 35));
+
+  console.log(
+    `📝 Generating ${targetReviews} ${isSupplemental ? "supplemental" : "fallback"} reviews for ${businessName}`,
+  );
 
   for (let i = 0; i < targetReviews; i++) {
     const authorIndex = i % authors.length;
     const timeIndex = i % timeOptions.length;
 
-    // Realistic rating distribution
+    // Enhanced rating distribution for more realistic spread
     const ratingRand = Math.random();
     let rating, templateIndex;
 
-    if (ratingRand < 0.15) {
-      // 15% negative (1-2 star)
-      rating = Math.random() < 0.6 ? 1 : 2;
+    if (ratingRand < 0.12) {
+      // 12% negative (1-2 star)
+      rating = Math.random() < 0.7 ? 1 : 2;
       templateIndex = i % negativeTemplates.length;
+    } else if (ratingRand < 0.25) {
+      // 13% neutral (3 star)
+      rating = 3;
+      templateIndex = i % positiveTemplates.length;
+    } else if (ratingRand < 0.65) {
+      // 40% good (4 star)
+      rating = 4;
+      templateIndex = i % positiveTemplates.length;
     } else {
-      // 85% positive (3-5 star)
-      if (ratingRand < 0.25)
-        rating = 3; // 10% 3-star
-      else if (ratingRand < 0.6)
-        rating = 4; // 35% 4-star
-      else rating = 5; // 50% 5-star
+      // 35% excellent (5 star)
+      rating = 5;
       templateIndex = i % positiveTemplates.length;
     }
 
@@ -211,16 +323,18 @@ function generateFallbackReviews(businessName: string, reviewCount: number) {
         : positiveTemplates[templateIndex];
 
     reviews.push({
-      id: `fallback_${i + 1}`,
+      id: isSupplemental ? `supplement_${i + 1}` : `fallback_${i + 1}`,
+      businessId: businessName.toLowerCase().replace(/[^a-z0-9]/g, "_"),
       authorName: authors[authorIndex],
       rating: rating,
       text: reviewText,
       timeAgo: timeOptions[timeIndex],
       profilePhotoUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(authors[authorIndex])}&background=random`,
       isReal: false,
+      createdAt: new Date().toISOString(),
     });
   }
 
-  // Sort by rating (show negative reviews first to highlight issues)
-  return reviews.sort((a, b) => a.rating - b.rating);
+  // Mix the reviews for realistic ordering (not all negative first)
+  return reviews.sort(() => Math.random() - 0.5);
 }
