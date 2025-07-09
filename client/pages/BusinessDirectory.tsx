@@ -187,36 +187,43 @@ export default function BusinessDirectory() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
 
-  // Fetch businesses with enhanced error handling and retry logic
+  // Fetch businesses with enhanced error handling and immediate fallback
   const fetchBusinesses = useCallback(async (retryCount = 0): Promise<void> => {
+    // Always load fallback data first to ensure page works
+    if (retryCount === 0) {
+      console.log("🔄 Loading fallback data immediately...");
+      setBusinesses(getFallbackBusinesses());
+      setLoading(false);
+      setError("Using demo data - live data will load when available");
+    }
+
     try {
-      setLoading(true);
-      if (retryCount === 0) setError(null);
+      if (retryCount === 0) console.log("🌐 Attempting to fetch live data...");
 
-      console.log(
-        `Fetching businesses from API... (attempt ${retryCount + 1})`,
-      );
-
-      // Add small delay on first attempt to ensure server is ready
-      if (retryCount === 0) {
-        await new Promise((resolve) => setTimeout(resolve, 500));
-      }
-
-      // Add timeout to prevent hanging requests
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
-
-      const response = await fetch("/api/dubai-visa-services?limit=300", {
-        signal: controller.signal,
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+      // Simplified fetch without complex headers
+      const response = await fetch("/api/businesses", {
         method: "GET",
-        cache: "no-cache",
       });
 
-      clearTimeout(timeoutId);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      if (
+        data.businesses &&
+        Array.isArray(data.businesses) &&
+        data.businesses.length > 0
+      ) {
+        console.log(
+          `✅ Live data loaded: ${data.businesses.length} businesses`,
+        );
+        setBusinesses(data.businesses);
+        setError(null);
+      } else {
+        throw new Error("No businesses data received");
+      }
 
       if (!response.ok) {
         throw new Error(
