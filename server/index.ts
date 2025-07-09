@@ -110,5 +110,11 @@ export function createServer() {
   app.get("/api/admin/company-requests", getCompanyRequests);
   app.put("/api/admin/company-requests/:requestId", updateCompanyRequestStatus);
 
+  // Data persistence routes - Save all data to database and GitHub
+  app.post("/api/admin/save-all-data", saveAllBusinessData);
+  app.post("/api/admin/save-images/:businessId", saveBusinessImagesToGitHub);
+  app.get("/api/admin/persistence-status", getDataPersistenceStatus);
+  app.get("/api/admin/export-data", exportAllData);
+
   return app;
 }
