@@ -39,6 +39,11 @@ import {
   syncAllReviews,
   checkSyncStatus,
 } from "./routes/photo-sync";
+import {
+  getBusinessPhotos,
+  refreshBusinessPhotos,
+  getPhotoStatusBatch,
+} from "./routes/business-photos";
 import { fixBusinessEmailsAndWebsites } from "./routes/fix-business-data";
 import {
   addCompanyRequest,
@@ -111,6 +116,11 @@ export function createServer() {
   app.get("/api/admin/download-status", getDownloadStatus);
   app.post("/api/admin/sync-reviews", syncAllReviews);
   app.get("/api/admin/sync-status", checkSyncStatus);
+
+  // Enhanced business photos API with fallback protection
+  app.get("/api/business-photos/:businessId", getBusinessPhotos);
+  app.post("/api/business-photos/:businessId/refresh", refreshBusinessPhotos);
+  app.post("/api/business-photos/status-batch", getPhotoStatusBatch);
 
   // Fix business data
   app.post("/api/admin/fix-business-data", fixBusinessEmailsAndWebsites);
