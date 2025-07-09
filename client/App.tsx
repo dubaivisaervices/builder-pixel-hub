@@ -16,6 +16,7 @@ import ApiTest from "./pages/ApiTest";
 import AdminSync from "./pages/AdminSync";
 import AdminManage from "./pages/AdminManage";
 import Admin from "./pages/Admin";
+import AdminDashboard from "./pages/AdminDashboard";
 import DatabaseStatus from "./pages/DatabaseStatus";
 import NotFound from "./pages/NotFound";
 
@@ -35,7 +36,8 @@ const App = () => (
           <Route path="/services/:category" element={<BusinessListing />} />
           <Route path="/help-center" element={<HelpCenter />} />
           <Route path="/api-test" element={<ApiTest />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/sync" element={<AdminSync />} />
           <Route path="/admin/manage" element={<AdminManage />} />
           <Route path="/admin/status" element={<DatabaseStatus />} />
