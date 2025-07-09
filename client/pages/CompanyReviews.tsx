@@ -773,17 +773,6 @@ export default function CompanyReviews() {
   const scamAlertLevel =
     scamPercentage > 50 ? "high" : scamPercentage > 25 ? "medium" : "low";
 
-  // Calculate scam reports based on business rating and reviews
-  const calculateScamReports = (rating: number, reviewCount: number) => {
-    if (rating <= 2.0)
-      return Math.floor(reviewCount * 0.15) + Math.floor(Math.random() * 5);
-    if (rating <= 3.0)
-      return Math.floor(reviewCount * 0.08) + Math.floor(Math.random() * 3);
-    if (rating <= 3.5)
-      return Math.floor(reviewCount * 0.03) + Math.floor(Math.random() * 2);
-    return Math.floor(Math.random() * 2);
-  };
-
   // Set scam reports when business data is loaded
   React.useEffect(() => {
     // Business data loaded successfully
@@ -1091,27 +1080,6 @@ export default function CompanyReviews() {
 
                     {/* Compact Action Buttons */}
                     <div className="flex flex-col gap-2 mt-3 md:mt-0">
-                      {/* Scam Reports Counter */}
-                      {scamReports > 0 && (
-                        <div className="flex items-center gap-2">
-                          <Badge
-                            variant="destructive"
-                            className="text-xs animate-pulse"
-                          >
-                            <Shield className="h-3 w-3 mr-1" />
-                            {scamReports} Scam Reports
-                          </Badge>
-                          <Button
-                            onClick={() => setShowScamReports(!showScamReports)}
-                            variant="outline"
-                            size="sm"
-                            className="text-xs px-2 py-1 bg-red-50 hover:bg-red-100 border-red-200"
-                          >
-                            View Reports
-                          </Button>
-                        </div>
-                      )}
-
                       <div className="flex items-center gap-2">
                         <Button
                           onClick={() =>
