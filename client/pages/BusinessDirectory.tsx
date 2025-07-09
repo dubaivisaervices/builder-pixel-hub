@@ -539,70 +539,83 @@ export default function BusinessDirectory() {
           </div>
         </div>
 
-        {/* Category Showcase */}
-        <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
-          <CardContent className="p-4 md:p-6">
-            <div className="text-center mb-4 md:mb-6">
-              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
+        {/* Immigration Services Categories */}
+        <Card className="shadow-xl border-0 bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/40 backdrop-blur-xl">
+          <CardContent className="p-6 md:p-8">
+            <div className="text-center mb-6 md:mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
                 Immigration Services Categories
               </h2>
-              <p className="text-sm md:text-base text-gray-600">
-                Browse services by category to find the right provider for your
-                needs
+              <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
+                Professional visa and immigration services across Dubai. Choose
+                from our verified categories to find the perfect consultant for
+                your needs.
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
               {[
                 {
                   name: "Visa Consulting",
                   icon: "🛂",
+                  description: "Expert visa guidance",
                   count: businesses.filter((b) =>
                     b.category.includes("visa consulting"),
                   ).length,
+                  color: "from-blue-500 to-blue-600",
                 },
                 {
                   name: "Immigration",
                   icon: "✈️",
+                  description: "Complete immigration support",
                   count: businesses.filter((b) =>
                     b.category.includes("immigration"),
                   ).length,
+                  color: "from-green-500 to-green-600",
                 },
                 {
                   name: "Work Permits",
                   icon: "💼",
+                  description: "Employment visa assistance",
                   count: businesses.filter(
                     (b) =>
                       b.category.includes("work") ||
                       b.category.includes("employment"),
                   ).length,
+                  color: "from-purple-500 to-purple-600",
                 },
                 {
                   name: "Student Visas",
                   icon: "🎓",
+                  description: "Education visa processing",
                   count: businesses.filter(
                     (b) =>
                       b.category.includes("student") ||
                       b.category.includes("education"),
                   ).length,
+                  color: "from-orange-500 to-orange-600",
                 },
                 {
                   name: "Tourist Visas",
                   icon: "🏖️",
+                  description: "Visit visa services",
                   count: businesses.filter(
                     (b) =>
                       b.category.includes("tourist") ||
                       b.category.includes("visit"),
                   ).length,
+                  color: "from-teal-500 to-teal-600",
                 },
                 {
                   name: "Business Setup",
                   icon: "🏢",
+                  description: "Business visa solutions",
                   count: businesses.filter(
                     (b) =>
                       b.category.includes("business") ||
                       b.category.includes("company"),
                   ).length,
+                  color: "from-indigo-500 to-indigo-600",
                 },
               ].map((category, index) => (
                 <button
@@ -619,17 +632,29 @@ export default function BusinessDirectory() {
                       handleFilterChange("category", "all");
                     }
                   }}
-                  className="flex flex-col items-center p-3 md:p-4 bg-white/50 backdrop-blur-sm rounded-xl border border-white/30 hover:bg-white/80 hover:scale-105 transition-all duration-300 group"
+                  className="group relative p-4 md:p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/40 hover:bg-white/80 hover:scale-105 hover:shadow-xl transition-all duration-300"
                 >
-                  <div className="text-2xl md:text-3xl mb-2 group-hover:scale-110 transition-transform">
-                    {category.icon}
+                  {/* Background gradient on hover */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-300`}
+                  ></div>
+
+                  <div className="relative z-10">
+                    <div className="text-3xl md:text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                      {category.icon}
+                    </div>
+                    <h3 className="font-bold text-sm md:text-base text-gray-900 mb-1 leading-tight">
+                      {category.name}
+                    </h3>
+                    <p className="text-xs text-gray-600 mb-2">
+                      {category.description}
+                    </p>
+                    <div
+                      className={`inline-flex items-center px-2 py-1 rounded-full bg-gradient-to-r ${category.color} text-white text-xs font-medium`}
+                    >
+                      {category.count || businesses.length} services
+                    </div>
                   </div>
-                  <h3 className="font-semibold text-xs md:text-sm text-gray-900 text-center leading-tight">
-                    {category.name}
-                  </h3>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {category.count || businesses.length} services
-                  </p>
                 </button>
               ))}
             </div>
