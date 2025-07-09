@@ -718,133 +718,113 @@ export default function BusinessDirectory() {
           </Card>
         )}
 
-        {/* Advanced Filters */}
-        <Card className="shadow-xl border-0 bg-gradient-to-r from-white/80 via-blue-50/80 to-purple-50/80 backdrop-blur-xl ring-2 ring-blue-200/50">
-          <CardContent className="p-4 md:p-6">
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                <Filter className="h-5 w-5 mr-2 text-blue-600" />
-                Search & Filter Options
-              </h3>
-              <p className="text-sm text-gray-600">
-                Use the filters below to find the perfect visa service for your
-                needs
+        {/* Attractive Search Section */}
+        <Card className="shadow-2xl border-0 bg-gradient-to-br from-white via-blue-50/50 to-indigo-50/60 backdrop-blur-xl relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-400/5 via-purple-400/5 to-pink-400/5"></div>
+          <CardContent className="relative p-6 md:p-8">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                Search Immigration Consultants
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Find verified visa and immigration consultants in Dubai. Search
+                by name, location, or services offered.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4">
-              {/* Search - Enhanced with highlighting */}
+            {/* Enhanced Search Box */}
+            <div className="max-w-3xl mx-auto mb-6">
               <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl blur-lg opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-blue-500 z-10" />
+                  <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 h-6 w-6 text-blue-500 z-10" />
                   <Input
-                    placeholder="Search businesses..."
+                    placeholder="Search consultants by name, location, or services..."
                     value={filters.search}
                     onChange={(e) =>
                       handleFilterChange("search", e.target.value)
                     }
-                    className="pl-10 bg-white/90 backdrop-blur-sm border-2 border-blue-200/50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 hover:border-blue-300 transition-all duration-300 shadow-lg relative"
+                    className="w-full pl-16 pr-6 py-4 text-lg bg-white/90 backdrop-blur-sm border-2 border-blue-200/50 focus:border-blue-500 focus:ring-4 focus:ring-blue-200/30 hover:border-blue-300 rounded-2xl shadow-xl transition-all duration-300 font-medium"
                   />
+                  {filters.search && (
+                    <button
+                      onClick={() => handleFilterChange("search", "")}
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                      <span className="text-xl">×</span>
+                    </button>
+                  )}
                 </div>
-              </div>
-
-              {/* Category Filter - Enhanced with highlighting */}
-              <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-blue-600 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-                <Select
-                  value={filters.category}
-                  onValueChange={(value) =>
-                    handleFilterChange("category", value)
-                  }
-                >
-                  <SelectTrigger className="bg-white/90 backdrop-blur-sm border-2 border-green-200/50 focus:border-green-500 focus:ring-2 focus:ring-green-200 hover:border-green-300 transition-all duration-300 shadow-lg relative">
-                    <SelectValue placeholder="All Categories" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
-                    {categories.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category.charAt(0).toUpperCase() + category.slice(1)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Rating Filter - Enhanced with highlighting */}
-              <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-                <Select
-                  value={filters.ratingFilter.toString()}
-                  onValueChange={(value) =>
-                    handleFilterChange("ratingFilter", parseInt(value))
-                  }
-                >
-                  <SelectTrigger className="bg-white/90 backdrop-blur-sm border-2 border-yellow-200/50 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 hover:border-yellow-300 transition-all duration-300 shadow-lg relative">
-                    <SelectValue placeholder="Any Rating" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="0">⭐ Any Rating</SelectItem>
-                    <SelectItem value="4">⭐⭐⭐⭐ 4+ Stars</SelectItem>
-                    <SelectItem value="3">⭐⭐⭐ 3+ Stars</SelectItem>
-                    <SelectItem value="2">⭐⭐ 2+ Stars</SelectItem>
-                    <SelectItem value="1">⭐ 1+ Stars</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Sort By - Enhanced styling */}
-              <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-                <Select
-                  value={filters.sortBy}
-                  onValueChange={(value) =>
-                    handleFilterChange("sortBy", value as FilterState["sortBy"])
-                  }
-                >
-                  <SelectTrigger className="bg-white/90 backdrop-blur-sm border-2 border-purple-200/50 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 hover:border-purple-300 transition-all duration-300 shadow-lg relative">
-                    <SelectValue placeholder="Sort By" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="rating">🏆 Highest Rated</SelectItem>
-                    <SelectItem value="reviews">💬 Most Reviews</SelectItem>
-                    <SelectItem value="name">🔤 Name A-Z</SelectItem>
-                    <SelectItem value="newest">🆕 Recently Added</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
             </div>
 
-            {/* View Toggle and Stats */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="flex items-center space-x-2">
-                <span className="text-xs md:text-sm text-gray-600 mr-2 hidden sm:inline">
-                  View:
+            {/* Compact Filter Bar */}
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4 text-gray-500" />
+                <span className="text-sm font-medium text-gray-700">
+                  Filters:
                 </span>
-                <Button
-                  variant={viewMode.mode === "grid" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setViewMode({ mode: "grid" })}
-                  className="h-8"
-                >
-                  <Grid3X3 className="h-3 w-3 md:h-4 md:w-4" />
-                  <span className="ml-1 hidden sm:inline">Grid</span>
-                </Button>
-                <Button
-                  variant={viewMode.mode === "list" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setViewMode({ mode: "list" })}
-                  className="h-8"
-                >
-                  <List className="h-3 w-3 md:h-4 md:w-4" />
-                  <span className="ml-1 hidden sm:inline">List</span>
-                </Button>
               </div>
 
-              <div className="text-xs md:text-sm text-gray-600 text-center sm:text-right">
-                Showing {displayedBusinesses.length} of{" "}
-                {filteredBusinesses.length} results
+              {/* Category Filter */}
+              <Select
+                value={filters.category}
+                onValueChange={(value) => handleFilterChange("category", value)}
+              >
+                <SelectTrigger className="w-40 bg-white/70 border border-gray-300 hover:border-blue-400 transition-colors">
+                  <SelectValue placeholder="Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Rating Filter */}
+              <Select
+                value={filters.ratingFilter.toString()}
+                onValueChange={(value) =>
+                  handleFilterChange("ratingFilter", parseInt(value))
+                }
+              >
+                <SelectTrigger className="w-36 bg-white/70 border border-gray-300 hover:border-yellow-400 transition-colors">
+                  <SelectValue placeholder="Rating" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="0">Any Rating</SelectItem>
+                  <SelectItem value="4">4+ Stars</SelectItem>
+                  <SelectItem value="3">3+ Stars</SelectItem>
+                  <SelectItem value="2">2+ Stars</SelectItem>
+                  <SelectItem value="1">1+ Stars</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {/* Sort Filter */}
+              <Select
+                value={filters.sortBy}
+                onValueChange={(value) =>
+                  handleFilterChange("sortBy", value as FilterState["sortBy"])
+                }
+              >
+                <SelectTrigger className="w-36 bg-white/70 border border-gray-300 hover:border-purple-400 transition-colors">
+                  <SelectValue placeholder="Sort" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="rating">Highest Rated</SelectItem>
+                  <SelectItem value="reviews">Most Reviews</SelectItem>
+                  <SelectItem value="name">Name A-Z</SelectItem>
+                  <SelectItem value="newest">Recently Added</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {/* Results Count */}
+              <div className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                {filteredBusinesses.length} consultants found
               </div>
             </div>
           </CardContent>
