@@ -1194,12 +1194,11 @@ export default function CompanyReviews() {
                         rel="noopener noreferrer"
                         className="text-sm font-medium text-blue-600 hover:text-blue-800 truncate flex items-center"
                       >
-                          Visit Site
-                          <ExternalLink className="h-3 w-3 ml-1" />
-                        </a>
-                      </div>
+                        Visit Site
+                        <ExternalLink className="h-3 w-3 ml-1" />
+                      </a>
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
 
