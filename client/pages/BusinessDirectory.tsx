@@ -652,6 +652,58 @@ export default function BusinessDirectory() {
           </Card>
         )}
 
+        {/* Latest Immigration & Visa Services Categories */}
+        <Card className="shadow-xl border-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white mb-8">
+          <CardContent className="p-6 md:p-8">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold mb-3">
+                Latest Immigration & Visa Services
+              </h2>
+              <p className="text-blue-100 max-w-2xl mx-auto">
+                Discover the newest and most comprehensive visa services
+                available in Dubai
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { name: "Digital Nomad Visa", icon: "💻", new: true },
+                { name: "Green Visa (5-Year)", icon: "🌿", new: true },
+                { name: "Golden Visa Program", icon: "🏆", popular: true },
+                { name: "Freelancer Permit", icon: "🎨", new: true },
+                { name: "Remote Work Visa", icon: "🌍", new: true },
+                { name: "Startup Visa", icon: "🚀", popular: true },
+                { name: "Investor Visa", icon: "💰", popular: true },
+                { name: "Retirement Visa", icon: "🏖️", new: true },
+              ].map((service, index) => (
+                <div
+                  key={index}
+                  className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center hover:bg-white/20 transition-all cursor-pointer"
+                  onClick={() =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      search: service.name.toLowerCase(),
+                    }))
+                  }
+                >
+                  <div className="text-2xl mb-2">{service.icon}</div>
+                  <div className="text-sm font-medium">{service.name}</div>
+                  {service.new && (
+                    <Badge className="bg-green-500 text-white text-xs mt-1">
+                      NEW
+                    </Badge>
+                  )}
+                  {service.popular && (
+                    <Badge className="bg-yellow-500 text-black text-xs mt-1">
+                      POPULAR
+                    </Badge>
+                  )}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Business Grid */}
         {filteredBusinesses.length > 0 && (
           <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
