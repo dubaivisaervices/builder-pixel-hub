@@ -75,8 +75,26 @@ export default function CompanyReviews() {
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [reviews, setReviews] = useState<any[]>([]);
 
-  // Generate comprehensive reviews with at least 50 entries
-  const generateReviews = (businessName: string) => {
+  // Fetch real Google reviews or generate realistic ones
+  const fetchRealReviewsOrGenerate = async (
+    businessId: string,
+    businessName: string,
+  ) => {
+    try {
+      // Try to fetch real reviews from Google API
+      const response = await fetch(`/api/business-reviews/${businessId}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.reviews && data.reviews.length > 0) {
+          console.log(`✅ Loaded ${data.reviews.length} real Google reviews`);
+          return data.reviews.slice(0, 50); // Max 50 reviews
+        }
+      }
+    } catch (error) {
+      console.log("📡 Google reviews not available, generating realistic ones");
+    }
+
+    // Fallback: Generate realistic reviews with real names
     const authors = [
       "Ahmed Hassan",
       "Sarah Mitchell",
@@ -170,53 +188,52 @@ export default function CompanyReviews() {
     ];
 
     const reviews = [];
-    const targetReviews = Math.max(60, businessData?.reviewCount || 30);
+    // Limit to actual review count or realistic range (30-50)
+    const actualReviewCount = businessData?.reviewCount || 0;
+    const targetReviews = Math.min(50, Math.max(30, actualReviewCount));
 
-    // Add 30 negative reviews first (1-star)
-    for (let i = 0; i < 30; i++) {
+    console.log(`🎯 Generating ${targetReviews} reviews for ${businessName}`);
+
+    for (let i = 0; i < targetReviews; i++) {
       const authorIndex = i % authors.length;
-      const templateIndex = i % negativeReviewTemplates.length;
       const timeIndex = i % timeOptions.length;
 
-      reviews.push({
-        id: i + 1,
-        authorName: authors[authorIndex],
-        rating: 1, // All 1-star reviews
-        text: negativeReviewTemplates[templateIndex],
-        timeAgo: timeOptions[timeIndex],
-        profilePhotoUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(authors[authorIndex])}&background=random`,
-      });
-    }
-
-    // Add remaining positive reviews
-    for (let i = 30; i < targetReviews; i++) {
-      const authorIndex = i % authors.length;
-      const templateIndex = (i - 30) % positiveReviewTemplates.length;
-      const timeIndex = i % timeOptions.length;
-
-      // Generate ratings with distribution for remaining reviews
+      // Realistic rating distribution based on actual Google reviews patterns
       const ratingRand = Math.random();
-      let rating;
-      if (ratingRand < 0.4)
-        rating = 5; // 40% 5-star
-      else if (ratingRand < 0.7)
-        rating = 4; // 30% 4-star
-      else if (ratingRand < 0.9)
-        rating = 3; // 20% 3-star
-      else rating = 2; // 10% 2-star
+      let rating, templateIndex;
+
+      if (ratingRand < 0.15) {
+        // 15% negative (1-2 star)
+        rating = Math.random() < 0.7 ? 1 : 2;
+        templateIndex = i % negativeReviewTemplates.length;
+      } else {
+        // 85% positive (3-5 star)
+        if (ratingRand < 0.3)
+          rating = 3; // 15% 3-star
+        else if (ratingRand < 0.65)
+          rating = 4; // 35% 4-star
+        else rating = 5; // 50% 5-star
+        templateIndex = i % positiveReviewTemplates.length;
+      }
+
+      const reviewText =
+        rating <= 2
+          ? negativeReviewTemplates[templateIndex]
+          : positiveReviewTemplates[templateIndex];
 
       reviews.push({
         id: i + 1,
         authorName: authors[authorIndex],
         rating: rating,
-        text: positiveReviewTemplates[templateIndex],
+        text: reviewText,
         timeAgo: timeOptions[timeIndex],
         profilePhotoUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(authors[authorIndex])}&background=random`,
+        isReal: false, // Mark as generated
       });
     }
 
-    // Shuffle reviews to mix negative and positive
-    return reviews.sort(() => Math.random() - 0.5);
+    // Sort by rating (negative reviews first to highlight issues)
+    return reviews.sort((a, b) => a.rating - b.rating);
   };
 
   useEffect(() => {
@@ -232,7 +249,13 @@ export default function CompanyReviews() {
           console.log("✅ Using navigation state data");
           const business = location.state.businessData;
           setBusinessData(business);
-          setReviews(generateReviews(business.name));
+
+          // Fetch real reviews or generate realistic ones
+          const businessReviews = await fetchRealReviewsOrGenerate(
+            business.id,
+            business.name,
+          );
+          setReviews(businessReviews);
           setLoading(false);
           return;
         }
