@@ -145,28 +145,37 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
     }
 
     if (finalReviews.length > 0) {
-      // If we have some Google reviews but less than 30, supplement with generated ones
-      if (googleReviews.length < 30) {
-        const additionalCount = 30 - googleReviews.length;
+      // If we have some reviews but less than 30, supplement with generated ones
+      if (finalReviews.length < 30) {
+        const originalCount = finalReviews.length;
+        const additionalCount = 30 - finalReviews.length;
         const supplementalReviews = generateFallbackReviews(
           business.name,
           additionalCount,
           true, // Mark as supplemental
         );
-        finalReviews = [...googleReviews, ...supplementalReviews];
+        finalReviews = [...finalReviews, ...supplementalReviews];
         console.log(
-          `📝 Supplemented ${googleReviews.length} Google reviews with ${additionalCount} generated reviews`,
+          `📝 Supplemented ${originalCount} existing reviews with ${additionalCount} generated reviews`,
         );
       }
 
+      const originalCount =
+        googleReviews.length > 0
+          ? googleReviews.length
+          : dbReviews?.length || 0;
       return res.json({
         success: true,
         reviews: finalReviews.slice(0, 50), // Limit to 50 total reviews
         source:
-          googleReviews.length >= 30 ? "google_api" : "google_plus_generated",
+          originalCount >= 30
+            ? googleReviews.length > 0
+              ? "google_api"
+              : "database"
+            : "supplemented",
         count: finalReviews.length,
-        googleCount: googleReviews.length,
-        generatedCount: finalReviews.length - googleReviews.length,
+        originalCount: originalCount,
+        generatedCount: finalReviews.length - originalCount,
       });
     }
 
