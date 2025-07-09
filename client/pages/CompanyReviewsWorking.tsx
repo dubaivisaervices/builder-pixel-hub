@@ -1,34 +1,26 @@
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import GoogleReviewsWidget from "@/components/GoogleReviewsWidget";
-import {
-  ArrowLeft,
-  AlertTriangle,
-  MapPin,
-  Star,
-  Globe,
-  Phone,
-  Mail,
-  Building2,
-  Users,
-  MessageSquare,
-  Share2,
-  Copy,
-  Facebook,
-  Twitter,
-  Camera,
-  Shield,
-  ExternalLink,
-  Home,
-  ChevronRight,
-  Clock,
-  Award,
-  TrendingUp,
-  Send,
-} from "lucide-react";
+// Modern Company Profile - Redirect to new design
+import { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
+export default function CompanyReviewsWorking() {
+  const { location: locationParam, companyName } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirect to new modern profile page
+    const newPath = `/modern-profile/${locationParam}/${companyName}`;
+    navigate(newPath, { replace: true });
+  }, [locationParam, companyName, navigate]);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
+      <div className="text-center space-y-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+        <p className="text-gray-600">Redirecting to modern profile...</p>
+      </div>
+    </div>
+  );
+}
 
 interface BusinessData {
   id: string;
