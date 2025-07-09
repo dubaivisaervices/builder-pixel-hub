@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -171,13 +171,14 @@ const ITEMS_PER_PAGE = 12;
 
 export default function BusinessDirectory() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // State management with proper typing
   const [businesses, setBusinesses] = useState<BusinessData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<FilterState>({
-    search: "",
+    search: location.state?.searchTerm || "",
     category: "all",
     sortBy: "rating",
     ratingFilter: 0,
