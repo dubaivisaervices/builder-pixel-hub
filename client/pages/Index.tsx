@@ -830,7 +830,11 @@ export default function Index() {
                       {/* Protect Community Search Suggestions */}
                       {showProtectSuggestions &&
                         protectCommunitySuggestions.length > 0 && (
-                          <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-60 overflow-y-auto">
+                          <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-80 overflow-y-auto">
+                            <div className="p-3 border-b border-gray-100 bg-red-50 text-sm text-red-600 font-medium">
+                              {protectCommunitySuggestions.length} businesses
+                              available to report
+                            </div>
                             {protectCommunitySuggestions.map((business) => (
                               <div
                                 key={business.id}
