@@ -253,11 +253,11 @@ export default function Index() {
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
-      navigate("/services", {
+      navigate("/dubai-businesses", {
         state: { searchTerm: searchTerm.trim() },
       });
     } else {
-      navigate("/services");
+      navigate("/dubai-businesses");
     }
     setShowSuggestions(false);
   };
@@ -352,18 +352,20 @@ export default function Index() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Navigation Header */}
       <nav className="bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-lg md:sticky md:top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-2 md:py-4">
             {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-xl">
-                <Shield className="h-8 w-8 text-white" />
+            <div className="flex items-center space-x-2 md:space-x-3">
+              <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-1.5 md:p-2 rounded-lg md:rounded-xl">
+                <Shield className="h-6 w-6 md:h-8 md:w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">
+                <h1 className="text-sm md:text-xl font-bold text-gray-900">
                   Dubai Visa Services
                 </h1>
-                <p className="text-xs text-gray-600">Trusted Directory</p>
+                <p className="text-xs text-gray-600 hidden sm:block">
+                  Trusted Directory
+                </p>
               </div>
             </div>
 
@@ -387,23 +389,23 @@ export default function Index() {
             </div>
 
             {/* Mobile Menu */}
-            <div className="md:hidden flex items-center space-x-3">
+            <div className="md:hidden flex items-center space-x-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate("/dubai-businesses")}
-                className="flex items-center space-x-1"
+                className="flex items-center space-x-1 text-xs px-2 py-1"
               >
-                <Building2 className="h-4 w-4" />
+                <Building2 className="h-3 w-3" />
                 <span>Directory</span>
               </Button>
               <Button
                 size="sm"
                 onClick={() => navigate("/complaint")}
-                className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white"
+                className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-xs px-2 py-1"
               >
-                <AlertTriangle className="h-4 w-4 mr-1" />
-                Report
+                <AlertTriangle className="h-3 w-3 mr-1" />
+                <span>Report</span>
               </Button>
             </div>
           </div>
