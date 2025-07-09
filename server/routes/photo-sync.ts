@@ -24,6 +24,17 @@ export const downloadAllPhotos: RequestHandler = async (req, res) => {
   try {
     console.log("🖼️ Starting comprehensive photo download...");
 
+    // Check if another download process is already running
+    if (downloadInProgress) {
+      return res.status(409).json({
+        error: "Photo download already in progress",
+        message: "Please wait for the current download to complete",
+        inProgress: true,
+      });
+    }
+
+    downloadInProgress = true;
+
     const businesses = await businessService.getAllBusinesses();
     const results: PhotoDownloadResult[] = [];
     let totalPhotosDownloaded = 0;
