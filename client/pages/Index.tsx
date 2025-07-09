@@ -44,6 +44,14 @@ export default function Index() {
   );
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [allBusinesses, setAllBusinesses] = useState<BusinessData[]>([]);
+  const [showAddCompanyPopup, setShowAddCompanyPopup] = useState(false);
+  const [companyNotFound, setCompanyNotFound] = useState(false);
+  const [newCompanyData, setNewCompanyData] = useState({
+    name: "",
+    address: "",
+    city: "",
+    description: "",
+  });
   const [stats, setStats] = useState({
     totalBusinesses: 0,
     totalReviews: 0,
@@ -289,12 +297,54 @@ export default function Index() {
   const handleQuickReport = (e: React.FormEvent) => {
     e.preventDefault();
     if (companyName.trim()) {
-      navigate("/complaint", {
-        state: {
-          companyName: companyName.trim(),
-          companyLocation: "Dubai, UAE",
+      // Check if company exists in database
+      const foundCompany = allBusinesses.find((business) =>
+        business.name.toLowerCase().includes(companyName.trim().toLowerCase()),
+      );
+
+      if (foundCompany) {
+        // Company exists, proceed to report
+        navigate("/complaint", {
+          state: {
+            companyName: foundCompany.name,
+            companyLocation: foundCompany.address,
+          },
+        });
+      } else {
+        // Company not found, show add company option
+        setCompanyNotFound(true);
+        setNewCompanyData({
+          name: companyName.trim(),
+          address: "",
+          city: "Dubai",
+          description: "",
+        });
+      }
+    }
+  };
+
+  const handleAddCompanyRequest = async () => {
+    try {
+      const response = await fetch("/api/admin/add-company-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify(newCompanyData),
       });
+
+      if (response.ok) {
+        alert("Company addition request submitted to admin successfully!");
+        setShowAddCompanyPopup(false);
+        setCompanyNotFound(false);
+        setCompanyName("");
+        setNewCompanyData({ name: "", address: "", city: "", description: "" });
+      } else {
+        alert("Failed to submit request. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting company request:", error);
+      alert("Failed to submit request. Please try again.");
     }
   };
 
