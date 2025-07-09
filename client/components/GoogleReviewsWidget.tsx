@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageSquare, Star, ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { MessageSquare, Star, ExternalLink, User } from "lucide-react";
+
+interface Review {
+  id: string;
+  authorName: string;
+  rating: number;
+  text: string;
+  timeAgo: string;
+  profilePhotoUrl?: string;
+}
 
 interface GoogleReviewsWidgetProps {
   businessName: string;
@@ -16,15 +26,43 @@ export default function GoogleReviewsWidget({
   reviewCount = 25,
 }: GoogleReviewsWidgetProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Simulate loading time for the widget
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
+    const fetchReviews = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
 
-    return () => clearTimeout(timer);
-  }, []);
+        // Try to fetch real reviews from our API
+        const response = await fetch(`/api/business-reviews/${placeId}`);
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.reviews && data.reviews.length > 0) {
+            // Limit to first 10 reviews for display
+            setReviews(data.reviews.slice(0, 10));
+            console.log(`✅ Loaded ${data.reviews.length} reviews for display`);
+          } else {
+            console.log("📭 No reviews available from API");
+            setReviews([]);
+          }
+        } else {
+          console.log(`❌ API Response error: ${response.status}`);
+          setReviews([]);
+        }
+      } catch (err) {
+        console.error("❌ Error fetching reviews:", err);
+        setError("Failed to load reviews");
+        setReviews([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [placeId]);
 
   // Generate Google Maps reviews URL
   const googleMapsUrl = `https://www.google.com/maps/place/?q=place_id:${placeId}`;
