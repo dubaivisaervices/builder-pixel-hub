@@ -908,18 +908,27 @@ export default function Index() {
                     </div>
 
                     {companyNotFound && (
-                      <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3 md:p-4 mt-3">
                         <div className="text-center">
-                          <p className="text-yellow-800 mb-3">
+                          <p className="text-yellow-800 mb-3 text-sm md:text-base">
                             Company "{newCompanyData.name}" not found in our
                             database.
                           </p>
                           <Button
                             type="button"
-                            onClick={() => setShowAddCompanyPopup(true)}
-                            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setShowAddCompanyPopup(true);
+                            }}
+                            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white w-full md:w-auto px-4 py-3 text-sm md:text-base touch-manipulation"
+                            style={{ WebkitTapHighlightColor: "transparent" }}
                           >
-                            Add This Company - Request Admin
+                            <Building2 className="h-4 w-4 mr-2" />
+                            <span className="hidden sm:inline">
+                              Add This Company - Request Admin
+                            </span>
+                            <span className="sm:hidden">Add Company</span>
                           </Button>
                         </div>
                       </div>
