@@ -322,7 +322,11 @@ export default function CompanyReviews() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => alert(`Total scam reports for ${businessData.name}: 0 reports found. This business has a clean record.`)}
+              onClick={() =>
+                alert(
+                  `Total scam reports for ${businessData.name}: 0 reports found. This business has a clean record.`,
+                )
+              }
               className="border-yellow-500 text-yellow-600 hover:bg-yellow-50 flex items-center space-x-1 ml-2"
             >
               <AlertTriangle className="h-4 w-4" />
@@ -331,6 +335,7 @@ export default function CompanyReviews() {
             </Button>
           </div>
 
+          <div className="flex items-center space-x-2">
             {/* Share Button */}
             <div className="relative">
               <Button
