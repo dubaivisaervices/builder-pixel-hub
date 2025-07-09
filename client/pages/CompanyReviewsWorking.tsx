@@ -691,6 +691,138 @@ export default function CompanyReviews() {
         </div>
       </div>
 
+      {/* Main Footer Section */}
+      <footer className="bg-gray-900 text-white py-16 mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-lg">
+                  <Shield className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-xl font-bold">Dubai Visa Services</span>
+              </div>
+              <p className="text-gray-400">
+                Dubai's trusted platform for finding verified visa services and
+                protecting against immigration scams.
+              </p>
+
+              {/* View Total Reports Button */}
+              <Button
+                variant="outline"
+                onClick={() =>
+                  alert(
+                    `Total scam reports for ${businessData.name}: 0 reports found`,
+                  )
+                }
+                className="mt-4 text-yellow-600 border-yellow-600 hover:bg-yellow-50"
+              >
+                <AlertTriangle className="h-4 w-4 mr-2" />
+                View Total Reports
+              </Button>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Services</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <button
+                    onClick={() => navigate("/services/work-visa")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Work Visa Services
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/services/tourist-visa")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Tourist Visa Services
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/services/student-visa")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Student Visa Services
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/services/business-visa")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Business Visa Services
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Support</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <button
+                    onClick={() => navigate("/complaint")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Report Scam
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/help-center")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Help Center
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/dubai-businesses")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    Business Directory
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/services")}
+                    className="hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    All Services
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Contact</h3>
+              <div className="space-y-2 text-gray-400">
+                <div className="flex items-center space-x-2">
+                  <Phone className="h-4 w-4" />
+                  <span>+971 4 XXX XXXX</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Mail className="h-4 w-4" />
+                  <span>support@dubaivisaservices.ae</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <MapPin className="h-4 w-4" />
+                  <span>Dubai, UAE</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+            <p>&copy; 2024 Dubai Visa Services. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+
       {/* Bottom padding for sticky footer */}
       <div className="h-16 md:h-20"></div>
     </div>
