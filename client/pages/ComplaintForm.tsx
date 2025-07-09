@@ -53,6 +53,7 @@ export default function ComplaintForm() {
     companyPhone: "",
     country: "",
     visaType: "",
+    issueType: "",
     scamDescription: "",
     amountLost: "",
     incidentDate: "",
@@ -97,6 +98,84 @@ export default function ComplaintForm() {
     const errors: Record<string, string> = {};
 
     if (step === 1) {
+      if (!formData.companyName.trim()) {
+        errors.companyName = "Company name is required";
+      }
+      if (!formData.companyLocation.trim()) {
+        errors.companyLocation = "Company location is required";
+      }
+      if (!formData.country.trim()) {
+        errors.country = "Country is required";
+      }
+      if (!formData.visaType.trim()) {
+        errors.visaType = "Visa type is required";
+      }
+      if (!formData.issueType.trim()) {
+        errors.issueType = "Issue type is required";
+      }
+    }
+
+    if (step === 2) {
+      if (!formData.scamDescription.trim()) {
+        errors.scamDescription = "Description is required";
+      }
+      if (!formData.incidentDate.trim()) {
+        errors.incidentDate = "Incident date is required";
+      }
+    }
+
+    if (step === 3) {
+      if (!formData.reporterName.trim()) {
+        errors.reporterName = "Your name is required";
+      }
+      if (!formData.reporterEmail.trim()) {
+        errors.reporterEmail = "Your email is required";
+      }
+    }
+
+    return errors;
+  };
+
+  const nextStep = () => {
+    const errors = validateStep(currentStep);
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    if (currentStep < 4) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const prevStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const submitForm = async () => {
+    const errors = validateStep(3);
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setSubmitted(true);
+      setCurrentStep(4);
+    } catch (error) {
+      console.error("Submission error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (step === 1) {
       if (!formData.companyName.trim())
         errors.companyName = "Company name is required";
       if (!formData.companyLocation.trim())
