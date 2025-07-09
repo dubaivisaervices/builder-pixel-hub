@@ -38,6 +38,11 @@ import {
   checkSyncStatus,
 } from "./routes/photo-sync";
 import { fixBusinessEmailsAndWebsites } from "./routes/fix-business-data";
+import {
+  addCompanyRequest,
+  getCompanyRequests,
+  updateCompanyRequestStatus,
+} from "./routes/add-company-request";
 
 export function createServer() {
   const app = express();
@@ -93,6 +98,11 @@ export function createServer() {
 
   // Fix business data
   app.post("/api/admin/fix-business-data", fixBusinessEmailsAndWebsites);
+
+  // Company addition requests
+  app.post("/api/admin/add-company-request", addCompanyRequest);
+  app.get("/api/admin/company-requests", getCompanyRequests);
+  app.put("/api/admin/company-requests/:requestId", updateCompanyRequestStatus);
 
   return app;
 }
