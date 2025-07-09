@@ -38,6 +38,7 @@ import {
   getDownloadStatus,
   syncAllReviews,
   checkSyncStatus,
+  optimizeDatabase,
 } from "./routes/photo-sync";
 import {
   getBusinessPhotos,
@@ -116,6 +117,7 @@ export function createServer() {
   app.get("/api/admin/download-status", getDownloadStatus);
   app.post("/api/admin/sync-reviews", syncAllReviews);
   app.get("/api/admin/sync-status", checkSyncStatus);
+  app.post("/api/admin/optimize-database", optimizeDatabase);
 
   // Enhanced business photos API with fallback protection
   app.get("/api/business-photos/:businessId", getBusinessPhotos);

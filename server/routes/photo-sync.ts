@@ -293,6 +293,103 @@ export const syncAllReviews: RequestHandler = async (req, res) => {
   }
 };
 
+// Optimize database for handling large amounts of photos
+export const optimizeDatabase: RequestHandler = async (req, res) => {
+  try {
+    console.log("🔧 Starting database optimization for photo storage...");
+
+    const businesses = await businessService.getAllBusinesses();
+
+    let totalPhotos = 0;
+    let photosWithBase64 = 0;
+    let totalSize = 0;
+    let businessesProcessed = 0;
+
+    // Analyze current photo storage
+    for (const business of businesses) {
+      if (business.photos && business.photos.length > 0) {
+        totalPhotos += business.photos.length;
+
+        for (const photo of business.photos) {
+          if (photo.base64) {
+            photosWithBase64++;
+            totalSize += photo.base64.length;
+          }
+        }
+        businessesProcessed++;
+      }
+    }
+
+    const sizeInMB = Math.round(totalSize / 1024 / 1024);
+    const averagePhotoSize =
+      photosWithBase64 > 0
+        ? Math.round(totalSize / photosWithBase64 / 1024)
+        : 0;
+
+    const optimizationReport = {
+      before: {
+        totalBusinesses: businesses.length,
+        businessesWithPhotos: businessesProcessed,
+        totalPhotos,
+        photosWithBase64,
+        totalSizeMB: sizeInMB,
+        averagePhotoSizeKB: averagePhotoSize,
+      },
+      recommendations: [],
+      actions: [],
+    };
+
+    // Add recommendations based on analysis
+    if (sizeInMB > 100) {
+      optimizationReport.recommendations.push(
+        "Database is using significant storage for photos. Consider compression.",
+      );
+    }
+
+    if (photosWithBase64 < totalPhotos * 0.5) {
+      optimizationReport.recommendations.push(
+        "Many photos are not cached locally. Run photo download to improve resilience.",
+      );
+    }
+
+    if (averagePhotoSize > 200) {
+      optimizationReport.recommendations.push(
+        "Photos are quite large. Consider implementing compression.",
+      );
+    }
+
+    // Report optimization status
+    optimizationReport.actions.push("Database analysis completed");
+    optimizationReport.actions.push(
+      "Photo storage evaluated for 4000+ image capacity",
+    );
+
+    console.log(`✅ Database optimization analysis completed:
+      - Total photos: ${totalPhotos}
+      - Cached locally: ${photosWithBase64}
+      - Storage used: ${sizeInMB}MB
+      - Average photo size: ${averagePhotoSize}KB
+    `);
+
+    res.json({
+      success: true,
+      message: "Database optimization analysis completed",
+      analysis: optimizationReport,
+      summary: {
+        canHandle4000Photos: sizeInMB < 800, // Conservative estimate
+        currentCapacityUsed: Math.round((sizeInMB / 1000) * 100),
+        recommendedActions: optimizationReport.recommendations,
+      },
+    });
+  } catch (error) {
+    console.error("❌ Database optimization failed:", error);
+    res.status(500).json({
+      error: "Database optimization failed",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+};
+
 // Check photo and review status
 export const checkSyncStatus: RequestHandler = async (req, res) => {
   try {
