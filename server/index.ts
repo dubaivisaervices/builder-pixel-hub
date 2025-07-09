@@ -45,6 +45,14 @@ import {
   refreshBusinessPhotos,
   getPhotoStatusBatch,
 } from "./routes/business-photos";
+import {
+  getApiStatus,
+  enableApi,
+  disableApi,
+  resetCounters,
+  getCostReport,
+  testApiConnection,
+} from "./routes/api-control";
 import { fixBusinessEmailsAndWebsites } from "./routes/fix-business-data";
 import {
   addCompanyRequest,
@@ -123,6 +131,14 @@ export function createServer() {
   app.get("/api/business-photos/:businessId", getBusinessPhotos);
   app.post("/api/business-photos/:businessId/refresh", refreshBusinessPhotos);
   app.post("/api/business-photos/status-batch", getPhotoStatusBatch);
+
+  // Google API Connection Control
+  app.get("/api/admin/api-status", getApiStatus);
+  app.post("/api/admin/api-enable", enableApi);
+  app.post("/api/admin/api-disable", disableApi);
+  app.post("/api/admin/api-reset-counters", resetCounters);
+  app.get("/api/admin/api-cost-report", getCostReport);
+  app.post("/api/admin/api-test-connection", testApiConnection);
 
   // Fix business data
   app.post("/api/admin/fix-business-data", fixBusinessEmailsAndWebsites);
