@@ -208,36 +208,38 @@ export default function ComplaintForm() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-pink-50">
-      {/* Animated Header */}
+      {/* Mobile-Friendly Header */}
       <div
-        className={`bg-white/80 backdrop-blur-xl border-b border-red-100 shadow-xl transition-all duration-700 ${fadeIn ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"}`}
+        className={`bg-white/80 backdrop-blur-xl border-b border-red-100 shadow-lg transition-all duration-700 ${fadeIn ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"}`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+        <div className="max-w-7xl mx-auto px-4 py-3 md:py-4">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-2 md:space-y-0">
+            <div className="flex items-center space-x-3">
               <Button
                 variant="ghost"
                 onClick={() => navigate("/")}
+                size="sm"
                 className="flex items-center space-x-2 hover:bg-red-50 transition-colors"
               >
-                <ArrowLeft className="h-5 w-5" />
-                <span>Back to Home</span>
+                <ArrowLeft className="h-4 w-4" />
+                <span className="hidden sm:inline">Back to Home</span>
+                <span className="sm:hidden">Back</span>
               </Button>
-              <div className="flex items-center space-x-3">
-                <div className="bg-gradient-to-br from-red-500 to-pink-600 p-3 rounded-xl shadow-lg">
-                  <Shield className="h-8 w-8 text-white" />
+              <div className="flex items-center space-x-2">
+                <div className="bg-gradient-to-br from-red-500 to-pink-600 p-2 rounded-lg shadow-md">
+                  <Shield className="h-5 w-5 md:h-6 md:w-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">
+                  <h1 className="text-lg md:text-xl font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">
                     Report Immigration Scam
                   </h1>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs md:text-sm text-gray-600">
                     Help protect the community
                   </p>
                 </div>
               </div>
             </div>
-            <div className="hidden md:flex items-center space-x-6">
+            <div className="hidden md:flex items-center space-x-4">
               <div className="flex items-center space-x-2 text-sm">
                 <Users className="h-4 w-4 text-blue-600" />
                 <span className="text-gray-600">Community Protected</span>
