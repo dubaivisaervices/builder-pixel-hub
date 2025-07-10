@@ -1786,11 +1786,7 @@ export default function ComplaintForm() {
 
             {/* Header */}
             <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-6 sm:p-8 relative">
-              <div
-                className={
-                  'absolute inset-0 bg-[url(\'data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Cpath d="M20 20c0 11.046-8.954 20-20 20v20h40V20H20z"/%3E%3C/g%3E%3C/svg%3E\')] opacity-30'
-                }
-              ></div>
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width=%2240%22%20height=%2240%22%20viewBox=%220%200%2040%2040%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg%20fill=%22%23ffffff%22%20fill-opacity=%220.1%22%3E%3Cpath%20d=%22M20%2020c0%2011.046-8.954%2020-20%2020v20h40V20H20z%22/%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
 
               <div className="flex items-center justify-between relative">
                 <div className="flex items-center space-x-4">
