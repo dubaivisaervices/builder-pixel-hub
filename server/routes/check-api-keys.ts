@@ -3,24 +3,22 @@ import { database } from "../database/database";
 
 export async function checkOldApiKeys(req: Request, res: Response) {
   try {
-    const db = await openDb();
-
     // Check for old API key in logo_url
-    const oldLogoKeys = await db.all(`
+    const oldLogoKeys = await database.all(`
       SELECT COUNT(*) as count
       FROM businesses
       WHERE logo_url LIKE '%AIzaSyCDTJEgoCJ8tsbGxuHKIvcu-W0AdP-6lVk%'
     `);
 
     // Check for old API key in photos_json
-    const oldPhotoKeys = await db.all(`
+    const oldPhotoKeys = await database.all(`
       SELECT COUNT(*) as count
       FROM businesses
       WHERE photos_json LIKE '%AIzaSyCDTJEgoCJ8tsbGxuHKIvcu-W0AdP-6lVk%'
     `);
 
     // Get a sample business with old key
-    const sampleBusiness = await db.get(`
+    const sampleBusiness = await database.get(`
       SELECT id, name, logo_url
       FROM businesses
       WHERE logo_url LIKE '%AIzaSyCDTJEgoCJ8tsbGxuHKIvcu-W0AdP-6lVk%'
