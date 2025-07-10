@@ -804,6 +804,9 @@ export default function ComplaintForm() {
                     className="text-sm font-medium text-gray-700 mb-2 block"
                   >
                     Search Company Name *
+                    <span className="text-xs text-gray-500 font-normal ml-2">
+                      ({businesses.length} companies available)
+                    </span>
                   </Label>
                   <div className="relative">
                     <Input
