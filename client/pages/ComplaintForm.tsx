@@ -1116,7 +1116,7 @@ export default function ComplaintForm() {
                   )}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-4">
+              <CardContent className="p-4 sm:p-5 md:p-6 space-y-3 sm:space-y-4">
                 {/* Confidential Notice - Moved to Top */}
                 <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                   <h4 className="font-medium text-blue-900 mb-2 flex items-center">
