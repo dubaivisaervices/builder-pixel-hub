@@ -1369,12 +1369,14 @@ export default function CompanyProfileModern() {
                       }}
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">
-                      {businessData.name
-                        .split(" ")
-                        .map((word) => word[0])
-                        .join("")
-                        .substring(0, 2)}
+                    <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                      <span className="text-white font-bold text-lg uppercase">
+                        {businessData.name
+                          .split(" ")
+                          .map((word) => word[0])
+                          .join("")
+                          .substring(0, 2)}
+                      </span>
                     </div>
                   )}
                 </div>
