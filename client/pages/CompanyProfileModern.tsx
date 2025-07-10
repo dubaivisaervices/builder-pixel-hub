@@ -1608,7 +1608,7 @@ export default function CompanyProfileModern() {
                       <span>Why Choose Us</span>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="p-4 sm:p-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                       <div className="flex items-center space-x-3 p-2 rounded-lg bg-blue-50">
                         <Verified className="h-5 w-5 text-blue-600" />
