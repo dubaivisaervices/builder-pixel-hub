@@ -186,6 +186,86 @@ export default function BusinessSearchManager() {
     }
   };
 
+  const addBusinessManually = async () => {
+    const placeIdInput = document.getElementById(
+      "manualPlaceId",
+    ) as HTMLInputElement;
+    const nameInput = document.getElementById(
+      "manualBusinessName",
+    ) as HTMLInputElement;
+
+    const placeId = placeIdInput?.value.trim();
+    const businessName = nameInput?.value.trim();
+
+    if (!placeId) {
+      alert("Please enter a Google Place ID");
+      return;
+    }
+
+    setAddProgress({
+      stage: "adding-manually",
+      current: 1,
+      total: 2,
+      isRunning: true,
+      success: false,
+    });
+
+    try {
+      const response = await fetch("/api/admin/add-business-manually", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          place_id: placeId,
+          name: businessName || undefined,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setAddProgress({
+          stage: "completed",
+          current: 2,
+          total: 2,
+          isRunning: false,
+          success: true,
+        });
+
+        // Clear inputs
+        placeIdInput.value = "";
+        nameInput.value = "";
+
+        // Show success message
+        alert(
+          `✅ ${data.message}\n\nBusiness ID: ${data.business_id}\nReviews added: ${data.reviews_added}\n\n${data.note}`,
+        );
+      } else {
+        throw new Error(data.details || "Failed to add business");
+      }
+    } catch (error) {
+      console.error("Manual addition error:", error);
+      setAddProgress({
+        stage: "error",
+        current: 0,
+        total: 0,
+        isRunning: false,
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+      });
+    }
+
+    // Reset progress after 3 seconds
+    setTimeout(() => {
+      setAddProgress({
+        stage: "idle",
+        current: 0,
+        total: 0,
+        isRunning: false,
+        success: false,
+      });
+    }, 3000);
+  };
+
   const addBusinessToDatabase = async (business: SearchResult) => {
     setAddProgress({
       stage: "connecting",
