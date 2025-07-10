@@ -1914,7 +1914,7 @@ export default function CompanyProfileModern() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-4 md:space-y-6">
+          <div className="space-y-3 sm:space-y-4 md:space-y-6">
             {/* Contact Information */}
             <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
               <CardHeader>
