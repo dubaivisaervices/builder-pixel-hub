@@ -607,6 +607,7 @@ export default function CompanyProfileModern() {
                     "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop",
                     "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=400&h=300&fit=crop",
                     "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=400&h=300&fit=crop",
+                    "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=400&h=300&fit=crop",
                   ], // Prioritize local cached photos
             description:
               business.description ||
@@ -767,10 +768,10 @@ export default function CompanyProfileModern() {
             <ChevronRight className="h-4 w-4" />
             <Button
               variant="ghost"
-              onClick={() => navigate("/services")}
+              onClick={() => navigate("/dubai-businesses")}
               className="text-white/80 hover:text-white hover:bg-white/10 px-2 py-1"
             >
-              Services
+              Business Directory
             </Button>
             <ChevronRight className="h-4 w-4" />
             <span className="text-white font-medium">
@@ -945,9 +946,7 @@ export default function CompanyProfileModern() {
                 <TabsTrigger value="reviews" className="text-xs lg:text-sm">
                   Reviews
                 </TabsTrigger>
-                <TabsTrigger value="photos" className="text-xs lg:text-sm">
-                  Photos
-                </TabsTrigger>
+
                 <TabsTrigger value="services" className="text-xs lg:text-sm">
                   Services
                 </TabsTrigger>
@@ -1044,65 +1043,6 @@ export default function CompanyProfileModern() {
                   businessId={businessData?.id}
                   businessName={businessData?.name}
                 />
-
-                {/* Business Photos */}
-                <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center space-x-2">
-                      <Camera className="h-5 w-5 text-purple-600" />
-                      <span>Business Photos</span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {businessData.photos && businessData.photos.length > 0 ? (
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        {businessData.photos.slice(0, 6).map((photo, index) => (
-                          <div
-                            key={photo.id || index}
-                            className="relative group cursor-pointer rounded-lg overflow-hidden aspect-square"
-                            onClick={() => {
-                              setCurrentImageIndex(index);
-                              setImageGalleryOpen(true);
-                            }}
-                          >
-                            <img
-                              src={
-                                photo.base64
-                                  ? `data:image/jpeg;base64,${photo.base64}`
-                                  : photo.url ||
-                                    `https://picsum.photos/400/300?random=${index}`
-                              }
-                              alt={
-                                photo.caption || `Business Photo ${index + 1}`
-                              }
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                              onError={(e) => {
-                                e.currentTarget.src = `https://picsum.photos/400/300?random=${index}`;
-                              }}
-                            />
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                              <Eye className="h-6 w-6 text-white" />
-                            </div>
-                            <div className="absolute bottom-2 left-2 right-2">
-                              <p className="text-white text-xs bg-black/50 px-2 py-1 rounded">
-                                {photo.caption || `Business Photo ${index + 1}`}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-12">
-                        <ImageIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                        <p className="text-gray-500">No photos available</p>
-                        <p className="text-sm text-gray-400 mt-2">
-                          Photos will be displayed when uploaded by the business
-                          owner
-                        </p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
 
                 {/* Government Authorization Section */}
                 <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
@@ -1219,67 +1159,6 @@ export default function CompanyProfileModern() {
                       rating={businessData.rating}
                       reviewCount={businessData.reviewCount}
                     />
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* Photos Tab */}
-              <TabsContent value="photos">
-                <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center space-x-2">
-                      <Camera className="h-5 w-5 text-purple-600" />
-                      <span>Photo Gallery</span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {businessData.photos && businessData.photos.length > 0 ? (
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        {businessData.photos.map((photo, index) => (
-                          <div
-                            key={photo.id || index}
-                            className="relative group cursor-pointer rounded-lg overflow-hidden aspect-square"
-                            onClick={() => {
-                              setCurrentImageIndex(index);
-                              setImageGalleryOpen(true);
-                            }}
-                          >
-                            <img
-                              src={
-                                photo.base64
-                                  ? `data:image/jpeg;base64,${photo.base64}`
-                                  : photo.url ||
-                                    `https://picsum.photos/400/300?random=${index}`
-                              }
-                              alt={
-                                photo.caption || `Business Photo ${index + 1}`
-                              }
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                              onError={(e) => {
-                                e.currentTarget.src = `https://picsum.photos/400/300?random=${index}`;
-                              }}
-                            />
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                              <Eye className="h-6 w-6 text-white" />
-                            </div>
-                            <div className="absolute bottom-2 left-2 right-2">
-                              <p className="text-white text-xs bg-black/50 px-2 py-1 rounded">
-                                {photo.caption || `Business Photo ${index + 1}`}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-12">
-                        <ImageIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                        <p className="text-gray-500">No photos available</p>
-                        <p className="text-sm text-gray-400 mt-2">
-                          Photos will be displayed when uploaded by the business
-                          owner
-                        </p>
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -1561,115 +1440,30 @@ export default function CompanyProfileModern() {
                   service experiences.
                 </p>
 
-                <Dialog
-                  open={isReportDialogOpen}
-                  onOpenChange={setIsReportDialogOpen}
+                <Button
+                  variant="destructive"
+                  className="w-full"
+                  onClick={() =>
+                    navigate("/complaint", {
+                      state: {
+                        companyName: businessData.name,
+                        companyId: businessData.id,
+                        preselectedCompany: businessData.name,
+                      },
+                    })
+                  }
                 >
-                  <DialogTrigger asChild>
-                    <Button variant="destructive" className="w-full">
-                      <AlertTriangle className="h-4 w-4 mr-2" />
-                      Report Scam
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-md">
-                    <DialogHeader>
-                      <DialogTitle className="flex items-center space-x-2">
-                        <Flag className="h-5 w-5 text-red-600" />
-                        <span>Report Business Issues</span>
-                      </DialogTitle>
-                      <DialogDescription>
-                        Help us maintain a safe community by reporting any
-                        issues with this business.
-                      </DialogDescription>
-                    </DialogHeader>
-
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-sm font-medium text-gray-700 mb-2 block">
-                          Type of Issue
-                        </label>
-                        <Select
-                          value={reportForm.reportType}
-                          onValueChange={(value: any) =>
-                            setReportForm({ ...reportForm, reportType: value })
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select issue type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="scam">Scam / Fraud</SelectItem>
-                            <SelectItem value="poor_service">
-                              Poor Service
-                            </SelectItem>
-                            <SelectItem value="fake_business">
-                              Fake Business
-                            </SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium text-gray-700 mb-2 block">
-                          Description
-                        </label>
-                        <Textarea
-                          placeholder="Please describe the issue in detail..."
-                          value={reportForm.description}
-                          onChange={(e) =>
-                            setReportForm({
-                              ...reportForm,
-                              description: e.target.value,
-                            })
-                          }
-                          className="min-h-[100px]"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium text-gray-700 mb-2 block">
-                          Your Contact (optional)
-                        </label>
-                        <Input
-                          placeholder="Email or phone for follow-up"
-                          value={reportForm.contactInfo}
-                          onChange={(e) =>
-                            setReportForm({
-                              ...reportForm,
-                              contactInfo: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-
-                      <div className="flex space-x-3">
-                        <Button
-                          variant="outline"
-                          onClick={() => setIsReportDialogOpen(false)}
-                          className="flex-1"
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          onClick={handleReportSubmit}
-                          className="flex-1 bg-red-600 hover:bg-red-700"
-                          disabled={!reportForm.description.trim()}
-                        >
-                          <Send className="h-4 w-4 mr-2" />
-                          Submit Report
-                        </Button>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                  <AlertTriangle className="h-4 w-4 mr-2" />
+                  Report Scam
+                </Button>
 
                 <Button
                   variant="outline"
-                  className="w-full text-orange-600 border-orange-200 hover:bg-orange-50"
+                  className="w-full text-blue-600 border-blue-200 hover:bg-blue-50"
+                  onClick={() => navigate("/help-center")}
                 >
-                  <MessageCircleQuestion className="h-4 w-4 mr-2" />
-                  Ask Question
+                  <Building2 className="h-4 w-4 mr-2" />
+                  Add New Company
                 </Button>
               </CardContent>
             </Card>
