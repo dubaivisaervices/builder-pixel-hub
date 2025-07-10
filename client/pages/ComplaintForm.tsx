@@ -1068,13 +1068,14 @@ export default function ComplaintForm() {
                 <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                   <h4 className="font-medium text-blue-900 mb-2 flex items-center">
                     <Shield className="h-4 w-4 mr-2" />
-                    Privacy & Security Notice
+                    Privacy & Admin Review Process
                   </h4>
                   <p className="text-sm text-blue-800 leading-relaxed">
-                    Your personal information is kept strictly confidential and
-                    used only for investigating this report. We may contact you
-                    for additional details if needed. Your identity will not be
-                    disclosed to the reported company.
+                    <strong>Admin Approval:</strong> All reports and files are
+                    reviewed by our admin team before publication. Your personal
+                    information remains strictly confidential during this
+                    process. Your identity will not be disclosed to the reported
+                    company.
                   </p>
                 </div>
 
