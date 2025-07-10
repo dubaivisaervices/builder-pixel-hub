@@ -273,6 +273,19 @@ export default function HelpCenter() {
         </div>
       </div>
 
+      {/* Back Button */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-gray-600 border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 text-sm sm:text-base"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </Button>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Quick Actions Grid */}
         <div className="mb-16">
