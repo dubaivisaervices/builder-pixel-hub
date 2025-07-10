@@ -428,59 +428,6 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      {/* Navigation Header */}
-      <nav className="bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-lg md:sticky md:top-0 z-50">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-2 md:py-4">
-            {/* Logo */}
-            <div className="flex items-center space-x-2 md:space-x-3">
-              <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-1.5 md:p-2 rounded-lg md:rounded-xl">
-                <Shield className="h-6 w-6 md:h-8 md:w-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-sm md:text-xl font-bold text-gray-900">
-                  Dubai Visa Services
-                </h1>
-                <p className="text-xs text-gray-600 hidden sm:block">
-                  Trusted Directory
-                </p>
-              </div>
-            </div>
-
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-6">
-              <Button
-                variant="ghost"
-                onClick={() => navigate("/dubai-businesses")}
-                className="flex items-center space-x-2"
-              >
-                <Building2 className="h-4 w-4" />
-                <span>Directory</span>
-              </Button>
-              <Button
-                onClick={() => navigate("/complaint")}
-                className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg"
-              >
-                <AlertTriangle className="h-4 w-4 mr-2" />
-                Report Scam
-              </Button>
-            </div>
-
-            {/* Mobile Menu - Only Report Scam */}
-            <div className="md:hidden">
-              <Button
-                size="sm"
-                onClick={() => navigate("/complaint")}
-                className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-xs px-3 py-2"
-              >
-                <AlertTriangle className="h-3 w-3 mr-1" />
-                <span>Report Scam</span>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section */}
       <section
         className={`relative overflow-hidden transition-all duration-1000 ${fadeIn ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
