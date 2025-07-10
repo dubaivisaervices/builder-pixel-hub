@@ -63,6 +63,13 @@ import {
   Mail as MailIcon,
   PhoneCall,
   DollarSign,
+  PenTool,
+  Review,
+  Edit3,
+  Send,
+  CheckCircle2,
+  Clock3,
+  UserCheck2,
 } from "lucide-react";
 
 // Beautiful Community Reports Component
