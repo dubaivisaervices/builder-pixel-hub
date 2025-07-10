@@ -1380,7 +1380,7 @@ export default function CompanyProfileModern() {
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 leading-tight">
+                  <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 leading-tight break-words">
                     {businessData.name}
                   </h1>
                   <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-2 md:mb-3">
