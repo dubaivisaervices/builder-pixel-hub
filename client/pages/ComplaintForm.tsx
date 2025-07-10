@@ -806,31 +806,41 @@ export default function ComplaintForm() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center p-6 bg-white rounded-lg shadow-md">
-                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users className="h-8 w-8 text-white" />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 px-4">
+              <div className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-md">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                  <Users className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
                   10,000+
                 </h3>
-                <p className="text-gray-600">Community Protected</p>
+                <p className="text-sm sm:text-base text-gray-600">
+                  Community Protected
+                </p>
               </div>
 
-              <div className="text-center p-6 bg-white rounded-lg shadow-md">
-                <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Shield className="h-8 w-8 text-white" />
+              <div className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-md">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                  <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">500+</h3>
-                <p className="text-gray-600">Scams Prevented</p>
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
+                  500+
+                </h3>
+                <p className="text-sm sm:text-base text-gray-600">
+                  Scams Prevented
+                </p>
               </div>
 
-              <div className="text-center p-6 bg-white rounded-lg shadow-md">
-                <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Heart className="h-8 w-8 text-white" />
+              <div className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-md">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                  <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">24/7</h3>
-                <p className="text-gray-600">Community Support</p>
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
+                  24/7
+                </h3>
+                <p className="text-sm sm:text-base text-gray-600">
+                  Community Support
+                </p>
               </div>
             </div>
           </div>
