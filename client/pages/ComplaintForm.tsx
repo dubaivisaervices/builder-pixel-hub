@@ -483,9 +483,10 @@ export default function ComplaintForm() {
               Report Submitted Successfully!
             </DialogTitle>
             <DialogDescription className="text-center text-gray-600 mt-4">
-              Your report has been submitted to our admin team for review. Once
-              approved by our administrators, your report will be visible on the
-              company's profile page to help protect other community members.
+              <strong>Admin Review Required:</strong> Your report and any
+              uploaded files are now being reviewed by our admin team. Once
+              approved, your report will be published on the company's profile
+              to help protect other community members.
             </DialogDescription>
           </DialogHeader>
           <div className="flex justify-center mt-6">
