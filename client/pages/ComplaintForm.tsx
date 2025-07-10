@@ -846,8 +846,21 @@ export default function ComplaintForm() {
                     />
                   </div>
 
+                  {/* Show All Button */}
+                  {!showSuggestions && businesses.length > 0 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={showAllBusinesses}
+                      className="w-full mt-3 text-blue-600 border-blue-300 hover:bg-blue-50"
+                    >
+                      <Building2 className="h-4 w-4 mr-2" />
+                      Browse All {businesses.length} Companies
+                    </Button>
+                  )}
+
                   {showSuggestions && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-80 overflow-y-auto backdrop-blur-sm bg-white/95">
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto backdrop-blur-sm bg-white/95">
                       {searchSuggestions.length > 0
                         ? searchSuggestions.map((business, index) => (
                             <div
