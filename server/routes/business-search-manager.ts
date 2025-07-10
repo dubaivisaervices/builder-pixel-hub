@@ -31,13 +31,31 @@ export async function searchBusinesses(req: Request, res: Response) {
     }
 
     if (!GOOGLE_API_KEY) {
-      return res.status(500).json({ error: "Google API key not configured" });
+      return res.status(500).json({
+        error: "Google API key not configured",
+        solution: "Set GOOGLE_PLACES_API_KEY environment variable",
+      });
+    }
+
+    // Check API status
+    const apiStatusResponse = await fetch(
+      `http://localhost:8080/api/admin/api-status`,
+    );
+    const apiStatus = await apiStatusResponse.json();
+
+    if (!apiStatus.api?.enabled) {
+      return res.status(403).json({
+        error: "Google Places API is disabled",
+        solution: "Enable API first using the Connect button",
+      });
     }
 
     let searchQuery = query as string;
     if (category) {
       searchQuery = `${category} ${query}`;
     }
+
+    console.log(`🔍 Searching for: "${searchQuery}" in ${location}`);
 
     // Use Google Places Text Search API
     const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
@@ -46,12 +64,33 @@ export async function searchBusinesses(req: Request, res: Response) {
       location as string,
     )}&radius=50000&key=${GOOGLE_API_KEY}`;
 
+    console.log(
+      `🌐 API URL: ${searchUrl.replace(GOOGLE_API_KEY, "API_KEY_HIDDEN")}`,
+    );
+
     const searchResponse = await fetch(searchUrl);
     const searchData = await searchResponse.json();
 
-    if (!searchResponse.ok || searchData.status !== "OK") {
+    console.log(`📡 API Response Status: ${searchResponse.status}`);
+    console.log(`📊 Search Result Status: ${searchData.status}`);
+
+    if (!searchResponse.ok) {
       throw new Error(
-        `Google Places API error: ${searchData.status || "Unknown error"}`,
+        `HTTP ${searchResponse.status}: ${searchResponse.statusText}`,
+      );
+    }
+
+    if (searchData.status !== "OK") {
+      const errorMessages = {
+        REQUEST_DENIED: "API key invalid or API not enabled for Places API",
+        INVALID_REQUEST: "Invalid search parameters",
+        OVER_QUERY_LIMIT: "API quota exceeded",
+        ZERO_RESULTS: "No businesses found for this search",
+      };
+
+      throw new Error(
+        errorMessages[searchData.status as keyof typeof errorMessages] ||
+          `Google Places API error: ${searchData.status}`,
       );
     }
 
