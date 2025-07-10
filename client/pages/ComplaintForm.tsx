@@ -804,23 +804,40 @@ export default function ComplaintForm() {
                 </div>
 
                 {selectedCompany && (
-                  <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="p-3 sm:p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl shadow-sm">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xs sm:text-sm flex-shrink-0">
                         {selectedCompany.name
                           .split(" ")
                           .map((word) => word[0])
                           .join("")
                           .substring(0, 2)}
                       </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900 text-sm sm:text-base truncate">
                           {selectedCompany.name}
                         </h3>
-                        <p className="text-sm text-gray-600 flex items-center">
-                          <MapPin className="h-4 w-4 mr-1" />
-                          {selectedCompany.address}
+                        <p className="text-xs sm:text-sm text-gray-600 flex items-center mt-1">
+                          <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
+                          <span className="truncate">
+                            {selectedCompany.address}
+                          </span>
                         </p>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <Badge
+                            variant="secondary"
+                            className="text-xs px-2 py-0"
+                          >
+                            {selectedCompany.category}
+                          </Badge>
+                          <div className="flex items-center space-x-1">
+                            <Star className="h-3 w-3 text-yellow-400 fill-current" />
+                            <span className="text-xs text-gray-600">
+                              {selectedCompany.rating} (
+                              {selectedCompany.reviewCount})
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
