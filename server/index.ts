@@ -127,6 +127,11 @@ export function createServer() {
   app.post("/api/admin/save-all-data", saveAllBusinessData);
   app.post("/api/admin/save-images/:businessId", saveBusinessImagesToGitHub);
   app.get("/api/admin/persistence-status", getDataPersistenceStatus);
+
+  // GitHub data fetching routes - Restore data from GitHub
+  app.post("/api/admin/fetch-from-github", fetchAllDataFromGitHub);
+  app.get("/api/admin/github-status", getGitHubStatus);
+  app.get("/api/admin/fetch-business/:businessId", fetchBusinessFromGitHub);
   app.get("/api/admin/export-data", exportAllData);
 
   // Business reviews routes - Get and sync real Google reviews
