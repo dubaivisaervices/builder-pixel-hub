@@ -58,6 +58,7 @@ import {
   MapPinned,
   CreditCard,
   HelpCircle,
+  MessageCircleQuestion,
   Headphones,
   Mail as MailIcon,
   PhoneCall,
