@@ -796,12 +796,12 @@ export default function ComplaintForm() {
           </form>
 
           {/* Community Stats Section */}
-          <div className="mt-16 mb-12">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+          <div className="mt-12 sm:mt-16 mb-8 sm:mb-12">
+            <div className="text-center mb-6 sm:mb-8 px-4">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
                 Community Protection Impact
               </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
                 Together we're building a safer business environment in Dubai
               </p>
             </div>
