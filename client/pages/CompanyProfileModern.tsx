@@ -599,7 +599,15 @@ export default function CompanyProfileModern() {
               ? JSON.parse(business.photos_local_json)
               : business.photos_json
                 ? JSON.parse(business.photos_json)
-                : business.photos || [], // Prioritize local cached photos
+                : business.photos || [
+                    // Add dummy images as fallback
+                    "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=300&fit=crop",
+                    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=300&fit=crop",
+                    "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop",
+                    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop",
+                    "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=400&h=300&fit=crop",
+                    "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=400&h=300&fit=crop",
+                  ], // Prioritize local cached photos
             description:
               business.description ||
               `${business.name} is a professional service provider in Dubai specializing in ${business.category.toLowerCase()}. We provide comprehensive solutions and expert consultation for all your business needs with years of experience in the industry.`,
@@ -697,7 +705,7 @@ export default function CompanyProfileModern() {
       default:
         return (
           <Badge className="bg-gray-100 text-gray-800 border-gray-200">
-            ℹ️ Status Unknown
+            ℹ�� Status Unknown
           </Badge>
         );
     }
