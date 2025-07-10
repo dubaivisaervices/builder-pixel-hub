@@ -312,174 +312,152 @@ function WriteReviewSection({
             <Separator />
 
             {/* Tabs for Review Content and Screenshots */}
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="w-full"
-            >
-              <TabsList className="grid w-full grid-cols-2 rounded-xl">
-                <TabsTrigger value="review" className="rounded-lg">
-                  Review Details
-                </TabsTrigger>
-                <TabsTrigger value="screenshots" className="rounded-lg">
-                  Screenshots
-                </TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="review" className="space-y-6 mt-6">
-                {/* Review Form Fields */}
-                <div className="grid gap-4 md:gap-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-700">
-                        Your Name *
-                      </label>
-                      <Input
-                        type="text"
-                        placeholder="Enter your full name"
-                        value={reviewForm.authorName}
-                        onChange={(e) =>
-                          setReviewForm({
-                            ...reviewForm,
-                            authorName: e.target.value,
-                          })
-                        }
-                        className="rounded-xl border-2 focus:border-blue-500"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-700">
-                        Email Address *
-                      </label>
-                      <Input
-                        type="email"
-                        placeholder="Enter your email"
-                        value={reviewForm.authorEmail}
-                        onChange={(e) =>
-                          setReviewForm({
-                            ...reviewForm,
-                            authorEmail: e.target.value,
-                          })
-                        }
-                        className="rounded-xl border-2 focus:border-blue-500"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">
-                      Review Title *
-                    </label>
-                    <Input
-                      type="text"
-                      placeholder="Summarize your experience in a few words"
-                      value={reviewForm.title}
-                      onChange={(e) =>
-                        setReviewForm({ ...reviewForm, title: e.target.value })
-                      }
-                      className="rounded-xl border-2 focus:border-blue-500"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">
-                      Your Review *
-                    </label>
-                    <textarea
-                      placeholder="Share details about your experience, the quality of service, staff behavior, and any recommendations..."
-                      value={reviewForm.review}
-                      onChange={(e) =>
-                        setReviewForm({ ...reviewForm, review: e.target.value })
-                      }
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors min-h-[120px] resize-none"
-                      rows={5}
-                    />
-                  </div>
+            {/* Review Form Fields */}
+            <div className="grid gap-4 md:gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Your Name *
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="Enter your full name"
+                    value={reviewForm.authorName}
+                    onChange={(e) =>
+                      setReviewForm({
+                        ...reviewForm,
+                        authorName: e.target.value,
+                      })
+                    }
+                    className="rounded-xl border-2 focus:border-blue-500"
+                  />
                 </div>
-              </TabsContent>
 
-              <TabsContent value="screenshots" className="space-y-6 mt-6">
-                {/* File Upload Section */}
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">
-                      Upload Screenshots (Optional)
-                    </label>
-                    <p className="text-xs text-gray-500">
-                      Upload up to 5 images, max 5MB each. Supports JPG, PNG,
-                      GIF formats.
-                    </p>
-                  </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Email Address *
+                  </label>
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={reviewForm.authorEmail}
+                    onChange={(e) =>
+                      setReviewForm({
+                        ...reviewForm,
+                        authorEmail: e.target.value,
+                      })
+                    }
+                    className="rounded-xl border-2 focus:border-blue-500"
+                  />
+                </div>
+              </div>
 
-                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition-colors">
-                    <input
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                      id="screenshot-upload"
-                    />
-                    <label
-                      htmlFor="screenshot-upload"
-                      className="cursor-pointer"
-                    >
-                      <div className="space-y-4">
-                        <div className="mx-auto w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                          <Camera className="h-6 w-6 text-blue-600" />
-                        </div>
-                        <div>
-                          <p className="text-gray-700 font-medium">
-                            Click to upload screenshots
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            or drag and drop images here
-                          </p>
-                        </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Review Title *
+                </label>
+                <Input
+                  type="text"
+                  placeholder="Summarize your experience in a few words"
+                  value={reviewForm.title}
+                  onChange={(e) =>
+                    setReviewForm({ ...reviewForm, title: e.target.value })
+                  }
+                  className="rounded-xl border-2 focus:border-blue-500"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Your Review *
+                </label>
+                <textarea
+                  placeholder="Share details about your experience, the quality of service, staff behavior, and any recommendations..."
+                  value={reviewForm.review}
+                  onChange={(e) =>
+                    setReviewForm({ ...reviewForm, review: e.target.value })
+                  }
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors min-h-[120px] resize-none"
+                  rows={5}
+                />
+              </div>
+
+              {/* Screenshot Upload Section - Now integrated before submit */}
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Upload Screenshots (Optional)
+                  </label>
+                  <p className="text-xs text-gray-500">
+                    Upload up to 5 images, max 5MB each. Supports JPG, PNG, GIF
+                    formats.
+                  </p>
+                </div>
+
+                <div className="border-2 border-dashed border-gray-300 rounded-xl p-4 md:p-6 text-center hover:border-blue-400 transition-colors">
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    id="screenshot-upload"
+                  />
+                  <label htmlFor="screenshot-upload" className="cursor-pointer">
+                    <div className="space-y-3 md:space-y-4">
+                      <div className="mx-auto w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <Camera className="h-5 w-5 md:h-6 md:w-6 text-blue-600" />
                       </div>
-                    </label>
-                  </div>
-
-                  {uploadError && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                      <p className="text-sm text-red-600">{uploadError}</p>
+                      <div>
+                        <p className="text-sm md:text-base text-gray-700 font-medium">
+                          Click to upload screenshots
+                        </p>
+                        <p className="text-xs md:text-sm text-gray-500">
+                          or drag and drop images here
+                        </p>
+                      </div>
                     </div>
-                  )}
+                  </label>
+                </div>
 
-                  {/* Uploaded Files Preview */}
-                  {uploadedFiles.length > 0 && (
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-medium text-gray-700">
-                        Uploaded Screenshots:
-                      </h4>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {uploadedFiles.map((file, index) => (
-                          <div key={index} className="relative group">
-                            <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
-                              <img
-                                src={URL.createObjectURL(file)}
-                                alt={`Screenshot ${index + 1}`}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <button
-                              onClick={() => removeFile(index)}
-                              className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
-                            <p className="text-xs text-gray-500 mt-1 truncate">
-                              {file.name}
-                            </p>
+                {uploadError && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                    <p className="text-sm text-red-600">{uploadError}</p>
+                  </div>
+                )}
+
+                {/* Uploaded Files Preview */}
+                {uploadedFiles.length > 0 && (
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-medium text-gray-700">
+                      Uploaded Screenshots:
+                    </h4>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {uploadedFiles.map((file, index) => (
+                        <div key={index} className="relative group">
+                          <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                            <img
+                              src={URL.createObjectURL(file)}
+                              alt={`Screenshot ${index + 1}`}
+                              className="w-full h-full object-cover"
+                            />
                           </div>
-                        ))}
-                      </div>
+                          <button
+                            onClick={() => removeFile(index)}
+                            className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                          <p className="text-xs text-gray-500 mt-1 truncate">
+                            {file.name}
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                  )}
-                </div>
-              </TabsContent>
-            </Tabs>
+                  </div>
+                )}
+              </div>
+            </div>
 
             {/* Guidelines */}
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
