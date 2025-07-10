@@ -863,7 +863,7 @@ export default function ComplaintForm() {
                             <span className="text-sm font-medium text-blue-800">
                               {searchTerm
                                 ? `${searchSuggestions.length} results found`
-                                : `Showing ${searchSuggestions.length} of ${businesses.length} companies`}
+                                : `All ${searchSuggestions.length} companies loaded - Scroll to browse`}
                             </span>
                             <div className="flex items-center space-x-2">
                               {searchSuggestions.length < businesses.length && (
