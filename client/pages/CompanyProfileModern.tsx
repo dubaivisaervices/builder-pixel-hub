@@ -1659,8 +1659,8 @@ export default function CompanyProfileModern() {
                         government authorities
                       </p>
 
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div className="flex items-center justify-center bg-gray-50 rounded-lg p-3 h-16">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+                        <div className="flex items-center justify-center bg-gray-50 rounded-lg p-2 md:p-3 h-12 md:h-16">
                           <img
                             src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F2ed6c7a907ce48b1888b4efbd194a50d?format=webp&width=800"
                             alt="Dubai Economy and Tourism"
