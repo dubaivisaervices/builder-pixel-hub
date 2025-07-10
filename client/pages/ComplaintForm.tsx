@@ -617,11 +617,11 @@ export default function ComplaintForm() {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-lg flex items-center justify-center shadow-lg">
                   <Shield className="h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9 text-white" />
                 </div>
-                <div className="ml-3 sm:ml-4 text-left">
-                  <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+                <div className="ml-3 sm:ml-4 text-left flex-1">
+                  <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
                     Report Scam Immigration Company
                   </h1>
-                  <p className="text-sm sm:text-base text-gray-600 mt-0.5 leading-relaxed">
+                  <p className="text-xs sm:text-sm md:text-base text-gray-600 mt-1 sm:mt-0.5 leading-relaxed">
                     Help protect our community by reporting scam immigration
                     companies, fake visa services, and unethical business
                     practices in Dubai and UAE.
