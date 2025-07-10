@@ -337,35 +337,10 @@ export default function BusinessDirectory() {
             <div className="absolute inset-0 bg-black/20"></div>
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="relative h-12 w-12 sm:h-16 sm:w-16">
-                {business.logoUrl ? (
-                  <>
-                    <img
-                      src={business.logoUrl}
-                      alt={business.name}
-                      className="h-full w-full object-cover rounded-xl border-2 border-white shadow-lg"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = "none";
-                        const fallback = target.parentElement?.querySelector(
-                          ".logo-fallback",
-                        ) as HTMLDivElement;
-                        if (fallback) {
-                          fallback.style.display = "flex";
-                        }
-                      }}
-                    />
-                    <div
-                      className="logo-fallback h-full w-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl border-2 border-white shadow-lg flex items-center justify-center text-white font-bold text-lg"
-                      style={{ display: "none" }}
-                    >
-                      {generatePlaceholderLogo(business.name)}
-                    </div>
-                  </>
-                ) : (
-                  <div className="h-full w-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl border-2 border-white shadow-lg flex items-center justify-center text-white font-bold text-sm sm:text-lg">
-                    {generatePlaceholderLogo(business.name)}
-                  </div>
-                )}
+                {/* Always show company initials - no photos */}
+                <div className="h-full w-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl border-2 border-white shadow-lg flex items-center justify-center text-white font-bold text-sm sm:text-lg">
+                  {generatePlaceholderLogo(business.name)}
+                </div>
               </div>
             </div>
 
