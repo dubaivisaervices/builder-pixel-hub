@@ -843,23 +843,38 @@ export default function BusinessDirectory() {
                             <div className="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
                               <div className="relative w-full h-full">
                                 {business.logoUrl ? (
+                                  <>
+                                    <img
+                                      src={business.logoUrl}
+                                      alt=""
+                                      className="w-full h-full object-cover rounded-xl"
+                                      onError={(e) => {
+                                        const target =
+                                          e.target as HTMLImageElement;
+                                        target.style.display = "none";
+                                        const fallback =
+                                          target.parentElement?.querySelector(
+                                            ".svg-fallback",
+                                          ) as HTMLImageElement;
+                                        if (fallback) {
+                                          fallback.style.display = "block";
+                                        }
+                                      }}
+                                    />
+                                    <img
+                                      src={generateSVGLogo(business.name, 64)}
+                                      alt={business.name}
+                                      className="svg-fallback w-full h-full rounded-xl"
+                                      style={{ display: "none" }}
+                                    />
+                                  </>
+                                ) : (
                                   <img
-                                    src={business.logoUrl}
-                                    alt=""
-                                    className="w-full h-full object-cover rounded-xl"
-                                    onError={(e) => {
-                                      e.currentTarget.style.display = "none";
-                                      e.currentTarget.parentElement
-                                        ?.querySelector(".svg-fallback")
-                                        ?.classList.remove("hidden");
-                                    }}
+                                    src={generateSVGLogo(business.name, 64)}
+                                    alt={business.name}
+                                    className="w-full h-full rounded-xl"
                                   />
-                                ) : null}
-                                <img
-                                  src={generateSVGLogo(business.name, 64)}
-                                  alt={business.name}
-                                  className={`svg-fallback w-full h-full rounded-xl ${business.logoUrl ? "hidden" : ""}`}
-                                />
+                                )}
                               </div>
                             </div>
 
