@@ -102,6 +102,13 @@ export default function ImageDownloadDashboard() {
     isRunning: false,
   });
 
+  const [optimizedProgress, setOptimizedProgress] = useState({
+    current: 0,
+    total: 0,
+    status: "idle",
+    isRunning: false,
+  });
+
   const [showDisconnectDialog, setShowDisconnectDialog] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -316,6 +323,61 @@ export default function ImageDownloadDashboard() {
     } catch (error) {
       console.error("Failed to download photos:", error);
       setPhotoProgress((prev) => ({ ...prev, isRunning: false }));
+    }
+  };
+
+  const downloadOptimizedPhotos = async () => {
+    setOptimizedProgress((prev) => ({ ...prev, isRunning: true }));
+
+    try {
+      const response = await fetch("/api/admin/download-optimized-photos", {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        // Start polling for progress
+        const interval = setInterval(async () => {
+          try {
+            const progressResponse = await fetch(
+              "/api/admin/optimized-download-progress",
+            );
+            if (progressResponse.ok) {
+              const progress = await progressResponse.json();
+              setOptimizedProgress({
+                current: progress.current,
+                total: progress.total,
+                status: progress.status,
+                isRunning: progress.status === "downloading",
+              });
+
+              if (
+                progress.status === "completed" ||
+                progress.status === "stopped" ||
+                progress.status === "error"
+              ) {
+                clearInterval(interval);
+                fetchImageStats(); // Refresh stats when done
+              }
+            }
+          } catch (error) {
+            console.error("Error polling progress:", error);
+          }
+        }, 1000);
+      }
+    } catch (error) {
+      console.error("Failed to start optimized download:", error);
+      setOptimizedProgress((prev) => ({ ...prev, isRunning: false }));
+    }
+  };
+
+  const stopOptimizedDownload = async () => {
+    try {
+      await fetch("/api/admin/stop-optimized-download", {
+        method: "POST",
+      });
+      setOptimizedProgress((prev) => ({ ...prev, isRunning: false }));
+    } catch (error) {
+      console.error("Failed to stop download:", error);
     }
   };
 
@@ -618,37 +680,60 @@ export default function ImageDownloadDashboard() {
                 <Image className="h-8 w-8 text-green-500" />
               </div>
 
-              {photoProgress.isRunning && (
+              {optimizedProgress.isRunning && (
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span>Downloading photos...</span>
-                    <span>{Math.round(photoProgress.progress)}%</span>
+                    <span>Optimized download...</span>
+                    <span>
+                      {optimizedProgress.current} / {optimizedProgress.total}
+                    </span>
                   </div>
-                  <Progress value={photoProgress.progress} className="h-2" />
+                  <Progress
+                    value={
+                      optimizedProgress.total > 0
+                        ? (optimizedProgress.current /
+                            optimizedProgress.total) *
+                          100
+                        : 0
+                    }
+                    className="h-2"
+                  />
                   <p className="text-xs text-gray-500">
-                    {photoProgress.current} of {photoProgress.total} completed
+                    Status: {optimizedProgress.status}
                   </p>
                 </div>
               )}
 
-              <Button
-                onClick={downloadPhotos}
-                disabled={!apiStatus.connected || photoProgress.isRunning}
-                className="w-full"
-                variant="outline"
-              >
-                {photoProgress.isRunning ? (
-                  <>
-                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                    Downloading...
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-4 w-4 mr-2" />
-                    Download Photos
-                  </>
+              <div className="space-y-2">
+                <Button
+                  onClick={downloadOptimizedPhotos}
+                  disabled={!apiStatus.connected || optimizedProgress.isRunning}
+                  className="w-full"
+                >
+                  {optimizedProgress.isRunning ? (
+                    <>
+                      <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                      Downloading (Space-Efficient)...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="h-4 w-4 mr-2" />
+                      Download Photos (Optimized)
+                    </>
+                  )}
+                </Button>
+
+                {optimizedProgress.isRunning && (
+                  <Button
+                    onClick={stopOptimizedDownload}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    <Square className="h-4 w-4 mr-2" />
+                    Stop Download
+                  </Button>
                 )}
-              </Button>
+              </div>
 
               {!apiStatus.connected && (
                 <Alert>
@@ -658,6 +743,14 @@ export default function ImageDownloadDashboard() {
                   </AlertDescription>
                 </Alert>
               )}
+
+              <Alert>
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  Optimized download compresses images and processes in small
+                  batches to avoid disk space issues.
+                </AlertDescription>
+              </Alert>
             </div>
           </CardContent>
         </Card>
