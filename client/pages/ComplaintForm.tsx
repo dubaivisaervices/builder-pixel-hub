@@ -419,12 +419,10 @@ export default function ComplaintForm() {
 
   const handleSearchFocus = () => {
     if (!searchTerm) {
-      // Show all businesses when focused and no search term
-      setSearchSuggestions(businesses.slice(0, 100));
+      // Show ALL businesses when focused and no search term
+      setSearchSuggestions(businesses);
       setShowSuggestions(true);
-      console.log(
-        `📋 Focus: Showing first 100 businesses out of ${businesses.length} total`,
-      );
+      console.log(`📋 Focus: Showing ALL ${businesses.length} businesses`);
     }
   };
 
