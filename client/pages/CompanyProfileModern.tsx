@@ -2335,9 +2335,9 @@ export default function CompanyProfileModern() {
                 })
               }
               variant="outline"
-              className="flex-1 border-red-200 text-red-600 hover:bg-red-50 rounded-full py-3 shadow-lg"
+              className="flex-1 border-red-200 text-red-600 hover:bg-red-50 rounded-lg py-3 shadow-lg text-sm font-semibold"
             >
-              <AlertTriangle className="h-5 w-5 mr-2" />
+              <AlertTriangle className="h-4 w-4 mr-1" />
               Report Scam
             </Button>
           </div>
