@@ -685,7 +685,7 @@ export default function ComplaintForm() {
                   )}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-4">
+              <CardContent className="p-4 sm:p-5 md:p-6 space-y-3 sm:space-y-4">
                 <div className="search-container">
                   <Label
                     htmlFor="company"
