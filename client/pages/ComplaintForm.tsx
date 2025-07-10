@@ -733,57 +733,6 @@ export default function ComplaintForm() {
               <p className="text-base text-blue-100 max-w-xl mx-auto mb-4">
                 Help protect Dubai's business community.
               </p>
-
-              {/* Progress Indicator */}
-              <div className="max-w-md mx-auto">
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-white font-medium">Progress</span>
-                  <span className="text-blue-100">
-                    {Math.round(formProgress)}% Complete
-                  </span>
-                </div>
-                <div className="w-full bg-white/20 rounded-full h-2">
-                  <div
-                    className="bg-white h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${formProgress}%` }}
-                  ></div>
-                </div>
-
-                {/* Step Indicators */}
-                <div className="flex justify-between mt-4">
-                  {[1, 2, 3, 4].map((step) => (
-                    <div
-                      key={step}
-                      className={`flex flex-col items-center ${completedSteps.includes(step) ? "text-green-300" : currentStep === step ? "text-white" : "text-white/50"}`}
-                    >
-                      <div
-                        className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold mb-1 ${
-                          completedSteps.includes(step)
-                            ? "bg-green-500 border-green-400"
-                            : currentStep === step
-                              ? "bg-white/20 border-white"
-                              : "border-white/30"
-                        }`}
-                      >
-                        {completedSteps.includes(step) ? (
-                          <CheckCircle className="h-4 w-4" />
-                        ) : (
-                          step
-                        )}
-                      </div>
-                      <span className="text-xs font-medium">
-                        {step === 1
-                          ? "Company"
-                          : step === 2
-                            ? "Details"
-                            : step === 3
-                              ? "Evidence"
-                              : "Contact"}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         </div>
