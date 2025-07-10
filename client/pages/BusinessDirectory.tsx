@@ -410,13 +410,13 @@ export default function BusinessDirectory() {
             </div>
 
             {/* Rating & Reviews */}
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-3 sm:mb-4">
               <div className="flex items-center space-x-1">
                 <div className="flex items-center space-x-1">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`h-4 w-4 ${
+                      className={`h-3 w-3 sm:h-4 sm:w-4 ${
                         i < Math.floor(business.rating)
                           ? "text-yellow-400 fill-current"
                           : "text-gray-300"
@@ -424,33 +424,33 @@ export default function BusinessDirectory() {
                     />
                   ))}
                 </div>
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-xs sm:text-sm font-semibold text-gray-900">
                   {business.rating}
                 </span>
               </div>
-              <div className="flex items-center space-x-1 text-sm text-gray-500">
-                <Users className="h-4 w-4" />
+              <div className="flex items-center space-x-1 text-xs sm:text-sm text-gray-500">
+                <Users className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span>{business.reviewCount}</span>
               </div>
             </div>
 
             {/* Contact Info */}
-            <div className="space-y-2 mb-4">
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <MapPin className="h-4 w-4 text-blue-500 flex-shrink-0" />
+            <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4">
+              <div className="flex items-center space-x-2 text-xs sm:text-sm text-gray-600">
+                <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500 flex-shrink-0" />
                 <span className="truncate">{business.address}</span>
               </div>
 
               {business.phone && (
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
-                  <Phone className="h-4 w-4 text-green-500 flex-shrink-0" />
+                <div className="flex items-center space-x-2 text-xs sm:text-sm text-gray-600">
+                  <Phone className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
                   <span>{business.phone}</span>
                 </div>
               )}
 
               {business.website && (
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
-                  <Globe className="h-4 w-4 text-purple-500 flex-shrink-0" />
+                <div className="flex items-center space-x-2 text-xs sm:text-sm text-gray-600">
+                  <Globe className="h-3 w-3 sm:h-4 sm:w-4 text-purple-500 flex-shrink-0" />
                   <span className="truncate">{business.website}</span>
                 </div>
               )}
