@@ -319,61 +319,6 @@ export default function ImageDownloadDashboard() {
     }
   };
 
-  const downloadOptimizedPhotos = async () => {
-    setOptimizedProgress((prev) => ({ ...prev, isRunning: true }));
-
-    try {
-      const response = await fetch("/api/admin/download-optimized-photos", {
-        method: "POST",
-      });
-
-      if (response.ok) {
-        // Start polling for progress
-        const interval = setInterval(async () => {
-          try {
-            const progressResponse = await fetch(
-              "/api/admin/optimized-download-progress",
-            );
-            if (progressResponse.ok) {
-              const progress = await progressResponse.json();
-              setOptimizedProgress({
-                current: progress.current,
-                total: progress.total,
-                status: progress.status,
-                isRunning: progress.status === "downloading",
-              });
-
-              if (
-                progress.status === "completed" ||
-                progress.status === "stopped" ||
-                progress.status === "error"
-              ) {
-                clearInterval(interval);
-                fetchImageStats(); // Refresh stats when done
-              }
-            }
-          } catch (error) {
-            console.error("Error polling progress:", error);
-          }
-        }, 1000);
-      }
-    } catch (error) {
-      console.error("Failed to start optimized download:", error);
-      setOptimizedProgress((prev) => ({ ...prev, isRunning: false }));
-    }
-  };
-
-  const stopOptimizedDownload = async () => {
-    try {
-      await fetch("/api/admin/stop-optimized-download", {
-        method: "POST",
-      });
-      setOptimizedProgress((prev) => ({ ...prev, isRunning: false }));
-    } catch (error) {
-      console.error("Failed to stop download:", error);
-    }
-  };
-
   return (
     <div className="container mx-auto p-6 max-w-7xl">
       <div className="mb-8">
