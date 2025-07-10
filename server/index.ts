@@ -73,6 +73,7 @@ import {
 } from "./routes/serve-cached-images";
 import { debugBusinessImages } from "./routes/debug-business-images";
 import { cacheLogoAsBase64 } from "./routes/cache-logo-base64";
+import { generatePlaceholderLogo } from "./routes/placeholder-logo";
 // Temporarily disabled due to space constraints
 // import {
 //   downloadOptimizedPhotos,
@@ -191,6 +192,7 @@ export function createServer() {
   app.get("/api/cached-photo/:businessId/:photoIndex", serveCachedPhoto);
   app.get("/api/debug-images/:businessId", debugBusinessImages);
   app.post("/api/cache-logo/:businessId", cacheLogoAsBase64);
+  app.get("/api/placeholder-logo/:businessName", generatePlaceholderLogo);
 
   // Temporarily disabled due to space constraints
   // app.post("/api/admin/download-optimized-photos", downloadOptimizedPhotos);
