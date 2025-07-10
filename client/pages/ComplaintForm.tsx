@@ -402,9 +402,7 @@ export default function ComplaintForm() {
 
           // Then sort by rating
           return b.rating - a.rating;
-        })
-        .slice(0, 50); // Show more results for better searching
-
+        }); // Show ALL search results, no limit
       setSearchSuggestions(filtered);
       setShowSuggestions(true);
 
@@ -412,12 +410,10 @@ export default function ComplaintForm() {
         `🔍 Search "${value}" found ${filtered.length} results out of ${businesses.length} total businesses`,
       );
     } else {
-      // Show all businesses when no search term
-      setSearchSuggestions(businesses.slice(0, 100)); // Show first 100 when no search
+      // Show ALL businesses when no search term
+      setSearchSuggestions(businesses); // Show ALL businesses, no slice
       setShowSuggestions(true);
-      console.log(
-        `📋 Showing first 100 businesses out of ${businesses.length} total`,
-      );
+      console.log(`📋 Showing ALL ${businesses.length} businesses`);
     }
   };
 
