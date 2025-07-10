@@ -498,16 +498,66 @@ export default function ComplaintForm() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="text-center mb-6 sm:mb-8">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg hover-lift">
               <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
             </div>
-            <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">
+            <h1 className="text-xl sm:text-2xl md:text-4xl font-bold gradient-text mb-3 sm:mb-4 px-2">
               Report Scam Immigration Company
             </h1>
-            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed px-4">
+            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed px-4 mb-6">
               Help protect our community by reporting fraudulent immigration
               companies, visa scams, and unethical business practices.
             </p>
+
+            {/* Progress Bar */}
+            <div className="max-w-2xl mx-auto mb-4">
+              <div className="flex justify-between items-center mb-2 px-4">
+                <span className="text-sm font-medium text-gray-600">
+                  Form Progress
+                </span>
+                <span className="text-sm font-medium text-blue-600">
+                  {Math.round(formProgress)}%
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2 px-4">
+                <div
+                  className="progress-bar h-2 rounded-full"
+                  style={{ width: `${formProgress}%` }}
+                ></div>
+              </div>
+            </div>
+
+            {/* Step Indicators */}
+            <div className="flex justify-center space-x-4 mt-6">
+              {[1, 2, 3, 4].map((step) => (
+                <div key={step} className="flex flex-col items-center">
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold step-indicator ${
+                      completedSteps.includes(step)
+                        ? "completed text-white"
+                        : currentStep === step
+                          ? "active text-white"
+                          : "bg-gray-300 text-gray-600"
+                    }`}
+                  >
+                    {completedSteps.includes(step) ? (
+                      <CheckCircle className="h-4 w-4" />
+                    ) : (
+                      step
+                    )}
+                  </div>
+                  <span className="text-xs text-gray-500 mt-1">
+                    {step === 1
+                      ? "Company"
+                      : step === 2
+                        ? "Details"
+                        : step === 3
+                          ? "Evidence"
+                          : "Info"}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
