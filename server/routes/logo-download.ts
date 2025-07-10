@@ -175,12 +175,35 @@ export const getLogoStats: RequestHandler = async (req, res) => {
     let totalLogos = 0;
     let logosWithBase64 = 0;
     let businessesWithLogos = 0;
+    let lastDownloadTime: string | null = null;
+    let downloadedToday = 0;
+
+    const today = new Date().toDateString();
 
     for (const business of businesses) {
       if (business.logoUrl) {
         totalLogos++;
         if (business.logoBase64) {
           logosWithBase64++;
+
+          // Check if logo was downloaded today (simplified check)
+          // In production, you'd track actual download timestamps
+          const businessUpdated = new Date(
+            business.updatedAt || business.createdAt || "",
+          ).toDateString();
+          if (businessUpdated === today) {
+            downloadedToday++;
+          }
+
+          // Track the most recent update as last download time
+          const updateTime = business.updatedAt || business.createdAt;
+          if (
+            updateTime &&
+            (!lastDownloadTime ||
+              new Date(updateTime) > new Date(lastDownloadTime))
+          ) {
+            lastDownloadTime = updateTime;
+          }
         }
       }
       if (business.logoUrl || business.logoBase64) {
@@ -198,7 +221,17 @@ export const getLogoStats: RequestHandler = async (req, res) => {
           totalLogos > 0 ? Math.round((logosWithBase64 / totalLogos) * 100) : 0,
         remaining: totalLogos - logosWithBase64,
       },
+      lastDownload: lastDownloadTime,
+      downloadedToday,
       isComplete: logosWithBase64 >= totalLogos * 0.9, // 90% threshold
+      summary: {
+        cachingStatus:
+          logosWithBase64 > 0
+            ? "Images served from database (No API costs)"
+            : "Images will be loaded from Google API (Costs money)",
+        apiCalls: totalLogos - logosWithBase64, // Remaining images that would need API calls
+        moneySaved: `$${(logosWithBase64 * 0.017).toFixed(2)}`, // Estimated savings
+      },
     };
 
     res.json(status);
