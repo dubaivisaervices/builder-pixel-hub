@@ -617,25 +617,68 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Services Categories */}
+      {/* Dubai Immigration Services - Redesigned with High Quality Image */}
       <section
-        className={`py-20 transition-all duration-1000 delay-300 ${fadeIn ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+        className={`py-12 sm:py-16 lg:py-20 transition-all duration-1000 delay-300 ${fadeIn ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Popular Visa Services
-            </h2>
-            <p className="text-xl text-gray-600">
-              Browse by category to find specialized immigration consultants
-            </p>
+          {/* Hero Image Section with Dubai Skyline */}
+          <div className="relative overflow-hidden rounded-3xl mb-8 sm:mb-12 lg:mb-16">
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60 z-10"></div>
+
+            {/* High Quality Dubai Image */}
+            <div className="relative h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600">
+              <img
+                src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                alt="Dubai Skyline with Burj Khalifa"
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
+              />
+
+              {/* Content Overlay */}
+              <div className="absolute inset-0 z-20 flex items-center justify-center">
+                <div className="text-center text-white px-4 sm:px-6 max-w-4xl">
+                  <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight">
+                    Dubai Immigration Services
+                  </h2>
+                  <p className="text-sm sm:text-lg lg:text-xl mb-6 sm:mb-8 text-gray-200 leading-relaxed">
+                    Your gateway to Dubai's most trusted visa and immigration
+                    specialists. Connect with verified consultants for seamless
+                    UAE residency.
+                  </p>
+
+                  {/* CTA Button */}
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+                    <Button
+                      onClick={() => navigate("/dubai-businesses")}
+                      size="lg"
+                      className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-2xl px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                    >
+                      <Building2 className="h-5 w-5 mr-2" />
+                      Explore Dubai Immigration Business
+                    </Button>
+
+                    <Button
+                      onClick={() => navigate("/services")}
+                      variant="outline"
+                      size="lg"
+                      className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-gray-900 bg-white/10 backdrop-blur-sm px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-xl transition-all duration-300"
+                    >
+                      <Globe className="h-5 w-5 mr-2" />
+                      View All Services
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Service Categories Grid - Mobile Optimized */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {topCategories.map((service, index) => (
               <Card
                 key={index}
-                className="group hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer border-0 bg-white/70 backdrop-blur-sm"
+                className="group hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer border-0 bg-white/80 backdrop-blur-sm hover:bg-white"
                 onClick={() => {
                   // Map service categories to URL slugs
                   const categoryMap: { [key: string]: string } = {
@@ -652,25 +695,28 @@ export default function Index() {
                   navigate(`/services/${categorySlug}`);
                 }}
               >
-                <CardContent className="p-8">
-                  <div className="flex items-start space-x-4">
+                <CardContent className="p-4 sm:p-6 lg:p-8">
+                  <div className="flex flex-col sm:flex-row items-start space-y-3 sm:space-y-0 sm:space-x-4">
                     <div
-                      className={`p-4 rounded-2xl bg-gradient-to-br ${service.color} text-white text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                      className={`p-3 sm:p-4 rounded-2xl bg-gradient-to-br ${service.color} text-white text-xl sm:text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300 mx-auto sm:mx-0`}
                     >
                       {service.icon}
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                    <div className="flex-1 text-center sm:text-left">
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                         {service.title}
                       </h3>
-                      <p className="text-gray-600 mb-3">
+                      <p className="text-sm sm:text-base text-gray-600 mb-3 leading-relaxed">
                         {service.description}
                       </p>
-                      <div className="flex items-center justify-between">
-                        <Badge variant="secondary" className="bg-gray-100">
+                      <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-0">
+                        <Badge
+                          variant="secondary"
+                          className="bg-blue-100 text-blue-700 text-xs sm:text-sm"
+                        >
                           {service.count} services
                         </Badge>
-                        <ArrowRight className="h-5 w-5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300" />
+                        <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300" />
                       </div>
                     </div>
                   </div>
@@ -679,15 +725,38 @@ export default function Index() {
             ))}
           </div>
 
-          <div className="text-center mt-12">
-            <Button
-              onClick={() => navigate("/dubai-businesses")}
-              size="lg"
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-xl px-8 py-3 text-lg"
-            >
-              🏢 Dubai Business Directory
-              <ArrowRight className="h-5 w-5 ml-2" />
-            </Button>
+          {/* Quick Stats Section */}
+          <div className="mt-12 sm:mt-16 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl">
+              <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1 sm:mb-2">
+                500+
+              </div>
+              <div className="text-xs sm:text-sm text-gray-600">
+                Verified Partners
+              </div>
+            </div>
+            <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl">
+              <div className="text-2xl sm:text-3xl font-bold text-green-600 mb-1 sm:mb-2">
+                98%
+              </div>
+              <div className="text-xs sm:text-sm text-gray-600">
+                Success Rate
+              </div>
+            </div>
+            <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl">
+              <div className="text-2xl sm:text-3xl font-bold text-orange-600 mb-1 sm:mb-2">
+                24/7
+              </div>
+              <div className="text-xs sm:text-sm text-gray-600">Support</div>
+            </div>
+            <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl">
+              <div className="text-2xl sm:text-3xl font-bold text-purple-600 mb-1 sm:mb-2">
+                50k+
+              </div>
+              <div className="text-xs sm:text-sm text-gray-600">
+                Happy Clients
+              </div>
+            </div>
           </div>
         </div>
       </section>
