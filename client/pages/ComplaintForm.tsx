@@ -1204,11 +1204,11 @@ export default function ComplaintForm() {
                 </div>
 
                 {/* Submit Button */}
-                <div className="flex justify-center pt-4 sm:pt-6">
+                <div className="flex justify-center pt-3 sm:pt-4 md:pt-6">
                   <Button
                     type="submit"
                     disabled={loading || !selectedCompany}
-                    className={`w-full sm:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 sm:px-8 py-3 text-base sm:text-lg rounded-lg min-w-[200px] shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl ${
+                    className={`w-full sm:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base md:text-lg rounded-lg min-w-[180px] sm:min-w-[200px] shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl ${
                       loading ? "animate-pulse" : ""
                     } ${!selectedCompany ? "opacity-50 cursor-not-allowed" : ""}`}
                   >
