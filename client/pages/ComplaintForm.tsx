@@ -1114,6 +1114,21 @@ export default function ComplaintForm() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
+                {/* Confidential Notice - Moved to Top */}
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <h4 className="font-medium text-blue-900 mb-2 flex items-center">
+                    <Shield className="h-4 w-4 mr-2" />
+                    Your Details Are Confidential
+                  </h4>
+                  <p className="text-sm text-blue-800 leading-relaxed">
+                    <strong>Admin Approval:</strong> All reports and files are
+                    reviewed by our admin team before publication. Your personal
+                    information remains strictly confidential during this
+                    process. Your identity will not be disclosed to the reported
+                    company.
+                  </p>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label
@@ -1160,20 +1175,29 @@ export default function ComplaintForm() {
                       required
                     />
                   </div>
-                </div>
 
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <h4 className="font-medium text-blue-900 mb-2 flex items-center">
-                    <Shield className="h-4 w-4 mr-2" />
-                    Privacy & Admin Review Process
-                  </h4>
-                  <p className="text-sm text-blue-800 leading-relaxed">
-                    <strong>Admin Approval:</strong> All reports and files are
-                    reviewed by our admin team before publication. Your personal
-                    information remains strictly confidential during this
-                    process. Your identity will not be disclosed to the reported
-                    company.
-                  </p>
+                  <div className="space-y-2 md:col-span-2">
+                    <Label
+                      htmlFor="reporterPhone"
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Your Contact Number *
+                    </Label>
+                    <Input
+                      id="reporterPhone"
+                      type="tel"
+                      placeholder="Enter your phone number (e.g., +971 50 123 4567)"
+                      value={reportData.reporterPhone}
+                      onChange={(e) =>
+                        setReportData((prev) => ({
+                          ...prev,
+                          reporterPhone: e.target.value,
+                        }))
+                      }
+                      className="h-11 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
                 </div>
 
                 {/* Submit Button */}
