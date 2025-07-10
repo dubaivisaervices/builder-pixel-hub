@@ -6,7 +6,7 @@ import {
   Building2,
   Search,
   HelpCircle,
-  Settings,
+  Shield,
   Users,
   Menu,
   X,
@@ -27,9 +27,8 @@ const SimpleNavigation = () => {
   const navItems = [
     { path: "/", label: "Home", icon: Home },
     { path: "/dubai-businesses", label: "Businesses", icon: Building2 },
-    { path: "/services", label: "Services", icon: Search },
     { path: "/help-center", label: "Help", icon: HelpCircle },
-    { path: "/admin", label: "Admin", icon: Settings },
+    { path: "/complaint", label: "Report Scam", icon: Shield },
   ];
 
   const handleNavigation = (path: string) => {
