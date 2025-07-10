@@ -464,6 +464,63 @@ export default function BusinessSearchManager() {
         </CardContent>
       </Card>
 
+      {/* Manual Business Addition */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Plus className="h-5 w-5 mr-2" />
+            Add Business Manually
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-start space-x-3">
+                <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5" />
+                <div>
+                  <h4 className="font-medium text-blue-800 mb-1">
+                    Manual Addition Available
+                  </h4>
+                  <p className="text-sm text-blue-700">
+                    If search is not working due to API limitations, you can
+                    manually add businesses using their Google Place ID. Find
+                    the business on Google Maps, copy the place ID from the URL,
+                    and paste it below.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                placeholder="Google Place ID (e.g., ChIJN1t_tDeuEmsRUsoyG83frY4)"
+                id="manualPlaceId"
+              />
+              <Button
+                onClick={() => {
+                  const input = document.getElementById(
+                    "manualPlaceId",
+                  ) as HTMLInputElement;
+                  const placeId = input?.value.trim();
+                  if (placeId) {
+                    addBusinessToDatabase({
+                      place_id: placeId,
+                      name: "Manual Addition",
+                    } as SearchResult);
+                    input.value = "";
+                  } else {
+                    alert("Please enter a Google Place ID");
+                  }
+                }}
+                disabled={!apiStatus.connected || addProgress.isRunning}
+              >
+                <Database className="h-4 w-4 mr-2" />
+                Add by Place ID
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Search Interface */}
       <Card className="mb-6">
         <CardHeader>
