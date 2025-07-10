@@ -554,11 +554,11 @@ export default function ComplaintForm() {
                     htmlFor="evidenceDescription"
                     className="text-sm font-medium text-gray-700 mb-2 block"
                   >
-                    Evidence Description
+                    Evidence Description & Details Experience with Company
                   </Label>
                   <Textarea
                     id="evidenceDescription"
-                    placeholder="Describe any evidence you have (documents, screenshots, emails, recordings, etc.)"
+                    placeholder="Describe any evidence you have (documents, screenshots, emails, recordings, etc.) and share your detailed experience with this company..."
                     value={reportData.evidenceDescription}
                     onChange={(e) =>
                       setReportData((prev) => ({
