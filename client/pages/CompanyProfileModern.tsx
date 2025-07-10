@@ -1990,31 +1990,31 @@ export default function CompanyProfileModern() {
                   </div>
                 )}
 
-                <div className="pt-3 space-y-2">
+                <div className="pt-3 space-y-2 md:space-y-3">
                   <Button
-                    className="w-full bg-green-600 hover:bg-green-700"
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold"
                     size="lg"
                     onClick={() =>
                       window.open(`tel:${businessData.phone}`, "_self")
                     }
                   >
-                    <Phone className="h-5 w-5 mr-2" />
-                    Call Now
+                    <Phone className="h-4 w-4 md:h-5 md:w-5 mr-2" />
+                    <span className="text-sm md:text-base">Call Now</span>
                   </Button>
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className="w-full border-blue-200 hover:bg-blue-50"
                     size="lg"
                     onClick={() =>
                       window.open(`mailto:${contactInfo.email}`, "_self")
                     }
                   >
-                    <MailIcon className="h-5 w-5 mr-2" />
-                    Send Email
+                    <MailIcon className="h-4 w-4 md:h-5 md:w-5 mr-2" />
+                    <span className="text-sm md:text-base">Send Email</span>
                   </Button>
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className="w-full border-green-200 hover:bg-green-50"
                     size="lg"
                     onClick={() =>
                       window.open(
@@ -2023,8 +2023,8 @@ export default function CompanyProfileModern() {
                       )
                     }
                   >
-                    <MessageSquare className="h-5 w-5 mr-2" />
-                    WhatsApp
+                    <MessageSquare className="h-4 w-4 md:h-5 md:w-5 mr-2" />
+                    <span className="text-sm md:text-base">WhatsApp</span>
                   </Button>
                 </div>
               </CardContent>
