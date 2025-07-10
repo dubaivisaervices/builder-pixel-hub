@@ -735,35 +735,6 @@ export default function ComplaintForm() {
                 fraud, and unethical practices.
               </p>
 
-              {/* Feature Highlights */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto mb-8">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:scale-105">
-                  <UserCheck className="h-8 w-8 text-white mb-3 mx-auto" />
-                  <h3 className="font-semibold text-white mb-2">
-                    Confidential
-                  </h3>
-                  <p className="text-red-100 text-sm">
-                    Your identity is protected with bank-level security
-                  </p>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:scale-105">
-                  <Rocket className="h-8 w-8 text-white mb-3 mx-auto" />
-                  <h3 className="font-semibold text-white mb-2">
-                    Fast Response
-                  </h3>
-                  <p className="text-red-100 text-sm">
-                    Expert review within 24 hours guaranteed
-                  </p>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:scale-105">
-                  <Award className="h-8 w-8 text-white mb-3 mx-auto" />
-                  <h3 className="font-semibold text-white mb-2">Real Impact</h3>
-                  <p className="text-red-100 text-sm">
-                    Join 2.8k+ users creating positive change
-                  </p>
-                </div>
-              </div>
-
               {/* Progress Indicator */}
               <div className="max-w-md mx-auto">
                 <div className="flex justify-between text-sm mb-3">
