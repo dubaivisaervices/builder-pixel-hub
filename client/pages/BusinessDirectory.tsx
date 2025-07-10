@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import CommunityProtection from "@/components/CommunityProtection";
+import GovernmentSection from "@/components/GovernmentSection";
+import Footer from "@/components/Footer";
 import {
   Search,
   Star,
