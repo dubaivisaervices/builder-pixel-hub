@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import multer from "multer";
 import { database } from "./database/database";
 import { handleDemo } from "./routes/demo";
 import {
@@ -102,6 +103,24 @@ import {
 export function createServer() {
   const app = express();
 
+  // Configure multer for file uploads
+  const upload = multer({
+    dest: "uploads/",
+    limits: {
+      fileSize: 5 * 1024 * 1024, // 5MB limit
+    },
+    fileFilter: (req, file, cb) => {
+      const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+      if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+      } else {
+        cb(
+          new Error("Invalid file type. Only JPEG, PNG, and PDF are allowed."),
+        );
+      }
+    },
+  });
+
   // Middleware
   app.use(cors());
   app.use(express.json());
@@ -197,7 +216,14 @@ export function createServer() {
   app.get("/api/placeholder-logo/:businessName", generatePlaceholderLogo);
 
   // Reports API
-  app.post("/api/reports/submit", submitReport);
+  app.post(
+    "/api/reports/submit",
+    upload.fields([
+      { name: "paymentReceipt", maxCount: 1 },
+      { name: "agreementCopy", maxCount: 1 },
+    ]),
+    submitReport,
+  );
   app.get("/api/reports/company/:companyId", getCompanyReports);
   app.get("/api/reports/all", getAllReports);
   app.put("/api/reports/:reportId/status", updateReportStatus);
