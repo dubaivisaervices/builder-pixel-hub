@@ -57,6 +57,13 @@ import {
   stopLogoDownload,
   getLogoStats,
 } from "./routes/logo-download";
+import {
+  getApiStatus,
+  enableApi,
+  disableApi,
+  resetCounters,
+  getCostReport,
+} from "./routes/api-control-simple";
 import { getBusinessReviews } from "./routes/business-reviews-real";
 import {
   syncAllGoogleReviews,
@@ -153,6 +160,13 @@ export function createServer() {
   app.get("/api/admin/logo-progress", getLogoDownloadProgress);
   app.post("/api/admin/stop-logo-download", stopLogoDownload);
   app.get("/api/admin/logo-stats", getLogoStats);
+
+  // API Control routes - Manage Google Places API costs
+  app.get("/api/admin/api-status", getApiStatus);
+  app.post("/api/admin/api-enable", enableApi);
+  app.post("/api/admin/api-disable", disableApi);
+  app.post("/api/admin/api-reset-counters", resetCounters);
+  app.get("/api/admin/api-cost-report", getCostReport);
 
   // Real Google reviews API (cache-first, no fake reviews)
   app.get("/api/business-reviews/:businessId", getBusinessReviews);
