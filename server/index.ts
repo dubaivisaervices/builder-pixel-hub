@@ -72,6 +72,12 @@ import {
   serveCachedPhoto,
 } from "./routes/serve-cached-images";
 import { generatePlaceholderLogo } from "./routes/placeholder-logo";
+import {
+  submitReport,
+  getCompanyReports,
+  getAllReports,
+  updateReportStatus,
+} from "./routes/reports-api";
 // Temporarily disabled due to space constraints
 // import {
 //   downloadOptimizedPhotos,
@@ -189,6 +195,12 @@ export function createServer() {
   app.get("/api/cached-logo/:businessId", serveCachedLogo);
   app.get("/api/cached-photo/:businessId/:photoIndex", serveCachedPhoto);
   app.get("/api/placeholder-logo/:businessName", generatePlaceholderLogo);
+
+  // Reports API
+  app.post("/api/reports/submit", submitReport);
+  app.get("/api/reports/company/:companyId", getCompanyReports);
+  app.get("/api/reports/all", getAllReports);
+  app.put("/api/reports/:reportId/status", updateReportStatus);
 
   // Temporarily disabled due to space constraints
   // app.post("/api/admin/download-optimized-photos", downloadOptimizedPhotos);
