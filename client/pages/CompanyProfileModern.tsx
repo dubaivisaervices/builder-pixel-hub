@@ -593,6 +593,9 @@ export default function CompanyProfileModern() {
           const enhancedBusiness = {
             ...business,
             logoUrl: business.logo_url || business.logoUrl, // Map snake_case to camelCase
+            photos: business.photos_json
+              ? JSON.parse(business.photos_json)
+              : business.photos || [], // Map photos
             description:
               business.description ||
               `${business.name} is a professional service provider in Dubai specializing in ${business.category.toLowerCase()}. We provide comprehensive solutions and expert consultation for all your business needs with years of experience in the industry.`,
