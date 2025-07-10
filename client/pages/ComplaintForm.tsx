@@ -1630,10 +1630,12 @@ export default function ComplaintForm() {
 
       {/* Sticky Progress Bar */}
       <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-200 shadow-xl z-40">
-        <div className="max-w-6xl mx-auto px-4 py-3">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-700">Progress</span>
-            <span className="text-sm text-gray-600">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 py-2 sm:py-3">
+          <div className="flex items-center justify-between mb-1 sm:mb-2">
+            <span className="text-xs sm:text-sm font-medium text-gray-700">
+              Progress
+            </span>
+            <span className="text-xs sm:text-sm text-gray-600">
               {Math.round(formProgress)}% Complete
             </span>
           </div>
