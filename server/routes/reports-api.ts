@@ -13,6 +13,7 @@ export const submitReport = async (req: Request, res: Response) => {
       amountLost,
       dateOfIncident,
       evidenceDescription,
+      employeeName,
     } = req.body;
 
     if (!companyId || !companyName || !issueType || !description) {
@@ -23,13 +24,32 @@ export const submitReport = async (req: Request, res: Response) => {
 
     const reportId = `report_${Date.now()}_${Math.random().toString(36).substring(2)}`;
 
+    // Handle file uploads (if any)
+    let paymentReceiptPath = null;
+    let agreementCopyPath = null;
+
+    // In a real implementation, you would save files to disk or cloud storage
+    // For now, we'll just note that files were uploaded
+    const files = req.files as any;
+    if (files?.paymentReceipt) {
+      paymentReceiptPath = `uploads/receipts/${reportId}_receipt.${files.paymentReceipt.name.split(".").pop()}`;
+      console.log(
+        `���� Payment receipt uploaded: ${files.paymentReceipt.name}`,
+      );
+    }
+    if (files?.agreementCopy) {
+      agreementCopyPath = `uploads/agreements/${reportId}_agreement.${files.agreementCopy.name.split(".").pop()}`;
+      console.log(`📁 Agreement copy uploaded: ${files.agreementCopy.name}`);
+    }
+
     // Insert report into database
     await database.run(
       `INSERT INTO reports (
-        id, company_id, company_name, issue_type, description, 
+        id, company_id, company_name, issue_type, description,
         reporter_name, reporter_email, amount_lost, date_of_incident,
-        evidence_description, status, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        evidence_description, employee_name, payment_receipt_path,
+        agreement_copy_path, status, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         reportId,
         companyId,
@@ -41,17 +61,26 @@ export const submitReport = async (req: Request, res: Response) => {
         amountLost || 0,
         dateOfIncident,
         evidenceDescription || "",
+        employeeName || "",
+        paymentReceiptPath,
+        agreementCopyPath,
         "pending",
         new Date().toISOString(),
       ],
     );
 
     console.log(`📋 New report submitted for ${companyName}: ${issueType}`);
+    console.log(`👤 Employee mentioned: ${employeeName || "Not specified"}`);
+    console.log(`💰 Amount lost: AED ${amountLost || 0}`);
 
     res.json({
       success: true,
       message: "Report submitted successfully",
       reportId,
+      filesUploaded: {
+        paymentReceipt: !!paymentReceiptPath,
+        agreementCopy: !!agreementCopyPath,
+      },
     });
   } catch (error) {
     console.error("Error submitting report:", error);
@@ -68,10 +97,10 @@ export const getCompanyReports = async (req: Request, res: Response) => {
     const { status = "approved" } = req.query;
 
     const reports = await database.all(
-      `SELECT 
+      `SELECT
         id, issue_type, description, amount_lost, date_of_incident,
         evidence_description, status, created_at, updated_at
-      FROM reports 
+      FROM reports
       WHERE company_id = ? AND status = ?
       ORDER BY created_at DESC`,
       [companyId, status],
@@ -108,11 +137,11 @@ export const getAllReports = async (req: Request, res: Response) => {
     const { status = "pending", limit = 50 } = req.query;
 
     const reports = await database.all(
-      `SELECT 
-        id, company_id, company_name, issue_type, description, 
+      `SELECT
+        id, company_id, company_name, issue_type, description,
         reporter_name, reporter_email, amount_lost, date_of_incident,
         evidence_description, status, created_at, updated_at
-      FROM reports 
+      FROM reports
       WHERE status = ?
       ORDER BY created_at DESC
       LIMIT ?`,
@@ -144,8 +173,8 @@ export const updateReportStatus = async (req: Request, res: Response) => {
     }
 
     await database.run(
-      `UPDATE reports 
-       SET status = ?, admin_notes = ?, updated_at = ? 
+      `UPDATE reports
+       SET status = ?, admin_notes = ?, updated_at = ?
        WHERE id = ?`,
       [status, adminNotes || "", new Date().toISOString(), reportId],
     );
