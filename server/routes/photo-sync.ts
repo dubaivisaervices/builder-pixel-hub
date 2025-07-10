@@ -36,6 +36,24 @@ export const downloadAllPhotos: RequestHandler = async (req, res) => {
       });
     }
 
+    // Safety check: Prevent downloads if database is already large (> 50MB)
+    try {
+      const fs = require("fs");
+      const dbPath = "./server/database/dubai_businesses.db";
+      const stats = fs.statSync(dbPath);
+      const fileSizeInMB = stats.size / (1024 * 1024);
+
+      if (fileSizeInMB > 50) {
+        return res.status(507).json({
+          error: "Database too large for photo download",
+          message: `Database is ${fileSizeInMB.toFixed(1)}MB. Photo downloads disabled to prevent disk space issues.`,
+          sizeMB: fileSizeInMB,
+        });
+      }
+    } catch (error) {
+      console.warn("Could not check database size:", error);
+    }
+
     downloadInProgress = true;
 
     const businesses = await businessService.getAllBusinesses();
