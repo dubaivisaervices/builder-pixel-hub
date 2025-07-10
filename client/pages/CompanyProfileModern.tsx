@@ -97,11 +97,13 @@ function WriteReviewSection({
   businessId,
   businessName,
 }: WriteReviewSectionProps) {
-  const [showReviewForm, setShowReviewForm] = useState(false);
   const [hoveredStar, setHoveredStar] = useState(0);
   const [selectedRating, setSelectedRating] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [userReviews, setUserReviews] = useState<ReviewData[]>([]);
+  const [activeTab, setActiveTab] = useState("review");
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [uploadError, setUploadError] = useState<string>("");
   const [reviewForm, setReviewForm] = useState({
     title: "",
     review: "",
@@ -110,11 +112,28 @@ function WriteReviewSection({
     rating: 0,
   });
 
+  // Sample review data
+  const sampleReview: ReviewData = {
+    id: "sample-1",
+    rating: 5,
+    title: "Outstanding service and professional staff",
+    review:
+      "I had an excellent experience with Perfect Connection Document Clearing. Their team was extremely professional and handled my visa application with great efficiency. The process was smooth, and they kept me informed at every step. Highly recommended for anyone needing document clearing services in Dubai.",
+    authorName: "Ahmed Al-Rashid",
+    authorEmail: "ahmed@example.com",
+    date: "2024-01-15T10:30:00.000Z",
+    status: "approved",
+    isOwnReview: false,
+  };
+
   // Simulate user reviews (in real app, fetch from API)
   useEffect(() => {
     const savedReviews = localStorage.getItem(`reviews_${businessId}`);
     if (savedReviews) {
-      setUserReviews(JSON.parse(savedReviews));
+      const saved = JSON.parse(savedReviews);
+      setUserReviews([sampleReview, ...saved]);
+    } else {
+      setUserReviews([sampleReview]);
     }
   }, [businessId]);
 
