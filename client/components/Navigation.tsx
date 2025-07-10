@@ -209,8 +209,12 @@ const Navigation = () => {
           <div className="lg:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-5 w-5" />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="transition-all duration-200 hover:scale-110 hover:bg-accent"
+                >
+                  <Menu className="h-5 w-5 transition-transform duration-200" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
