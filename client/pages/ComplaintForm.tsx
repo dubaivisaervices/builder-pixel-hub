@@ -324,20 +324,151 @@ export default function ComplaintForm() {
   return (
     <>
       <style jsx>{`
+        @keyframes slideInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes pulseGlow {
+          0%,
+          100% {
+            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+          }
+          50% {
+            box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+          }
+        }
+
+        @keyframes shake {
+          0%,
+          100% {
+            transform: translateX(0);
+          }
+          25% {
+            transform: translateX(-5px);
+          }
+          75% {
+            transform: translateX(5px);
+          }
+        }
+
+        @keyframes fadeInScale {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .card-animate {
+          animation: slideInUp 0.6s ease-out;
+        }
+
+        .card-animate:nth-child(2) {
+          animation-delay: 0.1s;
+        }
+
+        .card-animate:nth-child(3) {
+          animation-delay: 0.2s;
+        }
+
+        .card-animate:nth-child(4) {
+          animation-delay: 0.3s;
+        }
+
         .file-upload-area {
-          transition: all 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
           border: 2px dashed #d1d5db;
-          background: #f9fafb;
+          background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+          position: relative;
+          overflow: hidden;
         }
 
         .file-upload-area:hover {
           border-color: #3b82f6;
-          background: #eff6ff;
+          background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+          transform: translateY(-2px);
+          box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1);
+        }
+
+        .file-upload-area.uploaded {
+          border-color: #10b981;
+          background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+          animation: pulseGlow 2s infinite;
         }
 
         .search-container {
           position: relative;
           z-index: 30;
+        }
+
+        .typing-indicator {
+          animation: shake 0.5s ease-in-out;
+        }
+
+        .suggestion-item {
+          transition: all 0.3s ease;
+          transform: translateX(0);
+        }
+
+        .suggestion-item:hover {
+          transform: translateX(5px);
+          background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        }
+
+        .progress-bar {
+          transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+          background: linear-gradient(
+            90deg,
+            #3b82f6 0%,
+            #8b5cf6 50%,
+            #ef4444 100%
+          );
+        }
+
+        .step-indicator {
+          transition: all 0.4s ease;
+        }
+
+        .step-indicator.completed {
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          animation: pulseGlow 1s ease-out;
+        }
+
+        .step-indicator.active {
+          background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+          animation: pulseGlow 2s infinite;
+        }
+
+        .glassmorphism {
+          backdrop-filter: blur(16px);
+          background: rgba(255, 255, 255, 0.9);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hover-lift {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-lift:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-text {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
       `}</style>
 
