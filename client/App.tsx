@@ -62,4 +62,9 @@ const App = () => (
   </QueryClientProvider>
 );
 
-createRoot(document.getElementById("root")!).render(<App />);
+// Prevent duplicate root creation
+const container = document.getElementById("root");
+if (container && !container.hasAttribute("data-root-created")) {
+  container.setAttribute("data-root-created", "true");
+  createRoot(container).render(<App />);
+}
