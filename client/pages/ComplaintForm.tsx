@@ -402,7 +402,7 @@ export default function ComplaintForm() {
           // Then sort by rating
           return b.rating - a.rating;
         })
-        .slice(0, 12); // Show more results (12 instead of 8)
+        .slice(0, 50); // Show more results for better searching
 
       setSearchSuggestions(filtered);
       setShowSuggestions(true);
@@ -411,8 +411,30 @@ export default function ComplaintForm() {
         `🔍 Search "${value}" found ${filtered.length} results out of ${businesses.length} total businesses`,
       );
     } else {
-      setShowSuggestions(false);
+      // Show all businesses when no search term
+      setSearchSuggestions(businesses.slice(0, 100)); // Show first 100 when no search
+      setShowSuggestions(true);
+      console.log(
+        `📋 Showing first 100 businesses out of ${businesses.length} total`,
+      );
     }
+  };
+
+  const handleSearchFocus = () => {
+    if (!searchTerm) {
+      // Show all businesses when focused and no search term
+      setSearchSuggestions(businesses.slice(0, 100));
+      setShowSuggestions(true);
+      console.log(
+        `📋 Focus: Showing first 100 businesses out of ${businesses.length} total`,
+      );
+    }
+  };
+
+  const showAllBusinesses = () => {
+    setSearchSuggestions(businesses);
+    setShowSuggestions(true);
+    console.log(`📋 Showing ALL ${businesses.length} businesses`);
   };
 
   const handleCompanySelect = (business: BusinessData) => {
@@ -1176,7 +1198,7 @@ export default function ComplaintForm() {
                             Upload Payment Receipt
                           </p>
                           <p className="text-xs text-red-600 font-medium">
-                            ⚠️ Max 5MB • PNG, JPG, PDF only
+                            ⚠��� Max 5MB • PNG, JPG, PDF only
                           </p>
                           {showTooltip === "receipt" && (
                             <div className="mt-2 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">
