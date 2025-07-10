@@ -146,6 +146,44 @@ function WriteReviewSection({
     setReviewForm({ ...reviewForm, rating });
   };
 
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    setUploadError("");
+
+    // Validate files
+    const validFiles: File[] = [];
+    let hasError = false;
+
+    files.forEach((file) => {
+      // Check file type (images only)
+      if (!file.type.startsWith("image/")) {
+        setUploadError("Only image files are allowed");
+        hasError = true;
+        return;
+      }
+
+      // Check file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        setUploadError(`File "${file.name}" is too large. Maximum size is 5MB`);
+        hasError = true;
+        return;
+      }
+
+      validFiles.push(file);
+    });
+
+    if (!hasError && uploadedFiles.length + validFiles.length <= 5) {
+      setUploadedFiles([...uploadedFiles, ...validFiles]);
+    } else if (uploadedFiles.length + validFiles.length > 5) {
+      setUploadError("Maximum 5 files allowed");
+    }
+  };
+
+  const removeFile = (index: number) => {
+    const newFiles = uploadedFiles.filter((_, i) => i !== index);
+    setUploadedFiles(newFiles);
+  };
+
   const handleSubmitReview = async () => {
     if (
       !reviewForm.title ||
@@ -179,7 +217,7 @@ function WriteReviewSection({
       setUserReviews(updatedReviews);
       localStorage.setItem(
         `reviews_${businessId}`,
-        JSON.stringify(updatedReviews),
+        JSON.stringify(updatedReviews.filter((r) => r.id !== "sample-1")),
       );
 
       // Reset form
@@ -191,7 +229,8 @@ function WriteReviewSection({
         rating: 0,
       });
       setSelectedRating(0);
-      setShowReviewForm(false);
+      setUploadedFiles([]);
+      setActiveTab("review");
 
       alert(
         "Thank you! Your review has been submitted and is pending admin approval.",
