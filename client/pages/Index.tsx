@@ -785,111 +785,11 @@ export default function Index() {
       {/* Community Protection Section */}
       <CommunityProtection stats={stats} />
 
-      {/* Dubai Government Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-              Government Authorized Services
-            </h2>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-              All listed visa services are registered and comply with UAE
-              government regulations and Dubai municipality standards.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {/* UAE Government */}
-            <div className="text-center space-y-4">
-              <div className="w-20 h-20 mx-auto bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
-                <img
-                  src="https://images.pexels.com/photos/15652234/pexels-photo-15652234.jpeg"
-                  alt="UAE Flag"
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-              </div>
-              <div className="text-white">
-                <h3 className="text-xl font-bold mb-2">UAE Government</h3>
-                <p className="text-blue-100 text-sm">
-                  Federal Authority for Identity & Citizenship
-                </p>
-                <p className="text-blue-200 text-xs mt-1">www.government.ae</p>
-              </div>
-            </div>
-
-            {/* Dubai Municipality */}
-            <div className="text-center space-y-4">
-              <div className="w-20 h-20 mx-auto bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
-                <img
-                  src="https://images.pexels.com/photos/18294648/pexels-photo-18294648.jpeg"
-                  alt="Dubai Municipality"
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-              </div>
-              <div className="text-white">
-                <h3 className="text-xl font-bold mb-2">Dubai Municipality</h3>
-                <p className="text-blue-100 text-sm">
-                  Business Registration & Licensing Authority
-                </p>
-                <p className="text-blue-200 text-xs mt-1">www.dm.gov.ae</p>
-              </div>
-            </div>
-
-            {/* Immigration Department */}
-            <div className="text-center space-y-4">
-              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-red-500 via-white to-green-600 rounded-full p-1 flex items-center justify-center">
-                <div className="bg-white rounded-full w-full h-full flex items-center justify-center">
-                  <span className="text-lg font-bold bg-gradient-to-r from-red-500 to-green-600 bg-clip-text text-transparent">
-                    UAE
-                  </span>
-                </div>
-              </div>
-              <div className="text-white">
-                <h3 className="text-xl font-bold mb-2">Immigration Dept</h3>
-                <p className="text-blue-100 text-sm">
-                  General Directorate of Residency & Foreign Affairs
-                </p>
-                <p className="text-blue-200 text-xs mt-1">www.gdrfad.gov.ae</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center">
-            <div className="flex items-center justify-center space-x-2 mb-4">
-              <Shield className="h-6 w-6 text-green-400" />
-              <h3 className="text-xl font-bold text-white">
-                Compliance Guarantee
-              </h3>
-            </div>
-            <p className="text-blue-100 max-w-2xl mx-auto">
-              Every visa service listed on our platform is verified to hold
-              valid trade licenses and comply with UAE federal laws and Dubai
-              local regulations for immigration services.
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 text-sm">
-              <div className="text-blue-200">
-                <div className="font-semibold text-white">150+</div>
-                <div>Licensed Services</div>
-              </div>
-              <div className="text-blue-200">
-                <div className="font-semibold text-white">100%</div>
-                <div>Government Compliant</div>
-              </div>
-              <div className="text-blue-200">
-                <div className="font-semibold text-white">24/7</div>
-                <div>Support Available</div>
-              </div>
-              <div className="text-blue-200">
-                <div className="font-semibold text-white">99%</div>
-                <div>Success Rate</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Government Section */}
+      <GovernmentSection />
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
+      <Footer />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="space-y-4">
