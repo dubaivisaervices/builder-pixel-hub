@@ -1981,7 +1981,7 @@ export default function CompanyProfileModern() {
                     <MapPinned className="h-5 w-5 text-red-600 mt-1" />
                     <div className="flex-1">
                       <p className="font-medium text-gray-900">Address</p>
-                      <p className="text-gray-600 text-sm leading-relaxed">
+                      <p className="text-gray-600 text-sm leading-relaxed break-words">
                         {businessData.address}
                       </p>
                       <Button variant="outline" size="sm" className="mt-2">
