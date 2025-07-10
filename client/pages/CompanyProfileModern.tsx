@@ -89,37 +89,41 @@ interface ReviewData {
   authorName: string;
   authorEmail: string;
   date: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: "pending" | "approved" | "rejected";
   isOwnReview?: boolean;
 }
 
-function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProps) {
+function WriteReviewSection({
+  businessId,
+  businessName,
+}: WriteReviewSectionProps) {
   const [hoveredStar, setHoveredStar] = useState(0);
   const [selectedRating, setSelectedRating] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [userReviews, setUserReviews] = useState<ReviewData[]>([]);
-  const [activeTab, setActiveTab] = useState('review');
+  const [activeTab, setActiveTab] = useState("review");
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [uploadError, setUploadError] = useState<string>('');
+  const [uploadError, setUploadError] = useState<string>("");
   const [reviewForm, setReviewForm] = useState({
-    title: '',
-    review: '',
-    authorName: '',
-    authorEmail: '',
-    rating: 0
+    title: "",
+    review: "",
+    authorName: "",
+    authorEmail: "",
+    rating: 0,
   });
 
   // Sample review data
   const sampleReview: ReviewData = {
-    id: 'sample-1',
+    id: "sample-1",
     rating: 5,
-    title: 'Outstanding service and professional staff',
-    review: 'I had an excellent experience with Perfect Connection Document Clearing. Their team was extremely professional and handled my visa application with great efficiency. The process was smooth, and they kept me informed at every step. Highly recommended for anyone needing document clearing services in Dubai.',
-    authorName: 'Ahmed Al-Rashid',
-    authorEmail: 'ahmed@example.com',
-    date: '2024-01-15T10:30:00.000Z',
-    status: 'approved',
-    isOwnReview: false
+    title: "Outstanding service and professional staff",
+    review:
+      "I had an excellent experience with Perfect Connection Document Clearing. Their team was extremely professional and handled my visa application with great efficiency. The process was smooth, and they kept me informed at every step. Highly recommended for anyone needing document clearing services in Dubai.",
+    authorName: "Ahmed Al-Rashid",
+    authorEmail: "ahmed@example.com",
+    date: "2024-01-15T10:30:00.000Z",
+    status: "approved",
+    isOwnReview: false,
   };
 
   // Simulate user reviews (in real app, fetch from API)
@@ -144,16 +148,16 @@ function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProp
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
-    setUploadError('');
+    setUploadError("");
 
     // Validate files
     const validFiles: File[] = [];
     let hasError = false;
 
-    files.forEach(file => {
+    files.forEach((file) => {
       // Check file type (images only)
-      if (!file.type.startsWith('image/')) {
-        setUploadError('Only image files are allowed');
+      if (!file.type.startsWith("image/")) {
+        setUploadError("Only image files are allowed");
         hasError = true;
         return;
       }
@@ -171,7 +175,7 @@ function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProp
     if (!hasError && uploadedFiles.length + validFiles.length <= 5) {
       setUploadedFiles([...uploadedFiles, ...validFiles]);
     } else if (uploadedFiles.length + validFiles.length > 5) {
-      setUploadError('Maximum 5 files allowed');
+      setUploadError("Maximum 5 files allowed");
     }
   };
 
@@ -181,8 +185,13 @@ function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProp
   };
 
   const handleSubmitReview = async () => {
-    if (!reviewForm.title || !reviewForm.review || !reviewForm.authorName || selectedRating === 0) {
-      alert('Please fill in all required fields and select a rating');
+    if (
+      !reviewForm.title ||
+      !reviewForm.review ||
+      !reviewForm.authorName ||
+      selectedRating === 0
+    ) {
+      alert("Please fill in all required fields and select a rating");
       return;
     }
 
@@ -190,7 +199,7 @@ function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProp
 
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       const newReview: ReviewData = {
         id: Date.now().toString(),
@@ -200,42 +209,51 @@ function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProp
         authorName: reviewForm.authorName,
         authorEmail: reviewForm.authorEmail,
         date: new Date().toISOString(),
-        status: 'pending',
-        isOwnReview: true
+        status: "pending",
+        isOwnReview: true,
       };
 
       const updatedReviews = [...userReviews, newReview];
       setUserReviews(updatedReviews);
-      localStorage.setItem(`reviews_${businessId}`, JSON.stringify(updatedReviews.filter(r => r.id !== 'sample-1')));
+      localStorage.setItem(
+        `reviews_${businessId}`,
+        JSON.stringify(updatedReviews.filter((r) => r.id !== "sample-1")),
+      );
 
       // Reset form
       setReviewForm({
-        title: '',
-        review: '',
-        authorName: '',
-        authorEmail: '',
-        rating: 0
+        title: "",
+        review: "",
+        authorName: "",
+        authorEmail: "",
+        rating: 0,
       });
       setSelectedRating(0);
       setUploadedFiles([]);
-      setActiveTab('review');
+      setActiveTab("review");
 
-      alert('Thank you! Your review has been submitted and is pending admin approval.');
+      alert(
+        "Thank you! Your review has been submitted and is pending admin approval.",
+      );
     } catch (error) {
-      alert('Failed to submit review. Please try again.');
+      alert("Failed to submit review. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const renderStars = (rating: number, interactive = false, size = "h-6 w-6") => {
+  const renderStars = (
+    rating: number,
+    interactive = false,
+    size = "h-6 w-6",
+  ) => {
     return (
       <div className="flex items-center space-x-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
             className={`${size} cursor-pointer transition-all duration-200 ${
-              star <= (interactive ? (hoveredStar || selectedRating) : rating)
+              star <= (interactive ? hoveredStar || selectedRating : rating)
                 ? "text-yellow-400 fill-current"
                 : "text-gray-300"
             } ${interactive ? "hover:scale-110" : ""}`}
@@ -255,7 +273,9 @@ function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProp
         <div className="inline-flex p-3 md:p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg mb-4 md:mb-6">
           <Edit3 className="h-8 w-8 md:h-12 md:w-12 text-white" />
         </div>
-        <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4">Share Your Experience</h2>
+        <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
+          Share Your Experience
+        </h2>
         <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto">
           Help others by sharing your honest review about {businessName}
         </p>
@@ -264,28 +284,22 @@ function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProp
       {/* Review Form - Always Visible */}
       <div className="px-4">
         <Card className="max-w-4xl mx-auto shadow-2xl border-0 bg-white/80 backdrop-blur-xl overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6">
-            <div className="flex items-center justify-between text-white">
-              <h3 className="text-2xl font-bold">Write Your Review</h3>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowReviewForm(false)}
-                className="text-white hover:bg-white/20 rounded-full"
-              >
-                <X className="h-6 w-6" />
-              </Button>
-            </div>
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 md:p-6">
+            <h3 className="text-xl md:text-2xl font-bold text-white">
+              Write Your Review
+            </h3>
           </div>
 
-          <CardContent className="p-8 space-y-6">
+          <CardContent className="p-4 md:p-8 space-y-6">
             {/* Rating Section */}
             <div className="text-center space-y-4">
-              <h4 className="text-xl font-semibold text-gray-900">Rate Your Experience</h4>
+              <h4 className="text-lg md:text-xl font-semibold text-gray-900">
+                Rate Your Experience
+              </h4>
               <div className="flex justify-center">
-                {renderStars(selectedRating, true, "h-10 w-10")}
+                {renderStars(selectedRating, true, "h-8 w-8 md:h-10 md:w-10")}
               </div>
-              <div className="text-lg font-medium text-gray-700">
+              <div className="text-base md:text-lg font-medium text-gray-700">
                 {selectedRating === 0 && "Select a rating"}
                 {selectedRating === 1 && "Poor"}
                 {selectedRating === 2 && "Fair"}
@@ -297,60 +311,175 @@ function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProp
 
             <Separator />
 
-            {/* Review Form Fields */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
-                  Your Name *
-                </label>
-                <Input
-                  type="text"
-                  placeholder="Enter your full name"
-                  value={reviewForm.authorName}
-                  onChange={(e) => setReviewForm({ ...reviewForm, authorName: e.target.value })}
-                  className="rounded-xl border-2 focus:border-blue-500"
-                />
-              </div>
+            {/* Tabs for Review Content and Screenshots */}
+            <Tabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full"
+            >
+              <TabsList className="grid w-full grid-cols-2 rounded-xl">
+                <TabsTrigger value="review" className="rounded-lg">
+                  Review Details
+                </TabsTrigger>
+                <TabsTrigger value="screenshots" className="rounded-lg">
+                  Screenshots
+                </TabsTrigger>
+              </TabsList>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
-                  Email Address *
-                </label>
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={reviewForm.authorEmail}
-                  onChange={(e) => setReviewForm({ ...reviewForm, authorEmail: e.target.value })}
-                  className="rounded-xl border-2 focus:border-blue-500"
-                />
-              </div>
-            </div>
+              <TabsContent value="review" className="space-y-6 mt-6">
+                {/* Review Form Fields */}
+                <div className="grid gap-4 md:gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">
+                        Your Name *
+                      </label>
+                      <Input
+                        type="text"
+                        placeholder="Enter your full name"
+                        value={reviewForm.authorName}
+                        onChange={(e) =>
+                          setReviewForm({
+                            ...reviewForm,
+                            authorName: e.target.value,
+                          })
+                        }
+                        className="rounded-xl border-2 focus:border-blue-500"
+                      />
+                    </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">
-                Review Title *
-              </label>
-              <Input
-                type="text"
-                placeholder="Summarize your experience in a few words"
-                value={reviewForm.title}
-                onChange={(e) => setReviewForm({ ...reviewForm, title: e.target.value })}
-                className="rounded-xl border-2 focus:border-blue-500"
-              />
-            </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">
+                        Email Address *
+                      </label>
+                      <Input
+                        type="email"
+                        placeholder="Enter your email"
+                        value={reviewForm.authorEmail}
+                        onChange={(e) =>
+                          setReviewForm({
+                            ...reviewForm,
+                            authorEmail: e.target.value,
+                          })
+                        }
+                        className="rounded-xl border-2 focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">
-                Your Review *
-              </label>
-              <textarea
-                placeholder="Share details about your experience, the quality of service, staff behavior, and any recommendations..."
-                value={reviewForm.review}
-                onChange={(e) => setReviewForm({ ...reviewForm, review: e.target.value })}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors min-h-[120px] resize-none"
-                rows={5}
-              />
-            </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Review Title *
+                    </label>
+                    <Input
+                      type="text"
+                      placeholder="Summarize your experience in a few words"
+                      value={reviewForm.title}
+                      onChange={(e) =>
+                        setReviewForm({ ...reviewForm, title: e.target.value })
+                      }
+                      className="rounded-xl border-2 focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Your Review *
+                    </label>
+                    <textarea
+                      placeholder="Share details about your experience, the quality of service, staff behavior, and any recommendations..."
+                      value={reviewForm.review}
+                      onChange={(e) =>
+                        setReviewForm({ ...reviewForm, review: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors min-h-[120px] resize-none"
+                      rows={5}
+                    />
+                  </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="screenshots" className="space-y-6 mt-6">
+                {/* File Upload Section */}
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Upload Screenshots (Optional)
+                    </label>
+                    <p className="text-xs text-gray-500">
+                      Upload up to 5 images, max 5MB each. Supports JPG, PNG,
+                      GIF formats.
+                    </p>
+                  </div>
+
+                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition-colors">
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                      id="screenshot-upload"
+                    />
+                    <label
+                      htmlFor="screenshot-upload"
+                      className="cursor-pointer"
+                    >
+                      <div className="space-y-4">
+                        <div className="mx-auto w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                          <Camera className="h-6 w-6 text-blue-600" />
+                        </div>
+                        <div>
+                          <p className="text-gray-700 font-medium">
+                            Click to upload screenshots
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            or drag and drop images here
+                          </p>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+
+                  {uploadError && (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                      <p className="text-sm text-red-600">{uploadError}</p>
+                    </div>
+                  )}
+
+                  {/* Uploaded Files Preview */}
+                  {uploadedFiles.length > 0 && (
+                    <div className="space-y-3">
+                      <h4 className="text-sm font-medium text-gray-700">
+                        Uploaded Screenshots:
+                      </h4>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {uploadedFiles.map((file, index) => (
+                          <div key={index} className="relative group">
+                            <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                              <img
+                                src={URL.createObjectURL(file)}
+                                alt={`Screenshot ${index + 1}`}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <button
+                              onClick={() => removeFile(index)}
+                              className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                            <p className="text-xs text-gray-500 mt-1 truncate">
+                              {file.name}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
+            </Tabs>
 
             {/* Guidelines */}
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
@@ -367,19 +496,11 @@ function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProp
             </div>
 
             {/* Submit Button */}
-            <div className="flex space-x-4">
-              <Button
-                variant="outline"
-                onClick={() => setShowReviewForm(false)}
-                className="flex-1 rounded-xl"
-                disabled={isSubmitting}
-              >
-                Cancel
-              </Button>
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
               <Button
                 onClick={handleSubmitReview}
                 disabled={isSubmitting || selectedRating === 0}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl py-3"
               >
                 {isSubmitting ? (
                   <>
@@ -396,15 +517,20 @@ function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProp
             </div>
           </CardContent>
         </Card>
-      )}
+      </div>
 
       {/* User's Reviews */}
       {userReviews.length > 0 && (
         <div className="max-w-4xl mx-auto">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Your Reviews</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+            Your Reviews
+          </h3>
           <div className="space-y-4">
             {userReviews.map((review) => (
-              <Card key={review.id} className="shadow-lg border-0 bg-white/90 backdrop-blur-sm">
+              <Card
+                key={review.id}
+                className="shadow-lg border-0 bg-white/90 backdrop-blur-sm"
+              >
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="space-y-2">
@@ -414,17 +540,19 @@ function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProp
                           {new Date(review.date).toLocaleDateString()}
                         </span>
                       </div>
-                      <h4 className="text-lg font-semibold text-gray-900">{review.title}</h4>
+                      <h4 className="text-lg font-semibold text-gray-900">
+                        {review.title}
+                      </h4>
                     </div>
 
                     <div className="flex items-center space-x-2">
-                      {review.status === 'pending' && (
+                      {review.status === "pending" && (
                         <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
                           <Clock3 className="h-3 w-3 mr-1" />
                           Pending Approval
                         </Badge>
                       )}
-                      {review.status === 'approved' && (
+                      {review.status === "approved" && (
                         <Badge className="bg-green-100 text-green-800 border-green-200">
                           <CheckCircle2 className="h-3 w-3 mr-1" />
                           Approved
@@ -433,14 +561,16 @@ function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProp
                     </div>
                   </div>
 
-                  <p className="text-gray-700 leading-relaxed mb-4">{review.review}</p>
+                  <p className="text-gray-700 leading-relaxed mb-4">
+                    {review.review}
+                  </p>
 
                   <div className="flex items-center justify-between text-sm text-gray-500">
                     <span className="flex items-center">
                       <UserCheck2 className="h-4 w-4 mr-1" />
                       {review.authorName}
                     </span>
-                    {review.status === 'pending' && (
+                    {review.status === "pending" && (
                       <span className="text-yellow-600 font-medium">
                         Review will be visible to others after approval
                       </span>
@@ -462,22 +592,32 @@ function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProp
                 <div className="bg-blue-500 p-4 rounded-2xl inline-flex mb-4">
                   <Star className="h-8 w-8 text-white fill-current" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Rate & Review</h4>
-                <p className="text-sm text-gray-600">Share your honest experience</p>
+                <h4 className="font-semibold text-gray-900 mb-2">
+                  Rate & Review
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Share your honest experience
+                </p>
               </div>
               <div className="text-center">
                 <div className="bg-purple-500 p-4 rounded-2xl inline-flex mb-4">
                   <Users className="h-8 w-8 text-white" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Help Others</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">
+                  Help Others
+                </h4>
                 <p className="text-sm text-gray-600">Guide future customers</p>
               </div>
               <div className="text-center">
                 <div className="bg-green-500 p-4 rounded-2xl inline-flex mb-4">
                   <Shield className="h-8 w-8 text-white" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Build Trust</h4>
-                <p className="text-sm text-gray-600">Create a reliable community</p>
+                <h4 className="font-semibold text-gray-900 mb-2">
+                  Build Trust
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Create a reliable community
+                </p>
               </div>
             </div>
           </div>
@@ -1083,7 +1223,7 @@ export default function CompanyProfileModern() {
       default:
         return (
           <Badge className="bg-gray-100 text-gray-800 border-gray-200">
-            ℹ�� Status Unknown
+            ℹ��� Status Unknown
           </Badge>
         );
     }
