@@ -193,6 +193,8 @@ export function createServer() {
   app.post("/api/admin/download-business-media", downloadBusinessMedia);
   app.post("/api/admin/add-category-businesses", addCategoryBusinesses);
   app.post("/api/admin/github-pull", githubPull);
+  app.post("/api/admin/add-business-manually", addBusinessManually);
+  app.post("/api/admin/update-business-details", updateBusinessDetails);
 
   // Temporarily disabled due to space constraints
   // app.post("/api/admin/download-optimized-photos", downloadOptimizedPhotos);
