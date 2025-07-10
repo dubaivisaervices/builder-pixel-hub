@@ -554,32 +554,28 @@ export default function BusinessSearchManager() {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Input
                 placeholder="Google Place ID (e.g., ChIJN1t_tDeuEmsRUsoyG83frY4)"
                 id="manualPlaceId"
               />
+              <Input
+                placeholder="Business Name (optional)"
+                id="manualBusinessName"
+              />
               <Button
-                onClick={() => {
-                  const input = document.getElementById(
-                    "manualPlaceId",
-                  ) as HTMLInputElement;
-                  const placeId = input?.value.trim();
-                  if (placeId) {
-                    addBusinessToDatabase({
-                      place_id: placeId,
-                      name: "Manual Addition",
-                    } as SearchResult);
-                    input.value = "";
-                  } else {
-                    alert("Please enter a Google Place ID");
-                  }
-                }}
-                disabled={!apiStatus.connected || addProgress.isRunning}
+                onClick={addBusinessManually}
+                disabled={addProgress.isRunning}
+                className="bg-blue-600 hover:bg-blue-700"
               >
                 <Database className="h-4 w-4 mr-2" />
-                Add by Place ID
+                Add Manually
               </Button>
+            </div>
+            <div className="text-sm text-gray-600">
+              <strong>Note:</strong> Manual addition works without API
+              connection. Creates basic entry with sample reviews. Use
+              API-enabled addition for complete data.
             </div>
           </div>
         </CardContent>
