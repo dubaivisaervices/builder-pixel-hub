@@ -114,16 +114,38 @@ export async function searchBusinesses(req: Request, res: Response) {
       }),
     );
 
+    console.log(`✅ Found ${searchData.results.length} businesses`);
+
     res.json({
       success: true,
       results: detailedResults.filter(Boolean),
       total: detailedResults.length,
+      query: searchQuery,
+      location: location,
     });
   } catch (error) {
-    console.error("Business search error:", error);
+    console.error("❌ Business search error:", error);
+
+    // Return more helpful error messages
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    let solution = "";
+
+    if (errorMessage.includes("REQUEST_DENIED")) {
+      solution =
+        "Check if Google Places API is enabled in Google Cloud Console and API key has proper permissions";
+    } else if (errorMessage.includes("OVER_QUERY_LIMIT")) {
+      solution =
+        "API quota exceeded. Wait or increase quota in Google Cloud Console";
+    } else if (errorMessage.includes("INVALID_REQUEST")) {
+      solution = "Check search parameters and try again";
+    }
+
     res.status(500).json({
       error: "Failed to search businesses",
-      details: error instanceof Error ? error.message : "Unknown error",
+      details: errorMessage,
+      solution: solution,
+      timestamp: new Date().toISOString(),
     });
   }
 }
