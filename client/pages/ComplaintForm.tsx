@@ -298,14 +298,14 @@ export default function ComplaintForm() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-              <Shield className="h-8 w-8 text-white" />
+          <div className="text-center mb-6 sm:mb-8">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg">
+              <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
             </div>
-            <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">
               Report Scam Immigration Company
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed px-4">
+            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed px-4">
               Help protect our community by reporting fraudulent immigration
               companies, visa scams, and unethical business practices.
             </p>
