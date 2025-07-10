@@ -173,8 +173,6 @@ export function createServer() {
   app.post("/api/admin/api-disable", disableApi);
   app.post("/api/admin/api-reset-counters", resetCounters);
   app.get("/api/admin/api-cost-report", getCostReport);
-  app.get("/api/admin/check-old-keys", checkOldApiKeys);
-  app.post("/api/admin/update-old-keys", updateOldApiKeys);
   // Temporarily disabled due to space constraints
   // app.post("/api/admin/download-optimized-photos", downloadOptimizedPhotos);
   // app.post("/api/admin/stop-optimized-download", stopOptimizedDownload);
