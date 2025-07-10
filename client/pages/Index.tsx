@@ -648,7 +648,7 @@ export default function Index() {
                   </p>
 
                   {/* CTA Button */}
-                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+                  <div className="flex justify-center">
                     <Button
                       onClick={() => navigate("/dubai-businesses")}
                       size="lg"
@@ -656,16 +656,6 @@ export default function Index() {
                     >
                       <Building2 className="h-5 w-5 mr-2" />
                       Explore Dubai Immigration Business
-                    </Button>
-
-                    <Button
-                      onClick={() => navigate("/services")}
-                      variant="outline"
-                      size="lg"
-                      className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-gray-900 bg-white/10 backdrop-blur-sm px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-xl transition-all duration-300"
-                    >
-                      <Globe className="h-5 w-5 mr-2" />
-                      View All Services
                     </Button>
                   </div>
                 </div>
