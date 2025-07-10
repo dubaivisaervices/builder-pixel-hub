@@ -480,13 +480,6 @@ interface BusinessData {
   languages?: string[];
 }
 
-interface ReportFormData {
-  reportType: "scam" | "fraud" | "poor_service" | "fake_business" | "other";
-  description: string;
-  evidence?: File;
-  contactInfo: string;
-}
-
 const generateContactInfo = (business: BusinessData) => {
   const domain =
     business.name
@@ -613,19 +606,6 @@ export default function CompanyProfileModern() {
 
     loadBusiness();
   }, [locationParam, companyName, location.state]);
-
-  const handleReportSubmit = async () => {
-    try {
-      // Submit report form
-      console.log("Submitting report:", reportForm);
-      setIsReportDialogOpen(false);
-      alert(
-        "Report submitted successfully. We will review it within 24-48 hours.",
-      );
-    } catch (error) {
-      alert("Failed to submit report. Please try again.");
-    }
-  };
 
   const handleShare = (platform: string) => {
     const url = window.location.href;
