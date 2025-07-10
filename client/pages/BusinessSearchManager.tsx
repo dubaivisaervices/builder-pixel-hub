@@ -391,7 +391,7 @@ export default function BusinessSearchManager() {
         </p>
       </div>
 
-      {/* API Status */}
+      {/* API Status & Setup Instructions */}
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="flex items-center">
@@ -400,45 +400,61 @@ export default function BusinessSearchManager() {
             ) : (
               <WifiOff className="h-5 w-5 mr-2 text-red-500" />
             )}
-            API Status
+            API Status & Setup
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-between">
-            <div>
-              <Badge
-                variant={apiStatus.connected ? "default" : "secondary"}
-                className={
-                  apiStatus.connected
-                    ? "bg-green-100 text-green-800"
-                    : "bg-red-100 text-red-800"
-                }
-              >
-                {apiStatus.connected ? "Connected" : "Disconnected"}
-              </Badge>
-              <p className="text-sm text-gray-600 mt-1">
-                Cost today: ${apiStatus.costToday.toFixed(2)} | Calls:{" "}
-                {apiStatus.totalCalls}
-              </p>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <Badge
+                  variant={apiStatus.connected ? "default" : "secondary"}
+                  className={
+                    apiStatus.connected
+                      ? "bg-green-100 text-green-800"
+                      : "bg-red-100 text-red-800"
+                  }
+                >
+                  {apiStatus.connected ? "Connected" : "Disconnected"}
+                </Badge>
+                <p className="text-sm text-gray-600 mt-1">
+                  Cost today: ${apiStatus.costToday.toFixed(2)} | Calls:{" "}
+                  {apiStatus.totalCalls}
+                </p>
+              </div>
+              <div className="flex space-x-2">
+                <Button
+                  onClick={connectApi}
+                  disabled={apiStatus.connected}
+                  variant="outline"
+                  size="sm"
+                >
+                  Connect
+                </Button>
+                <Button
+                  onClick={disconnectApi}
+                  disabled={!apiStatus.connected}
+                  variant="outline"
+                  size="sm"
+                >
+                  Disconnect
+                </Button>
+              </div>
             </div>
-            <div className="flex space-x-2">
-              <Button
-                onClick={connectApi}
-                disabled={apiStatus.connected}
-                variant="outline"
-                size="sm"
-              >
-                Connect
-              </Button>
-              <Button
-                onClick={disconnectApi}
-                disabled={!apiStatus.connected}
-                variant="outline"
-                size="sm"
-              >
-                Disconnect
-              </Button>
-            </div>
+
+            <Alert className="bg-orange-50 border-orange-200">
+              <AlertTriangle className="h-4 w-4 text-orange-600" />
+              <AlertDescription className="text-orange-800">
+                <strong>API Setup Required:</strong> To enable search
+                functionality, your Google API key needs additional permissions:
+                <br />• Places API (Text Search)
+                <br />• Places API (Place Details)
+                <br />• Places API (Place Photos)
+                <br />
+                <br />
+                Enable these in Google Cloud Console → APIs & Services → Library
+              </AlertDescription>
+            </Alert>
           </div>
         </CardContent>
       </Card>
