@@ -615,26 +615,24 @@ export default function BusinessDirectory() {
                                   target.style.display = "none";
                                   const fallback =
                                     target.parentElement?.querySelector(
-                                      ".svg-fallback",
-                                    ) as HTMLImageElement;
+                                      ".logo-fallback",
+                                    ) as HTMLDivElement;
                                   if (fallback) {
-                                    fallback.style.display = "block";
+                                    fallback.style.display = "flex";
                                   }
                                 }}
                               />
-                              <img
-                                src={generateSVGLogo(business.name, 40)}
-                                alt={business.name}
-                                className="svg-fallback w-full h-full rounded-lg"
+                              <div
+                                className="logo-fallback w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm"
                                 style={{ display: "none" }}
-                              />
+                              >
+                                {generatePlaceholderLogo(business.name)}
+                              </div>
                             </>
                           ) : (
-                            <img
-                              src={generateSVGLogo(business.name, 40)}
-                              alt={business.name}
-                              className="w-full h-full rounded-lg"
-                            />
+                            <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                              {generatePlaceholderLogo(business.name)}
+                            </div>
                           )}
                         </div>
                       </div>
