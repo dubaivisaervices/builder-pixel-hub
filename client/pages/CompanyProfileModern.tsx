@@ -2346,6 +2346,8 @@ export default function CompanyProfileModern() {
 
       {/* Bottom padding for sticky buttons */}
       <div className="h-20 md:hidden"></div>
+      {/* Bottom padding for desktop sticky header */}
+      <div className="h-20 hidden md:block"></div>
 
       {/* Homepage Footer */}
       <footer className="bg-gray-900 text-white py-16 mt-20">
