@@ -115,9 +115,6 @@ export function createServer() {
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
-  app.get("/api/admin/review-stats", getReviewStats);
-  app.post("/api/admin/clear-all-data", clearAllData);
-  app.post("/api/admin/resync-google-data", resyncGoogleData);
 
   // Fix business data
   app.post("/api/admin/fix-business-data", fixBusinessEmailsAndWebsites);
