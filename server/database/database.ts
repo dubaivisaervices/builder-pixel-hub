@@ -22,12 +22,33 @@ class Database {
           console.error("Error opening database:", err);
         } else {
           console.log("Connected to SQLite database");
+          this.optimizeDatabase();
           this.initTables();
         }
       });
     } catch (error) {
       console.error("Failed to initialize database:", error);
       this.db = null;
+    }
+  }
+
+  private async optimizeDatabase() {
+    try {
+      // Increase SQLite database size and performance limits
+      await this.run("PRAGMA page_size = 65536"); // Increase page size for better performance (default 4096)
+      await this.run("PRAGMA cache_size = -2000000"); // 2GB cache size (negative means KB)
+      await this.run("PRAGMA max_page_count = 2147483646"); // Max possible pages (~140TB theoretical limit)
+      await this.run("PRAGMA journal_mode = WAL"); // Write-Ahead Logging for better concurrent access
+      await this.run("PRAGMA synchronous = NORMAL"); // Balance between safety and performance
+      await this.run("PRAGMA temp_store = MEMORY"); // Use memory for temp storage
+      await this.run("PRAGMA mmap_size = 268435456"); // 256MB memory-mapped I/O
+      await this.run("PRAGMA optimize"); // Optimize query planner
+
+      console.log(
+        "✅ Database optimized for large datasets and high performance",
+      );
+    } catch (error) {
+      console.error("Warning: Could not optimize database:", error);
     }
   }
 
