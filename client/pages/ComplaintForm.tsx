@@ -948,7 +948,7 @@ export default function ComplaintForm() {
                   </div>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 sm:p-8 space-y-6 relative">
+              <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-6 relative">
                 {/* Issue Type */}
                 <div className="space-y-3">
                   <Label
