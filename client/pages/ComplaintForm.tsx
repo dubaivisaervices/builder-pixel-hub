@@ -849,11 +849,11 @@ export default function ComplaintForm() {
           <footer className="bg-gray-800 text-white mt-12 sm:mt-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto py-8 sm:py-12">
               {/* Dubai Government Logos Section */}
-              <div className="mb-12 text-center">
-                <h3 className="text-xl font-semibold mb-6">
+              <div className="mb-8 sm:mb-12 text-center">
+                <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">
                   Authorized by Dubai Government
                 </h3>
-                <div className="flex flex-wrap justify-center items-center gap-6 opacity-80">
+                <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 opacity-80">
                   <div className="flex items-center space-x-2">
                     <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
                       <Building2 className="h-8 w-8 text-red-600" />
