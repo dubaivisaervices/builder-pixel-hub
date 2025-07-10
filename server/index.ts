@@ -64,11 +64,12 @@ import {
   resetCounters,
   getCostReport,
 } from "./routes/api-control-simple";
-import {
-  downloadOptimizedPhotos,
-  stopOptimizedDownload,
-  getOptimizedDownloadProgress,
-} from "./routes/optimized-photo-download";
+// Temporarily disabled due to space constraints
+// import {
+//   downloadOptimizedPhotos,
+//   stopOptimizedDownload,
+//   getOptimizedDownloadProgress,
+// } from "./routes/optimized-photo-download";
 import { getBusinessReviews } from "./routes/business-reviews-real";
 import {
   syncAllGoogleReviews,
