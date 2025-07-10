@@ -2266,7 +2266,15 @@ export default function CompanyProfileModern() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setIsReportDialogOpen(true)}
+                onClick={() =>
+                  navigate("/complaint", {
+                    state: {
+                      companyName: businessData?.name,
+                      companyId: businessData?.id,
+                      preselectedCompany: businessData?.name,
+                    },
+                  })
+                }
                 className="text-red-600 border-red-200 hover:bg-red-50 hidden sm:flex"
               >
                 <AlertTriangle className="h-4 w-4 mr-1" />
