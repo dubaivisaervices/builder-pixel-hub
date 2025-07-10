@@ -594,7 +594,7 @@ export default function CompanyProfileModern() {
             ...business,
             logoUrl: business.logo_base64
               ? `data:image/jpeg;base64,${business.logo_base64}`
-              : business.logo_url || business.logoUrl, // Prioritize cached base64, fallback to URL
+              : `/api/placeholder-logo/${encodeURIComponent(business.name.replace(/\s+/g, "-"))}`, // Use placeholder instead of broken external URL
             photos: business.photos_local_json
               ? JSON.parse(business.photos_local_json)
               : business.photos_json
