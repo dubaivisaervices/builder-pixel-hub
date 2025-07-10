@@ -21,6 +21,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import DataPersistence from "./pages/DataPersistence";
 import ReviewsSync from "./pages/ReviewsSync";
 import DatabaseStatus from "./pages/DatabaseStatus";
+import ImageDownloadDashboard from "./pages/ImageDownloadDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/admin/sync" element={<AdminSync />} />
           <Route path="/admin/manage" element={<AdminManage />} />
           <Route path="/admin/status" element={<DatabaseStatus />} />
+          <Route path="/admin/images" element={<ImageDownloadDashboard />} />
           <Route path="/data-persistence" element={<DataPersistence />} />
           <Route path="/reviews-sync" element={<ReviewsSync />} />
           <Route
