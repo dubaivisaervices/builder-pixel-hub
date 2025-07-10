@@ -630,27 +630,27 @@ export default function ComplaintForm() {
               </div>
 
               {/* Compact Progress Bar */}
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-3 px-1">
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs font-medium text-gray-600">
+                  <span className="text-xs sm:text-sm font-medium text-gray-600">
                     Progress
                   </span>
-                  <span className="text-xs font-bold text-blue-600">
+                  <span className="text-xs sm:text-sm font-bold text-blue-600">
                     {Math.round(formProgress)}%
                   </span>
                 </div>
-                <div className="flex space-x-1">
+                <div className="flex space-x-1 sm:space-x-2">
                   {[1, 2, 3, 4].map((step) => (
                     <div
                       key={step}
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold step-indicator ${
+                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold step-indicator ${
                         completedSteps.includes(step)
                           ? "completed text-white"
                           : "bg-gray-200 text-gray-500"
                       }`}
                     >
                       {completedSteps.includes(step) ? (
-                        <CheckCircle className="h-3 w-3" />
+                        <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                       ) : (
                         step
                       )}
