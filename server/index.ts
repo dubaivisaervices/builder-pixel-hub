@@ -51,6 +51,12 @@ import {
   getGitHubStatus,
   fetchBusinessFromGitHub,
 } from "./routes/github-data-fetcher";
+import {
+  downloadLogos,
+  getLogoDownloadProgress,
+  stopLogoDownload,
+  getLogoStats,
+} from "./routes/logo-download";
 import { getBusinessReviews } from "./routes/business-reviews-real";
 import {
   syncAllGoogleReviews,
@@ -141,6 +147,12 @@ export function createServer() {
   app.post("/api/admin/fetch-from-github", fetchAllDataFromGitHub);
   app.get("/api/admin/github-status", getGitHubStatus);
   app.get("/api/admin/fetch-business/:businessId", fetchBusinessFromGitHub);
+
+  // Logo download routes - Separate logo management
+  app.post("/api/admin/download-logos", downloadLogos);
+  app.get("/api/admin/logo-progress", getLogoDownloadProgress);
+  app.post("/api/admin/stop-logo-download", stopLogoDownload);
+  app.get("/api/admin/logo-stats", getLogoStats);
 
   // Real Google reviews API (cache-first, no fake reviews)
   app.get("/api/business-reviews/:businessId", getBusinessReviews);
