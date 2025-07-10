@@ -1609,22 +1609,30 @@ export default function CompanyProfileModern() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div className="flex items-center space-x-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                      <div className="flex items-center space-x-3 p-2 rounded-lg bg-blue-50">
                         <Verified className="h-5 w-5 text-blue-600" />
-                        <span className="text-sm">Government Licensed</span>
+                        <span className="text-sm font-medium">
+                          Government Licensed
+                        </span>
                       </div>
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center space-x-3 p-2 rounded-lg bg-green-50">
                         <UserCheck className="h-5 w-5 text-green-600" />
-                        <span className="text-sm">Expert Consultants</span>
+                        <span className="text-sm font-medium">
+                          Expert Consultants
+                        </span>
                       </div>
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center space-x-3 p-2 rounded-lg bg-purple-50">
                         <Clock className="h-5 w-5 text-purple-600" />
-                        <span className="text-sm">Fast Processing</span>
+                        <span className="text-sm font-medium">
+                          Fast Processing
+                        </span>
                       </div>
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center space-x-3 p-2 rounded-lg bg-yellow-50">
                         <Award className="h-5 w-5 text-yellow-600" />
-                        <span className="text-sm">100% Success Rate</span>
+                        <span className="text-sm font-medium">
+                          100% Success Rate
+                        </span>
                       </div>
                     </div>
                   </CardContent>
