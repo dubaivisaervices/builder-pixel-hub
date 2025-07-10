@@ -618,60 +618,37 @@ export default function ImageDownloadDashboard() {
                 <Image className="h-8 w-8 text-green-500" />
               </div>
 
-              {optimizedProgress.isRunning && (
+              {photoProgress.isRunning && (
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span>Optimized download...</span>
-                    <span>
-                      {optimizedProgress.current} / {optimizedProgress.total}
-                    </span>
+                    <span>Downloading photos...</span>
+                    <span>{Math.round(photoProgress.progress)}%</span>
                   </div>
-                  <Progress
-                    value={
-                      optimizedProgress.total > 0
-                        ? (optimizedProgress.current /
-                            optimizedProgress.total) *
-                          100
-                        : 0
-                    }
-                    className="h-2"
-                  />
+                  <Progress value={photoProgress.progress} className="h-2" />
                   <p className="text-xs text-gray-500">
-                    Status: {optimizedProgress.status}
+                    {photoProgress.current} of {photoProgress.total} completed
                   </p>
                 </div>
               )}
 
-              <div className="space-y-2">
-                <Button
-                  onClick={downloadOptimizedPhotos}
-                  disabled={!apiStatus.connected || optimizedProgress.isRunning}
-                  className="w-full"
-                >
-                  {optimizedProgress.isRunning ? (
-                    <>
-                      <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                      Downloading (Space-Efficient)...
-                    </>
-                  ) : (
-                    <>
-                      <Download className="h-4 w-4 mr-2" />
-                      Download Photos (Optimized)
-                    </>
-                  )}
-                </Button>
-
-                {optimizedProgress.isRunning && (
-                  <Button
-                    onClick={stopOptimizedDownload}
-                    variant="outline"
-                    className="w-full"
-                  >
-                    <Square className="h-4 w-4 mr-2" />
-                    Stop Download
-                  </Button>
+              <Button
+                onClick={downloadPhotos}
+                disabled={!apiStatus.connected || photoProgress.isRunning}
+                className="w-full"
+                variant="outline"
+              >
+                {photoProgress.isRunning ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Downloading...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Photos
+                  </>
                 )}
-              </div>
+              </Button>
 
               {!apiStatus.connected && (
                 <Alert>
@@ -681,14 +658,6 @@ export default function ImageDownloadDashboard() {
                   </AlertDescription>
                 </Alert>
               )}
-
-              <Alert>
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
-                  Optimized download compresses images and processes in small
-                  batches to avoid disk space issues.
-                </AlertDescription>
-              </Alert>
             </div>
           </CardContent>
         </Card>
