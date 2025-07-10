@@ -186,7 +186,7 @@ export default function BusinessListing() {
           .replace(/[^a-z0-9]/g, "-") || "dubai";
       const nameSlug = business.name.toLowerCase().replace(/[^a-z0-9]/g, "-");
 
-      navigate(`/${locationSlug}/review/${nameSlug}`, {
+      navigate(`/modern-profile/${locationSlug}/${nameSlug}`, {
         state: { businessData: business },
       });
     } catch (error) {
