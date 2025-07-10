@@ -2218,6 +2218,45 @@ export default function CompanyProfileModern() {
         />
       </div>
 
+      {/* Sticky Bottom Action Buttons */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-200 shadow-2xl z-50 md:hidden">
+        <div className="max-w-7xl mx-auto px-4 py-3">
+          <div className="flex items-center justify-center space-x-4">
+            <Button
+              onClick={() => {
+                const reviewSection = document.querySelector(
+                  "[data-review-section]",
+                );
+                reviewSection?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full py-3 shadow-lg"
+            >
+              <PenTool className="h-5 w-5 mr-2" />
+              Write Review
+            </Button>
+            <Button
+              onClick={() =>
+                navigate("/complaint", {
+                  state: {
+                    companyName: businessData?.name,
+                    companyId: businessData?.id,
+                    preselectedCompany: businessData?.name,
+                  },
+                })
+              }
+              variant="outline"
+              className="flex-1 border-red-200 text-red-600 hover:bg-red-50 rounded-full py-3 shadow-lg"
+            >
+              <AlertTriangle className="h-5 w-5 mr-2" />
+              Report Scam
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom padding for sticky buttons */}
+      <div className="h-20 md:hidden"></div>
+
       {/* Homepage Footer */}
       <footer className="bg-gray-900 text-white py-16 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
