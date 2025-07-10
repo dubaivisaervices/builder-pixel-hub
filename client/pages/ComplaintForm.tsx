@@ -1165,9 +1165,7 @@ export default function ComplaintForm() {
             </Card>
 
             {/* Reporter Information */}
-            <Card
-              className={`shadow-lg border border-gray-200 bg-white hover-lift glassmorphism ${animateCards ? "card-animate" : ""}`}
-            >
+            <Card className="shadow-lg border border-gray-200 bg-white hover:shadow-xl transition-shadow duration-300">
               <CardHeader className="bg-gradient-to-r from-green-50 to-teal-50 border-b border-gray-200">
                 <CardTitle className="flex items-center space-x-2 text-lg font-semibold text-gray-900">
                   <User className="h-5 w-5 text-green-600" />
