@@ -141,10 +141,11 @@ const Navigation = () => {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
                     className={cn(
+                      "transition-all duration-200 hover:scale-105 group",
                       isActive("/admin") && "bg-accent text-accent-foreground",
                     )}
                   >
-                    <Settings className="mr-2 h-4 w-4" />
+                    <Settings className="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
                     Admin
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
