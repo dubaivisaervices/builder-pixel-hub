@@ -1693,4 +1693,3 @@ export default function ComplaintForm() {
     </>
   );
 }
-}
