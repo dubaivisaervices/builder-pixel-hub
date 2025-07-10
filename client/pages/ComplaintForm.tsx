@@ -1289,6 +1289,277 @@ export default function ComplaintForm() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Add Company Popup */}
+      {showAddCompanyPopup && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-4 sm:p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-bold">
+                    Add New Company
+                  </h2>
+                  <p className="text-green-100 text-sm mt-1">
+                    Help expand our business directory
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowAddCompanyPopup(false)}
+                  className="text-white/80 hover:text-white p-1 rounded-full hover:bg-white/20 transition-colors"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+              <form onSubmit={handleAddCompanySubmit} className="space-y-4">
+                {/* Company Name */}
+                <div>
+                  <Label
+                    htmlFor="companyName"
+                    className="text-sm font-medium text-gray-700 mb-2 block"
+                  >
+                    Company Name *
+                  </Label>
+                  <Input
+                    id="companyName"
+                    type="text"
+                    placeholder="Enter company name"
+                    value={newCompanyData.name}
+                    onChange={(e) =>
+                      setNewCompanyData((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
+                    className="w-full h-11 text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                    required
+                  />
+                </div>
+
+                {/* Address */}
+                <div>
+                  <Label
+                    htmlFor="companyAddress"
+                    className="text-sm font-medium text-gray-700 mb-2 block"
+                  >
+                    Address *
+                  </Label>
+                  <Textarea
+                    id="companyAddress"
+                    placeholder="Enter full business address"
+                    value={newCompanyData.address}
+                    onChange={(e) =>
+                      setNewCompanyData((prev) => ({
+                        ...prev,
+                        address: e.target.value,
+                      }))
+                    }
+                    className="w-full min-h-[80px] text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                    required
+                  />
+                </div>
+
+                {/* Phone and Email */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <Label
+                      htmlFor="companyPhone"
+                      className="text-sm font-medium text-gray-700 mb-2 block"
+                    >
+                      Phone Number
+                    </Label>
+                    <Input
+                      id="companyPhone"
+                      type="tel"
+                      placeholder="+971 XX XXX XXXX"
+                      value={newCompanyData.phone}
+                      onChange={(e) =>
+                        setNewCompanyData((prev) => ({
+                          ...prev,
+                          phone: e.target.value,
+                        }))
+                      }
+                      className="w-full h-11 text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                    />
+                  </div>
+
+                  <div>
+                    <Label
+                      htmlFor="companyEmail"
+                      className="text-sm font-medium text-gray-700 mb-2 block"
+                    >
+                      Email Address
+                    </Label>
+                    <Input
+                      id="companyEmail"
+                      type="email"
+                      placeholder="company@example.com"
+                      value={newCompanyData.email}
+                      onChange={(e) =>
+                        setNewCompanyData((prev) => ({
+                          ...prev,
+                          email: e.target.value,
+                        }))
+                      }
+                      className="w-full h-11 text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                    />
+                  </div>
+                </div>
+
+                {/* Website and Category */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <Label
+                      htmlFor="companyWebsite"
+                      className="text-sm font-medium text-gray-700 mb-2 block"
+                    >
+                      Website
+                    </Label>
+                    <Input
+                      id="companyWebsite"
+                      type="url"
+                      placeholder="https://example.com"
+                      value={newCompanyData.website}
+                      onChange={(e) =>
+                        setNewCompanyData((prev) => ({
+                          ...prev,
+                          website: e.target.value,
+                        }))
+                      }
+                      className="w-full h-11 text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                    />
+                  </div>
+
+                  <div>
+                    <Label
+                      htmlFor="companyCategory"
+                      className="text-sm font-medium text-gray-700 mb-2 block"
+                    >
+                      Category *
+                    </Label>
+                    <select
+                      id="companyCategory"
+                      value={newCompanyData.category}
+                      onChange={(e) =>
+                        setNewCompanyData((prev) => ({
+                          ...prev,
+                          category: e.target.value,
+                        }))
+                      }
+                      className="w-full h-11 text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500 bg-white"
+                      required
+                    >
+                      <option value="">Select category</option>
+                      <option value="Visa Services">Visa Services</option>
+                      <option value="Document Clearing">
+                        Document Clearing
+                      </option>
+                      <option value="Business Setup">Business Setup</option>
+                      <option value="PRO Services">PRO Services</option>
+                      <option value="Immigration Consultancy">
+                        Immigration Consultancy
+                      </option>
+                      <option value="Legal Services">Legal Services</option>
+                      <option value="Business Consultancy">
+                        Business Consultancy
+                      </option>
+                      <option value="Trade License Services">
+                        Trade License Services
+                      </option>
+                      <option value="Corporate Services">
+                        Corporate Services
+                      </option>
+                      <option value="Government Relations">
+                        Government Relations
+                      </option>
+                      <option value="Permit Services">Permit Services</option>
+                      <option value="Attestation Services">
+                        Attestation Services
+                      </option>
+                      <option value="Translation Services">
+                        Translation Services
+                      </option>
+                      <option value="Typing Services">Typing Services</option>
+                      <option value="Business Services">
+                        Business Services
+                      </option>
+                      <option value="Administrative Services">
+                        Administrative Services
+                      </option>
+                      <option value="Professional Services">
+                        Professional Services
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div>
+                  <Label
+                    htmlFor="companyDescription"
+                    className="text-sm font-medium text-gray-700 mb-2 block"
+                  >
+                    Description (Optional)
+                  </Label>
+                  <Textarea
+                    id="companyDescription"
+                    placeholder="Brief description of services offered..."
+                    value={newCompanyData.description}
+                    onChange={(e) =>
+                      setNewCompanyData((prev) => ({
+                        ...prev,
+                        description: e.target.value,
+                      }))
+                    }
+                    className="w-full min-h-[80px] text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                  />
+                </div>
+
+                {/* Info Notice */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-start space-x-3">
+                    <Shield className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-blue-900 text-sm">
+                        Review Process
+                      </h4>
+                      <p className="text-blue-800 text-xs mt-1">
+                        All company submissions are reviewed by our admin team
+                        to ensure accuracy and legitimacy before being added to
+                        the directory.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Submit Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setShowAddCompanyPopup(false)}
+                    className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold"
+                  >
+                    <Building2 className="h-4 w-4 mr-2" />
+                    Submit Request
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
