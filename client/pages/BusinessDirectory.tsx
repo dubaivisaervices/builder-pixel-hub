@@ -573,19 +573,29 @@ export default function BusinessDirectory() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 -mt-6 relative z-10">
         {/* Search & Filter Section */}
-        <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-xl mb-8">
-          <CardContent className="p-6">
+        <Card className="shadow-xl border-0 bg-white/95 backdrop-blur-xl mb-6">
+          <CardContent className="p-4 sm:p-6">
             {/* Search Bar */}
-            <div className="relative mb-6">
-              <Input
-                ref={searchRef}
-                type="text"
-                placeholder="Search businesses by name, category, or location..."
-                value={searchTerm}
-                onChange={(e) => handleSearchChange(e.target.value)}
-                className="h-12 sm:h-14 pl-12 pr-4 bg-white border-2 border-gray-200 focus:border-blue-400 rounded-xl text-base shadow-sm"
-              />
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <div className="relative mb-4 sm:mb-6">
+              <div className="relative">
+                <Input
+                  ref={searchRef}
+                  type="text"
+                  placeholder="Search businesses by name, category, or location..."
+                  value={searchTerm}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  className="h-11 sm:h-14 pl-12 pr-4 bg-white border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 rounded-xl text-sm sm:text-base shadow-sm transition-all duration-200"
+                />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+                {searchTerm && (
+                  <button
+                    onClick={() => setSearchTerm("")}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 hover:text-gray-600"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
 
               {/* Search Suggestions */}
               {showSuggestions && searchSuggestions.length > 0 && (
