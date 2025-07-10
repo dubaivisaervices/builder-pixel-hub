@@ -347,26 +347,24 @@ export default function BusinessDirectory() {
                         const target = e.target as HTMLImageElement;
                         target.style.display = "none";
                         const fallback = target.parentElement?.querySelector(
-                          ".svg-fallback",
-                        ) as HTMLImageElement;
+                          ".logo-fallback",
+                        ) as HTMLDivElement;
                         if (fallback) {
-                          fallback.style.display = "block";
+                          fallback.style.display = "flex";
                         }
                       }}
                     />
-                    <img
-                      src={generateSVGLogo(business.name, 64)}
-                      alt={business.name}
-                      className="svg-fallback h-full w-full rounded-xl border-2 border-white shadow-lg"
+                    <div
+                      className="logo-fallback h-full w-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl border-2 border-white shadow-lg flex items-center justify-center text-white font-bold text-lg"
                       style={{ display: "none" }}
-                    />
+                    >
+                      {generatePlaceholderLogo(business.name)}
+                    </div>
                   </>
                 ) : (
-                  <img
-                    src={generateSVGLogo(business.name, 64)}
-                    alt={business.name}
-                    className="h-full w-full rounded-xl border-2 border-white shadow-lg"
-                  />
+                  <div className="h-full w-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl border-2 border-white shadow-lg flex items-center justify-center text-white font-bold text-sm sm:text-lg">
+                    {generatePlaceholderLogo(business.name)}
+                  </div>
                 )}
               </div>
             </div>
