@@ -179,6 +179,7 @@ export function createServer() {
 
   // Simplified routes for space constraints
   app.post("/api/admin/add-business-manually", addBusinessManually);
+  app.post("/api/admin/quick-fix-database", quickFixDatabase);
 
   // Temporarily disabled due to space constraints
   // app.post("/api/admin/download-optimized-photos", downloadOptimizedPhotos);
