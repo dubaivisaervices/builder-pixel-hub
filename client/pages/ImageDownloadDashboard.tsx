@@ -36,6 +36,7 @@ import {
   Shield,
   Database,
 } from "lucide-react";
+import CacheStatusIndicator from "@/components/CacheStatusIndicator";
 
 interface ApiStatus {
   connected: boolean;
