@@ -64,10 +64,6 @@ import {
   resetCounters,
   getCostReport,
 } from "./routes/api-control-simple";
-import {
-  addMissingColumns,
-  checkDatabaseSchema,
-} from "./routes/fix-database-columns";
 // Temporarily disabled due to space constraints
 // import {
 //   downloadOptimizedPhotos,
