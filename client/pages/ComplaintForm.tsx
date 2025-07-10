@@ -1127,7 +1127,7 @@ export default function ComplaintForm() {
                     <Input
                       id="amountLost"
                       type="number"
-                      placeholder="💰 0"
+                      placeholder="��� 0"
                       value={reportData.amountLost || ""}
                       onChange={(e) =>
                         setReportData((prev) => ({
@@ -1647,14 +1647,14 @@ export default function ComplaintForm() {
           </div>
 
           {/* Step Indicators */}
-          <div className="flex justify-between mt-3">
+          <div className="flex justify-between mt-2 sm:mt-3">
             {[1, 2, 3, 4].map((step) => (
               <div
                 key={step}
                 className={`flex flex-col items-center ${completedSteps.includes(step) ? "text-green-600" : currentStep === step ? "text-blue-600" : "text-gray-400"}`}
               >
                 <div
-                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-bold mb-1 ${
+                  className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 flex items-center justify-center text-xs font-bold mb-1 ${
                     completedSteps.includes(step)
                       ? "bg-green-500 border-green-400 text-white"
                       : currentStep === step
