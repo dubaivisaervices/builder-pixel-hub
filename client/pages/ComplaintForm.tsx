@@ -214,6 +214,22 @@ export default function ComplaintForm() {
         alert("Only JPEG, PNG, and PDF files are allowed");
         return;
       }
+
+      // Show file preview animation
+      if (field === "paymentReceipt") {
+        setShowFilePreview((prev) => ({ ...prev, receipt: true }));
+      } else {
+        setShowFilePreview((prev) => ({ ...prev, agreement: true }));
+      }
+
+      // Auto-hide preview after 3 seconds
+      setTimeout(() => {
+        if (field === "paymentReceipt") {
+          setShowFilePreview((prev) => ({ ...prev, receipt: false }));
+        } else {
+          setShowFilePreview((prev) => ({ ...prev, agreement: false }));
+        }
+      }, 3000);
     }
 
     setReportData((prev) => ({ ...prev, [field]: file }));
