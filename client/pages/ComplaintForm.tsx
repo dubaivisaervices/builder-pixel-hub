@@ -675,9 +675,7 @@ export default function ComplaintForm() {
             className="space-y-3 sm:space-y-4 md:space-y-6"
           >
             {/* Company Selection */}
-            <Card
-              className={`shadow-lg border border-gray-200 bg-white hover-lift glassmorphism ${animateCards ? "card-animate" : ""}`}
-            >
+            <Card className="shadow-lg border border-gray-200 bg-white hover:shadow-xl transition-shadow duration-300">
               <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-200 p-4 sm:p-6">
                 <CardTitle className="flex items-center space-x-2 text-base sm:text-lg font-semibold text-gray-800">
                   <Building2 className="h-5 w-5 text-blue-600 flex-shrink-0" />
