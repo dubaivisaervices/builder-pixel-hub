@@ -173,6 +173,7 @@ export default function ComplaintForm() {
 
   const handleCompanySearch = (value: string) => {
     setSearchTerm(value);
+    setIsTyping(true);
 
     if (value.length >= 1) {
       const filtered = businesses
