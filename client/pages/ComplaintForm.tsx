@@ -667,11 +667,16 @@ export default function ComplaintForm() {
             </Card>
 
             {/* Report Details */}
-            <Card className="shadow-lg border border-gray-200 bg-white">
-              <CardHeader className="bg-gray-50 border-b border-gray-200">
+            <Card
+              className={`shadow-lg border border-gray-200 bg-white hover-lift glassmorphism ${animateCards ? "card-animate" : ""}`}
+            >
+              <CardHeader className="bg-gradient-to-r from-red-50 to-orange-50 border-b border-gray-200">
                 <CardTitle className="flex items-center space-x-2 text-lg font-semibold text-gray-900">
                   <AlertTriangle className="h-5 w-5 text-red-600" />
                   <span>Step 2: Report Details</span>
+                  {completedSteps.includes(2) && (
+                    <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
+                  )}
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
