@@ -14,8 +14,8 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react({
-      // Enable React Fast Refresh
-      fastRefresh: true,
+      // Disable Fast Refresh to fix loading issues
+      fastRefresh: false,
     }),
     expressPlugin(),
   ],
