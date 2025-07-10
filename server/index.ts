@@ -195,7 +195,6 @@ export function createServer() {
   app.post("/api/admin/github-pull", githubPull);
   app.post("/api/admin/add-business-manually", addBusinessManually);
   app.post("/api/admin/update-business-details", updateBusinessDetails);
-  app.get("/api/admin/check-reviews-schema", checkReviewsSchema);
 
   // Temporarily disabled due to space constraints
   // app.post("/api/admin/download-optimized-photos", downloadOptimizedPhotos);
