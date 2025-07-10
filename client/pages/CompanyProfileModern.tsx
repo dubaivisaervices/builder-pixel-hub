@@ -1667,21 +1667,21 @@ export default function CompanyProfileModern() {
                             className="max-w-full max-h-full object-contain"
                           />
                         </div>
-                        <div className="flex items-center justify-center bg-gray-50 rounded-lg p-3 h-16">
+                        <div className="flex items-center justify-center bg-gray-50 rounded-lg p-2 md:p-3 h-12 md:h-16">
                           <img
                             src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F31c2a2a281cf498b96a79a162670a913?format=webp&width=800"
                             alt="Ministry of Human Resources & Emiratisation"
                             className="max-w-full max-h-full object-contain"
                           />
                         </div>
-                        <div className="flex items-center justify-center bg-gray-50 rounded-lg p-3 h-16">
+                        <div className="flex items-center justify-center bg-gray-50 rounded-lg p-2 md:p-3 h-12 md:h-16">
                           <img
                             src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2F337069ef95604c42b94d28b0b67e055f?format=webp&width=800"
                             alt="Amer Center"
                             className="max-w-full max-h-full object-contain"
                           />
                         </div>
-                        <div className="flex items-center justify-center bg-gray-50 rounded-lg p-3 h-16">
+                        <div className="flex items-center justify-center bg-gray-50 rounded-lg p-2 md:p-3 h-12 md:h-16">
                           <img
                             src="https://cdn.builder.io/api/v1/image/assets%2F42d8a3c9ca784d9bab2cfaff5214870e%2Fa33633cdd357445196e3405ed84b236c?format=webp&width=800"
                             alt="Tas-heel"
