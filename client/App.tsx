@@ -34,9 +34,8 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Navigation />
-        <DatabaseStatusIndicator />
-        <main className="min-h-screen">
+        <SimpleNavigation />
+        <main className="min-h-screen pt-4">
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/complaint" element={<ComplaintForm />} />
