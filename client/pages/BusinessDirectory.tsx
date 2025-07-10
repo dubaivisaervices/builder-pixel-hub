@@ -536,7 +536,7 @@ export default function BusinessDirectory() {
             </p>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 sm:gap-6 max-w-xl mx-auto mb-6">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 max-w-md mx-auto mb-4">
               <div className="text-center">
                 <div className="text-xl sm:text-2xl font-bold text-white">
                   {businesses.length}+
