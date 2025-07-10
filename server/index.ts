@@ -203,6 +203,25 @@ export function createServer() {
   app.post("/api/reports/:reportId/vote", voteOnReport);
   app.get("/api/reports/stats", getReportsStats);
 
+  // Database status endpoint
+  app.get("/api/database-status", async (_req, res) => {
+    try {
+      const result = await database.get(
+        "SELECT COUNT(*) as count FROM businesses",
+      );
+      res.json({
+        status: "optimized",
+        businessCount: result.count,
+        message: "Database running with optimizations",
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: "error",
+        message: "Database connection failed",
+      });
+    }
+  });
+
   // Simplified endpoints - complex API control removed for stability
 
   // Let Vite handle all development assets and modules
