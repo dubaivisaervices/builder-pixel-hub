@@ -174,8 +174,8 @@ const Navigation = () => {
 
                 {/* More Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger>
-                    <Users className="mr-2 h-4 w-4" />
+                  <NavigationMenuTrigger className="transition-all duration-200 hover:scale-105 group">
+                    <Users className="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
                     More
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
