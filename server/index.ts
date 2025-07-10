@@ -96,6 +96,12 @@ export function createServer() {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  // Ensure all API routes return JSON content-type
+  app.use('/api', (req, res, next) => {
+    res.setHeader('Content-Type', 'application/json');
+    next();
+  });
+
   // Example API routes
   app.get("/api/ping", (_req, res) => {
     res.json({ message: "Hello from Express server v2!" });
