@@ -80,6 +80,7 @@ import {
   Headphones,
   Mail as MailIcon,
   PhoneCall,
+  DollarSign,
 } from "lucide-react";
 
 // Beautiful Community Reports Component
