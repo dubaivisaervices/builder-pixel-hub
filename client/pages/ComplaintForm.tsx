@@ -717,27 +717,17 @@ export default function ComplaintForm() {
         {/* Hero Section */}
         <div className="bg-blue-600 text-white">
           <div className="max-w-6xl mx-auto px-4 py-8 sm:py-12">
-            <div className="text-center slide-in-up">
+            <div className="text-center">
               {/* Main Icon */}
-              <div className="flex justify-center mb-6">
-                <div className="relative">
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm glow-animation">
-                    <Shield className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
-                  </div>
-                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
-                    <Sparkles className="h-3 w-3 text-white" />
-                  </div>
+              <div className="flex justify-center mb-4">
+                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center">
+                  <Shield className="h-8 w-8 text-white" />
                 </div>
               </div>
 
-              {/* Title with Gradient Text */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
-                <span className="block bg-gradient-to-r from-white via-red-100 to-white bg-clip-text text-transparent">
-                  Report Business Issues
-                </span>
-                <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-2 text-red-100">
-                  Protect Our Community 🛡️
-                </span>
+              {/* Title */}
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+                Report Business Issues
               </h1>
 
               <p className="text-lg sm:text-xl md:text-2xl text-red-100 max-w-4xl mx-auto mb-8 leading-relaxed">
@@ -1176,7 +1166,7 @@ export default function ComplaintForm() {
                     <Input
                       id="employeeName"
                       type="text"
-                      placeholder="👤 Name of the employee or contact person"
+                      placeholder="��� Name of the employee or contact person"
                       value={reportData.employeeName || ""}
                       onChange={(e) =>
                         setReportData((prev) => ({
