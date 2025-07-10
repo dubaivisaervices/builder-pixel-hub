@@ -168,7 +168,140 @@ export default function ComplaintForm() {
   }, [reportData.description, reportData.evidenceDescription]);
 
   const fetchBusinesses = async () => {
-    console.log("🔄 Loading business directory...");
+    try {
+      console.log("🔄 Fetching businesses for complaint form...");
+      const response = await fetch("/api/dubai-visa-services?limit=1000");
+      if (response.ok) {
+        const data = await response.json();
+        console.log(
+          "✅ Successfully loaded",
+          data.businesses?.length || 0,
+          "businesses",
+        );
+        setBusinesses(data.businesses || []);
+      } else {
+        console.error("❌ Failed to fetch businesses:", response.status);
+        // Fallback with comprehensive sample data (same as BusinessDirectory)
+        const fallbackBusinesses = [
+          {
+            id: "sample1",
+            name: "Dubai Visa Solutions",
+            address: "Business Bay, Dubai, UAE",
+            rating: 4.8,
+            reviewCount: 156,
+            category: "Visa Services",
+          },
+          {
+            id: "sample2",
+            name: "Emirates Immigration Consultants",
+            address: "DIFC, Dubai, UAE",
+            rating: 4.6,
+            reviewCount: 89,
+            category: "Immigration Services",
+          },
+          {
+            id: "sample3",
+            name: "Al Majid PRO Services",
+            address: "Deira, Dubai, UAE",
+            rating: 4.5,
+            reviewCount: 234,
+            category: "PRO Services",
+          },
+          {
+            id: "sample4",
+            name: "Perfect Connection Document Clearing",
+            address: "Business Bay, Dubai, UAE",
+            rating: 4.9,
+            reviewCount: 312,
+            category: "Document Clearing Services",
+          },
+          {
+            id: "sample5",
+            name: "Cross Border Visa Services",
+            address: "Sheikh Zayed Road, Dubai, UAE",
+            rating: 4.7,
+            reviewCount: 198,
+            category: "Visa Services",
+          },
+          {
+            id: "sample6",
+            name: "Golden Visa Services",
+            address: "Downtown Dubai, UAE",
+            rating: 4.6,
+            reviewCount: 145,
+            category: "Visa Services",
+          },
+          {
+            id: "sample7",
+            name: "Express Immigration Services",
+            address: "Marina, Dubai, UAE",
+            rating: 4.4,
+            reviewCount: 167,
+            category: "Immigration Services",
+          },
+          {
+            id: "sample8",
+            name: "Smart Business Setup",
+            address: "Jumeirah Lake Towers, Dubai, UAE",
+            rating: 4.5,
+            reviewCount: 203,
+            category: "Business Services",
+          }
+        ];
+
+        console.log("🔧 Using fallback data with", fallbackBusinesses.length, "businesses");
+        setBusinesses(fallbackBusinesses);
+      }
+    } catch (error) {
+      console.error("❌ Network error fetching businesses:", error);
+      // Same fallback as above
+      const fallbackBusinesses = [
+        {
+          id: "sample1",
+          name: "Dubai Visa Solutions",
+          address: "Business Bay, Dubai, UAE",
+          rating: 4.8,
+          reviewCount: 156,
+          category: "Visa Services",
+        },
+        {
+          id: "sample2",
+          name: "Emirates Immigration Consultants",
+          address: "DIFC, Dubai, UAE",
+          rating: 4.6,
+          reviewCount: 89,
+          category: "Immigration Services",
+        },
+        {
+          id: "sample3",
+          name: "Al Majid PRO Services",
+          address: "Deira, Dubai, UAE",
+          rating: 4.5,
+          reviewCount: 234,
+          category: "PRO Services",
+        },
+        {
+          id: "sample4",
+          name: "Perfect Connection Document Clearing",
+          address: "Business Bay, Dubai, UAE",
+          rating: 4.9,
+          reviewCount: 312,
+          category: "Document Clearing Services",
+        },
+        {
+          id: "sample5",
+          name: "Cross Border Visa Services",
+          address: "Sheikh Zayed Road, Dubai, UAE",
+          rating: 4.7,
+          reviewCount: 198,
+          category: "Visa Services",
+        }
+      ];
+
+      console.log("🔧 Using error fallback data with", fallbackBusinesses.length, "businesses");
+      setBusinesses(fallbackBusinesses);
+    }
+  };
 
     // Generate comprehensive mock data with 840+ businesses
     const businessNames = [
