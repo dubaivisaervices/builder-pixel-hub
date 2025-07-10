@@ -1721,8 +1721,11 @@ export default function ComplaintForm() {
             </div>
 
             {/* Content */}
-            <div className="p-6 sm:p-8 overflow-y-auto max-h-[calc(90vh-140px)] relative">
-              <form onSubmit={handleAddCompanySubmit} className="space-y-6">
+            <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(90vh-140px)] relative">
+              <form
+                onSubmit={handleAddCompanySubmit}
+                className="space-y-4 sm:space-y-6"
+              >
                 {/* Company Name */}
                 <div className="space-y-3">
                   <Label
