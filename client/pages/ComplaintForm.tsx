@@ -750,7 +750,7 @@ export default function ComplaintForm() {
                   )}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 sm:p-8 relative">
+              <CardContent className="p-4 sm:p-6 relative">
                 <div className="relative">
                   <div className="relative">
                     <input
