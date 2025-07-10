@@ -161,7 +161,16 @@ export default function ComplaintForm() {
 
   const fetchBusinesses = async () => {
     try {
-      console.log("🔄 Attempting to fetch businesses...");
+      // First test basic API connectivity
+      console.log("🔄 Testing API connectivity...");
+      const pingResponse = await fetch("/api/ping");
+      console.log("📡 Ping response status:", pingResponse.status);
+
+      if (!pingResponse.ok) {
+        throw new Error(`API ping failed: ${pingResponse.status}`);
+      }
+
+      console.log("✅ API connectivity OK, fetching businesses...");
       const response = await fetch("/api/dubai-visa-services?limit=1000");
 
       console.log("📡 Response status:", response.status);
