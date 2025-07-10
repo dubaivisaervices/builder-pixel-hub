@@ -1923,15 +1923,17 @@ export default function CompanyProfileModern() {
                   <span>Contact Details</span>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3 md:space-y-4">
                 {businessData.phone && (
-                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                    <Phone className="h-5 w-5 text-blue-600" />
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900">Phone</p>
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <Phone className="h-5 w-5 text-blue-600 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-900 text-sm md:text-base">
+                        Phone
+                      </p>
                       <a
                         href={`tel:${businessData.phone}`}
-                        className="text-blue-600 hover:underline text-sm"
+                        className="text-blue-600 hover:underline text-sm break-all"
                       >
                         {businessData.phone}
                       </a>
