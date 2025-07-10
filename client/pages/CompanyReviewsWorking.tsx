@@ -1,5 +1,5 @@
 // Modern Company Profile - Redirect to new design
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function CompanyReviewsWorking() {
