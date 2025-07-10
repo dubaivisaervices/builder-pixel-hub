@@ -311,7 +311,7 @@ export default function ComplaintForm() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {/* Company Selection */}
             <Card className="shadow-lg border border-gray-200 bg-white">
               <CardHeader className="bg-gray-50 border-b border-gray-200">
