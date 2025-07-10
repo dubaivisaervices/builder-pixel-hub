@@ -1626,6 +1626,62 @@ export default function ComplaintForm() {
       {/* Footer */}
       <Footer />
 
+      {/* Sticky Progress Bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-200 shadow-xl z-40">
+        <div className="max-w-6xl mx-auto px-4 py-3">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-gray-700">Progress</span>
+            <span className="text-sm text-gray-600">
+              {Math.round(formProgress)}% Complete
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div
+              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              style={{ width: `${formProgress}%` }}
+            ></div>
+          </div>
+
+          {/* Step Indicators */}
+          <div className="flex justify-between mt-3">
+            {[1, 2, 3, 4].map((step) => (
+              <div
+                key={step}
+                className={`flex flex-col items-center ${completedSteps.includes(step) ? "text-green-600" : currentStep === step ? "text-blue-600" : "text-gray-400"}`}
+              >
+                <div
+                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-bold mb-1 ${
+                    completedSteps.includes(step)
+                      ? "bg-green-500 border-green-400 text-white"
+                      : currentStep === step
+                        ? "bg-blue-100 border-blue-600"
+                        : "border-gray-300"
+                  }`}
+                >
+                  {completedSteps.includes(step) ? (
+                    <CheckCircle className="h-3 w-3" />
+                  ) : (
+                    step
+                  )}
+                </div>
+                <span className="text-xs font-medium">
+                  {step === 1
+                    ? "Company"
+                    : step === 2
+                      ? "Details"
+                      : step === 3
+                        ? "Evidence"
+                        : "Contact"}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom padding for sticky progress bar */}
+      <div className="h-24"></div>
+
       {/* Add Company Popup - Enhanced */}
       {showAddCompanyPopup && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 fade-in-scale">
