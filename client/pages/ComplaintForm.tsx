@@ -751,7 +751,7 @@ export default function ComplaintForm() {
                 </div>
 
                 {/* Step Indicators */}
-                <div className="flex justify-between mt-4 px-2">
+                <div className="flex justify-between mt-4">
                   {[1, 2, 3, 4].map((step) => (
                     <div
                       key={step}
