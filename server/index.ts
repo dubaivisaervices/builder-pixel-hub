@@ -72,6 +72,10 @@ import {
   addCategoryBusinesses,
   githubPull,
 } from "./routes/business-search-manager";
+import {
+  addBusinessManually,
+  updateBusinessDetails,
+} from "./routes/manual-business-add";
 // Temporarily disabled due to space constraints
 // import {
 //   downloadOptimizedPhotos,
