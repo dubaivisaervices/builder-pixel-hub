@@ -1523,26 +1523,34 @@ export default function CompanyProfileModern() {
               onValueChange={setActiveTab}
               className="w-full"
             >
-              <TabsList className="grid w-full grid-cols-4 lg:grid-cols-6 bg-white shadow-sm border">
-                <TabsTrigger value="overview" className="text-xs lg:text-sm">
+              <TabsList className="grid w-full grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 bg-white shadow-sm border rounded-lg">
+                <TabsTrigger
+                  value="overview"
+                  className="text-xs sm:text-sm px-2 py-2"
+                >
                   Overview
                 </TabsTrigger>
-                <TabsTrigger value="reviews" className="text-xs lg:text-sm">
+                <TabsTrigger
+                  value="reviews"
+                  className="text-xs sm:text-sm px-2 py-2"
+                >
                   Reviews
                 </TabsTrigger>
-
-                <TabsTrigger value="services" className="text-xs lg:text-sm">
+                <TabsTrigger
+                  value="services"
+                  className="text-xs sm:text-sm px-2 py-2"
+                >
                   Services
                 </TabsTrigger>
                 <TabsTrigger
                   value="hours"
-                  className="text-xs lg:text-sm hidden lg:block"
+                  className="text-xs sm:text-sm px-2 py-2 hidden sm:block lg:block"
                 >
                   Hours
                 </TabsTrigger>
                 <TabsTrigger
                   value="contact"
-                  className="text-xs lg:text-sm hidden lg:block"
+                  className="text-xs sm:text-sm px-2 py-2 hidden sm:block lg:block"
                 >
                   Contact
                 </TabsTrigger>
