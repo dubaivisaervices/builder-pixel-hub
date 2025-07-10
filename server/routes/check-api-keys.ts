@@ -38,7 +38,6 @@ export async function checkOldApiKeys(req: Request, res: Response) {
 
 export async function updateOldApiKeys(req: Request, res: Response) {
   try {
-    const db = await openDb();
     const newApiKey = process.env.GOOGLE_PLACES_API_KEY;
 
     if (!newApiKey) {
@@ -46,7 +45,7 @@ export async function updateOldApiKeys(req: Request, res: Response) {
     }
 
     // Update logo_url with old API key
-    const logoUpdate = await db.run(
+    const logoUpdate = await database.run(
       `
       UPDATE businesses
       SET logo_url = REPLACE(logo_url, 'AIzaSyCDTJEgoCJ8tsbGxuHKIvcu-W0AdP-6lVk', ?)
@@ -56,7 +55,7 @@ export async function updateOldApiKeys(req: Request, res: Response) {
     );
 
     // Update photos_json with old API key
-    const photoUpdate = await db.run(
+    const photoUpdate = await database.run(
       `
       UPDATE businesses
       SET photos_json = REPLACE(photos_json, 'AIzaSyCDTJEgoCJ8tsbGxuHKIvcu-W0AdP-6lVk', ?)
