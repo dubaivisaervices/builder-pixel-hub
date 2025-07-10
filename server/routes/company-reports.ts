@@ -250,6 +250,9 @@ export const submitReport: RequestHandler = async (req, res) => {
  */
 export const getCompanyReports: RequestHandler = async (req, res) => {
   try {
+    // Ensure JSON content type
+    res.setHeader("Content-Type", "application/json");
+
     const { companyId } = req.params;
 
     if (!companyId) {
