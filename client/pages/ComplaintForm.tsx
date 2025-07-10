@@ -105,6 +105,7 @@ export default function ComplaintForm() {
     description: "",
     reporterName: "",
     reporterEmail: "",
+    reporterPhone: "",
     amountLost: 0,
     dateOfIncident: "",
     evidenceDescription: "",
