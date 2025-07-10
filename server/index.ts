@@ -66,6 +66,7 @@ import {
 } from "./routes/api-control-simple";
 // Simplified imports for space constraints
 import { addBusinessManually } from "./routes/manual-business-add";
+import { quickFixDatabase } from "./routes/quick-db-fix";
 // Temporarily disabled due to space constraints
 // import {
 //   downloadOptimizedPhotos,
