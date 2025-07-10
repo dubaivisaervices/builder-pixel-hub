@@ -625,12 +625,29 @@ export default function BusinessSearchManager() {
                   <h4 className="font-medium text-blue-800 mb-1">
                     Manual Addition Available
                   </h4>
-                  <p className="text-sm text-blue-700">
-                    If search is not working due to API limitations, you can
-                    manually add businesses using their Google Place ID. Find
-                    the business on Google Maps, copy the place ID from the URL,
-                    and paste it below.
-                  </p>
+                  <div className="text-sm text-blue-700 space-y-2">
+                    <p>
+                      Add businesses manually using their Google Place ID. This
+                      works without API connection and creates a basic business
+                      entry.
+                    </p>
+                    <div className="bg-white/50 p-3 rounded border border-blue-200">
+                      <p className="font-medium text-blue-800 mb-1">
+                        How to find Google Place ID:
+                      </p>
+                      <ol className="text-xs text-blue-700 space-y-1">
+                        <li>
+                          1. Go to Google Maps and search for the business
+                        </li>
+                        <li>2. Click on the business to open its info panel</li>
+                        <li>3. Look at the URL in your browser</li>
+                        <li>
+                          4. Copy the Place ID from the URL (starts with "ChIJ")
+                        </li>
+                        <li>5. Example: ChIJN1t_tDeuEmsRUsoyG83frY4</li>
+                      </ol>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
