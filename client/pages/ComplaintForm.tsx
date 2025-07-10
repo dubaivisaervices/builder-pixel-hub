@@ -33,6 +33,23 @@ import {
   Clock,
   MessageCircleQuestion,
   Building,
+  Star,
+  Zap,
+  Target,
+  Eye,
+  Heart,
+  Award,
+  Flag,
+  Phone,
+  Mail,
+  Globe,
+  MapPin,
+  ChevronRight,
+  Sparkles,
+  Rocket,
+  Fingerprint,
+  Lock,
+  UserCheck,
 } from "lucide-react";
 import Footer from "../components/Footer";
 import GovernmentSection from "../components/GovernmentSection";
@@ -63,13 +80,9 @@ interface ReportFormData {
 export default function ComplaintForm() {
   const [businesses, setBusinesses] = useState<BusinessData[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchSuggestions, setSearchSuggestions] = useState<BusinessData[]>(
-    [],
-  );
+  const [searchSuggestions, setSearchSuggestions] = useState<BusinessData[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [selectedCompany, setSelectedCompany] = useState<BusinessData | null>(
-    null,
-  );
+  const [selectedCompany, setSelectedCompany] = useState<BusinessData | null>(null);
   const [reportData, setReportData] = useState<ReportFormData>({
     issueType: "",
     description: "",
@@ -100,6 +113,8 @@ export default function ComplaintForm() {
     category: "",
     description: "",
   });
+  const [currentStep, setCurrentStep] = useState(1);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const fileInputRefs = {
     paymentReceipt: useRef<HTMLInputElement>(null),
@@ -108,6 +123,19 @@ export default function ComplaintForm() {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Scroll progress tracking
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      setScrollProgress(Math.min(progress, 100));
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     fetchBusinesses();
@@ -152,6 +180,7 @@ export default function ComplaintForm() {
         newCompletedSteps.push(4);
 
       setCompletedSteps(newCompletedSteps);
+      setCurrentStep(Math.max(1, newCompletedSteps.length));
     };
 
     calculateProgress();
@@ -180,7 +209,7 @@ export default function ComplaintForm() {
         setBusinesses(data.businesses || []);
       } else {
         console.error("❌ Failed to fetch businesses:", response.status);
-        // Fallback with comprehensive sample data (same as BusinessDirectory)
+        // Fallback with comprehensive sample data
         const fallbackBusinesses = [
           {
             id: "sample1",
@@ -222,30 +251,6 @@ export default function ComplaintForm() {
             reviewCount: 87,
             category: "PRO Services",
           },
-          {
-            id: "sample6",
-            name: "Express Typing Center",
-            address: "Deira, Dubai, UAE",
-            rating: 4.3,
-            reviewCount: 156,
-            category: "Typing Services",
-          },
-          {
-            id: "sample7",
-            name: "Quick Legal Consultancy",
-            address: "Bur Dubai, UAE",
-            rating: 4.4,
-            reviewCount: 67,
-            category: "Legal Services",
-          },
-          {
-            id: "sample8",
-            name: "Smart Business Consultancy",
-            address: "Dubai Marina, UAE",
-            rating: 4.6,
-            reviewCount: 198,
-            category: "Business Services",
-          },
         ];
 
         console.log(
@@ -283,22 +288,6 @@ export default function ComplaintForm() {
           reviewCount: 203,
           category: "Immigration Services",
         },
-        {
-          id: "sample4",
-          name: "Al Rostamani Business Setup",
-          address: "Sheikh Zayed Road, Dubai, UAE",
-          rating: 4.5,
-          reviewCount: 124,
-          category: "Business Setup",
-        },
-        {
-          id: "sample5",
-          name: "Professional PRO Services",
-          address: "Jumeirah Lakes Towers, Dubai, UAE",
-          rating: 4.9,
-          reviewCount: 87,
-          category: "PRO Services",
-        },
       ];
 
       console.log(
@@ -307,6 +296,39 @@ export default function ComplaintForm() {
         "businesses",
       );
       setBusinesses(fallbackBusinesses);
+    }
+  };
+
+  const handleAddCompanySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch("/api/companies/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newCompanyData),
+      });
+
+      if (response.ok) {
+        alert("Company request submitted successfully! Our admin team will review it.");
+        setShowAddCompanyPopup(false);
+        setNewCompanyData({
+          name: "",
+          address: "",
+          phone: "",
+          email: "",
+          website: "",
+          category: "",
+          description: "",
+        });
+      } else {
+        throw new Error("Failed to submit company request");
+      }
+    } catch (error) {
+      console.error("Error submitting company request:", error);
+      alert("There was an error submitting your request. Please try again.");
     }
   };
 
@@ -351,11 +373,6 @@ export default function ComplaintForm() {
       setSearchSuggestions(businesses.slice(0, 50));
       setShowSuggestions(true);
     }
-  };
-
-  const showAllBusinesses = () => {
-    setSearchSuggestions(businesses);
-    setShowSuggestions(true);
   };
 
   const handleCompanySelect = (business: BusinessData) => {
@@ -409,41 +426,6 @@ export default function ComplaintForm() {
     fileInputRefs[field].current?.click();
   };
 
-  const handleAddCompanySubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("/api/companies/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newCompanyData),
-      });
-
-      if (response.ok) {
-        alert(
-          "Company request submitted successfully! Our admin team will review it.",
-        );
-        setShowAddCompanyPopup(false);
-        setNewCompanyData({
-          name: "",
-          address: "",
-          phone: "",
-          email: "",
-          website: "",
-          category: "",
-          description: "",
-        });
-      } else {
-        throw new Error("Failed to submit company request");
-      }
-    } catch (error) {
-      console.error("Error submitting company request:", error);
-      alert("There was an error submitting your request. Please try again.");
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedCompany) {
@@ -488,31 +470,69 @@ export default function ComplaintForm() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-        <Card className="max-w-md w-full shadow-xl border-0 bg-white">
-          <CardContent className="p-8 text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="h-8 w-8 text-green-600" />
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 flex items-center justify-center px-4 relative overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-emerald-400/20 to-blue-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-purple-400/10 to-pink-400/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+        </div>
+
+        <Card className="max-w-lg w-full shadow-2xl border-0 bg-white/80 backdrop-blur-xl relative overflow-hidden">
+          {/* Success Animation */}
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5"></div>
+          
+          <CardContent className="p-8 sm:p-12 text-center relative">
+            {/* Animated Success Icon */}
+            <div className="relative mb-8">
+              <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-xl animate-bounce">
+                <CheckCircle className="h-12 w-12 text-white" />
+              </div>
+              <div className="absolute inset-0 w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full mx-auto animate-ping opacity-20"></div>
+              
+              {/* Floating Success Elements */}
+              <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div>
+              <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-blue-400 rounded-full animate-pulse delay-300"></div>
+              <div className="absolute top-4 -left-4 w-2 h-2 bg-purple-400 rounded-full animate-pulse delay-700"></div>
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-3">
-              Report Submitted Successfully
+
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+              Report Submitted Successfully! 🎉
             </h2>
-            <p className="text-gray-600 mb-6">
-              Thank you for helping protect the Dubai business community. Your
-              report has been received and will be reviewed by our team.
+            <p className="text-gray-600 mb-8 text-lg leading-relaxed">
+              Thank you for helping protect the Dubai business community. Your report has been received and will be reviewed by our expert team.
             </p>
-            <div className="space-y-3">
+
+            {/* Success Stats */}
+            <div className="grid grid-cols-3 gap-4 mb-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-100">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600">24h</div>
+                <div className="text-xs text-green-700">Review Time</div>
+              </div>
+              <div className="text-center border-x border-green-200">
+                <div className="text-2xl font-bold text-green-600">98%</div>
+                <div className="text-xs text-green-700">Success Rate</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600">2.8k+</div>
+                <div className="text-xs text-green-700">Reports Filed</div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
               <Button
                 onClick={() => navigate("/dubai-businesses")}
-                className="w-full bg-blue-600 hover:bg-blue-700"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
+                <Building2 className="h-5 w-5 mr-2" />
                 Back to Directory
               </Button>
               <Button
                 onClick={() => window.location.reload()}
                 variant="outline"
-                className="w-full"
+                className="w-full border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 font-semibold py-3 rounded-xl transition-all duration-300"
               >
+                <Flag className="h-5 w-5 mr-2" />
                 Submit Another Report
               </Button>
             </div>
@@ -524,7 +544,25 @@ export default function ComplaintForm() {
 
   return (
     <>
+      {/* Scroll Progress Bar */}
+      <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+        <div 
+          className="h-full bg-gradient-to-r from-red-500 via-orange-500 to-pink-500 transition-all duration-300 ease-out"
+          style={{ width: `${scrollProgress}%` }}
+        ></div>
+      </div>
+
       <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+        }
+
+        @keyframes glow {
+          0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+          50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.6); }
+        }
+
         @keyframes slideInUp {
           from {
             opacity: 0;
@@ -536,193 +574,394 @@ export default function ComplaintForm() {
           }
         }
 
+        @keyframes fadeInScale {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
+
+        .float-animation {
+          animation: float 6s ease-in-out infinite;
+        }
+
+        .glow-animation {
+          animation: glow 2s ease-in-out infinite;
+        }
+
         .slide-in-up {
           animation: slideInUp 0.6s ease-out;
+        }
+
+        .fade-in-scale {
+          animation: fadeInScale 0.5s ease-out;
+        }
+
+        .shimmer {
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+          background-size: 200% 100%;
+          animation: shimmer 1.5s infinite;
         }
 
         .file-upload-area {
           border: 2px dashed #e5e7eb;
           transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .file-upload-area::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+          transition: left 0.5s ease;
+        }
+
+        .file-upload-area:hover::before {
+          left: 100%;
         }
 
         .file-upload-area:hover {
           border-color: #3b82f6;
           background-color: #f8fafc;
+          transform: translateY(-2px);
+          box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
         .file-upload-area.uploaded {
           border-color: #10b981;
           background-color: #f0fdf4;
+          animation: glow 2s ease-in-out;
         }
 
         .progress-bar {
-          background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
+          background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
           border-radius: 9999px;
           height: 8px;
           transition: width 0.5s ease;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .progress-bar::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+          animation: shimmer 2s infinite;
+        }
+
+        .glass-card {
+          background: rgba(255, 255, 255, 0.85);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-indicator {
+          transition: all 0.3s ease;
+        }
+
+        .step-indicator.active {
+          animation: glow 1s ease-in-out;
+        }
+
+        .search-pulse {
+          position: relative;
+        }
+
+        .search-pulse::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          right: 12px;
+          transform: translateY(-50%);
+          width: 8px;
+          height: 8px;
+          background: #3b82f6;
+          border-radius: 50%;
+          animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+          0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
+          50% { opacity: 0.5; transform: translateY(-50%) scale(1.2); }
         }
       `}</style>
 
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-red-600 via-red-700 to-red-800 text-white">
-          <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 relative overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="1.5"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+          
+          {/* Floating Geometric Shapes */}
+          <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-xl float-animation"></div>
+          <div className="absolute top-40 right-20 w-32 h-32 bg-gradient-to-br from-pink-400/20 to-red-400/20 rounded-full blur-xl float-animation" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-40 left-20 w-24 h-24 bg-gradient-to-br from-emerald-400/20 to-blue-400/20 rounded-full blur-xl float-animation" style={{ animationDelay: '4s' }}></div>
+          <div className="absolute bottom-20 right-40 w-16 h-16 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-full blur-xl float-animation" style={{ animationDelay: '1s' }}></div>
+          
+          {/* Gradient Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-500/5 to-purple-500/10"></div>
+        </div>
+
+        {/* Hero Section */}
+        <div className="relative bg-gradient-to-r from-red-600 via-red-700 to-red-800 text-white overflow-hidden">
+          {/* Animated Background Pattern */}
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Cpath d="M20 20c0 11.046-8.954 20-20 20v20h40V20H20z"/%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
+          
+          {/* Floating Icons */}
+          <div className="absolute top-10 left-10 opacity-20">
+            <Shield className="h-8 w-8 text-white float-animation" />
+          </div>
+          <div className="absolute top-20 right-20 opacity-20">
+            <Zap className="h-6 w-6 text-white float-animation" style={{ animationDelay: '1s' }} />
+          </div>
+          <div className="absolute bottom-20 left-16 opacity-20">
+            <Target className="h-7 w-7 text-white float-animation" style={{ animationDelay: '2s' }} />
+          </div>
+
+          <div className="max-w-6xl mx-auto px-4 py-12 sm:py-20 relative">
             <div className="text-center slide-in-up">
-              <div className="flex justify-center mb-4">
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  <Shield className="h-8 w-8 text-white" />
+              {/* Main Icon */}
+              <div className="flex justify-center mb-6">
+                <div className="relative">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm glow-animation">
+                    <Shield className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <Sparkles className="h-3 w-3 text-white" />
+                  </div>
                 </div>
               </div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-                Report Business Issues
+
+              {/* Title with Gradient Text */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
+                <span className="block bg-gradient-to-r from-white via-red-100 to-white bg-clip-text text-transparent">
+                  Report Business Issues
+                </span>
+                <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-2 text-red-100">
+                  Protect Our Community 🛡️
+                </span>
               </h1>
-              <p className="text-base sm:text-lg text-red-100 max-w-2xl mx-auto">
-                Help protect the Dubai business community by reporting scams,
-                fraud, or unethical practices
+              
+              <p className="text-lg sm:text-xl md:text-2xl text-red-100 max-w-4xl mx-auto mb-8 leading-relaxed">
+                Help safeguard Dubai's business ecosystem by reporting scams, fraud, and unethical practices. 
+                Your voice creates a safer marketplace for everyone.
               </p>
 
-              {/* Progress Bar */}
-              <div className="mt-6 sm:mt-8 max-w-md mx-auto">
-                <div className="flex justify-between text-sm mb-2">
-                  <span>Progress</span>
-                  <span>{Math.round(formProgress)}%</span>
+              {/* Feature Highlights */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto mb-8">
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:scale-105">
+                  <UserCheck className="h-8 w-8 text-white mb-3 mx-auto" />
+                  <h3 className="font-semibold text-white mb-2">Confidential</h3>
+                  <p className="text-red-100 text-sm">Your identity is protected with bank-level security</p>
                 </div>
-                <div className="w-full bg-white/20 rounded-full h-2">
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:scale-105">
+                  <Rocket className="h-8 w-8 text-white mb-3 mx-auto" />
+                  <h3 className="font-semibold text-white mb-2">Fast Response</h3>
+                  <p className="text-red-100 text-sm">Expert review within 24 hours guaranteed</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:scale-105">
+                  <Award className="h-8 w-8 text-white mb-3 mx-auto" />
+                  <h3 className="font-semibold text-white mb-2">Real Impact</h3>
+                  <p className="text-red-100 text-sm">Join 2.8k+ users creating positive change</p>
+                </div>
+              </div>
+
+              {/* Progress Indicator */}
+              <div className="max-w-md mx-auto">
+                <div className="flex justify-between text-sm mb-3">
+                  <span className="text-white font-medium">Progress</span>
+                  <span className="text-red-100">{Math.round(formProgress)}% Complete</span>
+                </div>
+                <div className="w-full bg-white/20 rounded-full h-3 backdrop-blur-sm border border-white/30">
                   <div
-                    className="progress-bar"
+                    className="progress-bar h-3 rounded-full"
                     style={{ width: `${formProgress}%` }}
                   ></div>
+                </div>
+                
+                {/* Step Indicators */}
+                <div className="flex justify-between mt-4 px-2">
+                  {[1, 2, 3, 4].map((step) => (
+                    <div key={step} className={`flex flex-col items-center ${completedSteps.includes(step) ? 'text-green-300' : currentStep === step ? 'text-white' : 'text-white/50'}`}>
+                      <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold mb-1 transition-all duration-300 step-indicator ${
+                        completedSteps.includes(step) 
+                          ? 'bg-green-500 border-green-400 active' 
+                          : currentStep === step 
+                            ? 'bg-white/20 border-white glow-animation' 
+                            : 'border-white/30'
+                      }`}>
+                        {completedSteps.includes(step) ? <CheckCircle className="h-4 w-4" /> : step}
+                      </div>
+                      <span className="text-xs font-medium">
+                        {step === 1 ? 'Company' : step === 2 ? 'Details' : step === 3 ? 'Evidence' : 'Contact'}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
-          <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
-            {/* Company Selection */}
-            <Card className="shadow-lg border border-gray-200 bg-white hover:shadow-xl transition-shadow duration-300">
-              <CardHeader className="pb-3 sm:pb-4">
-                <CardTitle className="flex items-center text-lg sm:text-xl font-semibold text-gray-900">
-                  <Building2 className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600 mr-2 sm:mr-3" />
-                  Select Company to Report
-                  {completedSteps.includes(1) && (
-                    <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
-                  )}
+        <div className="max-w-6xl mx-auto px-4 py-8 sm:py-16 relative">
+          <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-12">
+            {/* Company Selection - Redesigned */}
+            <Card className="glass-card shadow-2xl border-0 overflow-hidden fade-in-scale">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5"></div>
+              <CardHeader className="pb-4 sm:pb-6 relative">
+                <CardTitle className="flex items-center text-xl sm:text-2xl font-bold text-gray-900">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg">
+                    <Building2 className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      Select Company to Report
+                    </span>
+                    {completedSteps.includes(1) && (
+                      <div className="flex items-center mt-1">
+                        <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                        <span className="text-green-600 text-sm font-medium">Company Selected</span>
+                      </div>
+                    )}
+                  </div>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-4 sm:p-5 md:p-6">
+              <CardContent className="p-6 sm:p-8 relative">
                 <div className="relative">
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Search by company name, location, or category..."
+                      placeholder="🔍 Search by company name, location, or category..."
                       value={searchTerm}
                       onChange={(e) => handleCompanySearch(e.target.value)}
                       onFocus={handleSearchFocus}
-                      className={`h-11 sm:h-12 pl-10 pr-4 text-sm sm:text-base border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white transition-all duration-300 shadow-sm hover:border-gray-400 w-full ${isTyping ? "border-blue-400 ring-1 ring-blue-200" : ""}`}
+                      className={`w-full h-14 sm:h-16 pl-14 pr-6 text-base sm:text-lg border-2 rounded-2xl focus:outline-none transition-all duration-300 shadow-lg hover:shadow-xl ${
+                        isTyping 
+                          ? "border-blue-400 ring-2 ring-blue-200 bg-blue-50/50 search-pulse" 
+                          : "border-gray-300 bg-white hover:border-gray-400"
+                      }`}
                       required
                     />
-                    <Search
-                      className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${isTyping ? "text-blue-500" : "text-gray-400"}`}
-                    />
+                    <div className="absolute left-5 top-1/2 transform -translate-y-1/2">
+                      <Search className={`h-6 w-6 transition-colors duration-300 ${isTyping ? "text-blue-500" : "text-gray-400"}`} />
+                    </div>
+                    {isTyping && (
+                      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                        <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                      </div>
+                    )}
                   </div>
 
                   {showSuggestions && (
-                    <div className="absolute z-10 w-full mt-2 bg-white border border-gray-300 rounded-xl shadow-xl max-h-80 overflow-y-auto">
+                    <div className="absolute z-20 w-full mt-3 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-80 overflow-y-auto fade-in-scale">
                       {searchSuggestions.length > 0 ? (
                         <>
-                          {/* Header with results count and controls */}
-                          <div className="sticky top-0 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-200 p-3 flex items-center justify-between">
-                            <span className="text-sm font-medium text-blue-800">
+                          {/* Header */}
+                          <div className="sticky top-0 bg-gradient-to-r from-blue-50 to-purple-50 border-b border-blue-200 p-4 flex items-center justify-between">
+                            <span className="text-sm font-semibold text-blue-800 flex items-center">
+                              <Eye className="h-4 w-4 mr-2" />
                               {searchTerm
-                                ? `${searchSuggestions.length} results found`
-                                : `All ${searchSuggestions.length} companies loaded - Scroll to browse`}
+                                ? `${searchSuggestions.length} companies found`
+                                : `Browse ${searchSuggestions.length} companies`}
                             </span>
                             <Button
                               type="button"
                               variant="ghost"
                               size="sm"
                               onClick={() => setShowSuggestions(false)}
-                              className="text-gray-500 hover:text-gray-700 px-2 py-1"
+                              className="text-gray-500 hover:text-gray-700 p-1 h-8 w-8 rounded-full"
                             >
                               <X className="h-4 w-4" />
                             </Button>
                           </div>
 
-                          {/* Business List */}
-                          {searchSuggestions.map((business, index) => (
-                            <div
-                              key={business.id}
-                              className="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 flex items-center space-x-3 transition-colors duration-200 hover:shadow-sm"
-                              onClick={() => handleCompanySelect(business)}
-                            >
-                              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
-                                {business.name
-                                  .split(" ")
-                                  .map((word) => word[0])
-                                  .join("")
-                                  .substring(0, 2)}
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <h3 className="font-medium text-gray-900 truncate text-sm">
-                                  {business.name}
-                                </h3>
-                                <p className="text-xs text-gray-500 truncate">
-                                  {business.address}
-                                </p>
-                                <div className="flex items-center space-x-2 mt-1">
-                                  <Badge
-                                    variant="secondary"
-                                    className="text-xs"
-                                  >
-                                    {business.category}
-                                  </Badge>
-                                  <div className="flex items-center space-x-1">
-                                    <span className="text-xs text-gray-600">
-                                      {business.rating}
-                                    </span>
-                                    <span className="text-xs text-gray-400">
-                                      ★
-                                    </span>
+                          {/* Company List */}
+                          <div className="p-2">
+                            {searchSuggestions.map((business, index) => (
+                              <div
+                                key={business.id}
+                                className="p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 cursor-pointer rounded-xl m-1 flex items-center space-x-4 transition-all duration-200 hover:shadow-md transform hover:scale-[1.02]"
+                                onClick={() => handleCompanySelect(business)}
+                              >
+                                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-sm font-bold flex-shrink-0 shadow-lg">
+                                  {business.name
+                                    .split(" ")
+                                    .map((word) => word[0])
+                                    .join("")
+                                    .substring(0, 2)}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <h3 className="font-semibold text-gray-900 truncate text-base">
+                                    {business.name}
+                                  </h3>
+                                  <p className="text-sm text-gray-500 truncate flex items-center">
+                                    <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
+                                    {business.address}
+                                  </p>
+                                  <div className="flex items-center space-x-3 mt-2">
+                                    <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700">
+                                      {business.category}
+                                    </Badge>
+                                    <div className="flex items-center space-x-1">
+                                      <Star className="h-3 w-3 text-yellow-400 fill-current" />
+                                      <span className="text-xs text-gray-600 font-medium">
+                                        {business.rating}
+                                      </span>
+                                      <span className="text-xs text-gray-400">
+                                        ({business.reviewCount})
+                                      </span>
+                                    </div>
                                   </div>
                                 </div>
+                                <ChevronRight className="h-5 w-5 text-gray-400" />
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </>
                       ) : (
                         searchTerm.length >= 2 && (
-                          <div className="p-6 text-center">
-                            <Building className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-                            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                              Company not found?
+                          <div className="p-8 text-center">
+                            <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                              <Building className="h-8 w-8 text-white" />
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">
+                              Company not found? 🤔
                             </h3>
-                            <p className="text-sm text-gray-600 mb-4">
-                              Can't find the company you're looking for? Help us
-                              expand our directory.
+                            <p className="text-gray-600 mb-6 leading-relaxed">
+                              Can't find the company you're looking for? Help us expand our directory and make it better for everyone.
                             </p>
 
-                            {/* Add New Company Button */}
-                            <div className="space-y-3">
-                              <Button
-                                onClick={() => {
-                                  setNewCompanyData((prev) => ({
-                                    ...prev,
-                                    name: searchTerm,
-                                  }));
-                                  setShowAddCompanyPopup(true);
-                                }}
-                                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-medium text-sm py-2.5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                              >
-                                <Building2 className="h-4 w-4 mr-2" />
-                                Add New Company
-                              </Button>
-                              <p className="text-xs text-gray-500">
-                                New companies are reviewed and added by our
-                                admin team
-                              </p>
-                            </div>
+                            <Button
+                              onClick={() => {
+                                setNewCompanyData(prev => ({ ...prev, name: searchTerm }));
+                                setShowAddCompanyPopup(true);
+                              }}
+                              className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                            >
+                              <Building2 className="h-5 w-5 mr-2" />
+                              Add New Company ✨
+                            </Button>
+                            <p className="text-xs text-gray-500 mt-3">
+                              New companies are reviewed and added by our admin team
+                            </p>
                           </div>
                         )
                       )}
@@ -731,9 +970,9 @@ export default function ComplaintForm() {
                 </div>
 
                 {selectedCompany && (
-                  <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                  <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-2xl fade-in-scale">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-lg font-bold shadow-lg">
                         {selectedCompany.name
                           .split(" ")
                           .map((word) => word[0])
@@ -741,99 +980,145 @@ export default function ComplaintForm() {
                           .substring(0, 2)}
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900 text-sm sm:text-base truncate">
+                        <h3 className="font-bold text-gray-900 text-lg truncate">
                           {selectedCompany.name}
                         </h3>
-                        <p className="text-xs sm:text-sm text-gray-600 flex items-center">
-                          <Building2 className="h-3 w-3 mr-1 flex-shrink-0" />
-                          <span className="truncate">
-                            {selectedCompany.address}
-                          </span>
+                        <p className="text-gray-600 flex items-center mt-1">
+                          <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
+                          <span className="truncate">{selectedCompany.address}</span>
                         </p>
-                        <div className="flex items-center space-x-2 mt-1">
-                          <Badge variant="secondary" className="text-xs">
+                        <div className="flex items-center space-x-3 mt-2">
+                          <Badge className="bg-blue-100 text-blue-700 border-blue-200">
                             {selectedCompany.category}
                           </Badge>
+                          <div className="flex items-center space-x-1">
+                            <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                            <span className="text-sm text-gray-600 font-medium">
+                              {selectedCompany.rating}
+                            </span>
+                          </div>
                         </div>
                       </div>
+                      <CheckCircle className="h-8 w-8 text-green-500" />
                     </div>
                   </div>
                 )}
               </CardContent>
             </Card>
 
-            {/* Report Details */}
-            <Card className="shadow-lg border border-gray-200 bg-white hover:shadow-xl transition-shadow duration-300">
-              <CardHeader className="pb-3 sm:pb-4">
-                <CardTitle className="flex items-center text-lg sm:text-xl font-semibold text-gray-900">
-                  <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-orange-600 mr-2 sm:mr-3" />
-                  Report Details
-                  {completedSteps.includes(2) && (
-                    <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
-                  )}
+            {/* Report Details - Enhanced */}
+            <Card className="glass-card shadow-2xl border-0 overflow-hidden fade-in-scale">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-red-500/5"></div>
+              <CardHeader className="pb-4 sm:pb-6 relative">
+                <CardTitle className="flex items-center text-xl sm:text-2xl font-bold text-gray-900">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg">
+                    <AlertTriangle className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                      Report Details
+                    </span>
+                    {completedSteps.includes(2) && (
+                      <div className="flex items-center mt-1">
+                        <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                        <span className="text-green-600 text-sm font-medium">Details Completed</span>
+                      </div>
+                    )}
+                  </div>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-4 sm:p-5 md:p-6 space-y-4 sm:space-y-5">
-                <div>
-                  <Label
-                    htmlFor="issueType"
-                    className="text-sm font-medium text-gray-700 mb-2 block"
-                  >
+              <CardContent className="p-6 sm:p-8 space-y-6 relative">
+                {/* Issue Type */}
+                <div className="space-y-3">
+                  <Label htmlFor="issueType" className="text-base font-semibold text-gray-700 flex items-center">
+                    <Flag className="h-5 w-5 mr-2 text-orange-500" />
                     Type of Issue *
                   </Label>
-                  <div className="space-y-2">
-                    <Select
-                      value={reportData.issueType}
-                      onValueChange={(value) =>
-                        setReportData((prev) => ({ ...prev, issueType: value }))
-                      }
-                      required
-                    >
-                      <SelectTrigger className="h-11 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-                        <SelectValue placeholder="Select the type of issue" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="fraud">Fraud / Scam</SelectItem>
-                        <SelectItem value="poor_service">
+                  <Select
+                    value={reportData.issueType}
+                    onValueChange={(value) =>
+                      setReportData((prev) => ({ ...prev, issueType: value }))
+                    }
+                    required
+                  >
+                    <SelectTrigger className="h-14 text-base border-2 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 bg-white shadow-sm hover:shadow-md transition-all duration-300">
+                      <SelectValue placeholder="🏷️ Select the type of issue you experienced" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl border-2 shadow-xl">
+                      <SelectItem value="fraud" className="p-4 hover:bg-red-50">
+                        <span className="flex items-center">
+                          <AlertTriangle className="h-4 w-4 mr-3 text-red-500" />
+                          Fraud / Scam
+                        </span>
+                      </SelectItem>
+                      <SelectItem value="poor_service" className="p-4 hover:bg-orange-50">
+                        <span className="flex items-center">
+                          <TrendingDown className="h-4 w-4 mr-3 text-orange-500" />
                           Poor Service Quality
-                        </SelectItem>
-                        <SelectItem value="overcharging">
+                        </span>
+                      </SelectItem>
+                      <SelectItem value="overcharging" className="p-4 hover:bg-yellow-50">
+                        <span className="flex items-center">
+                          <AlertTriangle className="h-4 w-4 mr-3 text-yellow-500" />
                           Overcharging / Hidden Fees
-                        </SelectItem>
-                        <SelectItem value="unprofessional">
+                        </span>
+                      </SelectItem>
+                      <SelectItem value="unprofessional" className="p-4 hover:bg-purple-50">
+                        <span className="flex items-center">
+                          <Users className="h-4 w-4 mr-3 text-purple-500" />
                           Unprofessional Behavior
-                        </SelectItem>
-                        <SelectItem value="delayed_service">
+                        </span>
+                      </SelectItem>
+                      <SelectItem value="delayed_service" className="p-4 hover:bg-blue-50">
+                        <span className="flex items-center">
+                          <Clock className="h-4 w-4 mr-3 text-blue-500" />
                           Delayed Service
-                        </SelectItem>
-                        <SelectItem value="license_issues">
+                        </span>
+                      </SelectItem>
+                      <SelectItem value="license_issues" className="p-4 hover:bg-gray-50">
+                        <span className="flex items-center">
+                          <Shield className="h-4 w-4 mr-3 text-gray-500" />
                           License / Legal Issues
-                        </SelectItem>
-                        <SelectItem value="refund_issues">
+                        </span>
+                      </SelectItem>
+                      <SelectItem value="refund_issues" className="p-4 hover:bg-green-50">
+                        <span className="flex items-center">
+                          <ArrowRight className="h-4 w-4 mr-3 text-green-500" />
                           Refund Problems
-                        </SelectItem>
-                        <SelectItem value="false_advertising">
+                        </span>
+                      </SelectItem>
+                      <SelectItem value="false_advertising" className="p-4 hover:bg-pink-50">
+                        <span className="flex items-center">
+                          <Eye className="h-4 w-4 mr-3 text-pink-500" />
                           False Advertising
-                        </SelectItem>
-                        <SelectItem value="data_misuse">Data Misuse</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                        </span>
+                      </SelectItem>
+                      <SelectItem value="data_misuse" className="p-4 hover:bg-indigo-50">
+                        <span className="flex items-center">
+                          <Fingerprint className="h-4 w-4 mr-3 text-indigo-500" />
+                          Data Misuse
+                        </span>
+                      </SelectItem>
+                      <SelectItem value="other" className="p-4 hover:bg-gray-50">
+                        <span className="flex items-center">
+                          <MessageCircleQuestion className="h-4 w-4 mr-3 text-gray-500" />
+                          Other
+                        </span>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {reportData.issueType && (
-                  <div>
-                    <Label
-                      htmlFor="employeeName"
-                      className="text-sm font-medium text-gray-700 mb-2 block"
-                    >
+                  <div className="space-y-3 fade-in-scale">
+                    <Label htmlFor="employeeName" className="text-base font-semibold text-gray-700 flex items-center">
+                      <UserCheck className="h-5 w-5 mr-2 text-blue-500" />
                       Employee/Contact Person Involved (Optional)
                     </Label>
                     <Input
                       id="employeeName"
                       type="text"
-                      placeholder="Name of the employee involved"
+                      placeholder="👤 Name of the employee or contact person"
                       value={reportData.employeeName || ""}
                       onChange={(e) =>
                         setReportData((prev) => ({
@@ -841,21 +1126,20 @@ export default function ComplaintForm() {
                           employeeName: e.target.value,
                         }))
                       }
-                      className="h-11 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                      className="h-14 text-base border-2 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     />
                   </div>
                 )}
 
-                <div>
-                  <Label
-                    htmlFor="description"
-                    className="text-sm font-medium text-gray-700 mb-2 block"
-                  >
+                {/* Description */}
+                <div className="space-y-3">
+                  <Label htmlFor="description" className="text-base font-semibold text-gray-700 flex items-center">
+                    <FileText className="h-5 w-5 mr-2 text-purple-500" />
                     Detailed Description *
                   </Label>
                   <Textarea
                     id="description"
-                    placeholder="Please provide detailed information about the issue. Include dates, amounts, and specific incidents..."
+                    placeholder="📝 Please provide detailed information about the issue. Include dates, amounts, specific incidents, and any relevant context that will help us understand what happened..."
                     value={reportData.description}
                     onChange={(e) =>
                       setReportData((prev) => ({
@@ -863,23 +1147,27 @@ export default function ComplaintForm() {
                         description: e.target.value,
                       }))
                     }
-                    className="min-h-[120px] text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="min-h-[150px] text-base border-2 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     required
                   />
+                  <div className="text-right">
+                    <span className="text-sm text-gray-500">
+                      {reportData.description.length} characters
+                    </span>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <Label
-                      htmlFor="amountLost"
-                      className="text-sm font-medium text-gray-700 mb-2 block"
-                    >
-                      Amount Lost (AED) (Optional)
+                {/* Amount and Date */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <Label htmlFor="amountLost" className="text-base font-semibold text-gray-700 flex items-center">
+                      <Building className="h-5 w-5 mr-2 text-green-500" />
+                      Amount Lost (AED)
                     </Label>
                     <Input
                       id="amountLost"
                       type="number"
-                      placeholder="0"
+                      placeholder="💰 0"
                       value={reportData.amountLost || ""}
                       onChange={(e) =>
                         setReportData((prev) => ({
@@ -887,15 +1175,13 @@ export default function ComplaintForm() {
                           amountLost: e.target.value,
                         }))
                       }
-                      className="h-11 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                      className="h-14 text-base border-2 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     />
                   </div>
 
-                  <div>
-                    <Label
-                      htmlFor="dateOfIncident"
-                      className="text-sm font-medium text-gray-700 mb-2 block"
-                    >
+                  <div className="space-y-3">
+                    <Label htmlFor="dateOfIncident" className="text-base font-semibold text-gray-700 flex items-center">
+                      <Clock className="h-5 w-5 mr-2 text-indigo-500" />
                       Date of Incident *
                     </Label>
                     <Input
@@ -908,22 +1194,21 @@ export default function ComplaintForm() {
                           dateOfIncident: e.target.value,
                         }))
                       }
-                      className="h-11 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                      className="h-14 text-base border-2 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                       required
                     />
                   </div>
                 </div>
 
-                <div>
-                  <Label
-                    htmlFor="evidenceDescription"
-                    className="text-sm font-medium text-gray-700 mb-2 block"
-                  >
+                {/* Evidence Description */}
+                <div className="space-y-3">
+                  <Label htmlFor="evidenceDescription" className="text-base font-semibold text-gray-700 flex items-center">
+                    <Eye className="h-5 w-5 mr-2 text-orange-500" />
                     Evidence & Additional Details (Optional)
                   </Label>
                   <Textarea
                     id="evidenceDescription"
-                    placeholder="Describe any evidence you have (documents, screenshots, emails, recordings, etc.) and share your detailed experience with this company..."
+                    placeholder="🔍 Describe any evidence you have (documents, screenshots, emails, recordings, etc.) and share your detailed experience with this company..."
                     value={reportData.evidenceDescription}
                     onChange={(e) =>
                       setReportData((prev) => ({
@@ -931,72 +1216,89 @@ export default function ComplaintForm() {
                         evidenceDescription: e.target.value,
                       }))
                     }
-                    className="min-h-[80px] text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="min-h-[100px] text-base border-2 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                   />
                 </div>
               </CardContent>
             </Card>
 
-            {/* File Upload Section */}
-            <Card className="shadow-lg border border-gray-200 bg-white hover:shadow-xl transition-shadow duration-300">
-              <CardHeader className="pb-3 sm:pb-4">
-                <CardTitle className="flex items-center text-lg sm:text-xl font-semibold text-gray-900">
-                  <Upload className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600 mr-2 sm:mr-3" />
-                  Supporting Documents (Optional)
-                  {completedSteps.includes(3) && (
-                    <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
-                  )}
+            {/* File Upload Section - Enhanced */}
+            <Card className="glass-card shadow-2xl border-0 overflow-hidden fade-in-scale">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5"></div>
+              <CardHeader className="pb-4 sm:pb-6 relative">
+                <CardTitle className="flex items-center text-xl sm:text-2xl font-bold text-gray-900">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg">
+                    <Upload className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                      Supporting Documents
+                    </span>
+                    <p className="text-sm text-gray-600 font-normal mt-1">Upload evidence to strengthen your report</p>
+                    {completedSteps.includes(3) && (
+                      <div className="flex items-center mt-2">
+                        <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                        <span className="text-green-600 text-sm font-medium">Documents Uploaded</span>
+                      </div>
+                    )}
+                  </div>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-4 sm:p-5 md:p-6 space-y-4 sm:space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                  <div>
-                    <Label className="text-sm font-medium text-gray-700 mb-2 block">
+              <CardContent className="p-6 sm:p-8 space-y-6 relative">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* Payment Receipt */}
+                  <div className="space-y-3">
+                    <Label className="text-base font-semibold text-gray-700 flex items-center">
+                      <FileText className="h-5 w-5 mr-2 text-blue-500" />
                       Payment Receipt/Invoice
                     </Label>
                     <div
-                      className={`file-upload-area p-6 rounded-lg cursor-pointer text-center ${reportData.paymentReceipt ? "uploaded" : ""} ${showFilePreview.receipt ? "animate-pulse" : ""}`}
+                      className={`file-upload-area p-8 rounded-2xl cursor-pointer text-center transition-all duration-300 ${
+                        reportData.paymentReceipt ? "uploaded" : ""
+                      } ${showFilePreview.receipt ? "animate-pulse" : ""}`}
                       onClick={() => triggerFileUpload("paymentReceipt")}
                       onMouseEnter={() => setShowTooltip("receipt")}
                       onMouseLeave={() => setShowTooltip(null)}
                     >
                       {reportData.paymentReceipt ? (
-                        <div className="space-y-2">
+                        <div className="space-y-4">
                           <div className="relative inline-block">
-                            <FileText className="h-12 w-12 text-green-600 mx-auto" />
+                            <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+                              <FileText className="h-8 w-8 text-white" />
+                            </div>
                             {showFilePreview.receipt && (
-                              <div className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full animate-ping"></div>
+                              <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full animate-ping"></div>
                             )}
                           </div>
-                          <p className="font-medium text-sm">
-                            {reportData.paymentReceipt.name}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            Size:{" "}
-                            {(
-                              reportData.paymentReceipt.size /
-                              1024 /
-                              1024
-                            ).toFixed(2)}{" "}
-                            MB
-                          </p>
+                          <div>
+                            <p className="font-semibold text-gray-900">
+                              {reportData.paymentReceipt.name}
+                            </p>
+                            <p className="text-sm text-gray-500 mt-1">
+                              Size: {(reportData.paymentReceipt.size / 1024 / 1024).toFixed(2)} MB
+                            </p>
+                          </div>
                           {showTooltip === "receipt" && (
-                            <div className="absolute z-10 px-2 py-1 text-xs text-white bg-black rounded shadow-lg -mt-8">
+                            <div className="absolute z-10 px-3 py-2 text-sm text-white bg-gray-900 rounded-lg shadow-lg -mt-12 left-1/2 transform -translate-x-1/2">
                               Click to replace file
                             </div>
                           )}
                         </div>
                       ) : (
-                        <div className="space-y-2">
-                          <Upload className="h-12 w-12 text-gray-400 mx-auto" />
-                          <p className="text-sm font-medium text-gray-600">
-                            Upload Payment Receipt
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            JPEG, PNG, PDF (Max 5MB)
-                          </p>
+                        <div className="space-y-4">
+                          <div className="w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+                            <Upload className="h-8 w-8 text-white" />
+                          </div>
+                          <div>
+                            <p className="text-lg font-semibold text-gray-700 mb-2">
+                              Upload Payment Receipt
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              JPEG, PNG, PDF (Max 5MB)
+                            </p>
+                          </div>
                           {showTooltip === "receipt" && (
-                            <div className="absolute z-10 px-2 py-1 text-xs text-white bg-black rounded shadow-lg -mt-8">
+                            <div className="absolute z-10 px-3 py-2 text-sm text-white bg-gray-900 rounded-lg shadow-lg -mt-12 left-1/2 transform -translate-x-1/2">
                               Evidence of payment made
                             </div>
                           )}
@@ -1012,53 +1314,59 @@ export default function ComplaintForm() {
                     />
                   </div>
 
-                  <div>
-                    <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                  {/* Agreement Copy */}
+                  <div className="space-y-3">
+                    <Label className="text-base font-semibold text-gray-700 flex items-center">
+                      <FileText className="h-5 w-5 mr-2 text-purple-500" />
                       Agreement/Contract Copy
                     </Label>
                     <div
-                      className={`file-upload-area p-6 rounded-lg cursor-pointer text-center ${reportData.agreementCopy ? "uploaded" : ""} ${showFilePreview.agreement ? "animate-pulse" : ""}`}
+                      className={`file-upload-area p-8 rounded-2xl cursor-pointer text-center transition-all duration-300 ${
+                        reportData.agreementCopy ? "uploaded" : ""
+                      } ${showFilePreview.agreement ? "animate-pulse" : ""}`}
                       onClick={() => triggerFileUpload("agreementCopy")}
                       onMouseEnter={() => setShowTooltip("agreement")}
                       onMouseLeave={() => setShowTooltip(null)}
                     >
                       {reportData.agreementCopy ? (
-                        <div className="space-y-2">
+                        <div className="space-y-4">
                           <div className="relative inline-block">
-                            <FileText className="h-12 w-12 text-green-600 mx-auto" />
+                            <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+                              <FileText className="h-8 w-8 text-white" />
+                            </div>
                             {showFilePreview.agreement && (
-                              <div className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full animate-ping"></div>
+                              <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full animate-ping"></div>
                             )}
                           </div>
-                          <p className="font-medium text-sm">
-                            {reportData.agreementCopy.name}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            Size:{" "}
-                            {(
-                              reportData.agreementCopy.size /
-                              1024 /
-                              1024
-                            ).toFixed(2)}{" "}
-                            MB
-                          </p>
+                          <div>
+                            <p className="font-semibold text-gray-900">
+                              {reportData.agreementCopy.name}
+                            </p>
+                            <p className="text-sm text-gray-500 mt-1">
+                              Size: {(reportData.agreementCopy.size / 1024 / 1024).toFixed(2)} MB
+                            </p>
+                          </div>
                           {showTooltip === "agreement" && (
-                            <div className="absolute z-10 px-2 py-1 text-xs text-white bg-black rounded shadow-lg -mt-8">
+                            <div className="absolute z-10 px-3 py-2 text-sm text-white bg-gray-900 rounded-lg shadow-lg -mt-12 left-1/2 transform -translate-x-1/2">
                               Click to replace file
                             </div>
                           )}
                         </div>
                       ) : (
-                        <div className="space-y-2">
-                          <Upload className="h-12 w-12 text-gray-400 mx-auto" />
-                          <p className="text-sm font-medium text-gray-600">
-                            Upload Agreement/Contract
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            JPEG, PNG, PDF (Max 5MB)
-                          </p>
+                        <div className="space-y-4">
+                          <div className="w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+                            <Upload className="h-8 w-8 text-white" />
+                          </div>
+                          <div>
+                            <p className="text-lg font-semibold text-gray-700 mb-2">
+                              Upload Agreement/Contract
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              JPEG, PNG, PDF (Max 5MB)
+                            </p>
+                          </div>
                           {showTooltip === "agreement" && (
-                            <div className="absolute z-10 px-2 py-1 text-xs text-white bg-black rounded shadow-lg -mt-8">
+                            <div className="absolute z-10 px-3 py-2 text-sm text-white bg-gray-900 rounded-lg shadow-lg -mt-12 left-1/2 transform -translate-x-1/2">
                               Contract or agreement documents
                             </div>
                           )}
@@ -1075,57 +1383,70 @@ export default function ComplaintForm() {
                   </div>
                 </div>
 
-                <div className="text-center text-xs text-gray-600 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                  <span className="font-semibold text-red-700">
-                    {" "}
-                    Max 5MB per file.
-                  </span>{" "}
-                  Supported formats: JPEG, PNG, PDF
+                <div className="text-center p-4 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-2xl">
+                  <div className="flex items-center justify-center mb-2">
+                    <Lock className="h-5 w-5 text-yellow-600 mr-2" />
+                    <span className="font-semibold text-yellow-800">Security Notice</span>
+                  </div>
+                  <p className="text-sm text-yellow-700">
+                    <span className="font-semibold">Max 5MB per file.</span> Supported formats: JPEG, PNG, PDF. 
+                    All uploads are encrypted and securely stored.
+                  </p>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Reporter Information */}
-            <Card className="shadow-lg border border-gray-200 bg-white hover:shadow-xl transition-shadow duration-300">
-              <CardHeader className="pb-3 sm:pb-4">
-                <CardTitle className="flex items-center text-lg sm:text-xl font-semibold text-gray-900">
-                  <MessageCircleQuestion className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-600 mr-2 sm:mr-3" />
-                  Your Information
-                  {completedSteps.includes(4) && (
-                    <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
-                  )}
+            {/* Reporter Information - Enhanced */}
+            <Card className="glass-card shadow-2xl border-0 overflow-hidden fade-in-scale">
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-blue-500/5"></div>
+              <CardHeader className="pb-4 sm:pb-6 relative">
+                <CardTitle className="flex items-center text-xl sm:text-2xl font-bold text-gray-900">
+                  <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg">
+                    <MessageCircleQuestion className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <span className="bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
+                      Your Information
+                    </span>
+                    <p className="text-sm text-gray-600 font-normal mt-1">Your details are kept strictly confidential</p>
+                    {completedSteps.includes(4) && (
+                      <div className="flex items-center mt-2">
+                        <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                        <span className="text-green-600 text-sm font-medium">Information Completed</span>
+                      </div>
+                    )}
+                  </div>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-4 sm:p-5 md:p-6 space-y-3 sm:space-y-4">
-                {/* Confidential Notice - Moved to Top */}
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <div className="flex items-start space-x-3">
-                    <Shield className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+              <CardContent className="p-6 sm:p-8 space-y-6 relative">
+                {/* Confidential Notice */}
+                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <Shield className="h-6 w-6 text-white" />
+                    </div>
                     <div>
-                      <h4 className="font-semibold text-blue-900 text-sm">
-                        Confidentiality Notice
+                      <h4 className="font-bold text-blue-900 text-lg mb-2">
+                        🔒 Confidentiality Guarantee
                       </h4>
-                      <p className="text-blue-800 text-xs mt-1">
-                        Your personal information will be kept strictly
-                        confidential and used only for investigation purposes.
-                        We follow UAE data protection regulations.
+                      <p className="text-blue-800 text-sm leading-relaxed">
+                        Your personal information is protected with bank-level encryption and will be used only for investigation purposes. 
+                        We strictly follow UAE data protection regulations and international privacy standards.
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <Label
-                      htmlFor="reporterName"
-                      className="text-sm font-medium text-gray-700 mb-2 block"
-                    >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <Label htmlFor="reporterName" className="text-base font-semibold text-gray-700 flex items-center">
+                      <UserCheck className="h-5 w-5 mr-2 text-green-500" />
                       Full Name *
                     </Label>
                     <Input
                       id="reporterName"
                       type="text"
-                      placeholder="Enter your full name"
+                      placeholder="👤 Enter your full name"
                       value={reportData.reporterName}
                       onChange={(e) =>
                         setReportData((prev) => ({
@@ -1133,22 +1454,20 @@ export default function ComplaintForm() {
                           reporterName: e.target.value,
                         }))
                       }
-                      className="h-11 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                      className="h-14 text-base border-2 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                       required
                     />
                   </div>
 
-                  <div>
-                    <Label
-                      htmlFor="reporterEmail"
-                      className="text-sm font-medium text-gray-700 mb-2 block"
-                    >
+                  <div className="space-y-3">
+                    <Label htmlFor="reporterEmail" className="text-base font-semibold text-gray-700 flex items-center">
+                      <Mail className="h-5 w-5 mr-2 text-blue-500" />
                       Email Address *
                     </Label>
                     <Input
                       id="reporterEmail"
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder="📧 Enter your email address"
                       value={reportData.reporterEmail}
                       onChange={(e) =>
                         setReportData((prev) => ({
@@ -1156,23 +1475,21 @@ export default function ComplaintForm() {
                           reporterEmail: e.target.value,
                         }))
                       }
-                      className="h-11 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                      className="h-14 text-base border-2 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                       required
                     />
                   </div>
                 </div>
 
-                <div>
-                  <Label
-                    htmlFor="reporterPhone"
-                    className="text-sm font-medium text-gray-700 mb-2 block"
-                  >
+                <div className="space-y-3">
+                  <Label htmlFor="reporterPhone" className="text-base font-semibold text-gray-700 flex items-center">
+                    <Phone className="h-5 w-5 mr-2 text-purple-500" />
                     Phone Number (Optional)
                   </Label>
                   <Input
                     id="reporterPhone"
                     type="tel"
-                    placeholder="Enter your phone number (e.g., +971 50 123 4567)"
+                    placeholder="📱 Enter your phone number (e.g., +971 50 123 4567)"
                     value={reportData.reporterPhone}
                     onChange={(e) =>
                       setReportData((prev) => ({
@@ -1180,103 +1497,117 @@ export default function ComplaintForm() {
                         reporterPhone: e.target.value,
                       }))
                     }
-                    className="h-11 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="h-14 text-base border-2 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                   />
                 </div>
 
                 {/* Submit Button */}
-                <div className="flex justify-center pt-3 sm:pt-4 md:pt-6">
+                <div className="flex justify-center pt-6">
                   <Button
                     type="submit"
                     disabled={loading || !selectedCompany}
-                    className={`w-full sm:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base md:text-lg rounded-lg min-w-[180px] sm:min-w-[200px] shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl ${loading ? "animate-pulse" : ""} ${!selectedCompany ? "opacity-50 cursor-not-allowed" : ""}`}
+                    className={`w-full sm:w-auto bg-gradient-to-r from-red-600 via-red-700 to-red-800 hover:from-red-700 hover:via-red-800 hover:to-red-900 text-white px-8 sm:px-12 py-4 text-lg sm:text-xl font-bold rounded-2xl min-w-[280px] shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-3xl relative overflow-hidden ${
+                      loading ? "animate-pulse" : ""
+                    } ${!selectedCompany ? "opacity-50 cursor-not-allowed" : ""}`}
                   >
-                    {loading ? (
-                      <div className="flex items-center justify-center space-x-2">
-                        <Clock className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
-                        <span>Submitting...</span>
-                        <div className="flex space-x-1">
-                          <div className="w-1 h-1 bg-white rounded-full animate-bounce"></div>
-                          <div
-                            className="w-1 h-1 bg-white rounded-full animate-bounce"
-                            style={{ animationDelay: "0.1s" }}
-                          ></div>
-                          <div
-                            className="w-1 h-1 bg-white rounded-full animate-bounce"
-                            style={{ animationDelay: "0.2s" }}
-                          ></div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-center space-x-2">
-                        <Shield className="h-4 w-4 sm:h-5 sm:w-5" />
-                        <span>Submit Report</span>
-                        <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                      </div>
-                    )}
+                    {/* Button background animation */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                    
+                    <div className="relative flex items-center justify-center space-x-3">
+                      {loading ? (
+                        <>
+                          <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                          <span>Submitting Report...</span>
+                          <div className="flex space-x-1">
+                            <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
+                            <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
+                            <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <Shield className="h-6 w-6" />
+                          <span>Submit Report</span>
+                          <ArrowRight className="h-6 w-6 transition-transform duration-300 group-hover:translate-x-1" />
+                          <Sparkles className="h-5 w-5" />
+                        </>
+                      )}
+                    </div>
+                  </Button>
+                </div>
+
+                {/* Additional Actions */}
+                <div className="text-center pt-4">
+                  <Button
+                    type="button"
+                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                    variant="outline"
+                    className="w-full sm:w-auto border-2 border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 px-8 py-3 text-base font-semibold rounded-xl transition-all duration-300"
+                  >
+                    <ArrowRight className="h-5 w-5 mr-2 rotate-180" />
+                    Back to Top
                   </Button>
                 </div>
               </CardContent>
             </Card>
-
-            {/* Report Another Scam Button */}
-            <div className="text-center mt-6 pt-4">
-              <Button
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                variant="outline"
-                className="w-full sm:w-auto border-red-600 text-red-600 hover:bg-red-50 px-6 py-2.5 text-base rounded-lg"
-              >
-                <Shield className="h-4 w-4 mr-2" />
-                Report Another Scam
-              </Button>
-            </div>
           </form>
 
-          {/* Community Stats Section */}
-          <div className="mt-12 sm:mt-16 mb-8 sm:mb-12">
-            <div className="text-center mb-6 sm:mb-8 px-4">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
-                Community Protection Impact
+          {/* Community Impact Stats */}
+          <div className="mt-16 sm:mt-24 mb-12 sm:mb-16 fade-in-scale">
+            <div className="text-center mb-8 sm:mb-12 px-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6">
+                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  Community Protection Impact
+                </span>
               </h2>
-              <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-                Together we're building a safer business environment in Dubai
+              <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                Together we're building the safest business environment in the Middle East ���
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 px-4">
-              <div className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-md">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <Users className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 px-4">
+              <div className="glass-card p-6 sm:p-8 text-center rounded-3xl hover:scale-105 transition-all duration-300">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-xl">
+                  <Users className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
-                  2,840+
+                <h3 className="text-3xl sm:text-4xl font-bold text-white mb-2 sm:mb-3">
+                  2,847
                 </h3>
-                <p className="text-sm sm:text-base text-gray-600">
+                <p className="text-base sm:text-lg text-gray-300 font-medium">
                   Reports Submitted
                 </p>
-              </div>
-
-              <div className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-md">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <TrendingDown className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
-                  67%
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600">
-                  Reduction in Scams
+                <p className="text-sm text-gray-400 mt-2">
+                  This month: +127
                 </p>
               </div>
 
-              <div className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-md">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+              <div className="glass-card p-6 sm:p-8 text-center rounded-3xl hover:scale-105 transition-all duration-300">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-red-500 to-orange-600 rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-xl">
+                  <TrendingDown className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
+                <h3 className="text-3xl sm:text-4xl font-bold text-white mb-2 sm:mb-3">
+                  73%
+                </h3>
+                <p className="text-base sm:text-lg text-gray-300 font-medium">
+                  Reduction in Scams
+                </p>
+                <p className="text-sm text-gray-400 mt-2">
+                  Since last year
+                </p>
+              </div>
+
+              <div className="glass-card p-6 sm:p-8 text-center rounded-3xl hover:scale-105 transition-all duration-300">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-xl">
+                  <Clock className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
+                </div>
+                <h3 className="text-3xl sm:text-4xl font-bold text-white mb-2 sm:mb-3">
                   24/7
                 </h3>
-                <p className="text-sm sm:text-base text-gray-600">
+                <p className="text-base sm:text-lg text-gray-300 font-medium">
                   Community Support
+                </p>
+                <p className="text-sm text-gray-400 mt-2">
+                  Always here for you
                 </p>
               </div>
             </div>
@@ -1290,24 +1621,30 @@ export default function ComplaintForm() {
       {/* Footer */}
       <Footer />
 
-      {/* Add Company Popup */}
+      {/* Add Company Popup - Enhanced */}
       {showAddCompanyPopup && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 fade-in-scale">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden relative">
+            {/* Animated Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5"></div>
+            
             {/* Header */}
-            <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-4 sm:p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold">
-                    Add New Company
-                  </h2>
-                  <p className="text-green-100 text-sm mt-1">
-                    Help expand our business directory
-                  </p>
+            <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-6 sm:p-8 relative">
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Cpath d="M20 20c0 11.046-8.954 20-20 20v20h40V20H20z"/%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
+              
+              <div className="flex items-center justify-between relative">
+                <div className="flex items-center space-x-4">
+                  <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                    <Building2 className="h-8 w-8 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-bold">Add New Company</h2>
+                    <p className="text-green-100 text-base mt-1">Help expand our business directory 🚀</p>
+                  </div>
                 </div>
                 <button
                   onClick={() => setShowAddCompanyPopup(false)}
-                  className="text-white/80 hover:text-white p-1 rounded-full hover:bg-white/20 transition-colors"
+                  className="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/20 transition-all duration-300 transform hover:scale-110"
                 >
                   <X className="h-6 w-6" />
                 </button>
@@ -1315,244 +1652,186 @@ export default function ComplaintForm() {
             </div>
 
             {/* Content */}
-            <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
-              <form onSubmit={handleAddCompanySubmit} className="space-y-4">
+            <div className="p-6 sm:p-8 overflow-y-auto max-h-[calc(90vh-140px)] relative">
+              <form onSubmit={handleAddCompanySubmit} className="space-y-6">
                 {/* Company Name */}
-                <div>
-                  <Label
-                    htmlFor="companyName"
-                    className="text-sm font-medium text-gray-700 mb-2 block"
-                  >
+                <div className="space-y-3">
+                  <Label htmlFor="companyName" className="text-base font-semibold text-gray-700 flex items-center">
+                    <Building2 className="h-5 w-5 mr-2 text-green-500" />
                     Company Name *
                   </Label>
                   <Input
                     id="companyName"
                     type="text"
-                    placeholder="Enter company name"
+                    placeholder="🏢 Enter the full company name"
                     value={newCompanyData.name}
                     onChange={(e) =>
-                      setNewCompanyData((prev) => ({
-                        ...prev,
-                        name: e.target.value,
-                      }))
+                      setNewCompanyData((prev) => ({ ...prev, name: e.target.value }))
                     }
-                    className="w-full h-11 text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                    className="h-14 text-base border-2 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     required
                   />
                 </div>
 
                 {/* Address */}
-                <div>
-                  <Label
-                    htmlFor="companyAddress"
-                    className="text-sm font-medium text-gray-700 mb-2 block"
-                  >
+                <div className="space-y-3">
+                  <Label htmlFor="companyAddress" className="text-base font-semibold text-gray-700 flex items-center">
+                    <MapPin className="h-5 w-5 mr-2 text-blue-500" />
                     Address *
                   </Label>
                   <Textarea
                     id="companyAddress"
-                    placeholder="Enter full business address"
+                    placeholder="📍 Enter the complete business address including area, city, and country"
                     value={newCompanyData.address}
                     onChange={(e) =>
-                      setNewCompanyData((prev) => ({
-                        ...prev,
-                        address: e.target.value,
-                      }))
+                      setNewCompanyData((prev) => ({ ...prev, address: e.target.value }))
                     }
-                    className="w-full min-h-[80px] text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                    className="min-h-[100px] text-base border-2 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     required
                   />
                 </div>
 
                 {/* Phone and Email */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <Label
-                      htmlFor="companyPhone"
-                      className="text-sm font-medium text-gray-700 mb-2 block"
-                    >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <Label htmlFor="companyPhone" className="text-base font-semibold text-gray-700 flex items-center">
+                      <Phone className="h-5 w-5 mr-2 text-purple-500" />
                       Phone Number
                     </Label>
                     <Input
                       id="companyPhone"
                       type="tel"
-                      placeholder="+971 XX XXX XXXX"
+                      placeholder="📱 +971 XX XXX XXXX"
                       value={newCompanyData.phone}
                       onChange={(e) =>
-                        setNewCompanyData((prev) => ({
-                          ...prev,
-                          phone: e.target.value,
-                        }))
+                        setNewCompanyData((prev) => ({ ...prev, phone: e.target.value }))
                       }
-                      className="w-full h-11 text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                      className="h-14 text-base border-2 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     />
                   </div>
 
-                  <div>
-                    <Label
-                      htmlFor="companyEmail"
-                      className="text-sm font-medium text-gray-700 mb-2 block"
-                    >
+                  <div className="space-y-3">
+                    <Label htmlFor="companyEmail" className="text-base font-semibold text-gray-700 flex items-center">
+                      <Mail className="h-5 w-5 mr-2 text-orange-500" />
                       Email Address
                     </Label>
                     <Input
                       id="companyEmail"
                       type="email"
-                      placeholder="company@example.com"
+                      placeholder="📧 company@example.com"
                       value={newCompanyData.email}
                       onChange={(e) =>
-                        setNewCompanyData((prev) => ({
-                          ...prev,
-                          email: e.target.value,
-                        }))
+                        setNewCompanyData((prev) => ({ ...prev, email: e.target.value }))
                       }
-                      className="w-full h-11 text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                      className="h-14 text-base border-2 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     />
                   </div>
                 </div>
 
                 {/* Website and Category */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <Label
-                      htmlFor="companyWebsite"
-                      className="text-sm font-medium text-gray-700 mb-2 block"
-                    >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <Label htmlFor="companyWebsite" className="text-base font-semibold text-gray-700 flex items-center">
+                      <Globe className="h-5 w-5 mr-2 text-indigo-500" />
                       Website
                     </Label>
                     <Input
                       id="companyWebsite"
                       type="url"
-                      placeholder="https://example.com"
+                      placeholder="🌐 https://example.com"
                       value={newCompanyData.website}
                       onChange={(e) =>
-                        setNewCompanyData((prev) => ({
-                          ...prev,
-                          website: e.target.value,
-                        }))
+                        setNewCompanyData((prev) => ({ ...prev, website: e.target.value }))
                       }
-                      className="w-full h-11 text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                      className="h-14 text-base border-2 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     />
                   </div>
 
-                  <div>
-                    <Label
-                      htmlFor="companyCategory"
-                      className="text-sm font-medium text-gray-700 mb-2 block"
-                    >
+                  <div className="space-y-3">
+                    <Label htmlFor="companyCategory" className="text-base font-semibold text-gray-700 flex items-center">
+                      <Building className="h-5 w-5 mr-2 text-pink-500" />
                       Category *
                     </Label>
                     <select
                       id="companyCategory"
                       value={newCompanyData.category}
                       onChange={(e) =>
-                        setNewCompanyData((prev) => ({
-                          ...prev,
-                          category: e.target.value,
-                        }))
+                        setNewCompanyData((prev) => ({ ...prev, category: e.target.value }))
                       }
-                      className="w-full h-11 text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500 bg-white"
+                      className="w-full h-14 text-base border-2 rounded-xl focus:border-pink-500 focus:ring-2 focus:ring-pink-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                       required
                     >
-                      <option value="">Select category</option>
+                      <option value="">🏷️ Select a category</option>
                       <option value="Visa Services">Visa Services</option>
-                      <option value="Document Clearing">
-                        Document Clearing
-                      </option>
+                      <option value="Document Clearing">Document Clearing</option>
                       <option value="Business Setup">Business Setup</option>
                       <option value="PRO Services">PRO Services</option>
-                      <option value="Immigration Consultancy">
-                        Immigration Consultancy
-                      </option>
+                      <option value="Immigration Consultancy">Immigration Consultancy</option>
                       <option value="Legal Services">Legal Services</option>
-                      <option value="Business Consultancy">
-                        Business Consultancy
-                      </option>
-                      <option value="Trade License Services">
-                        Trade License Services
-                      </option>
-                      <option value="Corporate Services">
-                        Corporate Services
-                      </option>
-                      <option value="Government Relations">
-                        Government Relations
-                      </option>
+                      <option value="Business Consultancy">Business Consultancy</option>
+                      <option value="Trade License Services">Trade License Services</option>
+                      <option value="Corporate Services">Corporate Services</option>
+                      <option value="Government Relations">Government Relations</option>
                       <option value="Permit Services">Permit Services</option>
-                      <option value="Attestation Services">
-                        Attestation Services
-                      </option>
-                      <option value="Translation Services">
-                        Translation Services
-                      </option>
+                      <option value="Attestation Services">Attestation Services</option>
+                      <option value="Translation Services">Translation Services</option>
                       <option value="Typing Services">Typing Services</option>
-                      <option value="Business Services">
-                        Business Services
-                      </option>
-                      <option value="Administrative Services">
-                        Administrative Services
-                      </option>
-                      <option value="Professional Services">
-                        Professional Services
-                      </option>
+                      <option value="Business Services">Business Services</option>
+                      <option value="Administrative Services">Administrative Services</option>
+                      <option value="Professional Services">Professional Services</option>
                     </select>
                   </div>
                 </div>
 
                 {/* Description */}
-                <div>
-                  <Label
-                    htmlFor="companyDescription"
-                    className="text-sm font-medium text-gray-700 mb-2 block"
-                  >
+                <div className="space-y-3">
+                  <Label htmlFor="companyDescription" className="text-base font-semibold text-gray-700 flex items-center">
+                    <FileText className="h-5 w-5 mr-2 text-teal-500" />
                     Description (Optional)
                   </Label>
                   <Textarea
                     id="companyDescription"
-                    placeholder="Brief description of services offered..."
+                    placeholder="📝 Brief description of services offered, specializations, or any additional information..."
                     value={newCompanyData.description}
                     onChange={(e) =>
-                      setNewCompanyData((prev) => ({
-                        ...prev,
-                        description: e.target.value,
-                      }))
+                      setNewCompanyData((prev) => ({ ...prev, description: e.target.value }))
                     }
-                    className="w-full min-h-[80px] text-base border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                    className="min-h-[100px] text-base border-2 rounded-xl focus:border-teal-500 focus:ring-2 focus:ring-teal-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                   />
                 </div>
 
                 {/* Info Notice */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <div className="flex items-start space-x-3">
-                    <Shield className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <Shield className="h-6 w-6 text-white" />
+                    </div>
                     <div>
-                      <h4 className="font-semibold text-blue-900 text-sm">
-                        Review Process
-                      </h4>
-                      <p className="text-blue-800 text-xs mt-1">
-                        All company submissions are reviewed by our admin team
-                        to ensure accuracy and legitimacy before being added to
-                        the directory.
+                      <h4 className="font-bold text-blue-900 text-lg mb-2">Review Process</h4>
+                      <p className="text-blue-800 text-sm leading-relaxed">
+                        All company submissions undergo thorough verification by our admin team to ensure accuracy, 
+                        legitimacy, and compliance with UAE business regulations before being added to the directory.
                       </p>
                     </div>
                   </div>
                 </div>
 
                 {/* Submit Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                <div className="flex flex-col sm:flex-row gap-4 pt-6">
                   <Button
                     type="button"
                     variant="outline"
                     onClick={() => setShowAddCompanyPopup(false)}
-                    className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50"
+                    className="flex-1 border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 font-semibold py-3 rounded-xl transition-all duration-300"
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
-                    className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold"
+                    className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                   >
-                    <Building2 className="h-4 w-4 mr-2" />
-                    Submit Request
+                    <Building2 className="h-5 w-5 mr-2" />
+                    Submit Request ✨
                   </Button>
                 </div>
               </form>
