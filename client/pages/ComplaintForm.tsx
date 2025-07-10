@@ -792,8 +792,7 @@ export default function ComplaintForm() {
         <div className="max-w-6xl mx-auto px-4 py-8 sm:py-16 relative">
           <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-12">
             {/* Company Selection - Redesigned */}
-            <Card className="glass-card shadow-2xl border-0 overflow-hidden fade-in-scale">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5"></div>
+            <Card className="shadow-lg border border-gray-200 bg-white">
               <CardHeader className="pb-4 sm:pb-6 relative">
                 <CardTitle className="flex items-center text-xl sm:text-2xl font-bold text-gray-900">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg">
