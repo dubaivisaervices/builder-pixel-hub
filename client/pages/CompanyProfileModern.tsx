@@ -902,7 +902,7 @@ function CommunityReportsSection({
               </div>
 
               {/* Report Type Summary */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                 {Object.entries(
                   reports.reduce((acc: any, report) => {
                     acc[report.issueType] = (acc[report.issueType] || 0) + 1;
@@ -913,14 +913,14 @@ function CommunityReportsSection({
                   return (
                     <div
                       key={type}
-                      className="text-center p-3 bg-white rounded-lg border border-gray-200"
+                      className="text-center p-2 sm:p-3 bg-white rounded-lg border border-gray-200"
                     >
                       <div
                         className={`w-8 h-8 bg-gradient-to-r ${details.gradient} rounded-lg flex items-center justify-center mx-auto mb-2 text-white text-sm font-bold shadow-md`}
                       >
                         {count}
                       </div>
-                      <p className="text-xs font-medium text-gray-700">
+                      <p className="text-xs font-medium text-gray-700 break-words">
                         {details.label}
                       </p>
                     </div>
