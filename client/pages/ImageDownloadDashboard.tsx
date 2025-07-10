@@ -59,6 +59,9 @@ interface ImageStats {
   photosDownloaded: number;
   totalImages: number;
   cacheCoverage: number;
+  lastDownloadTime?: string;
+  businessesWithPhotos: number;
+  downloadedToday: number;
 }
 
 export default function ImageDownloadDashboard() {
@@ -107,34 +110,89 @@ export default function ImageDownloadDashboard() {
 
   const fetchApiStatus = async () => {
     try {
-      const response = await fetch("/api/admin/api-status");
+      const response = await fetch("/api/admin/api-status", {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache",
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Invalid response type - expected JSON");
+      }
+
       const data = await response.json();
       setApiStatus({
         connected: data.api?.enabled || false,
         totalCalls: data.costs?.apiCalls || 0,
         costToday: parseFloat(
-          data.costs?.estimatedSavings?.replace("$", "") || "0",
+          data.costs?.estimatedCost?.replace("$", "") || "0",
         ),
         lastActivity: data.api?.lastToggled || "",
       });
     } catch (error) {
       console.error("Failed to fetch API status:", error);
+      // Set default disconnected state on error
+      setApiStatus({
+        connected: false,
+        totalCalls: 0,
+        costToday: 0,
+        lastActivity: "",
+      });
     }
   };
 
   const fetchImageStats = async () => {
     try {
-      const response = await fetch("/api/admin/sync-status");
+      const response = await fetch("/api/admin/sync-status", {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
       const data = await response.json();
+
+      // Get additional image details
+      const logoStatsResponse = await fetch("/api/admin/logo-stats", {
+        cache: "no-store",
+      });
+      const logoStats = logoStatsResponse.ok
+        ? await logoStatsResponse.json()
+        : {};
+
       setImageStats({
         totalBusinesses: data.totalBusinesses || 0,
-        logosDownloaded: data.photos?.businessesWithPhotos || 0,
+        businessesWithPhotos: data.photos?.businessesWithPhotos || 0,
+        logosDownloaded: logoStats.logos?.downloaded || 0,
         photosDownloaded: data.photos?.savedLocally || 0,
         totalImages: data.photos?.total || 0,
         cacheCoverage: data.photos?.percentage || 0,
+        lastDownloadTime: logoStats.lastDownload || null,
+        downloadedToday: logoStats.downloadedToday || 0,
       });
     } catch (error) {
       console.error("Failed to fetch image stats:", error);
+      // Set default values on error
+      setImageStats({
+        totalBusinesses: 0,
+        businessesWithPhotos: 0,
+        logosDownloaded: 0,
+        photosDownloaded: 0,
+        totalImages: 0,
+        cacheCoverage: 0,
+        downloadedToday: 0,
+      });
     }
   };
 
@@ -422,8 +480,16 @@ export default function ImageDownloadDashboard() {
                   <p className="font-medium">Download Company Logos</p>
                   <p className="text-sm text-gray-600">
                     {imageStats.logosDownloaded} of {imageStats.totalBusinesses}{" "}
-                    businesses have logos
+                    logos cached
                   </p>
+                  {imageStats.lastDownloadTime && (
+                    <p className="text-xs text-gray-500">
+                      Last download:{" "}
+                      {new Date(
+                        imageStats.lastDownloadTime,
+                      ).toLocaleDateString()}
+                    </p>
+                  )}
                 </div>
                 <FileImage className="h-8 w-8 text-blue-500" />
               </div>
@@ -488,6 +554,14 @@ export default function ImageDownloadDashboard() {
                     {imageStats.photosDownloaded} of {imageStats.totalImages}{" "}
                     photos cached
                   </p>
+                  <p className="text-xs text-gray-500">
+                    {imageStats.businessesWithPhotos} businesses have photos
+                  </p>
+                  {imageStats.downloadedToday > 0 && (
+                    <p className="text-xs text-green-600">
+                      {imageStats.downloadedToday} downloaded today
+                    </p>
+                  )}
                 </div>
                 <Image className="h-8 w-8 text-green-500" />
               </div>
@@ -546,30 +620,45 @@ export default function ImageDownloadDashboard() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="text-center">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="text-center p-4 bg-blue-50 rounded-lg">
               <p className="text-2xl font-bold text-blue-600">
                 {imageStats.totalBusinesses}
               </p>
               <p className="text-sm text-gray-600">Total Businesses</p>
             </div>
-            <div className="text-center">
+            <div className="text-center p-4 bg-green-50 rounded-lg">
               <p className="text-2xl font-bold text-green-600">
                 {imageStats.logosDownloaded}
               </p>
               <p className="text-sm text-gray-600">Logos Downloaded</p>
+              <p className="text-xs text-gray-500">Cached Locally</p>
             </div>
-            <div className="text-center">
+            <div className="text-center p-4 bg-purple-50 rounded-lg">
               <p className="text-2xl font-bold text-purple-600">
                 {imageStats.photosDownloaded}
               </p>
               <p className="text-sm text-gray-600">Photos Cached</p>
+              <p className="text-xs text-gray-500">From Database</p>
             </div>
-            <div className="text-center">
+            <div className="text-center p-4 bg-orange-50 rounded-lg">
               <p className="text-2xl font-bold text-orange-600">
                 {imageStats.cacheCoverage}%
               </p>
               <p className="text-sm text-gray-600">Cache Coverage</p>
+              <p className="text-xs text-gray-500">No API Calls</p>
+            </div>
+            <div className="text-center p-4 bg-teal-50 rounded-lg">
+              <p className="text-2xl font-bold text-teal-600">
+                {imageStats.downloadedToday}
+              </p>
+              <p className="text-sm text-gray-600">Downloaded Today</p>
+              {imageStats.lastDownloadTime && (
+                <p className="text-xs text-gray-500">
+                  Last:{" "}
+                  {new Date(imageStats.lastDownloadTime).toLocaleDateString()}
+                </p>
+              )}
             </div>
           </div>
         </CardContent>
