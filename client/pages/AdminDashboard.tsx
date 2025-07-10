@@ -509,6 +509,13 @@ export default function AdminDashboard() {
           </div>
         )}
 
+        {/* Business Search Tab */}
+        {activeTab === "search" && (
+          <div>
+            <BusinessSearchManager />
+          </div>
+        )}
+
         {/* Data Sync Tab */}
         {activeTab === "sync" && (
           <div className="space-y-6">
