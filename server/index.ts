@@ -52,6 +52,11 @@ import {
   getDataPersistenceStatus,
   exportAllData,
 } from "./routes/data-persistence";
+import {
+  fetchAllDataFromGitHub,
+  getGitHubStatus,
+  fetchBusinessFromGitHub,
+} from "./routes/github-data-fetcher";
 import { getBusinessReviews } from "./routes/business-reviews-real";
 import {
   syncAllGoogleReviews,
