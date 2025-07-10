@@ -916,12 +916,19 @@ export default function ComplaintForm() {
                       Agreement / Contract Copy
                     </Label>
                     <div
-                      className="file-upload-area p-6 rounded-lg cursor-pointer text-center"
+                      className={`file-upload-area p-6 rounded-lg cursor-pointer text-center ${reportData.agreementCopy ? "uploaded" : ""} ${showFilePreview.agreement ? "animate-pulse" : ""}`}
                       onClick={() => triggerFileUpload("agreementCopy")}
+                      onMouseEnter={() => setShowTooltip("agreement")}
+                      onMouseLeave={() => setShowTooltip(null)}
                     >
                       {reportData.agreementCopy ? (
                         <div className="text-green-600">
-                          <FileText className="h-10 w-10 mx-auto mb-2" />
+                          <div className="relative">
+                            <FileText className="h-10 w-10 mx-auto mb-2" />
+                            {showFilePreview.agreement && (
+                              <div className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full animate-ping"></div>
+                            )}
+                          </div>
                           <p className="font-medium text-sm">
                             {reportData.agreementCopy.name}
                           </p>
@@ -933,14 +940,22 @@ export default function ComplaintForm() {
                             ).toFixed(2)}{" "}
                             MB
                           </p>
+                          <Badge className="mt-2 bg-green-100 text-green-800">
+                            ✓ Uploaded
+                          </Badge>
                         </div>
                       ) : (
                         <div className="text-gray-500">
-                          <Upload className="h-10 w-10 mx-auto mb-2" />
+                          <Upload className="h-10 w-10 mx-auto mb-2 transition-transform duration-300 hover:scale-110" />
                           <p className="font-medium text-sm">
                             Upload Agreement Copy
                           </p>
                           <p className="text-xs">PNG, JPG, PDF up to 5MB</p>
+                          {showTooltip === "agreement" && (
+                            <div className="mt-2 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                              Click to select file
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
