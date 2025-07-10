@@ -25,7 +25,6 @@ import {
   Wifi,
   WifiOff,
 } from "lucide-react";
-import Layout from "@/components/Layout";
 
 interface ApiStatus {
   connected: boolean;
@@ -292,7 +291,7 @@ export default function BusinessSearchManager() {
   };
 
   return (
-    <Layout>
+    <div className="container mx-auto px-4 py-6">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
@@ -655,6 +654,6 @@ export default function BusinessSearchManager() {
           </CardContent>
         </Card>
       </div>
-    </Layout>
+    </div>
   );
 }
