@@ -81,6 +81,16 @@ export default function ComplaintForm() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const [formProgress, setFormProgress] = useState(0);
+  const [showFilePreview, setShowFilePreview] = useState<{
+    receipt: boolean;
+    agreement: boolean;
+  }>({ receipt: false, agreement: false });
+  const [isTyping, setIsTyping] = useState(false);
+  const [showTooltip, setShowTooltip] = useState<string | null>(null);
+  const [animateCards, setAnimateCards] = useState(false);
 
   const fileInputRefs = {
     paymentReceipt: useRef<HTMLInputElement>(null),
