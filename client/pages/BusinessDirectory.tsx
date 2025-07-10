@@ -608,24 +608,26 @@ export default function BusinessDirectory() {
                       style={{ animationDelay: `${index * 0.05}s` }}
                     >
                       <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
-                        {business.logoUrl ? (
+                        <div className="relative w-full h-full">
+                          {business.logoUrl ? (
+                            <img
+                              src={business.logoUrl}
+                              alt=""
+                              className="w-full h-full object-cover rounded-lg"
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                                e.currentTarget.parentElement
+                                  ?.querySelector(".svg-fallback")
+                                  ?.classList.remove("hidden");
+                              }}
+                            />
+                          ) : null}
                           <img
-                            src={business.logoUrl}
-                            alt=""
-                            className="w-full h-full object-cover rounded-lg"
-                            onError={(e) => {
-                              e.currentTarget.style.display = "none";
-                              e.currentTarget.nextElementSibling?.classList.remove(
-                                "hidden",
-                              );
-                            }}
+                            src={generateSVGLogo(business.name, 40)}
+                            alt={business.name}
+                            className={`svg-fallback w-full h-full rounded-lg ${business.logoUrl ? "hidden" : ""}`}
                           />
-                        ) : null}
-                        <img
-                          src={generateSVGLogo(business.name, 40)}
-                          alt={business.name}
-                          className={`w-full h-full rounded-lg ${business.logoUrl ? "hidden" : ""}`}
-                        />
+                        </div>
                       </div>
 
                       <div className="flex-1 min-w-0">
