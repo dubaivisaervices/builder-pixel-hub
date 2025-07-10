@@ -894,7 +894,7 @@ export default function ComplaintForm() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-6 sm:mb-8">
                 <div>
                   <h3 className="text-lg font-semibold mb-4 flex items-center">
                     <Shield className="h-5 w-5 mr-2 text-blue-400" />
