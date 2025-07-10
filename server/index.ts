@@ -168,6 +168,7 @@ export function createServer() {
   app.post("/api/admin/api-disable", disableApi);
   app.post("/api/admin/api-reset-counters", resetCounters);
   app.get("/api/admin/api-cost-report", getCostReport);
+  app.get("/api/admin/check-logo-storage", checkLogoStorage);
 
   // Real Google reviews API (cache-first, no fake reviews)
   app.get("/api/business-reviews/:businessId", getBusinessReviews);
