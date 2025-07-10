@@ -6,23 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import GoogleReviewsWidget from "@/components/GoogleReviewsWidget";
 import {
   ArrowLeft,
@@ -47,10 +31,8 @@ import {
   Clock,
   Award,
   TrendingUp,
-  Send,
   ThumbsUp,
   ThumbsDown,
-  Flag,
   Heart,
   BookmarkPlus,
   MoreHorizontal,
@@ -529,17 +511,10 @@ export default function CompanyProfileModern() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("overview");
-  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
-  const [reportForm, setReportForm] = useState<ReportFormData>({
-    reportType: "scam",
-    description: "",
-    contactInfo: "",
-  });
+
   const [bookmarked, setBookmarked] = useState(false);
   const [liked, setLiked] = useState(false);
   const [shareMenuOpen, setShareMenuOpen] = useState(false);
-  const [imageGalleryOpen, setImageGalleryOpen] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     const loadBusiness = async () => {
