@@ -23,7 +23,10 @@ import {
   BarChart3,
   TrendingUp,
   Activity,
+  Search,
+  Plus,
 } from "lucide-react";
+import BusinessSearchManager from "./BusinessSearchManager";
 
 interface CompanyRequest {
   id: number;
