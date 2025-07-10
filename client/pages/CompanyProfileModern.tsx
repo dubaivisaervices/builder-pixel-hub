@@ -229,7 +229,6 @@ function WriteReviewSection({
       });
       setSelectedRating(0);
       setUploadedFiles([]);
-      setActiveTab("review");
 
       alert(
         "Thank you! Your review has been submitted and is pending admin approval.",
