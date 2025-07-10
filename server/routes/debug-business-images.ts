@@ -6,21 +6,21 @@ export const debugBusinessImages = async (req: Request, res: Response) => {
     const { businessId } = req.params;
 
     const business = await database.get(
-      `SELECT 
-        name, 
-        logo_url, 
+      `SELECT
+        name,
+        logo_url,
         logo_base64,
         photos_json,
         photos_local_json,
-        CASE 
+        CASE
           WHEN logo_base64 IS NOT NULL THEN LENGTH(logo_base64)
-          ELSE 0 
+          ELSE 0
         END as logo_base64_size,
-        CASE 
+        CASE
           WHEN photos_local_json IS NOT NULL THEN LENGTH(photos_local_json)
-          ELSE 0 
+          ELSE 0
         END as photos_local_size
-      FROM businesses 
+      FROM businesses
       WHERE id = ?`,
       [businessId],
     );
@@ -30,7 +30,7 @@ export const debugBusinessImages = async (req: Request, res: Response) => {
     }
 
     const result = {
-      name: business.name,
+      businessName: business.name,
       logo_status: {
         has_logo_url: !!business.logo_url,
         logo_url: business.logo_url,
