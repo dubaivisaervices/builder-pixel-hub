@@ -793,15 +793,11 @@ export default function ComplaintForm() {
           <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-12">
             {/* Company Selection - Redesigned */}
             <Card className="shadow-lg border border-gray-200 bg-white">
-              <CardHeader className="pb-4 sm:pb-6 relative">
-                <CardTitle className="flex items-center text-xl sm:text-2xl font-bold text-gray-900">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg">
-                    <Building2 className="h-6 w-6 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      Select Company to Report
-                    </span>
+
+              <CardHeader>
+                <CardTitle className="flex items-center text-lg font-semibold text-gray-900">
+                  <Building2 className="h-5 w-5 text-blue-600 mr-3" />
+                  Select Company to Report
                     {completedSteps.includes(1) && (
                       <div className="flex items-center mt-1">
                         <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
