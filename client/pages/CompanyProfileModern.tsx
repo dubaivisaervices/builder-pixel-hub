@@ -1407,10 +1407,10 @@ export default function CompanyProfileModern() {
                         />
                       ))}
                     </div>
-                    <span className="text-xl font-semibold text-white">
+                    <span className="text-lg md:text-xl font-semibold text-white">
                       {businessData.rating.toFixed(1)}
                     </span>
-                    <span className="text-white/80">
+                    <span className="text-white/80 text-sm md:text-base">
                       ({businessData.reviewCount} reviews)
                     </span>
                   </div>
