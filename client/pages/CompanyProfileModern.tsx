@@ -2239,12 +2239,14 @@ export default function CompanyProfileModern() {
           <div className="flex items-center justify-between">
             {/* Company Info */}
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-sm">
-                {businessData.name
-                  .split(" ")
-                  .map((word) => word[0])
-                  .join("")
-                  .substring(0, 2)}
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <span className="text-white font-bold text-sm uppercase">
+                  {businessData.name
+                    .split(" ")
+                    .map((word) => word[0])
+                    .join("")
+                    .substring(0, 2)}
+                </span>
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 text-sm truncate max-w-[200px]">
