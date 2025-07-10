@@ -247,14 +247,14 @@ export default function BusinessDirectory() {
         text: `Check out ${business.name} on Dubai Business Directory`,
         url:
           window.location.origin +
-          `/${business.address
+          `/modern-profile/${business.address
             .split(",")[0]
             ?.trim()
             .toLowerCase()
             .replace(
               /[^a-z0-9]/g,
               "-",
-            )}/review/${business.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`,
+            )}/${business.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`,
       });
     } else {
       // Fallback - copy to clipboard
