@@ -612,7 +612,7 @@ export default function ComplaintForm() {
         <div className="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
           {/* Header - Wider Professional Design */}
           <div className="bg-white border border-gray-200 rounded-xl shadow-sm mb-4 sm:mb-6 mx-0">
-            <div className="px-6 sm:px-8 py-4 sm:py-5 max-w-5xl mx-auto">
+            <div className="px-6 sm:px-8 py-4 sm:py-5 max-w-5xl mx-auto bg-red-50 text-gray-800">
               <div className="flex items-center justify-center mb-4">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-lg flex items-center justify-center shadow-lg">
                   <Shield className="h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9 text-white" />
