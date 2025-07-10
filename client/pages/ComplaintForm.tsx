@@ -716,23 +716,6 @@ export default function ComplaintForm() {
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <div className="bg-blue-600 text-white">
-          {/* Floating Icons */}
-          <div className="absolute top-10 left-10 opacity-20">
-            <Shield className="h-8 w-8 text-white float-animation" />
-          </div>
-          <div className="absolute top-20 right-20 opacity-20">
-            <Zap
-              className="h-6 w-6 text-white float-animation"
-              style={{ animationDelay: "1s" }}
-            />
-          </div>
-          <div className="absolute bottom-20 left-16 opacity-20">
-            <Target
-              className="h-7 w-7 text-white float-animation"
-              style={{ animationDelay: "2s" }}
-            />
-          </div>
-
           <div className="max-w-6xl mx-auto px-4 py-12 sm:py-20 relative">
             <div className="text-center slide-in-up">
               {/* Main Icon */}
