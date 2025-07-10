@@ -874,29 +874,30 @@ function CommunityReportsSection({
         ) : (
           <div className="space-y-6">
             {/* Reports Summary */}
-            <div className="bg-white/60 rounded-xl p-6 border border-orange-200">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h4 className="font-bold text-lg text-gray-900">
+            <div className="bg-white/60 rounded-xl p-3 sm:p-4 md:p-6 border border-orange-200">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4">
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-bold text-base sm:text-lg text-gray-900">
                     {reports.length} Community{" "}
                     {reports.length === 1 ? "Report" : "Reports"}
                   </h4>
                   <p
-                    className={`text-sm font-medium ${getReportSentiment().color}`}
+                    className={`text-xs sm:text-sm font-medium ${getReportSentiment().color}`}
                   >
                     {getReportSentiment().message}
                   </p>
                 </div>
 
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-red-600 border-red-300 hover:bg-red-50"
+                    className="text-red-600 border-red-300 hover:bg-red-50 text-xs sm:text-sm"
                     onClick={() => window.open("/complaint", "_blank")}
                   >
-                    <Flag className="h-4 w-4 mr-2" />
-                    Report Issue
+                    <Flag className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Report Issue</span>
+                    <span className="sm:hidden">Report</span>
                   </Button>
                 </div>
               </div>
