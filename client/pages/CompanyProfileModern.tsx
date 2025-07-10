@@ -89,41 +89,37 @@ interface ReviewData {
   authorName: string;
   authorEmail: string;
   date: string;
-  status: "pending" | "approved" | "rejected";
+  status: 'pending' | 'approved' | 'rejected';
   isOwnReview?: boolean;
 }
 
-function WriteReviewSection({
-  businessId,
-  businessName,
-}: WriteReviewSectionProps) {
+function WriteReviewSection({ businessId, businessName }: WriteReviewSectionProps) {
   const [hoveredStar, setHoveredStar] = useState(0);
   const [selectedRating, setSelectedRating] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [userReviews, setUserReviews] = useState<ReviewData[]>([]);
-  const [activeTab, setActiveTab] = useState("review");
+  const [activeTab, setActiveTab] = useState('review');
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [uploadError, setUploadError] = useState<string>("");
+  const [uploadError, setUploadError] = useState<string>('');
   const [reviewForm, setReviewForm] = useState({
-    title: "",
-    review: "",
-    authorName: "",
-    authorEmail: "",
-    rating: 0,
+    title: '',
+    review: '',
+    authorName: '',
+    authorEmail: '',
+    rating: 0
   });
 
   // Sample review data
   const sampleReview: ReviewData = {
-    id: "sample-1",
+    id: 'sample-1',
     rating: 5,
-    title: "Outstanding service and professional staff",
-    review:
-      "I had an excellent experience with Perfect Connection Document Clearing. Their team was extremely professional and handled my visa application with great efficiency. The process was smooth, and they kept me informed at every step. Highly recommended for anyone needing document clearing services in Dubai.",
-    authorName: "Ahmed Al-Rashid",
-    authorEmail: "ahmed@example.com",
-    date: "2024-01-15T10:30:00.000Z",
-    status: "approved",
-    isOwnReview: false,
+    title: 'Outstanding service and professional staff',
+    review: 'I had an excellent experience with Perfect Connection Document Clearing. Their team was extremely professional and handled my visa application with great efficiency. The process was smooth, and they kept me informed at every step. Highly recommended for anyone needing document clearing services in Dubai.',
+    authorName: 'Ahmed Al-Rashid',
+    authorEmail: 'ahmed@example.com',
+    date: '2024-01-15T10:30:00.000Z',
+    status: 'approved',
+    isOwnReview: false
   };
 
   // Simulate user reviews (in real app, fetch from API)
@@ -148,16 +144,16 @@ function WriteReviewSection({
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
-    setUploadError("");
+    setUploadError('');
 
     // Validate files
     const validFiles: File[] = [];
     let hasError = false;
 
-    files.forEach((file) => {
+    files.forEach(file => {
       // Check file type (images only)
-      if (!file.type.startsWith("image/")) {
-        setUploadError("Only image files are allowed");
+      if (!file.type.startsWith('image/')) {
+        setUploadError('Only image files are allowed');
         hasError = true;
         return;
       }
@@ -175,7 +171,7 @@ function WriteReviewSection({
     if (!hasError && uploadedFiles.length + validFiles.length <= 5) {
       setUploadedFiles([...uploadedFiles, ...validFiles]);
     } else if (uploadedFiles.length + validFiles.length > 5) {
-      setUploadError("Maximum 5 files allowed");
+      setUploadError('Maximum 5 files allowed');
     }
   };
 
@@ -185,13 +181,8 @@ function WriteReviewSection({
   };
 
   const handleSubmitReview = async () => {
-    if (
-      !reviewForm.title ||
-      !reviewForm.review ||
-      !reviewForm.authorName ||
-      selectedRating === 0
-    ) {
-      alert("Please fill in all required fields and select a rating");
+    if (!reviewForm.title || !reviewForm.review || !reviewForm.authorName || selectedRating === 0) {
+      alert('Please fill in all required fields and select a rating');
       return;
     }
 
@@ -199,7 +190,7 @@ function WriteReviewSection({
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
       const newReview: ReviewData = {
         id: Date.now().toString(),
@@ -209,51 +200,42 @@ function WriteReviewSection({
         authorName: reviewForm.authorName,
         authorEmail: reviewForm.authorEmail,
         date: new Date().toISOString(),
-        status: "pending",
-        isOwnReview: true,
+        status: 'pending',
+        isOwnReview: true
       };
 
       const updatedReviews = [...userReviews, newReview];
       setUserReviews(updatedReviews);
-      localStorage.setItem(
-        `reviews_${businessId}`,
-        JSON.stringify(updatedReviews.filter((r) => r.id !== "sample-1")),
-      );
+      localStorage.setItem(`reviews_${businessId}`, JSON.stringify(updatedReviews.filter(r => r.id !== 'sample-1')));
 
       // Reset form
       setReviewForm({
-        title: "",
-        review: "",
-        authorName: "",
-        authorEmail: "",
-        rating: 0,
+        title: '',
+        review: '',
+        authorName: '',
+        authorEmail: '',
+        rating: 0
       });
       setSelectedRating(0);
       setUploadedFiles([]);
-      setActiveTab("review");
+      setActiveTab('review');
 
-      alert(
-        "Thank you! Your review has been submitted and is pending admin approval.",
-      );
+      alert('Thank you! Your review has been submitted and is pending admin approval.');
     } catch (error) {
-      alert("Failed to submit review. Please try again.");
+      alert('Failed to submit review. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const renderStars = (
-    rating: number,
-    interactive = false,
-    size = "h-6 w-6",
-  ) => {
+  const renderStars = (rating: number, interactive = false, size = "h-6 w-6") => {
     return (
       <div className="flex items-center space-x-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
             className={`${size} cursor-pointer transition-all duration-200 ${
-              star <= (interactive ? hoveredStar || selectedRating : rating)
+              star <= (interactive ? (hoveredStar || selectedRating) : rating)
                 ? "text-yellow-400 fill-current"
                 : "text-gray-300"
             } ${interactive ? "hover:scale-110" : ""}`}
@@ -267,36 +249,20 @@ function WriteReviewSection({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
       {/* Header */}
-      <div className="text-center">
-        <div className="inline-flex p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg mb-6">
-          <Edit3 className="h-12 w-12 text-white" />
+      <div className="text-center px-4">
+        <div className="inline-flex p-3 md:p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg mb-4 md:mb-6">
+          <Edit3 className="h-8 w-8 md:h-12 md:w-12 text-white" />
         </div>
-        <h2 className="text-4xl font-bold text-gray-900 mb-4">
-          Share Your Experience
-        </h2>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4">Share Your Experience</h2>
+        <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto">
           Help others by sharing your honest review about {businessName}
         </p>
       </div>
 
-      {/* Write Review Button */}
-      {!showReviewForm && (
-        <div className="text-center">
-          <Button
-            onClick={() => setShowReviewForm(true)}
-            size="lg"
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-          >
-            <PenTool className="h-6 w-6 mr-3" />
-            Write a Review
-          </Button>
-        </div>
-      )}
-
-      {/* Review Form */}
-      {showReviewForm && (
+      {/* Review Form - Always Visible */}
+      <div className="px-4">
         <Card className="max-w-4xl mx-auto shadow-2xl border-0 bg-white/80 backdrop-blur-xl overflow-hidden">
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6">
             <div className="flex items-center justify-between text-white">
@@ -315,9 +281,7 @@ function WriteReviewSection({
           <CardContent className="p-8 space-y-6">
             {/* Rating Section */}
             <div className="text-center space-y-4">
-              <h4 className="text-xl font-semibold text-gray-900">
-                Rate Your Experience
-              </h4>
+              <h4 className="text-xl font-semibold text-gray-900">Rate Your Experience</h4>
               <div className="flex justify-center">
                 {renderStars(selectedRating, true, "h-10 w-10")}
               </div>
@@ -343,9 +307,7 @@ function WriteReviewSection({
                   type="text"
                   placeholder="Enter your full name"
                   value={reviewForm.authorName}
-                  onChange={(e) =>
-                    setReviewForm({ ...reviewForm, authorName: e.target.value })
-                  }
+                  onChange={(e) => setReviewForm({ ...reviewForm, authorName: e.target.value })}
                   className="rounded-xl border-2 focus:border-blue-500"
                 />
               </div>
@@ -358,12 +320,7 @@ function WriteReviewSection({
                   type="email"
                   placeholder="Enter your email"
                   value={reviewForm.authorEmail}
-                  onChange={(e) =>
-                    setReviewForm({
-                      ...reviewForm,
-                      authorEmail: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setReviewForm({ ...reviewForm, authorEmail: e.target.value })}
                   className="rounded-xl border-2 focus:border-blue-500"
                 />
               </div>
@@ -377,9 +334,7 @@ function WriteReviewSection({
                 type="text"
                 placeholder="Summarize your experience in a few words"
                 value={reviewForm.title}
-                onChange={(e) =>
-                  setReviewForm({ ...reviewForm, title: e.target.value })
-                }
+                onChange={(e) => setReviewForm({ ...reviewForm, title: e.target.value })}
                 className="rounded-xl border-2 focus:border-blue-500"
               />
             </div>
@@ -391,9 +346,7 @@ function WriteReviewSection({
               <textarea
                 placeholder="Share details about your experience, the quality of service, staff behavior, and any recommendations..."
                 value={reviewForm.review}
-                onChange={(e) =>
-                  setReviewForm({ ...reviewForm, review: e.target.value })
-                }
+                onChange={(e) => setReviewForm({ ...reviewForm, review: e.target.value })}
                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors min-h-[120px] resize-none"
                 rows={5}
               />
@@ -448,15 +401,10 @@ function WriteReviewSection({
       {/* User's Reviews */}
       {userReviews.length > 0 && (
         <div className="max-w-4xl mx-auto">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-            Your Reviews
-          </h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Your Reviews</h3>
           <div className="space-y-4">
             {userReviews.map((review) => (
-              <Card
-                key={review.id}
-                className="shadow-lg border-0 bg-white/90 backdrop-blur-sm"
-              >
+              <Card key={review.id} className="shadow-lg border-0 bg-white/90 backdrop-blur-sm">
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="space-y-2">
@@ -466,19 +414,17 @@ function WriteReviewSection({
                           {new Date(review.date).toLocaleDateString()}
                         </span>
                       </div>
-                      <h4 className="text-lg font-semibold text-gray-900">
-                        {review.title}
-                      </h4>
+                      <h4 className="text-lg font-semibold text-gray-900">{review.title}</h4>
                     </div>
 
                     <div className="flex items-center space-x-2">
-                      {review.status === "pending" && (
+                      {review.status === 'pending' && (
                         <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
                           <Clock3 className="h-3 w-3 mr-1" />
                           Pending Approval
                         </Badge>
                       )}
-                      {review.status === "approved" && (
+                      {review.status === 'approved' && (
                         <Badge className="bg-green-100 text-green-800 border-green-200">
                           <CheckCircle2 className="h-3 w-3 mr-1" />
                           Approved
@@ -487,16 +433,14 @@ function WriteReviewSection({
                     </div>
                   </div>
 
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    {review.review}
-                  </p>
+                  <p className="text-gray-700 leading-relaxed mb-4">{review.review}</p>
 
                   <div className="flex items-center justify-between text-sm text-gray-500">
                     <span className="flex items-center">
                       <UserCheck2 className="h-4 w-4 mr-1" />
                       {review.authorName}
                     </span>
-                    {review.status === "pending" && (
+                    {review.status === 'pending' && (
                       <span className="text-yellow-600 font-medium">
                         Review will be visible to others after approval
                       </span>
@@ -518,32 +462,22 @@ function WriteReviewSection({
                 <div className="bg-blue-500 p-4 rounded-2xl inline-flex mb-4">
                   <Star className="h-8 w-8 text-white fill-current" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">
-                  Rate & Review
-                </h4>
-                <p className="text-sm text-gray-600">
-                  Share your honest experience
-                </p>
+                <h4 className="font-semibold text-gray-900 mb-2">Rate & Review</h4>
+                <p className="text-sm text-gray-600">Share your honest experience</p>
               </div>
               <div className="text-center">
                 <div className="bg-purple-500 p-4 rounded-2xl inline-flex mb-4">
                   <Users className="h-8 w-8 text-white" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">
-                  Help Others
-                </h4>
+                <h4 className="font-semibold text-gray-900 mb-2">Help Others</h4>
                 <p className="text-sm text-gray-600">Guide future customers</p>
               </div>
               <div className="text-center">
                 <div className="bg-green-500 p-4 rounded-2xl inline-flex mb-4">
                   <Shield className="h-8 w-8 text-white" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">
-                  Build Trust
-                </h4>
-                <p className="text-sm text-gray-600">
-                  Create a reliable community
-                </p>
+                <h4 className="font-semibold text-gray-900 mb-2">Build Trust</h4>
+                <p className="text-sm text-gray-600">Create a reliable community</p>
               </div>
             </div>
           </div>
