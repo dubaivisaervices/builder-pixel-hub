@@ -90,6 +90,16 @@ export default function ComplaintForm() {
     agreement: false,
   });
   const [showTooltip, setShowTooltip] = useState<string | null>(null);
+  const [showAddCompanyPopup, setShowAddCompanyPopup] = useState(false);
+  const [newCompanyData, setNewCompanyData] = useState({
+    name: "",
+    address: "",
+    phone: "",
+    email: "",
+    website: "",
+    category: "",
+    description: "",
+  });
 
   const fileInputRefs = {
     paymentReceipt: useRef<HTMLInputElement>(null),
