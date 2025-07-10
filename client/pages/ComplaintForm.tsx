@@ -538,23 +538,7 @@ export default function ComplaintForm() {
           const category =
             categories[(nameIndex + varIndex) % categories.length];
 
-          const newName =
-            Math.random() > 0.5
-              ? `${prefix} ${baseName} ${variation}`
-              : `${baseName} ${variation}`;
 
-          mockBusinesses.push({
-            id: `biz${String(mockBusinesses.length + 1).padStart(3, "0")}`,
-            name: newName,
-            address: `${location}, UAE`,
-            category: category,
-            rating: parseFloat((3.5 + Math.random() * 1.5).toFixed(1)),
-            reviewCount: Math.floor(Math.random() * 300) + 50,
-          });
-        });
-      });
-    }
-  };
 
   const handleCompanySearch = (value: string) => {
     setSearchTerm(value);
