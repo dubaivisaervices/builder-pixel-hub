@@ -1566,7 +1566,7 @@ export default function CompanyProfileModern() {
                       <span>About This Business</span>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="p-4 sm:p-6">
                     <p className="text-gray-700 leading-relaxed mb-4">
                       {businessData.description ||
                         "Professional services provider specializing in comprehensive solutions for all your business needs."}
