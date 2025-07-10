@@ -199,6 +199,17 @@ export default function ImageDownloadDashboard() {
     }
   };
 
+  const refreshAllData = async () => {
+    setIsRefreshing(true);
+    try {
+      await Promise.all([fetchApiStatus(), fetchImageStats()]);
+    } catch (error) {
+      console.error("Failed to refresh data:", error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   const connectApi = async () => {
     try {
       const response = await fetch("/api/admin/api-enable", {
