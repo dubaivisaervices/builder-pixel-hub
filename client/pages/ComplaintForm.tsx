@@ -496,67 +496,78 @@ export default function ComplaintForm() {
 
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Header */}
-          <div className="text-center mb-6 sm:mb-8">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg hover-lift">
-              <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-            </div>
-            <h1 className="text-xl sm:text-2xl md:text-4xl font-bold gradient-text mb-3 sm:mb-4 px-2">
-              Report Scam Immigration Company
-            </h1>
-            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed px-4 mb-6">
-              Help protect our community by reporting fraudulent immigration
-              companies, visa scams, and unethical business practices.
-            </p>
-
-            {/* Progress Bar */}
-            <div className="max-w-2xl mx-auto mb-4">
-              <div className="flex justify-between items-center mb-2 px-4">
-                <span className="text-sm font-medium text-gray-600">
-                  Form Progress
-                </span>
-                <span className="text-sm font-medium text-blue-600">
-                  {Math.round(formProgress)}%
-                </span>
+          {/* Header - Compact Professional Design */}
+          <div className="bg-white border border-gray-200 rounded-xl shadow-sm mb-4 sm:mb-6 mx-2 sm:mx-0">
+            <div className="px-4 sm:px-6 py-4 sm:py-5">
+              <div className="flex items-center justify-center mb-3">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-red-500 to-red-700 rounded-lg flex items-center justify-center shadow-md">
+                  <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                </div>
+                <div className="ml-3 sm:ml-4 text-left">
+                  <h1 className="text-lg sm:text-xl font-bold text-gray-900">
+                    Report Scam Company
+                  </h1>
+                  <p className="text-sm text-gray-600 mt-0.5">
+                    Protect our community together
+                  </p>
+                </div>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2 px-4">
+
+              {/* Important Notice */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                <div className="flex items-start space-x-2">
+                  <AlertTriangle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div className="text-xs sm:text-sm text-blue-800">
+                    <p className="font-medium mb-1">Important Guidelines:</p>
+                    <ul className="space-y-1 text-xs">
+                      <li>• File uploads limited to 5MB maximum size</li>
+                      <li>
+                        • All submissions reviewed by admin before publication
+                      </li>
+                      <li>
+                        • Your identity remains confidential during review
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Compact Progress Bar */}
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs font-medium text-gray-600">
+                    Progress
+                  </span>
+                  <span className="text-xs font-bold text-blue-600">
+                    {Math.round(formProgress)}%
+                  </span>
+                </div>
+                <div className="flex space-x-1">
+                  {[1, 2, 3, 4].map((step) => (
+                    <div
+                      key={step}
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold step-indicator ${
+                        completedSteps.includes(step)
+                          ? "completed text-white"
+                          : "bg-gray-200 text-gray-500"
+                      }`}
+                    >
+                      {completedSteps.includes(step) ? (
+                        <CheckCircle className="h-3 w-3" />
+                      ) : (
+                        step
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="w-full bg-gray-200 rounded-full h-1.5">
                 <div
-                  className="progress-bar h-2 rounded-full"
+                  className="progress-bar h-1.5 rounded-full transition-all duration-500"
                   style={{ width: `${formProgress}%` }}
                 ></div>
               </div>
-            </div>
-
-            {/* Step Indicators */}
-            <div className="flex justify-center space-x-4 mt-6">
-              {[1, 2, 3, 4].map((step) => (
-                <div key={step} className="flex flex-col items-center">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold step-indicator ${
-                      completedSteps.includes(step)
-                        ? "completed text-white"
-                        : currentStep === step
-                          ? "active text-white"
-                          : "bg-gray-300 text-gray-600"
-                    }`}
-                  >
-                    {completedSteps.includes(step) ? (
-                      <CheckCircle className="h-4 w-4" />
-                    ) : (
-                      step
-                    )}
-                  </div>
-                  <span className="text-xs text-gray-500 mt-1">
-                    {step === 1
-                      ? "Company"
-                      : step === 2
-                        ? "Details"
-                        : step === 3
-                          ? "Evidence"
-                          : "Info"}
-                  </span>
-                </div>
-              ))}
             </div>
           </div>
 
