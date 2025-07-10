@@ -835,11 +835,16 @@ export default function ComplaintForm() {
             </Card>
 
             {/* File Upload Section */}
-            <Card className="shadow-lg border border-gray-200 bg-white">
-              <CardHeader className="bg-gray-50 border-b border-gray-200">
+            <Card
+              className={`shadow-lg border border-gray-200 bg-white hover-lift glassmorphism ${animateCards ? "card-animate" : ""}`}
+            >
+              <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-200">
                 <CardTitle className="flex items-center space-x-2 text-lg font-semibold text-gray-900">
                   <Upload className="h-5 w-5 text-purple-600" />
                   <span>Step 3: Upload Evidence (Optional)</span>
+                  {(reportData.paymentReceipt || reportData.agreementCopy) && (
+                    <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
+                  )}
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
