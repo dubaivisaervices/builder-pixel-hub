@@ -303,8 +303,7 @@ export default function ComplaintForm() {
     }
   };
 
-    // Generate comprehensive mock data with 840+ businesses
-    const businessNames = [
+  const handleCompanySearch = (value: string) => {
       "Perfect Connection Document Clearing",
       "Emirates Visa Services",
       "Dubai Immigration Consultants",
