@@ -148,7 +148,11 @@ export default function ComplaintForm() {
         reportData.dateOfIncident
       )
         newCompletedSteps.push(2);
-      if (reportData.reporterName && reportData.reporterEmail)
+      if (
+        reportData.reporterName &&
+        reportData.reporterEmail &&
+        reportData.reporterPhone
+      )
         newCompletedSteps.push(4);
       setCompletedSteps(newCompletedSteps);
     };
