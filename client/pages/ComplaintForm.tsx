@@ -837,6 +837,7 @@ export default function ComplaintForm() {
                       placeholder="Search by company name, location, or category..."
                       value={searchTerm}
                       onChange={(e) => handleCompanySearch(e.target.value)}
+                      onFocus={handleSearchFocus}
                       className={`h-11 sm:h-12 pl-10 pr-4 text-sm sm:text-base border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white transition-all duration-300 shadow-sm hover:border-gray-400 ${isTyping ? "border-blue-400 ring-1 ring-blue-200" : ""}`}
                       required
                     />
@@ -1198,7 +1199,7 @@ export default function ComplaintForm() {
                             Upload Payment Receipt
                           </p>
                           <p className="text-xs text-red-600 font-medium">
-                            ⚠��� Max 5MB • PNG, JPG, PDF only
+                            ⚠️ Max 5MB • PNG, JPG, PDF only
                           </p>
                           {showTooltip === "receipt" && (
                             <div className="mt-2 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">
