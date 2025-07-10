@@ -1572,44 +1572,48 @@ export default function ComplaintForm() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 px-4">
-              <div className="glass-card p-6 sm:p-8 text-center rounded-3xl hover:scale-105 transition-all duration-300">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-xl">
-                  <Users className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 px-4">
+              <div className="bg-white p-4 sm:p-6 text-center rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg">
+                  <Users className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <h3 className="text-3xl sm:text-4xl font-bold text-white mb-2 sm:mb-3">
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
                   2,847
                 </h3>
-                <p className="text-base sm:text-lg text-gray-300 font-medium">
+                <p className="text-sm sm:text-base text-gray-600 font-medium">
                   Reports Submitted
                 </p>
-                <p className="text-sm text-gray-400 mt-2">This month: +127</p>
+                <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                  This month: +127
+                </p>
               </div>
 
-              <div className="glass-card p-6 sm:p-8 text-center rounded-3xl hover:scale-105 transition-all duration-300">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-red-500 to-orange-600 rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-xl">
-                  <TrendingDown className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
+              <div className="bg-white p-4 sm:p-6 text-center rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg">
+                  <TrendingDown className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <h3 className="text-3xl sm:text-4xl font-bold text-white mb-2 sm:mb-3">
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
                   73%
                 </h3>
-                <p className="text-base sm:text-lg text-gray-300 font-medium">
+                <p className="text-sm sm:text-base text-gray-600 font-medium">
                   Reduction in Scams
                 </p>
-                <p className="text-sm text-gray-400 mt-2">Since last year</p>
+                <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                  Since last year
+                </p>
               </div>
 
-              <div className="glass-card p-6 sm:p-8 text-center rounded-3xl hover:scale-105 transition-all duration-300">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-xl">
-                  <Clock className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
+              <div className="bg-white p-4 sm:p-6 text-center rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg">
+                  <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <h3 className="text-3xl sm:text-4xl font-bold text-white mb-2 sm:mb-3">
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
                   24/7
                 </h3>
-                <p className="text-base sm:text-lg text-gray-300 font-medium">
+                <p className="text-sm sm:text-base text-gray-600 font-medium">
                   Community Support
                 </p>
-                <p className="text-sm text-gray-400 mt-2">
+                <p className="text-xs sm:text-sm text-gray-500 mt-1">
                   Always here for you
                 </p>
               </div>
