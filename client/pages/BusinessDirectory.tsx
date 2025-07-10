@@ -571,7 +571,7 @@ export default function BusinessDirectory() {
         ></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 -mt-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 -mt-4 relative z-10">
         {/* Search & Filter Section */}
         <Card className="shadow-xl border-0 bg-white/95 backdrop-blur-xl mb-6">
           <CardContent className="p-4 sm:p-6">
