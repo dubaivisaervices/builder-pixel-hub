@@ -60,6 +60,7 @@ interface ReportData {
   description: string;
   reporterName: string;
   reporterEmail: string;
+  reporterPhone: string;
   amountLost?: number;
   dateOfIncident: string;
   evidenceDescription: string;
