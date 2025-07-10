@@ -457,35 +457,37 @@ export default function BusinessDirectory() {
             </div>
 
             {/* Stats Row */}
-            <div className="grid grid-cols-3 gap-3 mb-4 pt-3 border-t border-gray-100">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-3 sm:mb-4 pt-2 sm:pt-3 border-t border-gray-100">
               <div className="text-center">
-                <div className="text-lg font-bold text-gray-900">
+                <div className="text-sm sm:text-lg font-bold text-gray-900">
                   {business.rating}
                 </div>
                 <div className="text-xs text-gray-500">Rating</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-bold text-gray-900">
+                <div className="text-sm sm:text-lg font-bold text-gray-900">
                   {business.reviewCount}
                 </div>
                 <div className="text-xs text-gray-500">Reviews</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-bold text-gray-900">4.2k</div>
+                <div className="text-sm sm:text-lg font-bold text-gray-900">
+                  4.2k
+                </div>
                 <div className="text-xs text-gray-500">Views</div>
               </div>
             </div>
 
             {/* Action Button */}
             <Button
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg transition-all duration-300 group-hover:scale-105"
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg transition-all duration-300 h-9 sm:h-10 text-sm sm:text-base group-hover:scale-105"
               onClick={(e) => {
                 e.stopPropagation();
                 navigateToDetails(business);
               }}
             >
               <span>View Details</span>
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
         </CardContent>
