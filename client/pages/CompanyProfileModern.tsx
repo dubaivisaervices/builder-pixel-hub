@@ -1348,11 +1348,11 @@ export default function CompanyProfileModern() {
             </span>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 items-center">
+          <div className="grid md:grid-cols-3 gap-4 md:gap-8 items-center">
             {/* Company Info */}
-            <div className="md:col-span-2 space-y-4">
-              <div className="flex items-start space-x-4">
-                <div className="w-20 h-20 bg-white rounded-2xl p-3 shadow-lg flex-shrink-0">
+            <div className="md:col-span-2 space-y-3 md:space-y-4">
+              <div className="flex items-start space-x-3 md:space-x-4">
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-xl md:rounded-2xl p-2 md:p-3 shadow-lg flex-shrink-0">
                   {businessData.logoUrl ? (
                     <img
                       src={businessData.logoUrl}
