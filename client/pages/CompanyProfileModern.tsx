@@ -154,7 +154,7 @@ function CommunityReportsSection({
     switch (issueType) {
       case "poor_service":
         return {
-          icon: "⚠️",
+          icon: "��️",
           label: "Poor Service",
           gradient: "from-red-400 to-pink-500",
         };
