@@ -1009,9 +1009,7 @@ export default function ComplaintForm() {
             </Card>
 
             {/* File Upload Section */}
-            <Card
-              className={`shadow-lg border border-gray-200 bg-white hover-lift glassmorphism ${animateCards ? "card-animate" : ""}`}
-            >
+            <Card className="shadow-lg border border-gray-200 bg-white hover:shadow-xl transition-shadow duration-300">
               <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-200">
                 <CardTitle className="flex items-center space-x-2 text-lg font-semibold text-gray-900">
                   <Upload className="h-5 w-5 text-purple-600" />
