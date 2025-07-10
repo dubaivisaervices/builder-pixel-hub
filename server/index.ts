@@ -160,9 +160,9 @@ export function createServer() {
 
   // Simplified endpoints - complex API control removed for stability
 
-  // In development, don't serve static files - let Vite handle them
-  // SPA fallback only for non-API routes
-  app.get(/^(?!\/api).*/, (_req, res) => {
+  // Only serve index.html for routes that don't exist as files
+  // Let Vite handle all module requests (client/*, @*, etc.)
+  app.get(/^(?!\/api|\/client|\/node_modules|\/@|\/src).*/, (_req, res) => {
     res.sendFile("index.html", { root: "." });
   });
 
