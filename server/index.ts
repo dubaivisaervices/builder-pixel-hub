@@ -64,6 +64,14 @@ import {
   resetCounters,
   getCostReport,
 } from "./routes/api-control-simple";
+import {
+  searchBusinesses,
+  addBusinessComplete,
+  downloadBusinessReviews,
+  downloadBusinessMedia,
+  addCategoryBusinesses,
+  githubPull,
+} from "./routes/business-search-manager";
 // Temporarily disabled due to space constraints
 // import {
 //   downloadOptimizedPhotos,
