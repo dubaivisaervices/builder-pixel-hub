@@ -160,12 +160,12 @@ export function createServer() {
 
   // Simplified endpoints - complex API control removed for stability
 
-  // Serve static files
-  app.use(express.static("dist/spa"));
+  // Serve static files - development mode serves from root
+  app.use(express.static("."));
 
   // SPA fallback - serve index.html for all unmatched routes
   app.get("*", (_req, res) => {
-    res.sendFile("index.html", { root: "dist/spa" });
+    res.sendFile("index.html", { root: "." });
   });
 
   return app;
