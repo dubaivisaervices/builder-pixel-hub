@@ -119,7 +119,6 @@ export default function ComplaintForm() {
 
   useEffect(() => {
     fetchBusinesses();
-    setAnimateCards(true);
   }, []);
 
   // Track form progress
