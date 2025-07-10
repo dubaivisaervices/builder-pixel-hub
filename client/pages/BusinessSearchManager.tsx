@@ -165,14 +165,21 @@ export default function BusinessSearchManager() {
         `/api/admin/search-businesses?${params.toString()}`,
       );
 
+      const data = await response.json();
+
       if (response.ok) {
-        const data = await response.json();
         setSearchResults(data.results || []);
       } else {
-        console.error("Search failed:", response.statusText);
+        console.error("Search failed:", data.details || response.statusText);
+
+        // Show user-friendly error
+        alert(
+          `Search failed: ${data.details || "Unknown error"}\n\nSolution: ${data.solution || "Please check your API configuration"}`,
+        );
       }
     } catch (error) {
       console.error("Search error:", error);
+      alert("Search failed: Network error. Please try again.");
     } finally {
       setIsSearching(false);
     }
