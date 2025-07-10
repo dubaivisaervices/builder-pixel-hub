@@ -70,6 +70,8 @@ import {
   CheckCircle2,
   Clock3,
   UserCheck2,
+  X,
+  Info,
 } from "lucide-react";
 
 // Write Review Component
