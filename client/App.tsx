@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ComplaintForm from "./pages/ComplaintForm";
 import CompanyReviews from "./pages/CompanyReviewsWorking";
+import CompanyProfileModern from "./pages/CompanyProfileModern";
 import BusinessDirectory from "./pages/BusinessDirectory";
 import BusinessListing from "./pages/BusinessListing";
 import HelpCenter from "./pages/HelpCenter";
@@ -48,6 +49,10 @@ const App = () => (
           <Route
             path="/:location/review/:companyName"
             element={<CompanyReviews />}
+          />
+          <Route
+            path="/modern-profile/:location/:companyName"
+            element={<CompanyProfileModern />}
           />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

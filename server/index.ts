@@ -39,7 +39,31 @@ import {
   syncAllReviews,
   checkSyncStatus,
 } from "./routes/photo-sync";
+<<<<<<< HEAD
 // Removed complex photo and API control routes to restore simpler state
+=======
+import {
+  getBusinessPhotos,
+  refreshBusinessPhotos,
+  getPhotoStatusBatch,
+} from "./routes/business-photos";
+import {
+  getApiStatus,
+  enableApi,
+  disableApi,
+  resetCounters,
+  getCostReport,
+  testApiConnection,
+} from "./routes/api-control";
+import {
+  checkCompanyExists,
+  submitNewCompany,
+  submitReport,
+  getCompanyReports,
+  voteOnReport,
+  getReportsStats,
+} from "./routes/company-reports";
+>>>>>>> origin/main
 import { fixBusinessEmailsAndWebsites } from "./routes/fix-business-data";
 import {
   addCompanyRequest,
@@ -119,6 +143,14 @@ export function createServer() {
   app.get("/api/admin/sync-status", checkSyncStatus);
 
   // Simplified endpoints - complex API control removed for stability
+
+  // Company Reports System
+  app.post("/api/companies/check", checkCompanyExists);
+  app.post("/api/companies/submit", submitNewCompany);
+  app.post("/api/reports/submit", submitReport);
+  app.get("/api/reports/company/:companyId", getCompanyReports);
+  app.post("/api/reports/:reportId/vote", voteOnReport);
+  app.get("/api/admin/reports/stats", getReportsStats);
 
   // Fix business data
   app.post("/api/admin/fix-business-data", fixBusinessEmailsAndWebsites);
