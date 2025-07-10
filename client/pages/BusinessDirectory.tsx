@@ -530,6 +530,19 @@ export default function BusinessDirectory() {
         ></div>
       </div>
 
+      {/* Back Button */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-gray-600 border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 text-sm sm:text-base"
+        >
+          <ArrowRight className="h-4 w-4 rotate-180" />
+          Back
+        </Button>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 -mt-4 relative z-10">
         {/* Search & Filter Section */}
         <Card className="shadow-2xl border-0 bg-gradient-to-r from-white via-blue-50/50 to-white backdrop-blur-xl mb-6 ring-1 ring-blue-100">
