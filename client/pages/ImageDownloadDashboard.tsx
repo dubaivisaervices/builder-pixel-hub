@@ -34,6 +34,7 @@ import {
   FileImage,
   Zap,
   Shield,
+  Database,
 } from "lucide-react";
 
 interface ApiStatus {
@@ -460,6 +461,28 @@ export default function ImageDownloadDashboard() {
               )}
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Cache Status Overview */}
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Database className="h-5 w-5 mr-2" />
+            Image Cache Status
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CacheStatusIndicator
+            totalImages={imageStats.totalImages}
+            cachedImages={
+              imageStats.photosDownloaded + imageStats.logosDownloaded
+            }
+            apiCallsNeeded={
+              imageStats.totalImages - imageStats.photosDownloaded
+            }
+            moneySaved={`$${((imageStats.photosDownloaded + imageStats.logosDownloaded) * 0.017).toFixed(2)}`}
+          />
         </CardContent>
       </Card>
 
