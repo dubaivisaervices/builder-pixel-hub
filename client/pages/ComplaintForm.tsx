@@ -554,12 +554,6 @@ export default function ComplaintForm() {
         });
       });
     }
-
-    // Simulate API loading delay
-    await new Promise((resolve) => setTimeout(resolve, 300));
-
-    console.log("✅ Successfully loaded", mockBusinesses.length, "businesses");
-    setBusinesses(mockBusinesses);
   };
 
   const handleCompanySearch = (value: string) => {
