@@ -597,10 +597,10 @@ export default function BusinessDirectory() {
               )}
             </div>
 
-            {/* Filters & View Toggle */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            {/* Filters & View Toggle - Hidden on Mobile */}
+            <div className="hidden sm:flex sm:flex-row sm:items-center sm:justify-between gap-4">
               {/* Category Filter */}
-              <div className="flex items-center space-x-2 overflow-x-auto pb-2 sm:pb-0">
+              <div className="flex items-center space-x-2 overflow-x-auto">
                 <Filter className="h-5 w-5 text-gray-500 flex-shrink-0" />
                 <div className="flex space-x-2">
                   {categories.slice(0, 6).map((category) => (
@@ -645,6 +645,22 @@ export default function BusinessDirectory() {
                   </Button>
                 </div>
               </div>
+            </div>
+
+            {/* Mobile Category Filter - Simplified */}
+            <div className="sm:hidden">
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="w-full p-3 border border-gray-200 rounded-lg bg-white text-sm"
+              >
+                <option value="all">All Categories</option>
+                {categories.slice(1).map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
             </div>
           </CardContent>
         </Card>
