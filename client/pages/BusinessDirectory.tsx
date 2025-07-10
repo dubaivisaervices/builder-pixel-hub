@@ -395,10 +395,10 @@ export default function BusinessDirectory() {
           </div>
 
           {/* Content Section */}
-          <div className="p-5">
+          <div className="p-3 sm:p-5">
             {/* Business Name & Category */}
-            <div className="mb-3">
-              <h3 className="font-bold text-lg text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2">
+            <div className="mb-2 sm:mb-3">
+              <h3 className="font-bold text-base sm:text-lg text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2">
                 {business.name}
               </h3>
               <Badge
