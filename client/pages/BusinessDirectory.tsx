@@ -496,22 +496,26 @@ export default function BusinessDirectory() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 sm:gap-6 max-w-xl mx-auto mb-6">
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-white">
+                <div className="text-xl sm:text-2xl font-bold text-white">
                   {businesses.length}+
                 </div>
-                <div className="text-blue-200 text-sm">Businesses</div>
+                <div className="text-blue-200 text-xs sm:text-sm">
+                  Businesses
+                </div>
               </div>
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-white">
+                <div className="text-xl sm:text-2xl font-bold text-white">
                   4.8
                 </div>
-                <div className="text-blue-200 text-sm">Avg Rating</div>
+                <div className="text-blue-200 text-xs sm:text-sm">
+                  Avg Rating
+                </div>
               </div>
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-white">
+                <div className="text-xl sm:text-2xl font-bold text-white">
                   50k+
                 </div>
-                <div className="text-blue-200 text-sm">Reviews</div>
+                <div className="text-blue-200 text-xs sm:text-sm">Reviews</div>
               </div>
             </div>
           </div>
