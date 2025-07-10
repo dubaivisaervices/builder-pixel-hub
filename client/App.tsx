@@ -35,7 +35,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Navigation />
-        <Routes>
+        <main className="min-h-screen">
+          <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/complaint" element={<ComplaintForm />} />
           <Route path="/dubai-businesses" element={<BusinessDirectory />} />
