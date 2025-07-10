@@ -107,16 +107,16 @@ export async function addBusinessManually(req: Request, res: Response) {
       await database.run(
         `
         INSERT INTO reviews (
-          business_id, author_name, rating, text, time, profile_photo_url,
-          is_fake, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, 0, datetime('now'))
+          business_id, author_name, rating, text, time_ago, profile_photo_url,
+          created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
       `,
         [
           place_id,
           review.author_name,
           review.rating,
           review.text,
-          review.time,
+          review.time_ago,
           review.profile_photo_url,
         ],
       );
