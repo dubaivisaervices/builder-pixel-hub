@@ -802,29 +802,27 @@ export default function BusinessDirectory() {
                       >
                         <CardContent className="p-6">
                           <div className="flex items-center space-x-4">
-                            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
-                              {business.logoUrl ? (
+                            <div className="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+                              <div className="relative w-full h-full">
+                                {business.logoUrl ? (
+                                  <img
+                                    src={business.logoUrl}
+                                    alt=""
+                                    className="w-full h-full object-cover rounded-xl"
+                                    onError={(e) => {
+                                      e.currentTarget.style.display = "none";
+                                      e.currentTarget.parentElement
+                                        ?.querySelector(".svg-fallback")
+                                        ?.classList.remove("hidden");
+                                    }}
+                                  />
+                                ) : null}
                                 <img
-                                  src={business.logoUrl}
-                                  alt=""
-                                  className="w-full h-full object-cover rounded-xl"
-                                  onError={(e) => {
-                                    e.currentTarget.style.display = "none";
-                                    e.currentTarget.nextElementSibling?.classList.remove(
-                                      "hidden",
-                                    );
-                                  }}
+                                  src={generateSVGLogo(business.name, 64)}
+                                  alt={business.name}
+                                  className={`svg-fallback w-full h-full rounded-xl ${business.logoUrl ? "hidden" : ""}`}
                                 />
-                              ) : null}
-                              <span
-                                className={business.logoUrl ? "hidden" : ""}
-                              >
-                                {business.name
-                                  .split(" ")
-                                  .map((word) => word[0])
-                                  .join("")
-                                  .substring(0, 2)}
-                              </span>
+                              </div>
                             </div>
 
                             <div className="flex-1 min-w-0">
