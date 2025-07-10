@@ -737,15 +737,15 @@ export default function ComplaintForm() {
 
               {/* Progress Indicator */}
               <div className="max-w-md mx-auto">
-                <div className="flex justify-between text-sm mb-3">
+                <div className="flex justify-between text-sm mb-2">
                   <span className="text-white font-medium">Progress</span>
-                  <span className="text-red-100">
+                  <span className="text-blue-100">
                     {Math.round(formProgress)}% Complete
                   </span>
                 </div>
-                <div className="w-full bg-white/20 rounded-full h-3 backdrop-blur-sm border border-white/30">
+                <div className="w-full bg-white/20 rounded-full h-2">
                   <div
-                    className="progress-bar h-3 rounded-full"
+                    className="bg-white h-2 rounded-full transition-all duration-300"
                     style={{ width: `${formProgress}%` }}
                   ></div>
                 </div>
