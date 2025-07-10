@@ -269,36 +269,33 @@ export default function BusinessDirectory() {
       .toUpperCase();
 
     const colors = [
-      "#3B82F6",
-      "#8B5CF6",
-      "#EF4444",
-      "#10B981",
-      "#F59E0B",
-      "#EC4899",
-      "#06B6D4",
-      "#84CC16",
-      "#F97316",
-      "#6366F1",
+      ["#3B82F6", "#1D4ED8"],
+      ["#8B5CF6", "#7C3AED"],
+      ["#EF4444", "#DC2626"],
+      ["#10B981", "#059669"],
+      ["#F59E0B", "#D97706"],
+      ["#EC4899", "#DB2777"],
+      ["#06B6D4", "#0891B2"],
+      ["#84CC16", "#65A30D"],
+      ["#F97316", "#EA580C"],
+      ["#6366F1", "#4F46E5"],
     ];
 
     const colorIndex = businessName.length % colors.length;
-    const bgColor = colors[colorIndex];
-    const lightBg = bgColor + "20"; // Add transparency
+    const [color1, color2] = colors[colorIndex];
 
-    return `data:image/svg+xml,${encodeURIComponent(`
-      <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="grad${colorIndex}" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:${bgColor};stop-opacity:1" />
-            <stop offset="100%" style="stop-color:${colors[(colorIndex + 1) % colors.length]};stop-opacity:1" />
-          </linearGradient>
-        </defs>
-        <rect width="100%" height="100%" rx="12" fill="url(#grad${colorIndex})" />
-        <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="${size * 0.35}" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="central">
-          ${initials}
-        </text>
-      </svg>
-    `)}`;
+    const svgString = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad${Date.now()}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:${color1}"/>
+          <stop offset="100%" style="stop-color:${color2}"/>
+        </linearGradient>
+      </defs>
+      <rect width="100%" height="100%" rx="12" fill="url(#grad${Date.now()})"/>
+      <text x="50%" y="50%" font-family="system-ui, -apple-system, sans-serif" font-size="${Math.floor(size * 0.35)}" font-weight="600" fill="white" text-anchor="middle" dominant-baseline="middle">${initials}</text>
+    </svg>`;
+
+    return `data:image/svg+xml;base64,${btoa(svgString)}`;
   };
 
   const BusinessCard = ({
@@ -592,7 +589,7 @@ export default function BusinessDirectory() {
                     onClick={() => setSearchTerm("")}
                     className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 hover:text-gray-600"
                   >
-                    ✕
+                    ���
                   </button>
                 )}
               </div>
