@@ -116,7 +116,48 @@ export default function ComplaintForm() {
 
   useEffect(() => {
     fetchBusinesses();
+    setAnimateCards(true);
   }, []);
+
+  // Track form progress
+  useEffect(() => {
+    const calculateProgress = () => {
+      const fields = [
+        selectedCompany,
+        reportData.issueType,
+        reportData.description,
+        reportData.dateOfIncident,
+        reportData.reporterName,
+        reportData.reporterEmail,
+      ];
+      const filledFields = fields.filter(
+        (field) => field && field !== "",
+      ).length;
+      const progress = (filledFields / fields.length) * 100;
+      setFormProgress(progress);
+
+      // Update completed steps
+      const newCompletedSteps = [];
+      if (selectedCompany) newCompletedSteps.push(1);
+      if (
+        reportData.issueType &&
+        reportData.description &&
+        reportData.dateOfIncident
+      )
+        newCompletedSteps.push(2);
+      if (reportData.reporterName && reportData.reporterEmail)
+        newCompletedSteps.push(4);
+      setCompletedSteps(newCompletedSteps);
+    };
+
+    calculateProgress();
+  }, [selectedCompany, reportData]);
+
+  // Typing indicator for text areas
+  useEffect(() => {
+    const timer = setTimeout(() => setIsTyping(false), 1000);
+    return () => clearTimeout(timer);
+  }, [reportData.description, reportData.evidenceDescription]);
 
   const fetchBusinesses = async () => {
     try {
