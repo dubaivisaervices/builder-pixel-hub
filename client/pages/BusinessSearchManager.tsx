@@ -447,40 +447,12 @@ export default function BusinessSearchManager() {
         <CardContent>
           <div className="flex items-center justify-between">
             <p className="text-sm text-gray-600">
-              Pull latest business data from GitHub repository
+              GitHub integration for pulling business data (Coming Soon)
             </p>
-            <Dialog open={showGithubDialog} onOpenChange={setShowGithubDialog}>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Github className="h-4 w-4 mr-2" />
-                  Pull from GitHub
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Pull from GitHub</DialogTitle>
-                  <DialogDescription>
-                    Select the branch to pull business data from
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <Input
-                    value={githubBranch}
-                    onChange={(e) => setGithubBranch(e.target.value)}
-                    placeholder="Branch name (e.g., main, develop)"
-                  />
-                  <div className="flex justify-end space-x-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => setShowGithubDialog(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button onClick={pullFromGithub}>Pull Data</Button>
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
+            <Button variant="outline" size="sm" disabled>
+              <Github className="h-4 w-4 mr-2" />
+              Coming Soon
+            </Button>
           </div>
         </CardContent>
       </Card>
