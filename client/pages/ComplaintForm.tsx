@@ -737,8 +737,8 @@ export default function ComplaintForm() {
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 py-8 sm:py-16 relative">
-          <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-12">
+        <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8 relative">
+          <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
             {/* Company Selection - Redesigned */}
             <Card className="shadow-lg border border-gray-200 bg-white">
               <CardHeader>
