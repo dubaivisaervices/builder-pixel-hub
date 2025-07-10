@@ -905,17 +905,6 @@ export default function ComplaintForm() {
                                 : `All ${searchSuggestions.length} companies loaded - Scroll to browse`}
                             </span>
                             <div className="flex items-center space-x-2">
-                              {searchSuggestions.length < businesses.length && (
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={showAllBusinesses}
-                                  className="text-xs text-blue-600 hover:text-blue-800 px-2 py-1"
-                                >
-                                  Show All {businesses.length}
-                                </Button>
-                              )}
                               <Button
                                 type="button"
                                 variant="ghost"
