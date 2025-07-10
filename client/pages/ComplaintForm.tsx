@@ -304,14 +304,7 @@ export default function ComplaintForm() {
   };
 
   const handleCompanySearch = (value: string) => {
-      "Perfect Connection Document Clearing",
-      "Emirates Visa Services",
-      "Dubai Immigration Consultants",
-      "Golden Visa Services",
-      "Al Rostamani Visa Center",
-      "Smart Business Setup",
-      "Express Immigration Services",
-      "Professional Visa Consultancy",
+    setSearchTerm(value);
       "Dubai PRO Services",
       "Elite Immigration Solutions",
       "Quick Visa Processing",
@@ -1385,7 +1378,7 @@ export default function ComplaintForm() {
                           </p>
                           {showTooltip === "receipt" && (
                             <div className="mt-2 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">
-                              Click to select • Admin will review
+                              Click to select �� Admin will review
                             </div>
                           )}
                         </div>
