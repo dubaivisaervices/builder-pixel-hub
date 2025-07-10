@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 import { businessService } from "../database/businessService";
 import fetch from "node-fetch";
-import { PhotoFallbackSystem } from "../utils/photoFallbackSystem";
 
 // Track if download is in progress to prevent multiple simultaneous downloads
 let downloadInProgress = false;
@@ -67,72 +66,68 @@ export const downloadAllPhotos: RequestHandler = async (req, res) => {
 
       let updatedPhotos = [];
 
-      // Use enhanced batch download with fallback system
-      const photoUrls = business.photos
-        .filter((photo) => !photo.base64 && photo.url)
-        .map((photo) => photo.url);
-
-      if (photoUrls.length > 0) {
-        console.log(
-          `📥 Downloading ${photoUrls.length} photos for ${business.name} with fallback protection`,
-        );
-
-        const batchResult = await PhotoFallbackSystem.downloadBusinessPhotos(
-          business.id,
-          photoUrls,
-          {
-            retryAttempts: 2,
-            retryDelay: 1000,
-            fallbackToCache: true,
-            optimizeForMobile: false,
-          },
-        );
-
-        // Update photos with download results
-        let downloadIndex = 0;
-        for (const photo of business.photos) {
+      for (const photo of business.photos) {
+        try {
+          // Skip if we already have base64 data
           if (photo.base64) {
-            // Already have base64, keep it
             updatedPhotos.push(photo);
             result.photosSaved++;
-          } else if (photo.url && downloadIndex < batchResult.results.length) {
-            // Try to get download result
-            const downloadResult = batchResult.results[downloadIndex];
-            downloadIndex++;
-
-            if (downloadResult.base64) {
-              const updatedPhoto = {
-                ...photo,
-                base64: downloadResult.base64,
-                downloadedAt: new Date().toISOString(),
-              };
-              updatedPhotos.push(updatedPhoto);
-              result.photosDownloaded++;
-              result.photosSaved++;
-              totalPhotosDownloaded++;
-              totalPhotosSaved++;
-            } else {
-              // Download failed, keep original photo data
-              updatedPhotos.push(photo);
-              if (downloadResult.error) {
-                result.errors.push(
-                  `Photo ${photo.caption || "untitled"}: ${downloadResult.error}`,
-                );
-              }
-            }
-          } else {
-            // No URL to download from
-            updatedPhotos.push(photo);
+            continue;
           }
-        }
 
-        console.log(
-          `✅ Batch download complete: ${batchResult.success} downloaded, ${batchResult.cached} cached, ${batchResult.failed} failed`,
-        );
-      } else {
-        // All photos already have base64 data
-        updatedPhotos = business.photos;
-        result.photosSaved = business.photos.filter((p) => p.base64).length;
+          // Skip if no URL to download from
+          if (!photo.url) {
+            updatedPhotos.push(photo);
+            continue;
+          }
+
+          // Download the photo
+          console.log(`📥 Downloading photo: ${photo.caption || "Untitled"}`);
+          const photoResponse = await fetch(photo.url, {
+            timeout: 10000,
+            headers: {
+              "User-Agent":
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            },
+          });
+
+          if (!photoResponse.ok) {
+            throw new Error(`HTTP ${photoResponse.status}`);
+          }
+
+          const arrayBuffer = await photoResponse.arrayBuffer();
+          const buffer = Buffer.from(arrayBuffer);
+          const base64 = buffer.toString("base64");
+
+          // Update photo with base64 data
+          const updatedPhoto = {
+            ...photo,
+            base64: base64,
+            downloadedAt: new Date().toISOString(),
+          };
+
+          updatedPhotos.push(updatedPhoto);
+          result.photosDownloaded++;
+          result.photosSaved++;
+          totalPhotosDownloaded++;
+          totalPhotosSaved++;
+
+          console.log(
+            `✅ Downloaded and saved photo ${result.photosDownloaded}/${result.photosProcessed}`,
+          );
+
+          // Small delay to avoid overwhelming servers
+          await new Promise((resolve) => setTimeout(resolve, 200));
+        } catch (error) {
+          console.error(
+            `❌ Failed to download photo: ${error instanceof Error ? error.message : "Unknown error"}`,
+          );
+          result.errors.push(
+            `Photo download failed: ${error instanceof Error ? error.message : "Unknown error"}`,
+          );
+          // Keep original photo data
+          updatedPhotos.push(photo);
+        }
       }
 
       // Update business with new photos
@@ -288,103 +283,6 @@ export const syncAllReviews: RequestHandler = async (req, res) => {
     console.error("❌ Review sync failed:", error);
     res.status(500).json({
       error: "Review sync failed",
-      details: error instanceof Error ? error.message : "Unknown error",
-    });
-  }
-};
-
-// Optimize database for handling large amounts of photos
-export const optimizeDatabase: RequestHandler = async (req, res) => {
-  try {
-    console.log("🔧 Starting database optimization for photo storage...");
-
-    const businesses = await businessService.getAllBusinesses();
-
-    let totalPhotos = 0;
-    let photosWithBase64 = 0;
-    let totalSize = 0;
-    let businessesProcessed = 0;
-
-    // Analyze current photo storage
-    for (const business of businesses) {
-      if (business.photos && business.photos.length > 0) {
-        totalPhotos += business.photos.length;
-
-        for (const photo of business.photos) {
-          if (photo.base64) {
-            photosWithBase64++;
-            totalSize += photo.base64.length;
-          }
-        }
-        businessesProcessed++;
-      }
-    }
-
-    const sizeInMB = Math.round(totalSize / 1024 / 1024);
-    const averagePhotoSize =
-      photosWithBase64 > 0
-        ? Math.round(totalSize / photosWithBase64 / 1024)
-        : 0;
-
-    const optimizationReport = {
-      before: {
-        totalBusinesses: businesses.length,
-        businessesWithPhotos: businessesProcessed,
-        totalPhotos,
-        photosWithBase64,
-        totalSizeMB: sizeInMB,
-        averagePhotoSizeKB: averagePhotoSize,
-      },
-      recommendations: [],
-      actions: [],
-    };
-
-    // Add recommendations based on analysis
-    if (sizeInMB > 100) {
-      optimizationReport.recommendations.push(
-        "Database is using significant storage for photos. Consider compression.",
-      );
-    }
-
-    if (photosWithBase64 < totalPhotos * 0.5) {
-      optimizationReport.recommendations.push(
-        "Many photos are not cached locally. Run photo download to improve resilience.",
-      );
-    }
-
-    if (averagePhotoSize > 200) {
-      optimizationReport.recommendations.push(
-        "Photos are quite large. Consider implementing compression.",
-      );
-    }
-
-    // Report optimization status
-    optimizationReport.actions.push("Database analysis completed");
-    optimizationReport.actions.push(
-      "Photo storage evaluated for 4000+ image capacity",
-    );
-
-    console.log(`✅ Database optimization analysis completed:
-      - Total photos: ${totalPhotos}
-      - Cached locally: ${photosWithBase64}
-      - Storage used: ${sizeInMB}MB
-      - Average photo size: ${averagePhotoSize}KB
-    `);
-
-    res.json({
-      success: true,
-      message: "Database optimization analysis completed",
-      analysis: optimizationReport,
-      summary: {
-        canHandle4000Photos: sizeInMB < 800, // Conservative estimate
-        currentCapacityUsed: Math.round((sizeInMB / 1000) * 100),
-        recommendedActions: optimizationReport.recommendations,
-      },
-    });
-  } catch (error) {
-    console.error("❌ Database optimization failed:", error);
-    res.status(500).json({
-      error: "Database optimization failed",
       details: error instanceof Error ? error.message : "Unknown error",
     });
   }

@@ -38,21 +38,8 @@ import {
   getDownloadStatus,
   syncAllReviews,
   checkSyncStatus,
-  optimizeDatabase,
 } from "./routes/photo-sync";
-import {
-  getBusinessPhotos,
-  refreshBusinessPhotos,
-  getPhotoStatusBatch,
-} from "./routes/business-photos";
-import {
-  getApiStatus,
-  enableApi,
-  disableApi,
-  resetCounters,
-  getCostReport,
-  testApiConnection,
-} from "./routes/api-control";
+// Removed complex photo and API control routes to restore simpler state
 import { fixBusinessEmailsAndWebsites } from "./routes/fix-business-data";
 import {
   addCompanyRequest,
@@ -125,20 +112,8 @@ export function createServer() {
   app.get("/api/admin/download-status", getDownloadStatus);
   app.post("/api/admin/sync-reviews", syncAllReviews);
   app.get("/api/admin/sync-status", checkSyncStatus);
-  app.post("/api/admin/optimize-database", optimizeDatabase);
 
-  // Enhanced business photos API with fallback protection
-  app.get("/api/business-photos/:businessId", getBusinessPhotos);
-  app.post("/api/business-photos/:businessId/refresh", refreshBusinessPhotos);
-  app.post("/api/business-photos/status-batch", getPhotoStatusBatch);
-
-  // Google API Connection Control
-  app.get("/api/admin/api-status", getApiStatus);
-  app.post("/api/admin/api-enable", enableApi);
-  app.post("/api/admin/api-disable", disableApi);
-  app.post("/api/admin/api-reset-counters", resetCounters);
-  app.get("/api/admin/api-cost-report", getCostReport);
-  app.post("/api/admin/api-test-connection", testApiConnection);
+  // Simplified endpoints - complex API control removed for stability
 
   // Fix business data
   app.post("/api/admin/fix-business-data", fixBusinessEmailsAndWebsites);

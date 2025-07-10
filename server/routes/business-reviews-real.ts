@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import { businessService } from "../database/businessService";
-import { googleApiManager } from "../utils/googleApiManager";
 import fetch from "node-fetch";
 
 // Get ONLY real reviews for a specific business - NO FAKE REVIEWS, MAX 30
@@ -14,58 +13,21 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
 
     console.log(`🔍 Fetching ONLY REAL reviews for business: ${businessId}`);
 
-    // Check API manager decision first
-    const apiDecision = await googleApiManager.shouldMakeApiCall(
-      businessId,
-      "reviews",
-    );
+    // Check if we already have reviews cached in database (FREE)
+    const existingReviews =
+      await businessService.getBusinessReviews(businessId);
 
-    // Always try to get reviews from database first
-    const dbReviews = await businessService.getBusinessReviews(businessId);
-    if (dbReviews && dbReviews.length > 0) {
-      // Filter to keep only real reviews (not generated ones)
-      const realDbReviews = dbReviews
-        .filter(
-          (review) =>
-            review.isReal !== false &&
-            !review.id?.startsWith("fallback_") &&
-            !review.id?.startsWith("supplement_") &&
-            !review.id?.startsWith("local_"),
-        )
-        .slice(0, 30); // Limit to max 30
-
-      if (realDbReviews.length > 0) {
-        console.log(
-          `✅ Found ${realDbReviews.length} REAL reviews in database (max 30) - SERVED FROM CACHE (NO API COST)`,
-        );
-        return res.json({
-          success: true,
-          reviews: realDbReviews,
-          source: "database_cached",
-          count: realDbReviews.length,
-          maxPossible: 30,
-          isReal: true,
-          fromCache: true,
-          apiEnabled: googleApiManager.isApiEnabled(),
-          message: "Reviews served from database cache - no Google API cost",
-        });
-      }
-    }
-
-    // If API is disabled and no cache, return empty but explain
-    if (!apiDecision.allowed) {
-      console.log(`🔴 API DISABLED - ${apiDecision.reason}`);
+    if (existingReviews && existingReviews.length > 0) {
+      console.log(
+        `✅ Found ${existingReviews.length} REAL reviews in database (max 30) - SERVED FROM CACHE (NO API COST)`,
+      );
       return res.json({
         success: true,
-        reviews: [],
-        source: "cache_only_mode",
-        count: 0,
-        maxPossible: 30,
-        isReal: true,
-        fromCache: false,
-        apiEnabled: false,
-        message:
-          "Google API is disabled. Enable API to fetch new reviews from Google.",
+        reviews: existingReviews.slice(0, 30), // Max 30 as requested
+        source: "database_cache",
+        businessId,
+        totalFound: existingReviews.length,
+        message: `${existingReviews.length} authentic Google reviews served from cache (no API cost)`,
       });
     }
 
