@@ -93,7 +93,6 @@ export default function ComplaintForm() {
   }>({ receipt: false, agreement: false });
   const [isTyping, setIsTyping] = useState(false);
   const [showTooltip, setShowTooltip] = useState<string | null>(null);
-  const [animateCards, setAnimateCards] = useState(false);
 
   const fileInputRefs = {
     paymentReceipt: useRef<HTMLInputElement>(null),
