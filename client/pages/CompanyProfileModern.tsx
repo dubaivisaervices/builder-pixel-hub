@@ -854,17 +854,17 @@ function CommunityReportsSection({
               This indicates a trustworthy service provider.
             </p>
 
-            <div className="mt-8 bg-white/50 rounded-xl p-4 border border-green-200">
-              <div className="flex items-center justify-center space-x-6 text-sm">
-                <div className="flex items-center space-x-2 text-green-700">
+            <div className="mt-6 sm:mt-8 bg-white/50 rounded-xl p-3 sm:p-4 border border-green-200">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 text-xs sm:text-sm">
+                <div className="flex items-center justify-center space-x-2 text-green-700">
                   <Shield className="h-4 w-4" />
                   <span>Verified Business</span>
                 </div>
-                <div className="flex items-center space-x-2 text-green-700">
+                <div className="flex items-center justify-center space-x-2 text-green-700">
                   <Award className="h-4 w-4" />
                   <span>No Complaints</span>
                 </div>
-                <div className="flex items-center space-x-2 text-green-700">
+                <div className="flex items-center justify-center space-x-2 text-green-700">
                   <Users className="h-4 w-4" />
                   <span>Community Trusted</span>
                 </div>
