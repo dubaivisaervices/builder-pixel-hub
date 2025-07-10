@@ -659,9 +659,9 @@ export default function ComplaintForm() {
                 </div>
               </div>
 
-              <div className="w-full bg-gray-200 rounded-full h-1.5">
+              <div className="w-full bg-gray-200 rounded-full h-2 sm:h-2.5">
                 <div
-                  className="progress-bar h-1.5 rounded-full transition-all duration-500"
+                  className="progress-bar h-2 sm:h-2.5 rounded-full transition-all duration-500"
                   style={{ width: `${formProgress}%` }}
                 ></div>
               </div>
