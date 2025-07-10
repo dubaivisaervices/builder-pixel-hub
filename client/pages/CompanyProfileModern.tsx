@@ -1764,7 +1764,7 @@ export default function CompanyProfileModern() {
               </TabsContent>
 
               {/* Services Tab */}
-              <TabsContent value="services">
+              <TabsContent value="services" className="space-y-4 sm:space-y-6">
                 <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
