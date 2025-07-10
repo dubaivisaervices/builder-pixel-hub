@@ -67,7 +67,6 @@ import {
 } from "./routes/api-control-simple";
 // Simplified imports for space constraints
 import { addBusinessManually } from "./routes/manual-business-add";
-import { fixImageApiKeys } from "./routes/fix-image-api-keys";
 // Temporarily disabled due to space constraints
 // import {
 //   downloadOptimizedPhotos,
@@ -180,7 +179,6 @@ export function createServer() {
 
   // Simplified routes for space constraints
   app.post("/api/admin/add-business-manually", addBusinessManually);
-  app.post("/api/admin/fix-image-api-keys", fixImageApiKeys);
 
   // Temporarily disabled due to space constraints
   // app.post("/api/admin/download-optimized-photos", downloadOptimizedPhotos);
