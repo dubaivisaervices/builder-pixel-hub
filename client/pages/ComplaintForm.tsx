@@ -868,8 +868,7 @@ export default function ComplaintForm() {
                             <span className="text-sm font-medium text-blue-800">
                               {searchTerm
                                 ? `${searchSuggestions.length} results found`
-                                : `Showing ${searchSuggestions.length} of ${businesses.length} companies`
-                              }
+                                : `Showing ${searchSuggestions.length} of ${businesses.length} companies`}
                             </span>
                             <div className="flex items-center space-x-2">
                               {searchSuggestions.length < businesses.length && (
@@ -936,53 +935,54 @@ export default function ComplaintForm() {
                         </>
                       ) : (
                         searchTerm.length >= 2 && (
-                            <div className="p-4 text-center">
-                              <div className="space-y-4">
-                                <div className="flex flex-col items-center space-y-3">
-                                  <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                                    <Building2 className="h-6 w-6 text-gray-400" />
-                                  </div>
-                                  <div className="text-center">
-                                    <h3 className="font-medium text-gray-900 text-sm">
-                                      Company not found in our database
-                                    </h3>
-                                    <p className="text-xs text-gray-500 mt-1">
-                                      "{searchTerm}" doesn't match any
-                                      registered companies
-                                    </p>
-                                  </div>
+                          <div className="p-4 text-center">
+                            <div className="space-y-4">
+                              <div className="flex flex-col items-center space-y-3">
+                                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                                  <Building2 className="h-6 w-6 text-gray-400" />
                                 </div>
+                                <div className="text-center">
+                                  <h3 className="font-medium text-gray-900 text-sm">
+                                    Company not found in our database
+                                  </h3>
+                                  <p className="text-xs text-gray-500 mt-1">
+                                    "{searchTerm}" doesn't match any registered
+                                    companies
+                                  </p>
+                                </div>
+                              </div>
 
-                                {/* Add New Company Button */}
-                                <div className="space-y-3">
-                                  <Button
-                                    onClick={() => navigate("/help-center")}
-                                    className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-medium text-sm py-2.5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                                  >
-                                    <Building2 className="h-4 w-4 mr-2" />
-                                    Add New Company
-                                  </Button>
+                              {/* Add New Company Button */}
+                              <div className="space-y-3">
+                                <Button
+                                  onClick={() => navigate("/help-center")}
+                                  className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-medium text-sm py-2.5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                                >
+                                  <Building2 className="h-4 w-4 mr-2" />
+                                  Add New Company
+                                </Button>
 
-                                  <div className="text-xs text-gray-500 bg-blue-50 rounded-lg p-3 border border-blue-200">
-                                    <div className="flex items-start space-x-2">
-                                      <AlertTriangle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                                      <div>
-                                        <p className="font-medium text-blue-800 mb-1">
-                                          Need to add this company?
-                                        </p>
-                                        <p className="text-blue-700">
-                                          Click "Add New Company" to request
-                                          adding "{searchTerm}" to our database.
-                                          Once approved by our admin team, you
-                                          can return to file your report.
-                                        </p>
-                                      </div>
+                                <div className="text-xs text-gray-500 bg-blue-50 rounded-lg p-3 border border-blue-200">
+                                  <div className="flex items-start space-x-2">
+                                    <AlertTriangle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                    <div>
+                                      <p className="font-medium text-blue-800 mb-1">
+                                        Need to add this company?
+                                      </p>
+                                      <p className="text-blue-700">
+                                        Click "Add New Company" to request
+                                        adding "{searchTerm}" to our database.
+                                        Once approved by our admin team, you can
+                                        return to file your report.
+                                      </p>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          )}
+                          </div>
+                        )
+                      )}
                     </div>
                   )}
                 </div>
