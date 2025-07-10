@@ -609,7 +609,7 @@ export default function ComplaintForm() {
       </Dialog>
 
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
           {/* Header - Wider Professional Design */}
           <div className="bg-white border border-gray-200 rounded-xl shadow-sm mb-4 sm:mb-6 mx-0">
             <div className="px-6 sm:px-8 py-4 sm:py-5 max-w-5xl mx-auto">
