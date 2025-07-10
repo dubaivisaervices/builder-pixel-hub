@@ -592,10 +592,14 @@ export default function CompanyProfileModern() {
           // Enhance business data with additional info
           const enhancedBusiness = {
             ...business,
-            logoUrl: business.logo_url || business.logoUrl, // Map snake_case to camelCase
-            photos: business.photos_json
-              ? JSON.parse(business.photos_json)
-              : business.photos || [], // Map photos
+            logoUrl: business.logo_base64
+              ? `data:image/jpeg;base64,${business.logo_base64}`
+              : business.logo_url || business.logoUrl, // Prioritize cached base64, fallback to URL
+            photos: business.photos_local_json
+              ? JSON.parse(business.photos_local_json)
+              : business.photos_json
+                ? JSON.parse(business.photos_json)
+                : business.photos || [], // Prioritize local cached photos
             description:
               business.description ||
               `${business.name} is a professional service provider in Dubai specializing in ${business.category.toLowerCase()}. We provide comprehensive solutions and expert consultation for all your business needs with years of experience in the industry.`,
