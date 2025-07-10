@@ -989,11 +989,15 @@ export default function ComplaintForm() {
                   </div>
                 </div>
 
-                <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <p className="text-sm text-yellow-800">
-                    <strong>📁 File Upload Tips:</strong> Uploading evidence
-                    strengthens your report. Accepted formats: JPEG, PNG, PDF.
-                    Maximum size: 5MB per file.
+                <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                  <p className="text-xs sm:text-sm text-amber-800">
+                    <strong>📁 Evidence Guidelines:</strong> Files strengthen
+                    your report and go to admin for verification.
+                    <span className="font-semibold text-red-700">
+                      {" "}
+                      Max 5MB per file.
+                    </span>
+                    Formats: JPEG, PNG, PDF only.
                   </p>
                 </div>
               </CardContent>
