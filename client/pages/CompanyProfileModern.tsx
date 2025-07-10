@@ -101,7 +101,6 @@ function WriteReviewSection({
   const [selectedRating, setSelectedRating] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [userReviews, setUserReviews] = useState<ReviewData[]>([]);
-  const [activeTab, setActiveTab] = useState("review");
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [uploadError, setUploadError] = useState<string>("");
   const [reviewForm, setReviewForm] = useState({
