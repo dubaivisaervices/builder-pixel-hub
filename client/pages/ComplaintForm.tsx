@@ -766,9 +766,9 @@ export default function ComplaintForm() {
                       }`}
                       required
                     />
-                    <div className="absolute left-5 top-1/2 transform -translate-y-1/2">
+                    <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                       <Search
-                        className={`h-6 w-6 transition-colors duration-300 ${isTyping ? "text-blue-500" : "text-gray-400"}`}
+                        className={`h-5 w-5 transition-colors duration-300 ${isTyping ? "text-blue-500" : "text-gray-400"}`}
                       />
                     </div>
                     {isTyping && (
