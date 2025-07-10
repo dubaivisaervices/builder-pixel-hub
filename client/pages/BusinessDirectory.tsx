@@ -874,6 +874,15 @@ export default function BusinessDirectory() {
           <Search className="h-6 w-6" />
         </Button>
       </div>
+
+      {/* Community Protection Section */}
+      <CommunityProtection />
+
+      {/* Government Section */}
+      <GovernmentSection />
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
