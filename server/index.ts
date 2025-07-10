@@ -67,6 +67,10 @@ import {
 } from "./routes/api-control-simple";
 // Simplified imports for space constraints
 import { addBusinessManually } from "./routes/manual-business-add";
+import {
+  serveCachedLogo,
+  serveCachedPhoto,
+} from "./routes/serve-cached-images";
 // Temporarily disabled due to space constraints
 // import {
 //   downloadOptimizedPhotos,
@@ -179,6 +183,10 @@ export function createServer() {
 
   // Simplified routes for space constraints
   app.post("/api/admin/add-business-manually", addBusinessManually);
+
+  // Serve cached images from database
+  app.get("/api/cached-logo/:businessId", serveCachedLogo);
+  app.get("/api/cached-photo/:businessId/:photoIndex", serveCachedPhoto);
 
   // Temporarily disabled due to space constraints
   // app.post("/api/admin/download-optimized-photos", downloadOptimizedPhotos);
