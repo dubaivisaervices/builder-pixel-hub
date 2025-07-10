@@ -1214,8 +1214,8 @@ export default function ComplaintForm() {
                   </div>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 sm:p-8 space-y-6 relative">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-6 relative">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   {/* Payment Receipt */}
                   <div className="space-y-3">
                     <Label className="text-base font-semibold text-gray-700 flex items-center">
