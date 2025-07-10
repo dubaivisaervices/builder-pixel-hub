@@ -131,6 +131,7 @@ export default function ComplaintForm() {
         reportData.dateOfIncident,
         reportData.reporterName,
         reportData.reporterEmail,
+        reportData.reporterPhone,
       ];
       const filledFields = fields.filter(
         (field) => field && field !== "",
