@@ -37,33 +37,34 @@ const App = () => (
         <Navigation />
         <main className="min-h-screen">
           <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/complaint" element={<ComplaintForm />} />
-          <Route path="/dubai-businesses" element={<BusinessDirectory />} />
-          <Route path="/services" element={<BusinessListing />} />
-          <Route path="/services/:category" element={<BusinessListing />} />
-          <Route path="/help-center" element={<HelpCenter />} />
-          <Route path="/api-test" element={<ApiTest />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/sync" element={<AdminSync />} />
-          <Route path="/admin/manage" element={<AdminManage />} />
-          <Route path="/admin/status" element={<DatabaseStatus />} />
-          <Route path="/admin/images" element={<ImageDownloadDashboard />} />
-          <Route path="/admin/search" element={<BusinessSearchManager />} />
-          <Route path="/data-persistence" element={<DataPersistence />} />
-          <Route path="/reviews-sync" element={<ReviewsSync />} />
-          <Route
-            path="/:location/review/:companyName"
-            element={<CompanyReviews />}
-          />
-          <Route
-            path="/modern-profile/:location/:companyName"
-            element={<CompanyProfileModern />}
-          />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/complaint" element={<ComplaintForm />} />
+            <Route path="/dubai-businesses" element={<BusinessDirectory />} />
+            <Route path="/services" element={<BusinessListing />} />
+            <Route path="/services/:category" element={<BusinessListing />} />
+            <Route path="/help-center" element={<HelpCenter />} />
+            <Route path="/api-test" element={<ApiTest />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/sync" element={<AdminSync />} />
+            <Route path="/admin/manage" element={<AdminManage />} />
+            <Route path="/admin/status" element={<DatabaseStatus />} />
+            <Route path="/admin/images" element={<ImageDownloadDashboard />} />
+            <Route path="/admin/search" element={<BusinessSearchManager />} />
+            <Route path="/data-persistence" element={<DataPersistence />} />
+            <Route path="/reviews-sync" element={<ReviewsSync />} />
+            <Route
+              path="/:location/review/:companyName"
+              element={<CompanyReviews />}
+            />
+            <Route
+              path="/modern-profile/:location/:companyName"
+              element={<CompanyProfileModern />}
+            />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
