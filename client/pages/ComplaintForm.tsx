@@ -221,7 +221,33 @@ export default function ComplaintForm() {
         stack: error.stack,
       });
 
+      // Check if we're in development mode
+      const isDev =
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1";
+      console.log("🔧 Development mode:", isDev);
+      console.log("🔧 Current URL:", window.location.href);
+
+      // Try alternative endpoint if main one fails
+      try {
+        console.log("🔄 Trying alternative endpoint /api/businesses...");
+        const altResponse = await fetch("/api/businesses?limit=100");
+        if (altResponse.ok) {
+          const altData = await altResponse.json();
+          console.log(
+            "✅ Alternative endpoint worked, got",
+            altData.businesses?.length || 0,
+            "businesses",
+          );
+          setBusinesses(altData.businesses || []);
+          return;
+        }
+      } catch (altError) {
+        console.error("❌ Alternative endpoint also failed:", altError);
+      }
+
       // Fallback: create some dummy businesses for testing
+      console.log("🔧 Using fallback dummy data");
       setBusinesses([
         {
           id: "dummy1",
@@ -238,6 +264,14 @@ export default function ComplaintForm() {
           category: "Visa Services",
           rating: 4.2,
           reviewCount: 85,
+        },
+        {
+          id: "dummy3",
+          name: "Dubai Business Setup Co",
+          address: "DIFC, Dubai, UAE",
+          category: "Business Services",
+          rating: 4.7,
+          reviewCount: 150,
         },
       ]);
     }
