@@ -147,7 +147,27 @@ export default function ComplaintForm() {
   }, []);
 
   useEffect(() => {
-    if (location.state?.company) {
+    // Handle company data passed from CompanyProfile page
+    if (location.state?.companyName || location.state?.preselectedCompany) {
+      const companyName =
+        location.state.companyName || location.state.preselectedCompany;
+      const companyId = location.state.companyId;
+
+      // Create a company object from the passed data
+      const company: BusinessData = {
+        id: companyId || Date.now().toString(),
+        name: companyName,
+        address: "Dubai, UAE", // Default address
+        rating: 0,
+        reviewCount: 0,
+        category: "Business Services",
+      };
+
+      setSelectedCompany(company);
+      setSearchTerm(companyName);
+    }
+    // Handle legacy company data structure
+    else if (location.state?.company) {
       const company = location.state.company;
       setSelectedCompany(company);
       setSearchTerm(company.name);
