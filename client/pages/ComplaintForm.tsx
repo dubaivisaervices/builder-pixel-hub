@@ -846,8 +846,8 @@ export default function ComplaintForm() {
           </div>
 
           {/* Footer Content */}
-          <footer className="bg-gray-800 text-white mt-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto py-12">
+          <footer className="bg-gray-800 text-white mt-12 sm:mt-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto py-8 sm:py-12">
               {/* Dubai Government Logos Section */}
               <div className="mb-12 text-center">
                 <h3 className="text-xl font-semibold mb-6">
