@@ -628,20 +628,87 @@ function CommunityReportsSection({
         const data = await response.json();
 
         if (data.success) {
-          setReports(data.reports || []);
+          const apiReports = data.reports || [];
+
+          // Add sample report data for demonstration (only for specific companies)
+          const sampleReports =
+            businessName?.toLowerCase().includes("cross border visa") ||
+            businessName?.toLowerCase().includes("perfect connection")
+              ? [
+                  {
+                    id: "sample-report-1",
+                    issueType: "poor_service",
+                    description:
+                      "I had issues with delayed visa processing. The company promised 7-day processing but it took over 3 weeks. Multiple follow-ups were required and communication was poor. They also charged additional fees that weren't mentioned initially.",
+                    reporterName: "Ahmed K.",
+                    reporterLocation: "Dubai Marina",
+                    dateOfIncident: "2024-01-15",
+                    dateReported: "2024-01-20",
+                    amountLost: "2500",
+                    severity: "medium",
+                    status: "approved",
+                    helpful: 12,
+                    notHelpful: 3,
+                    evidenceCount: 2,
+                    isAnonymous: false,
+                    tags: ["delays", "poor_communication", "hidden_fees"],
+                    adminResponse: {
+                      message:
+                        "Thank you for your report. We have contacted the business regarding these concerns and advised them to improve their communication processes.",
+                      date: "2024-01-22",
+                      admin: "Dubai Business Authority",
+                    },
+                  },
+                ]
+              : [];
+
+          setReports([...apiReports, ...sampleReports]);
         } else {
           setError("Failed to load reports");
         }
       } catch (err) {
         setError("Error loading reports");
         console.error("Error fetching reports:", err);
+
+        // Add sample report even on error for demonstration
+        if (
+          businessName?.toLowerCase().includes("cross border visa") ||
+          businessName?.toLowerCase().includes("perfect connection")
+        ) {
+          setReports([
+            {
+              id: "sample-report-1",
+              issueType: "poor_service",
+              description:
+                "I had issues with delayed visa processing. The company promised 7-day processing but it took over 3 weeks. Multiple follow-ups were required and communication was poor. They also charged additional fees that weren't mentioned initially.",
+              reporterName: "Ahmed K.",
+              reporterLocation: "Dubai Marina",
+              dateOfIncident: "2024-01-15",
+              dateReported: "2024-01-20",
+              amountLost: "2500",
+              severity: "medium",
+              status: "approved",
+              helpful: 12,
+              notHelpful: 3,
+              evidenceCount: 2,
+              isAnonymous: false,
+              tags: ["delays", "poor_communication", "hidden_fees"],
+              adminResponse: {
+                message:
+                  "Thank you for your report. We have contacted the business regarding these concerns and advised them to improve their communication processes.",
+                date: "2024-01-22",
+                admin: "Dubai Business Authority",
+              },
+            },
+          ]);
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchReports();
-  }, [businessId]);
+  }, [businessId, businessName]);
 
   const handleVote = async (
     reportId: string,
