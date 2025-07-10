@@ -756,6 +756,20 @@ export default function ComplaintForm() {
                     disclosed to the reported company.
                   </p>
                 </div>
+
+                {/* Report Another Scam Button */}
+                <div className="text-center mt-6 pt-4 border-t border-gray-200">
+                  <Button
+                    onClick={() =>
+                      window.scrollTo({ top: 0, behavior: "smooth" })
+                    }
+                    variant="outline"
+                    className="w-full sm:w-auto border-red-600 text-red-600 hover:bg-red-50 px-6 py-2.5 text-base rounded-lg"
+                  >
+                    <Shield className="h-4 w-4 mr-2" />
+                    Report Another Scam
+                  </Button>
+                </div>
               </CardContent>
             </Card>
 
