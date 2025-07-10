@@ -64,8 +64,6 @@ import {
   resetCounters,
   getCostReport,
 } from "./routes/api-control-simple";
-import { checkLogoStorage } from "./routes/logo-check";
-import { fixDatabase } from "./routes/fix-db";
 import { getBusinessReviews } from "./routes/business-reviews-real";
 import {
   syncAllGoogleReviews,
