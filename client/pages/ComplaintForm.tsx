@@ -382,12 +382,34 @@ export default function ComplaintForm() {
 
     if (value.length >= 1) {
       const filtered = businesses
-        .filter((business) =>
-          business.name.toLowerCase().includes(value.toLowerCase()),
+        .filter(
+          (business) =>
+            business.name.toLowerCase().includes(value.toLowerCase()) ||
+            business.address.toLowerCase().includes(value.toLowerCase()) ||
+            business.category.toLowerCase().includes(value.toLowerCase()),
         )
-        .slice(0, 8);
+        .sort((a, b) => {
+          // Prioritize exact matches at the beginning
+          const aStartsWith = a.name
+            .toLowerCase()
+            .startsWith(value.toLowerCase());
+          const bStartsWith = b.name
+            .toLowerCase()
+            .startsWith(value.toLowerCase());
+          if (aStartsWith && !bStartsWith) return -1;
+          if (!aStartsWith && bStartsWith) return 1;
+
+          // Then sort by rating
+          return b.rating - a.rating;
+        })
+        .slice(0, 12); // Show more results (12 instead of 8)
+
       setSearchSuggestions(filtered);
       setShowSuggestions(true);
+
+      console.log(
+        `🔍 Search "${value}" found ${filtered.length} results out of ${businesses.length} total businesses`,
+      );
     } else {
       setShowSuggestions(false);
     }
