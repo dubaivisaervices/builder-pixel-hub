@@ -776,8 +776,14 @@ export default function CompanyProfileModern() {
                       src={businessData.logoUrl}
                       alt={`${businessData.name} logo`}
                       className="w-full h-full object-contain"
+                      onError={(e) => {
+                        console.log('Logo failed to load:', businessData.logoUrl);
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                      }}
                     />
-                  ) : (
+                  ) : null}
+                  {!businessData.logoUrl ? (
                     <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">
                       {businessData.name
                         .split(" ")
