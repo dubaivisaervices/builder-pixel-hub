@@ -737,8 +737,8 @@ export default function BusinessDirectory() {
               </div>
             </div>
 
-            {/* Mobile Category Filter - Simplified */}
-            <div className="sm:hidden">
+            {/* Mobile Category Filter - Hidden */}
+            <div className="hidden">
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
