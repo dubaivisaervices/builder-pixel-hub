@@ -1690,20 +1690,20 @@ export default function CompanyProfileModern() {
                         </div>
                       </div>
 
-                      <div className="grid md:grid-cols-2 gap-4 pt-4">
-                        <div className="flex items-center space-x-2 text-sm text-green-700">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 pt-4">
+                        <div className="flex items-center space-x-2 text-sm text-green-700 p-2 rounded-lg bg-green-50">
                           <CheckCircle className="h-4 w-4" />
                           <span>Trade License Verified</span>
                         </div>
-                        <div className="flex items-center space-x-2 text-sm text-green-700">
+                        <div className="flex items-center space-x-2 text-sm text-green-700 p-2 rounded-lg bg-green-50">
                           <Shield className="h-4 w-4" />
                           <span>Government Registered</span>
                         </div>
-                        <div className="flex items-center space-x-2 text-sm text-green-700">
+                        <div className="flex items-center space-x-2 text-sm text-green-700 p-2 rounded-lg bg-green-50">
                           <Verified className="h-4 w-4" />
                           <span>Compliance Verified</span>
                         </div>
-                        <div className="flex items-center space-x-2 text-sm text-green-700">
+                        <div className="flex items-center space-x-2 text-sm text-green-700 p-2 rounded-lg bg-green-50">
                           <Award className="h-4 w-4" />
                           <span>Quality Assured</span>
                         </div>
