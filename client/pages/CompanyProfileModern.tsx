@@ -1394,7 +1394,7 @@ export default function CompanyProfileModern() {
                   </div>
 
                   {/* Rating */}
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2 md:space-x-3">
                     <div className="flex items-center space-x-1">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star
