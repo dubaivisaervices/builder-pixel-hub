@@ -1327,24 +1327,25 @@ export default function CompanyProfileModern() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Navigation */}
-          <div className="flex items-center space-x-2 text-white/80 text-sm mb-6">
+          <div className="flex items-center space-x-1 sm:space-x-2 text-white/80 text-xs sm:text-sm mb-4 sm:mb-6 overflow-x-auto scrollbar-hide">
             <Button
               variant="ghost"
               onClick={() => navigate("/")}
-              className="text-white/80 hover:text-white hover:bg-white/10 p-1"
+              className="text-white/80 hover:text-white hover:bg-white/10 p-1 flex-shrink-0"
             >
-              <Home className="h-4 w-4" />
+              <Home className="h-3 w-3 sm:h-4 sm:w-4" />
             </Button>
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
             <Button
               variant="ghost"
               onClick={() => navigate("/dubai-businesses")}
-              className="text-white/80 hover:text-white hover:bg-white/10 px-2 py-1"
+              className="text-white/80 hover:text-white hover:bg-white/10 px-1 sm:px-2 py-1 flex-shrink-0 whitespace-nowrap"
             >
-              Business Directory
+              <span className="hidden sm:inline">Business Directory</span>
+              <span className="sm:hidden">Directory</span>
             </Button>
-            <ChevronRight className="h-4 w-4" />
-            <span className="text-white font-medium">
+            <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <span className="text-white font-medium truncate">
               {businessData.category}
             </span>
           </div>
