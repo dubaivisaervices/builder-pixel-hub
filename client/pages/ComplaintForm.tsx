@@ -1064,17 +1064,31 @@ export default function ComplaintForm() {
                   <Button
                     type="submit"
                     disabled={loading || !selectedCompany}
-                    className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white px-6 sm:px-8 py-3 text-base sm:text-lg rounded-lg min-w-[200px] shadow-lg"
+                    className={`w-full sm:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 sm:px-8 py-3 text-base sm:text-lg rounded-lg min-w-[200px] shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl ${
+                      loading ? "animate-pulse" : ""
+                    } ${!selectedCompany ? "opacity-50 cursor-not-allowed" : ""}`}
                   >
                     {loading ? (
                       <div className="flex items-center justify-center space-x-2">
-                        <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <Clock className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
                         <span>Submitting...</span>
+                        <div className="flex space-x-1">
+                          <div className="w-1 h-1 bg-white rounded-full animate-bounce"></div>
+                          <div
+                            className="w-1 h-1 bg-white rounded-full animate-bounce"
+                            style={{ animationDelay: "0.1s" }}
+                          ></div>
+                          <div
+                            className="w-1 h-1 bg-white rounded-full animate-bounce"
+                            style={{ animationDelay: "0.2s" }}
+                          ></div>
+                        </div>
                       </div>
                     ) : (
                       <div className="flex items-center justify-center space-x-2">
                         <Shield className="h-4 w-4 sm:h-5 sm:w-5" />
                         <span>Submit Report</span>
+                        <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-300 group-hover:translate-x-1" />
                       </div>
                     )}
                   </Button>
