@@ -684,12 +684,12 @@ function CommunityReportsSection({
               id: "sample-report-1",
               issueType: "poor_service",
               description:
-                "I had issues with delayed visa processing. The company promised 7-day processing but it took over 3 weeks. Multiple follow-ups were required and communication was poor. They also charged additional fees that weren't mentioned initially.",
+                "I had issues with delayed visa processing. The company promised 7-day processing but it took over 3 weeks. Multiple follow-ups were required and communication was poor. They also charged additional fees that weren't mentioned initially. The staff was unresponsive to calls and emails, making the entire experience very frustrating.",
               reporterName: "Ahmed K.",
               reporterLocation: "Dubai Marina",
               dateOfIncident: "2024-01-15",
-              dateReported: "2024-01-20",
-              amountLost: "2500",
+              createdAt: "2024-01-20T10:30:00.000Z",
+              amountLost: "AED 2,500",
               severity: "medium",
               status: "approved",
               helpful: 12,
@@ -697,6 +697,10 @@ function CommunityReportsSection({
               evidenceCount: 2,
               isAnonymous: false,
               tags: ["delays", "poor_communication", "hidden_fees"],
+              votes: {
+                helpful: 12,
+                notHelpful: 3,
+              },
               adminResponse: {
                 message:
                   "Thank you for your report. We have contacted the business regarding these concerns and advised them to improve their communication processes.",
