@@ -259,6 +259,48 @@ export default function BusinessDirectory() {
     }
   };
 
+  // Generate SVG logo for businesses
+  const generateSVGLogo = (businessName: string, size: number = 64) => {
+    const initials = businessName
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
+      .substring(0, 2)
+      .toUpperCase();
+
+    const colors = [
+      "#3B82F6",
+      "#8B5CF6",
+      "#EF4444",
+      "#10B981",
+      "#F59E0B",
+      "#EC4899",
+      "#06B6D4",
+      "#84CC16",
+      "#F97316",
+      "#6366F1",
+    ];
+
+    const colorIndex = businessName.length % colors.length;
+    const bgColor = colors[colorIndex];
+    const lightBg = bgColor + "20"; // Add transparency
+
+    return `data:image/svg+xml,${encodeURIComponent(`
+      <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad${colorIndex}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:${bgColor};stop-opacity:1" />
+            <stop offset="100%" style="stop-color:${colors[(colorIndex + 1) % colors.length]};stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <rect width="100%" height="100%" rx="12" fill="url(#grad${colorIndex})" />
+        <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="${size * 0.35}" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="central">
+          ${initials}
+        </text>
+      </svg>
+    `)}`;
+  };
+
   const BusinessCard = ({
     business,
     index,
