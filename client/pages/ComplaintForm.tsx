@@ -603,39 +603,20 @@ export default function ComplaintForm() {
 
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Header - Compact Professional Design */}
-          <div className="bg-white border border-gray-200 rounded-xl shadow-sm mb-4 sm:mb-6 mx-2 sm:mx-0">
-            <div className="px-4 sm:px-6 py-4 sm:py-5">
-              <div className="flex items-center justify-center mb-3">
+          {/* Header - Wider Professional Design */}
+          <div className="bg-white border border-gray-200 rounded-xl shadow-sm mb-4 sm:mb-6 mx-0">
+            <div className="px-6 sm:px-8 py-4 sm:py-5 max-w-5xl mx-auto">
+              <div className="flex items-center justify-center mb-4">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-red-500 to-red-700 rounded-lg flex items-center justify-center shadow-md">
                   <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
                 <div className="ml-3 sm:ml-4 text-left">
-                  <h1 className="text-lg sm:text-xl font-bold text-gray-900">
+                  <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
                     Report Scam Company
                   </h1>
-                  <p className="text-sm text-gray-600 mt-0.5">
+                  <p className="text-sm sm:text-base text-gray-600 mt-0.5">
                     Protect our community together
                   </p>
-                </div>
-              </div>
-
-              {/* Important Notice */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
-                <div className="flex items-start space-x-2">
-                  <AlertTriangle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <div className="text-xs sm:text-sm text-blue-800">
-                    <p className="font-medium mb-1">Important Guidelines:</p>
-                    <ul className="space-y-1 text-xs">
-                      <li>• File uploads limited to 5MB maximum size</li>
-                      <li>
-                        • All submissions reviewed by admin before publication
-                      </li>
-                      <li>
-                        • Your identity remains confidential during review
-                      </li>
-                    </ul>
-                  </div>
                 </div>
               </div>
 
