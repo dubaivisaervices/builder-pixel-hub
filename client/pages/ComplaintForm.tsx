@@ -757,6 +757,19 @@ export default function ComplaintForm() {
           </div>
         </div>
 
+        {/* Back Button */}
+        <div className="max-w-6xl mx-auto px-4 pt-4 sm:pt-6">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-gray-600 border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 text-sm sm:text-base"
+          >
+            <ChevronRight className="h-4 w-4 rotate-180" />
+            Back
+          </Button>
+        </div>
+
         <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8 relative">
           <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
             {/* Company Selection - Redesigned */}
