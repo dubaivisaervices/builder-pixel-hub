@@ -71,6 +71,7 @@ import {
   serveCachedLogo,
   serveCachedPhoto,
 } from "./routes/serve-cached-images";
+import { debugBusinessImages } from "./routes/debug-business-images";
 // Temporarily disabled due to space constraints
 // import {
 //   downloadOptimizedPhotos,
@@ -187,6 +188,7 @@ export function createServer() {
   // Serve cached images from database
   app.get("/api/cached-logo/:businessId", serveCachedLogo);
   app.get("/api/cached-photo/:businessId/:photoIndex", serveCachedPhoto);
+  app.get("/api/debug-images/:businessId", debugBusinessImages);
 
   // Temporarily disabled due to space constraints
   // app.post("/api/admin/download-optimized-photos", downloadOptimizedPhotos);
