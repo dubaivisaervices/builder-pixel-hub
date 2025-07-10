@@ -267,20 +267,20 @@ function WriteReviewSection({
   return (
     <div className="space-y-6 md:space-y-8">
       {/* Header */}
-      <div className="text-center px-4">
+      <div className="text-center px-4 sm:px-6">
         <div className="inline-flex p-3 md:p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg mb-4 md:mb-6">
           <Edit3 className="h-8 w-8 md:h-12 md:w-12 text-white" />
         </div>
-        <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
+        <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
           Share Your Experience
         </h2>
-        <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto">
+        <p className="text-sm sm:text-base md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
           Help others by sharing your honest review about {businessName}
         </p>
       </div>
 
       {/* Review Form - Always Visible */}
-      <div className="px-4">
+      <div className="px-4 sm:px-6">
         <Card className="max-w-4xl mx-auto shadow-2xl border-0 bg-white/80 backdrop-blur-xl overflow-hidden">
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 md:p-6">
             <h3 className="text-xl md:text-2xl font-bold text-white">
