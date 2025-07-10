@@ -172,7 +172,7 @@ export function createServer() {
 }
 
 // Start server if this file is run directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const PORT = process.env.PORT || 8080;
   const app = createServer();
 
