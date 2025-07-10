@@ -169,132 +169,208 @@ export default function ComplaintForm() {
   const fetchBusinesses = async () => {
     console.log("🔄 Loading business directory...");
 
-    // Use comprehensive mock data since API endpoints are not available yet
-    const mockBusinesses = [
-      {
-        id: "biz001",
-        name: "Perfect Connection Document Clearing",
-        address: "Business Bay, Dubai, UAE",
-        category: "Document Clearing Services",
-        rating: 4.8,
-        reviewCount: 234,
-      },
-      {
-        id: "biz002",
-        name: "Emirates Visa Services",
-        address: "DIFC, Dubai, UAE",
-        category: "Visa Services",
-        rating: 4.6,
-        reviewCount: 189,
-      },
-      {
-        id: "biz003",
-        name: "Dubai Immigration Consultants",
-        address: "Downtown Dubai, UAE",
-        category: "Immigration Services",
-        rating: 4.3,
-        reviewCount: 156,
-      },
-      {
-        id: "biz004",
-        name: "Golden Visa Services LLC",
-        address: "Jumeirah Lake Towers, Dubai",
-        category: "Visa Services",
-        rating: 4.7,
-        reviewCount: 298,
-      },
-      {
-        id: "biz005",
-        name: "Al Rostamani Visa Center",
-        address: "Deira, Dubai, UAE",
-        category: "Visa Services",
-        rating: 4.4,
-        reviewCount: 167,
-      },
-      {
-        id: "biz006",
-        name: "Smart Business Setup",
-        address: "Sheikh Zayed Road, Dubai",
-        category: "Business Services",
-        rating: 4.5,
-        reviewCount: 203,
-      },
-      {
-        id: "biz007",
-        name: "Express Immigration Services",
-        address: "Bur Dubai, UAE",
-        category: "Immigration Services",
-        rating: 4.2,
-        reviewCount: 145,
-      },
-      {
-        id: "biz008",
-        name: "Professional Visa Consultancy",
-        address: "Marina, Dubai, UAE",
-        category: "Visa Services",
-        rating: 4.6,
-        reviewCount: 278,
-      },
-      {
-        id: "biz009",
-        name: "Dubai PRO Services",
-        address: "Karama, Dubai, UAE",
-        category: "PRO Services",
-        rating: 4.1,
-        reviewCount: 134,
-      },
-      {
-        id: "biz010",
-        name: "Elite Immigration Solutions",
-        address: "Sharjah, UAE",
-        category: "Immigration Services",
-        rating: 4.5,
-        reviewCount: 187,
-      },
-      {
-        id: "biz011",
-        name: "Quick Visa Processing",
-        address: "Al Barsha, Dubai, UAE",
-        category: "Visa Services",
-        rating: 4.3,
-        reviewCount: 165,
-      },
-      {
-        id: "biz012",
-        name: "Trustworthy Document Services",
-        address: "Satwa, Dubai, UAE",
-        category: "Document Services",
-        rating: 4.4,
-        reviewCount: 198,
-      },
-      {
-        id: "biz013",
-        name: "Fast Track Visas",
-        address: "Ajman, UAE",
-        category: "Visa Services",
-        rating: 4.0,
-        reviewCount: 123,
-      },
-      {
-        id: "biz014",
-        name: "Premium Immigration Hub",
-        address: "Abu Dhabi, UAE",
-        category: "Immigration Services",
-        rating: 4.7,
-        reviewCount: 256,
-      },
-      {
-        id: "biz015",
-        name: "Reliable Visa Center",
-        address: "Al Qusais, Dubai, UAE",
-        category: "Visa Services",
-        rating: 4.2,
-        reviewCount: 176,
-      },
+    // Generate comprehensive mock data with 840+ businesses
+    const businessNames = [
+      "Perfect Connection Document Clearing",
+      "Emirates Visa Services",
+      "Dubai Immigration Consultants",
+      "Golden Visa Services",
+      "Al Rostamani Visa Center",
+      "Smart Business Setup",
+      "Express Immigration Services",
+      "Professional Visa Consultancy",
+      "Dubai PRO Services",
+      "Elite Immigration Solutions",
+      "Quick Visa Processing",
+      "Trustworthy Document Services",
+      "Fast Track Visas",
+      "Premium Immigration Hub",
+      "Reliable Visa Center",
+      "Paradise Immigration",
+      "Falcon Visa Services",
+      "Dubai Business Hub",
+      "Al Khaleej Services",
+      "Crown Immigration",
+      "Excellence Visa Center",
+      "Royal Document Services",
+      "Premier Immigration",
+      "Global Visa Solutions",
+      "Metro Services",
+      "City Center Immigration",
+      "Tower Visa Services",
+      "Bridge Consultancy",
+      "Summit Services",
+      "Peak Immigration",
+      "Prime Visa Center",
+      "Alpha Document Services",
+      "Beta Immigration",
+      "Gamma Visa Services",
+      "Delta Consultancy",
+      "Epsilon Services",
+      "Zeta Immigration",
+      "Eta Visa Center",
+      "Theta Services",
+      "Iota Consultancy",
+      "Kappa Immigration",
+      "Lambda Services",
+      "Mu Visa Center",
+      "Nu Immigration",
+      "Xi Services",
+      "Omicron Consultancy",
+      "Pi Immigration",
+      "Rho Services",
+      "Sigma Visa Center",
+      "Tau Immigration",
     ];
 
+    const locations = [
+      "Business Bay, Dubai",
+      "DIFC, Dubai",
+      "Downtown Dubai",
+      "Jumeirah Lake Towers, Dubai",
+      "Deira, Dubai",
+      "Sheikh Zayed Road, Dubai",
+      "Bur Dubai",
+      "Marina, Dubai",
+      "Karama, Dubai",
+      "Al Barsha, Dubai",
+      "Satwa, Dubai",
+      "Al Qusais, Dubai",
+      "Jumeirah, Dubai",
+      "Al Wasl, Dubai",
+      "Oud Metha, Dubai",
+      "Al Garhoud, Dubai",
+      "Port Saeed, Dubai",
+      "Al Rigga, Dubai",
+      "Al Fahidi, Dubai",
+      "Trade Centre, Dubai",
+      "Festival City, Dubai",
+      "Motor City, Dubai",
+      "Sports City, Dubai",
+      "Silicon Oasis, Dubai",
+      "International City, Dubai",
+      "Discovery Gardens, Dubai",
+      "Mirdif, Dubai",
+      "Rashidiya, Dubai",
+      "Muhaisnah, Dubai",
+      "Al Mizhar, Dubai",
+      "Al Warqa, Dubai",
+      "Nad Al Sheba, Dubai",
+      "Al Khawaneej, Dubai",
+      "Hatta, Dubai",
+      "Sharjah",
+      "Abu Dhabi",
+      "Ajman",
+      "Fujairah",
+      "Ras Al Khaimah",
+      "Umm Al Quwain",
+      "Al Ain",
+    ];
+
+    const categories = [
+      "Visa Services",
+      "Immigration Services",
+      "Document Clearing Services",
+      "PRO Services",
+      "Business Services",
+      "Document Services",
+      "Consultation Services",
+      "Legal Services",
+      "Translation Services",
+      "Attestation Services",
+      "Licensing Services",
+      "Government Relations",
+    ];
+
+    const mockBusinesses: BusinessData[] = [];
+
+    // Generate base businesses with real names
+    businessNames.forEach((baseName, index) => {
+      const location = locations[index % locations.length];
+      const category = categories[index % categories.length];
+
+      mockBusinesses.push({
+        id: `biz${String(index + 1).padStart(3, "0")}`,
+        name: baseName,
+        address: `${location}, UAE`,
+        category: category,
+        rating: parseFloat((3.5 + Math.random() * 1.5).toFixed(1)),
+        reviewCount: Math.floor(Math.random() * 300) + 50,
+      });
+    });
+
+    // Generate additional businesses with variations to reach 840+
+    const variations = [
+      "LLC",
+      "FZE",
+      "FZCO",
+      "& Associates",
+      "Consultancy",
+      "Group",
+      "International",
+      "Limited",
+      "& Co",
+      "Solutions",
+      "Services",
+      "Center",
+      "Hub",
+      "Agency",
+      "Company",
+      "Corporation",
+    ];
+
+    const prefixes = [
+      "Al",
+      "Emirates",
+      "Dubai",
+      "UAE",
+      "Gulf",
+      "Middle East",
+      "Arabian",
+      "International",
+      "Global",
+      "Premier",
+      "Elite",
+      "Royal",
+      "Crown",
+      "Golden",
+      "Diamond",
+      "Platinum",
+    ];
+
+    // Add variations to reach 840+ businesses
+    for (let i = 0; i < 25; i++) {
+      businessNames.forEach((baseName, nameIndex) => {
+        if (mockBusinesses.length >= 840) return;
+
+        variations.forEach((variation, varIndex) => {
+          if (mockBusinesses.length >= 840) return;
+
+          const prefix = prefixes[(nameIndex + varIndex) % prefixes.length];
+          const location =
+            locations[(nameIndex + varIndex + i) % locations.length];
+          const category =
+            categories[(nameIndex + varIndex) % categories.length];
+
+          const newName =
+            Math.random() > 0.5
+              ? `${prefix} ${baseName} ${variation}`
+              : `${baseName} ${variation}`;
+
+          mockBusinesses.push({
+            id: `biz${String(mockBusinesses.length + 1).padStart(3, "0")}`,
+            name: newName,
+            address: `${location}, UAE`,
+            category: category,
+            rating: parseFloat((3.5 + Math.random() * 1.5).toFixed(1)),
+            reviewCount: Math.floor(Math.random() * 300) + 50,
+          });
+        });
+      });
+    }
+
     // Simulate API loading delay
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 300));
 
     console.log("✅ Successfully loaded", mockBusinesses.length, "businesses");
     setBusinesses(mockBusinesses);
