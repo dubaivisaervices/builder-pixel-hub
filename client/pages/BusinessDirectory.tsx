@@ -335,8 +335,8 @@ export default function BusinessDirectory() {
           </div>
         )}
 
-        {/* Action Buttons */}
-        <div className="absolute top-3 right-3 z-10 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        {/* Action Buttons - Hidden on mobile for better touch experience */}
+        <div className="hidden sm:flex absolute top-3 right-3 z-10 space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <Button
             size="sm"
             variant="ghost"
