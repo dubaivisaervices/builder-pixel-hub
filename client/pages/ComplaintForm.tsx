@@ -668,7 +668,10 @@ export default function ComplaintForm() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-3 sm:space-y-4 md:space-y-6"
+          >
             {/* Company Selection */}
             <Card
               className={`shadow-lg border border-gray-200 bg-white hover-lift glassmorphism ${animateCards ? "card-animate" : ""}`}
