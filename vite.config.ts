@@ -1,5 +1,4 @@
 import { defineConfig, Plugin } from "vite";
-import react from "@vitejs/plugin-react";
 import path from "path";
 import { createServer } from "./server";
 
@@ -12,14 +11,12 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: "dist/spa",
   },
-  plugins: [
-    react({
-      // Completely disable all refresh functionality
-      fastRefresh: false,
-      jsxRuntime: "classic",
-    }),
-    expressPlugin(),
-  ],
+  esbuild: {
+    jsx: "transform",
+    jsxFactory: "React.createElement",
+    jsxFragment: "React.Fragment",
+  },
+  plugins: [expressPlugin()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./client"),
