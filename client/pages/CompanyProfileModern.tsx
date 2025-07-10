@@ -1648,6 +1648,14 @@ export default function CompanyProfileModern() {
       {/* Bottom Padding for Fixed Header */}
       <div className="h-20"></div>
 
+      {/* Write a Review Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <WriteReviewSection
+          businessId={businessData?.id}
+          businessName={businessData?.name}
+        />
+      </div>
+
       {/* Homepage Footer */}
       <footer className="bg-gray-900 text-white py-16 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
