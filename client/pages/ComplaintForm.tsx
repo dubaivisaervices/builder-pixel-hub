@@ -855,7 +855,7 @@ export default function ComplaintForm() {
                   )}
 
                   {showSuggestions && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto backdrop-blur-sm bg-white/95">
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-[500px] overflow-y-auto backdrop-blur-sm bg-white/95">
                       {searchSuggestions.length > 0 ? (
                         <>
                           {/* Header with results count and controls */}
