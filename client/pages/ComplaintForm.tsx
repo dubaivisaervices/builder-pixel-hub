@@ -80,9 +80,13 @@ interface ReportFormData {
 export default function ComplaintForm() {
   const [businesses, setBusinesses] = useState<BusinessData[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchSuggestions, setSearchSuggestions] = useState<BusinessData[]>([]);
+  const [searchSuggestions, setSearchSuggestions] = useState<BusinessData[]>(
+    [],
+  );
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [selectedCompany, setSelectedCompany] = useState<BusinessData | null>(null);
+  const [selectedCompany, setSelectedCompany] = useState<BusinessData | null>(
+    null,
+  );
   const [reportData, setReportData] = useState<ReportFormData>({
     issueType: "",
     description: "",
@@ -128,13 +132,14 @@ export default function ComplaintForm() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const progress = (scrollTop / docHeight) * 100;
       setScrollProgress(Math.min(progress, 100));
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -301,7 +306,7 @@ export default function ComplaintForm() {
 
   const handleAddCompanySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       const response = await fetch("/api/companies/add", {
         method: "POST",
@@ -312,7 +317,9 @@ export default function ComplaintForm() {
       });
 
       if (response.ok) {
-        alert("Company request submitted successfully! Our admin team will review it.");
+        alert(
+          "Company request submitted successfully! Our admin team will review it.",
+        );
         setShowAddCompanyPopup(false);
         setNewCompanyData({
           name: "",
@@ -481,7 +488,7 @@ export default function ComplaintForm() {
         <Card className="max-w-lg w-full shadow-2xl border-0 bg-white/80 backdrop-blur-xl relative overflow-hidden">
           {/* Success Animation */}
           <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5"></div>
-          
+
           <CardContent className="p-8 sm:p-12 text-center relative">
             {/* Animated Success Icon */}
             <div className="relative mb-8">
@@ -489,7 +496,7 @@ export default function ComplaintForm() {
                 <CheckCircle className="h-12 w-12 text-white" />
               </div>
               <div className="absolute inset-0 w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full mx-auto animate-ping opacity-20"></div>
-              
+
               {/* Floating Success Elements */}
               <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div>
               <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-blue-400 rounded-full animate-pulse delay-300"></div>
@@ -500,7 +507,8 @@ export default function ComplaintForm() {
               Report Submitted Successfully! 🎉
             </h2>
             <p className="text-gray-600 mb-8 text-lg leading-relaxed">
-              Thank you for helping protect the Dubai business community. Your report has been received and will be reviewed by our expert team.
+              Thank you for helping protect the Dubai business community. Your
+              report has been received and will be reviewed by our expert team.
             </p>
 
             {/* Success Stats */}
@@ -546,7 +554,7 @@ export default function ComplaintForm() {
     <>
       {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-        <div 
+        <div
           className="h-full bg-gradient-to-r from-red-500 via-orange-500 to-pink-500 transition-all duration-300 ease-out"
           style={{ width: `${scrollProgress}%` }}
         ></div>
@@ -708,14 +716,27 @@ export default function ComplaintForm() {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 relative overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="1.5"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
-          
+          <div
+            className={
+              'absolute top-0 left-0 w-full h-full bg-[url(\'data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="1.5"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\')] opacity-20'
+            }
+          ></div>
+
           {/* Floating Geometric Shapes */}
           <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-xl float-animation"></div>
-          <div className="absolute top-40 right-20 w-32 h-32 bg-gradient-to-br from-pink-400/20 to-red-400/20 rounded-full blur-xl float-animation" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute bottom-40 left-20 w-24 h-24 bg-gradient-to-br from-emerald-400/20 to-blue-400/20 rounded-full blur-xl float-animation" style={{ animationDelay: '4s' }}></div>
-          <div className="absolute bottom-20 right-40 w-16 h-16 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-full blur-xl float-animation" style={{ animationDelay: '1s' }}></div>
-          
+          <div
+            className="absolute top-40 right-20 w-32 h-32 bg-gradient-to-br from-pink-400/20 to-red-400/20 rounded-full blur-xl float-animation"
+            style={{ animationDelay: "2s" }}
+          ></div>
+          <div
+            className="absolute bottom-40 left-20 w-24 h-24 bg-gradient-to-br from-emerald-400/20 to-blue-400/20 rounded-full blur-xl float-animation"
+            style={{ animationDelay: "4s" }}
+          ></div>
+          <div
+            className="absolute bottom-20 right-40 w-16 h-16 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-full blur-xl float-animation"
+            style={{ animationDelay: "1s" }}
+          ></div>
+
           {/* Gradient Overlays */}
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-500/5 to-purple-500/10"></div>
         </div>
@@ -723,17 +744,23 @@ export default function ComplaintForm() {
         {/* Hero Section */}
         <div className="relative bg-gradient-to-r from-red-600 via-red-700 to-red-800 text-white overflow-hidden">
           {/* Animated Background Pattern */}
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Cpath d="M20 20c0 11.046-8.954 20-20 20v20h40V20H20z"/%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
-          
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width=%2240%22%20height=%2240%22%20viewBox=%220%200%2040%2040%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg%20fill=%22%23ffffff%22%20fill-opacity=%220.05%22%3E%3Cpath%20d=%22M20%2020c0%2011.046-8.954%2020-20%2020v20h40V20H20z%22/%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
+
           {/* Floating Icons */}
           <div className="absolute top-10 left-10 opacity-20">
             <Shield className="h-8 w-8 text-white float-animation" />
           </div>
           <div className="absolute top-20 right-20 opacity-20">
-            <Zap className="h-6 w-6 text-white float-animation" style={{ animationDelay: '1s' }} />
+            <Zap
+              className="h-6 w-6 text-white float-animation"
+              style={{ animationDelay: "1s" }}
+            />
           </div>
           <div className="absolute bottom-20 left-16 opacity-20">
-            <Target className="h-7 w-7 text-white float-animation" style={{ animationDelay: '2s' }} />
+            <Target
+              className="h-7 w-7 text-white float-animation"
+              style={{ animationDelay: "2s" }}
+            />
           </div>
 
           <div className="max-w-6xl mx-auto px-4 py-12 sm:py-20 relative">
@@ -759,28 +786,39 @@ export default function ComplaintForm() {
                   Protect Our Community 🛡️
                 </span>
               </h1>
-              
+
               <p className="text-lg sm:text-xl md:text-2xl text-red-100 max-w-4xl mx-auto mb-8 leading-relaxed">
-                Help safeguard Dubai's business ecosystem by reporting scams, fraud, and unethical practices. 
-                Your voice creates a safer marketplace for everyone.
+                Help safeguard Dubai's business ecosystem by reporting scams,
+                fraud, and unethical practices. Your voice creates a safer
+                marketplace for everyone.
               </p>
 
               {/* Feature Highlights */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto mb-8">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:scale-105">
                   <UserCheck className="h-8 w-8 text-white mb-3 mx-auto" />
-                  <h3 className="font-semibold text-white mb-2">Confidential</h3>
-                  <p className="text-red-100 text-sm">Your identity is protected with bank-level security</p>
+                  <h3 className="font-semibold text-white mb-2">
+                    Confidential
+                  </h3>
+                  <p className="text-red-100 text-sm">
+                    Your identity is protected with bank-level security
+                  </p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:scale-105">
                   <Rocket className="h-8 w-8 text-white mb-3 mx-auto" />
-                  <h3 className="font-semibold text-white mb-2">Fast Response</h3>
-                  <p className="text-red-100 text-sm">Expert review within 24 hours guaranteed</p>
+                  <h3 className="font-semibold text-white mb-2">
+                    Fast Response
+                  </h3>
+                  <p className="text-red-100 text-sm">
+                    Expert review within 24 hours guaranteed
+                  </p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:scale-105">
                   <Award className="h-8 w-8 text-white mb-3 mx-auto" />
                   <h3 className="font-semibold text-white mb-2">Real Impact</h3>
-                  <p className="text-red-100 text-sm">Join 2.8k+ users creating positive change</p>
+                  <p className="text-red-100 text-sm">
+                    Join 2.8k+ users creating positive change
+                  </p>
                 </div>
               </div>
 
@@ -788,7 +826,9 @@ export default function ComplaintForm() {
               <div className="max-w-md mx-auto">
                 <div className="flex justify-between text-sm mb-3">
                   <span className="text-white font-medium">Progress</span>
-                  <span className="text-red-100">{Math.round(formProgress)}% Complete</span>
+                  <span className="text-red-100">
+                    {Math.round(formProgress)}% Complete
+                  </span>
                 </div>
                 <div className="w-full bg-white/20 rounded-full h-3 backdrop-blur-sm border border-white/30">
                   <div
@@ -796,22 +836,37 @@ export default function ComplaintForm() {
                     style={{ width: `${formProgress}%` }}
                   ></div>
                 </div>
-                
+
                 {/* Step Indicators */}
                 <div className="flex justify-between mt-4 px-2">
                   {[1, 2, 3, 4].map((step) => (
-                    <div key={step} className={`flex flex-col items-center ${completedSteps.includes(step) ? 'text-green-300' : currentStep === step ? 'text-white' : 'text-white/50'}`}>
-                      <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold mb-1 transition-all duration-300 step-indicator ${
-                        completedSteps.includes(step) 
-                          ? 'bg-green-500 border-green-400 active' 
-                          : currentStep === step 
-                            ? 'bg-white/20 border-white glow-animation' 
-                            : 'border-white/30'
-                      }`}>
-                        {completedSteps.includes(step) ? <CheckCircle className="h-4 w-4" /> : step}
+                    <div
+                      key={step}
+                      className={`flex flex-col items-center ${completedSteps.includes(step) ? "text-green-300" : currentStep === step ? "text-white" : "text-white/50"}`}
+                    >
+                      <div
+                        className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold mb-1 transition-all duration-300 step-indicator ${
+                          completedSteps.includes(step)
+                            ? "bg-green-500 border-green-400 active"
+                            : currentStep === step
+                              ? "bg-white/20 border-white glow-animation"
+                              : "border-white/30"
+                        }`}
+                      >
+                        {completedSteps.includes(step) ? (
+                          <CheckCircle className="h-4 w-4" />
+                        ) : (
+                          step
+                        )}
                       </div>
                       <span className="text-xs font-medium">
-                        {step === 1 ? 'Company' : step === 2 ? 'Details' : step === 3 ? 'Evidence' : 'Contact'}
+                        {step === 1
+                          ? "Company"
+                          : step === 2
+                            ? "Details"
+                            : step === 3
+                              ? "Evidence"
+                              : "Contact"}
                       </span>
                     </div>
                   ))}
@@ -838,7 +893,9 @@ export default function ComplaintForm() {
                     {completedSteps.includes(1) && (
                       <div className="flex items-center mt-1">
                         <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
-                        <span className="text-green-600 text-sm font-medium">Company Selected</span>
+                        <span className="text-green-600 text-sm font-medium">
+                          Company Selected
+                        </span>
                       </div>
                     )}
                   </div>
@@ -854,14 +911,16 @@ export default function ComplaintForm() {
                       onChange={(e) => handleCompanySearch(e.target.value)}
                       onFocus={handleSearchFocus}
                       className={`w-full h-14 sm:h-16 pl-14 pr-6 text-base sm:text-lg border-2 rounded-2xl focus:outline-none transition-all duration-300 shadow-lg hover:shadow-xl ${
-                        isTyping 
-                          ? "border-blue-400 ring-2 ring-blue-200 bg-blue-50/50 search-pulse" 
+                        isTyping
+                          ? "border-blue-400 ring-2 ring-blue-200 bg-blue-50/50 search-pulse"
                           : "border-gray-300 bg-white hover:border-gray-400"
                       }`}
                       required
                     />
                     <div className="absolute left-5 top-1/2 transform -translate-y-1/2">
-                      <Search className={`h-6 w-6 transition-colors duration-300 ${isTyping ? "text-blue-500" : "text-gray-400"}`} />
+                      <Search
+                        className={`h-6 w-6 transition-colors duration-300 ${isTyping ? "text-blue-500" : "text-gray-400"}`}
+                      />
                     </div>
                     {isTyping && (
                       <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
@@ -917,7 +976,10 @@ export default function ComplaintForm() {
                                     {business.address}
                                   </p>
                                   <div className="flex items-center space-x-3 mt-2">
-                                    <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700">
+                                    <Badge
+                                      variant="secondary"
+                                      className="text-xs bg-blue-100 text-blue-700"
+                                    >
                                       {business.category}
                                     </Badge>
                                     <div className="flex items-center space-x-1">
@@ -946,12 +1008,17 @@ export default function ComplaintForm() {
                               Company not found? 🤔
                             </h3>
                             <p className="text-gray-600 mb-6 leading-relaxed">
-                              Can't find the company you're looking for? Help us expand our directory and make it better for everyone.
+                              Can't find the company you're looking for? Help us
+                              expand our directory and make it better for
+                              everyone.
                             </p>
 
                             <Button
                               onClick={() => {
-                                setNewCompanyData(prev => ({ ...prev, name: searchTerm }));
+                                setNewCompanyData((prev) => ({
+                                  ...prev,
+                                  name: searchTerm,
+                                }));
                                 setShowAddCompanyPopup(true);
                               }}
                               className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
@@ -960,7 +1027,8 @@ export default function ComplaintForm() {
                               Add New Company ✨
                             </Button>
                             <p className="text-xs text-gray-500 mt-3">
-                              New companies are reviewed and added by our admin team
+                              New companies are reviewed and added by our admin
+                              team
                             </p>
                           </div>
                         )
@@ -985,7 +1053,9 @@ export default function ComplaintForm() {
                         </h3>
                         <p className="text-gray-600 flex items-center mt-1">
                           <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
-                          <span className="truncate">{selectedCompany.address}</span>
+                          <span className="truncate">
+                            {selectedCompany.address}
+                          </span>
                         </p>
                         <div className="flex items-center space-x-3 mt-2">
                           <Badge className="bg-blue-100 text-blue-700 border-blue-200">
@@ -1021,7 +1091,9 @@ export default function ComplaintForm() {
                     {completedSteps.includes(2) && (
                       <div className="flex items-center mt-1">
                         <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
-                        <span className="text-green-600 text-sm font-medium">Details Completed</span>
+                        <span className="text-green-600 text-sm font-medium">
+                          Details Completed
+                        </span>
                       </div>
                     )}
                   </div>
@@ -1030,7 +1102,10 @@ export default function ComplaintForm() {
               <CardContent className="p-6 sm:p-8 space-y-6 relative">
                 {/* Issue Type */}
                 <div className="space-y-3">
-                  <Label htmlFor="issueType" className="text-base font-semibold text-gray-700 flex items-center">
+                  <Label
+                    htmlFor="issueType"
+                    className="text-base font-semibold text-gray-700 flex items-center"
+                  >
                     <Flag className="h-5 w-5 mr-2 text-orange-500" />
                     Type of Issue *
                   </Label>
@@ -1051,55 +1126,82 @@ export default function ComplaintForm() {
                           Fraud / Scam
                         </span>
                       </SelectItem>
-                      <SelectItem value="poor_service" className="p-4 hover:bg-orange-50">
+                      <SelectItem
+                        value="poor_service"
+                        className="p-4 hover:bg-orange-50"
+                      >
                         <span className="flex items-center">
                           <TrendingDown className="h-4 w-4 mr-3 text-orange-500" />
                           Poor Service Quality
                         </span>
                       </SelectItem>
-                      <SelectItem value="overcharging" className="p-4 hover:bg-yellow-50">
+                      <SelectItem
+                        value="overcharging"
+                        className="p-4 hover:bg-yellow-50"
+                      >
                         <span className="flex items-center">
                           <AlertTriangle className="h-4 w-4 mr-3 text-yellow-500" />
                           Overcharging / Hidden Fees
                         </span>
                       </SelectItem>
-                      <SelectItem value="unprofessional" className="p-4 hover:bg-purple-50">
+                      <SelectItem
+                        value="unprofessional"
+                        className="p-4 hover:bg-purple-50"
+                      >
                         <span className="flex items-center">
                           <Users className="h-4 w-4 mr-3 text-purple-500" />
                           Unprofessional Behavior
                         </span>
                       </SelectItem>
-                      <SelectItem value="delayed_service" className="p-4 hover:bg-blue-50">
+                      <SelectItem
+                        value="delayed_service"
+                        className="p-4 hover:bg-blue-50"
+                      >
                         <span className="flex items-center">
                           <Clock className="h-4 w-4 mr-3 text-blue-500" />
                           Delayed Service
                         </span>
                       </SelectItem>
-                      <SelectItem value="license_issues" className="p-4 hover:bg-gray-50">
+                      <SelectItem
+                        value="license_issues"
+                        className="p-4 hover:bg-gray-50"
+                      >
                         <span className="flex items-center">
                           <Shield className="h-4 w-4 mr-3 text-gray-500" />
                           License / Legal Issues
                         </span>
                       </SelectItem>
-                      <SelectItem value="refund_issues" className="p-4 hover:bg-green-50">
+                      <SelectItem
+                        value="refund_issues"
+                        className="p-4 hover:bg-green-50"
+                      >
                         <span className="flex items-center">
                           <ArrowRight className="h-4 w-4 mr-3 text-green-500" />
                           Refund Problems
                         </span>
                       </SelectItem>
-                      <SelectItem value="false_advertising" className="p-4 hover:bg-pink-50">
+                      <SelectItem
+                        value="false_advertising"
+                        className="p-4 hover:bg-pink-50"
+                      >
                         <span className="flex items-center">
                           <Eye className="h-4 w-4 mr-3 text-pink-500" />
                           False Advertising
                         </span>
                       </SelectItem>
-                      <SelectItem value="data_misuse" className="p-4 hover:bg-indigo-50">
+                      <SelectItem
+                        value="data_misuse"
+                        className="p-4 hover:bg-indigo-50"
+                      >
                         <span className="flex items-center">
                           <Fingerprint className="h-4 w-4 mr-3 text-indigo-500" />
                           Data Misuse
                         </span>
                       </SelectItem>
-                      <SelectItem value="other" className="p-4 hover:bg-gray-50">
+                      <SelectItem
+                        value="other"
+                        className="p-4 hover:bg-gray-50"
+                      >
                         <span className="flex items-center">
                           <MessageCircleQuestion className="h-4 w-4 mr-3 text-gray-500" />
                           Other
@@ -1111,7 +1213,10 @@ export default function ComplaintForm() {
 
                 {reportData.issueType && (
                   <div className="space-y-3 fade-in-scale">
-                    <Label htmlFor="employeeName" className="text-base font-semibold text-gray-700 flex items-center">
+                    <Label
+                      htmlFor="employeeName"
+                      className="text-base font-semibold text-gray-700 flex items-center"
+                    >
                       <UserCheck className="h-5 w-5 mr-2 text-blue-500" />
                       Employee/Contact Person Involved (Optional)
                     </Label>
@@ -1133,7 +1238,10 @@ export default function ComplaintForm() {
 
                 {/* Description */}
                 <div className="space-y-3">
-                  <Label htmlFor="description" className="text-base font-semibold text-gray-700 flex items-center">
+                  <Label
+                    htmlFor="description"
+                    className="text-base font-semibold text-gray-700 flex items-center"
+                  >
                     <FileText className="h-5 w-5 mr-2 text-purple-500" />
                     Detailed Description *
                   </Label>
@@ -1160,7 +1268,10 @@ export default function ComplaintForm() {
                 {/* Amount and Date */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-3">
-                    <Label htmlFor="amountLost" className="text-base font-semibold text-gray-700 flex items-center">
+                    <Label
+                      htmlFor="amountLost"
+                      className="text-base font-semibold text-gray-700 flex items-center"
+                    >
                       <Building className="h-5 w-5 mr-2 text-green-500" />
                       Amount Lost (AED)
                     </Label>
@@ -1180,7 +1291,10 @@ export default function ComplaintForm() {
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="dateOfIncident" className="text-base font-semibold text-gray-700 flex items-center">
+                    <Label
+                      htmlFor="dateOfIncident"
+                      className="text-base font-semibold text-gray-700 flex items-center"
+                    >
                       <Clock className="h-5 w-5 mr-2 text-indigo-500" />
                       Date of Incident *
                     </Label>
@@ -1202,7 +1316,10 @@ export default function ComplaintForm() {
 
                 {/* Evidence Description */}
                 <div className="space-y-3">
-                  <Label htmlFor="evidenceDescription" className="text-base font-semibold text-gray-700 flex items-center">
+                  <Label
+                    htmlFor="evidenceDescription"
+                    className="text-base font-semibold text-gray-700 flex items-center"
+                  >
                     <Eye className="h-5 w-5 mr-2 text-orange-500" />
                     Evidence & Additional Details (Optional)
                   </Label>
@@ -1234,11 +1351,15 @@ export default function ComplaintForm() {
                     <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                       Supporting Documents
                     </span>
-                    <p className="text-sm text-gray-600 font-normal mt-1">Upload evidence to strengthen your report</p>
+                    <p className="text-sm text-gray-600 font-normal mt-1">
+                      Upload evidence to strengthen your report
+                    </p>
                     {completedSteps.includes(3) && (
                       <div className="flex items-center mt-2">
                         <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
-                        <span className="text-green-600 text-sm font-medium">Documents Uploaded</span>
+                        <span className="text-green-600 text-sm font-medium">
+                          Documents Uploaded
+                        </span>
                       </div>
                     )}
                   </div>
@@ -1275,7 +1396,13 @@ export default function ComplaintForm() {
                               {reportData.paymentReceipt.name}
                             </p>
                             <p className="text-sm text-gray-500 mt-1">
-                              Size: {(reportData.paymentReceipt.size / 1024 / 1024).toFixed(2)} MB
+                              Size:{" "}
+                              {(
+                                reportData.paymentReceipt.size /
+                                1024 /
+                                1024
+                              ).toFixed(2)}{" "}
+                              MB
                             </p>
                           </div>
                           {showTooltip === "receipt" && (
@@ -1343,7 +1470,13 @@ export default function ComplaintForm() {
                               {reportData.agreementCopy.name}
                             </p>
                             <p className="text-sm text-gray-500 mt-1">
-                              Size: {(reportData.agreementCopy.size / 1024 / 1024).toFixed(2)} MB
+                              Size:{" "}
+                              {(
+                                reportData.agreementCopy.size /
+                                1024 /
+                                1024
+                              ).toFixed(2)}{" "}
+                              MB
                             </p>
                           </div>
                           {showTooltip === "agreement" && (
@@ -1386,11 +1519,14 @@ export default function ComplaintForm() {
                 <div className="text-center p-4 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-2xl">
                   <div className="flex items-center justify-center mb-2">
                     <Lock className="h-5 w-5 text-yellow-600 mr-2" />
-                    <span className="font-semibold text-yellow-800">Security Notice</span>
+                    <span className="font-semibold text-yellow-800">
+                      Security Notice
+                    </span>
                   </div>
                   <p className="text-sm text-yellow-700">
-                    <span className="font-semibold">Max 5MB per file.</span> Supported formats: JPEG, PNG, PDF. 
-                    All uploads are encrypted and securely stored.
+                    <span className="font-semibold">Max 5MB per file.</span>{" "}
+                    Supported formats: JPEG, PNG, PDF. All uploads are encrypted
+                    and securely stored.
                   </p>
                 </div>
               </CardContent>
@@ -1408,11 +1544,15 @@ export default function ComplaintForm() {
                     <span className="bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
                       Your Information
                     </span>
-                    <p className="text-sm text-gray-600 font-normal mt-1">Your details are kept strictly confidential</p>
+                    <p className="text-sm text-gray-600 font-normal mt-1">
+                      Your details are kept strictly confidential
+                    </p>
                     {completedSteps.includes(4) && (
                       <div className="flex items-center mt-2">
                         <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
-                        <span className="text-green-600 text-sm font-medium">Information Completed</span>
+                        <span className="text-green-600 text-sm font-medium">
+                          Information Completed
+                        </span>
                       </div>
                     )}
                   </div>
@@ -1430,8 +1570,10 @@ export default function ComplaintForm() {
                         🔒 Confidentiality Guarantee
                       </h4>
                       <p className="text-blue-800 text-sm leading-relaxed">
-                        Your personal information is protected with bank-level encryption and will be used only for investigation purposes. 
-                        We strictly follow UAE data protection regulations and international privacy standards.
+                        Your personal information is protected with bank-level
+                        encryption and will be used only for investigation
+                        purposes. We strictly follow UAE data protection
+                        regulations and international privacy standards.
                       </p>
                     </div>
                   </div>
@@ -1439,7 +1581,10 @@ export default function ComplaintForm() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-3">
-                    <Label htmlFor="reporterName" className="text-base font-semibold text-gray-700 flex items-center">
+                    <Label
+                      htmlFor="reporterName"
+                      className="text-base font-semibold text-gray-700 flex items-center"
+                    >
                       <UserCheck className="h-5 w-5 mr-2 text-green-500" />
                       Full Name *
                     </Label>
@@ -1460,7 +1605,10 @@ export default function ComplaintForm() {
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="reporterEmail" className="text-base font-semibold text-gray-700 flex items-center">
+                    <Label
+                      htmlFor="reporterEmail"
+                      className="text-base font-semibold text-gray-700 flex items-center"
+                    >
                       <Mail className="h-5 w-5 mr-2 text-blue-500" />
                       Email Address *
                     </Label>
@@ -1482,7 +1630,10 @@ export default function ComplaintForm() {
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="reporterPhone" className="text-base font-semibold text-gray-700 flex items-center">
+                  <Label
+                    htmlFor="reporterPhone"
+                    className="text-base font-semibold text-gray-700 flex items-center"
+                  >
                     <Phone className="h-5 w-5 mr-2 text-purple-500" />
                     Phone Number (Optional)
                   </Label>
@@ -1512,7 +1663,7 @@ export default function ComplaintForm() {
                   >
                     {/* Button background animation */}
                     <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-                    
+
                     <div className="relative flex items-center justify-center space-x-3">
                       {loading ? (
                         <>
@@ -1520,8 +1671,14 @@ export default function ComplaintForm() {
                           <span>Submitting Report...</span>
                           <div className="flex space-x-1">
                             <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
-                            <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
-                            <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+                            <div
+                              className="w-2 h-2 bg-white rounded-full animate-bounce"
+                              style={{ animationDelay: "0.1s" }}
+                            ></div>
+                            <div
+                              className="w-2 h-2 bg-white rounded-full animate-bounce"
+                              style={{ animationDelay: "0.2s" }}
+                            ></div>
                           </div>
                         </>
                       ) : (
@@ -1540,7 +1697,9 @@ export default function ComplaintForm() {
                 <div className="text-center pt-4">
                   <Button
                     type="button"
-                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                    onClick={() =>
+                      window.scrollTo({ top: 0, behavior: "smooth" })
+                    }
                     variant="outline"
                     className="w-full sm:w-auto border-2 border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 px-8 py-3 text-base font-semibold rounded-xl transition-all duration-300"
                   >
@@ -1561,7 +1720,8 @@ export default function ComplaintForm() {
                 </span>
               </h2>
               <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                Together we're building the safest business environment in the Middle East ���
+                Together we're building the safest business environment in the
+                Middle East 🌟
               </p>
             </div>
 
@@ -1576,9 +1736,7 @@ export default function ComplaintForm() {
                 <p className="text-base sm:text-lg text-gray-300 font-medium">
                   Reports Submitted
                 </p>
-                <p className="text-sm text-gray-400 mt-2">
-                  This month: +127
-                </p>
+                <p className="text-sm text-gray-400 mt-2">This month: +127</p>
               </div>
 
               <div className="glass-card p-6 sm:p-8 text-center rounded-3xl hover:scale-105 transition-all duration-300">
@@ -1591,9 +1749,7 @@ export default function ComplaintForm() {
                 <p className="text-base sm:text-lg text-gray-300 font-medium">
                   Reduction in Scams
                 </p>
-                <p className="text-sm text-gray-400 mt-2">
-                  Since last year
-                </p>
+                <p className="text-sm text-gray-400 mt-2">Since last year</p>
               </div>
 
               <div className="glass-card p-6 sm:p-8 text-center rounded-3xl hover:scale-105 transition-all duration-300">
@@ -1627,19 +1783,27 @@ export default function ComplaintForm() {
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden relative">
             {/* Animated Background */}
             <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5"></div>
-            
+
             {/* Header */}
             <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-6 sm:p-8 relative">
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Cpath d="M20 20c0 11.046-8.954 20-20 20v20h40V20H20z"/%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
-              
+              <div
+                className={
+                  'absolute inset-0 bg-[url(\'data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Cpath d="M20 20c0 11.046-8.954 20-20 20v20h40V20H20z"/%3E%3C/g%3E%3C/svg%3E\')] opacity-30'
+                }
+              ></div>
+
               <div className="flex items-center justify-between relative">
                 <div className="flex items-center space-x-4">
                   <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
                     <Building2 className="h-8 w-8 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold">Add New Company</h2>
-                    <p className="text-green-100 text-base mt-1">Help expand our business directory 🚀</p>
+                    <h2 className="text-2xl sm:text-3xl font-bold">
+                      Add New Company
+                    </h2>
+                    <p className="text-green-100 text-base mt-1">
+                      Help expand our business directory 🚀
+                    </p>
                   </div>
                 </div>
                 <button
@@ -1656,7 +1820,10 @@ export default function ComplaintForm() {
               <form onSubmit={handleAddCompanySubmit} className="space-y-6">
                 {/* Company Name */}
                 <div className="space-y-3">
-                  <Label htmlFor="companyName" className="text-base font-semibold text-gray-700 flex items-center">
+                  <Label
+                    htmlFor="companyName"
+                    className="text-base font-semibold text-gray-700 flex items-center"
+                  >
                     <Building2 className="h-5 w-5 mr-2 text-green-500" />
                     Company Name *
                   </Label>
@@ -1666,7 +1833,10 @@ export default function ComplaintForm() {
                     placeholder="🏢 Enter the full company name"
                     value={newCompanyData.name}
                     onChange={(e) =>
-                      setNewCompanyData((prev) => ({ ...prev, name: e.target.value }))
+                      setNewCompanyData((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
                     }
                     className="h-14 text-base border-2 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     required
@@ -1675,7 +1845,10 @@ export default function ComplaintForm() {
 
                 {/* Address */}
                 <div className="space-y-3">
-                  <Label htmlFor="companyAddress" className="text-base font-semibold text-gray-700 flex items-center">
+                  <Label
+                    htmlFor="companyAddress"
+                    className="text-base font-semibold text-gray-700 flex items-center"
+                  >
                     <MapPin className="h-5 w-5 mr-2 text-blue-500" />
                     Address *
                   </Label>
@@ -1684,7 +1857,10 @@ export default function ComplaintForm() {
                     placeholder="📍 Enter the complete business address including area, city, and country"
                     value={newCompanyData.address}
                     onChange={(e) =>
-                      setNewCompanyData((prev) => ({ ...prev, address: e.target.value }))
+                      setNewCompanyData((prev) => ({
+                        ...prev,
+                        address: e.target.value,
+                      }))
                     }
                     className="min-h-[100px] text-base border-2 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     required
@@ -1694,7 +1870,10 @@ export default function ComplaintForm() {
                 {/* Phone and Email */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-3">
-                    <Label htmlFor="companyPhone" className="text-base font-semibold text-gray-700 flex items-center">
+                    <Label
+                      htmlFor="companyPhone"
+                      className="text-base font-semibold text-gray-700 flex items-center"
+                    >
                       <Phone className="h-5 w-5 mr-2 text-purple-500" />
                       Phone Number
                     </Label>
@@ -1704,14 +1883,20 @@ export default function ComplaintForm() {
                       placeholder="📱 +971 XX XXX XXXX"
                       value={newCompanyData.phone}
                       onChange={(e) =>
-                        setNewCompanyData((prev) => ({ ...prev, phone: e.target.value }))
+                        setNewCompanyData((prev) => ({
+                          ...prev,
+                          phone: e.target.value,
+                        }))
                       }
                       className="h-14 text-base border-2 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     />
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="companyEmail" className="text-base font-semibold text-gray-700 flex items-center">
+                    <Label
+                      htmlFor="companyEmail"
+                      className="text-base font-semibold text-gray-700 flex items-center"
+                    >
                       <Mail className="h-5 w-5 mr-2 text-orange-500" />
                       Email Address
                     </Label>
@@ -1721,7 +1906,10 @@ export default function ComplaintForm() {
                       placeholder="📧 company@example.com"
                       value={newCompanyData.email}
                       onChange={(e) =>
-                        setNewCompanyData((prev) => ({ ...prev, email: e.target.value }))
+                        setNewCompanyData((prev) => ({
+                          ...prev,
+                          email: e.target.value,
+                        }))
                       }
                       className="h-14 text-base border-2 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     />
@@ -1731,7 +1919,10 @@ export default function ComplaintForm() {
                 {/* Website and Category */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-3">
-                    <Label htmlFor="companyWebsite" className="text-base font-semibold text-gray-700 flex items-center">
+                    <Label
+                      htmlFor="companyWebsite"
+                      className="text-base font-semibold text-gray-700 flex items-center"
+                    >
                       <Globe className="h-5 w-5 mr-2 text-indigo-500" />
                       Website
                     </Label>
@@ -1741,14 +1932,20 @@ export default function ComplaintForm() {
                       placeholder="🌐 https://example.com"
                       value={newCompanyData.website}
                       onChange={(e) =>
-                        setNewCompanyData((prev) => ({ ...prev, website: e.target.value }))
+                        setNewCompanyData((prev) => ({
+                          ...prev,
+                          website: e.target.value,
+                        }))
                       }
                       className="h-14 text-base border-2 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     />
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="companyCategory" className="text-base font-semibold text-gray-700 flex items-center">
+                    <Label
+                      htmlFor="companyCategory"
+                      className="text-base font-semibold text-gray-700 flex items-center"
+                    >
                       <Building className="h-5 w-5 mr-2 text-pink-500" />
                       Category *
                     </Label>
@@ -1756,36 +1953,64 @@ export default function ComplaintForm() {
                       id="companyCategory"
                       value={newCompanyData.category}
                       onChange={(e) =>
-                        setNewCompanyData((prev) => ({ ...prev, category: e.target.value }))
+                        setNewCompanyData((prev) => ({
+                          ...prev,
+                          category: e.target.value,
+                        }))
                       }
                       className="w-full h-14 text-base border-2 rounded-xl focus:border-pink-500 focus:ring-2 focus:ring-pink-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                       required
                     >
                       <option value="">🏷️ Select a category</option>
                       <option value="Visa Services">Visa Services</option>
-                      <option value="Document Clearing">Document Clearing</option>
+                      <option value="Document Clearing">
+                        Document Clearing
+                      </option>
                       <option value="Business Setup">Business Setup</option>
                       <option value="PRO Services">PRO Services</option>
-                      <option value="Immigration Consultancy">Immigration Consultancy</option>
+                      <option value="Immigration Consultancy">
+                        Immigration Consultancy
+                      </option>
                       <option value="Legal Services">Legal Services</option>
-                      <option value="Business Consultancy">Business Consultancy</option>
-                      <option value="Trade License Services">Trade License Services</option>
-                      <option value="Corporate Services">Corporate Services</option>
-                      <option value="Government Relations">Government Relations</option>
+                      <option value="Business Consultancy">
+                        Business Consultancy
+                      </option>
+                      <option value="Trade License Services">
+                        Trade License Services
+                      </option>
+                      <option value="Corporate Services">
+                        Corporate Services
+                      </option>
+                      <option value="Government Relations">
+                        Government Relations
+                      </option>
                       <option value="Permit Services">Permit Services</option>
-                      <option value="Attestation Services">Attestation Services</option>
-                      <option value="Translation Services">Translation Services</option>
+                      <option value="Attestation Services">
+                        Attestation Services
+                      </option>
+                      <option value="Translation Services">
+                        Translation Services
+                      </option>
                       <option value="Typing Services">Typing Services</option>
-                      <option value="Business Services">Business Services</option>
-                      <option value="Administrative Services">Administrative Services</option>
-                      <option value="Professional Services">Professional Services</option>
+                      <option value="Business Services">
+                        Business Services
+                      </option>
+                      <option value="Administrative Services">
+                        Administrative Services
+                      </option>
+                      <option value="Professional Services">
+                        Professional Services
+                      </option>
                     </select>
                   </div>
                 </div>
 
                 {/* Description */}
                 <div className="space-y-3">
-                  <Label htmlFor="companyDescription" className="text-base font-semibold text-gray-700 flex items-center">
+                  <Label
+                    htmlFor="companyDescription"
+                    className="text-base font-semibold text-gray-700 flex items-center"
+                  >
                     <FileText className="h-5 w-5 mr-2 text-teal-500" />
                     Description (Optional)
                   </Label>
@@ -1794,7 +2019,10 @@ export default function ComplaintForm() {
                     placeholder="📝 Brief description of services offered, specializations, or any additional information..."
                     value={newCompanyData.description}
                     onChange={(e) =>
-                      setNewCompanyData((prev) => ({ ...prev, description: e.target.value }))
+                      setNewCompanyData((prev) => ({
+                        ...prev,
+                        description: e.target.value,
+                      }))
                     }
                     className="min-h-[100px] text-base border-2 rounded-xl focus:border-teal-500 focus:ring-2 focus:ring-teal-200 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                   />
@@ -1807,10 +2035,14 @@ export default function ComplaintForm() {
                       <Shield className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-blue-900 text-lg mb-2">Review Process</h4>
+                      <h4 className="font-bold text-blue-900 text-lg mb-2">
+                        Review Process
+                      </h4>
                       <p className="text-blue-800 text-sm leading-relaxed">
-                        All company submissions undergo thorough verification by our admin team to ensure accuracy, 
-                        legitimacy, and compliance with UAE business regulations before being added to the directory.
+                        All company submissions undergo thorough verification by
+                        our admin team to ensure accuracy, legitimacy, and
+                        compliance with UAE business regulations before being
+                        added to the directory.
                       </p>
                     </div>
                   </div>
