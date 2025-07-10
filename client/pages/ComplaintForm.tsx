@@ -713,34 +713,7 @@ export default function ComplaintForm() {
         }
       `}</style>
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 relative overflow-hidden">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div
-            className={
-              'absolute top-0 left-0 w-full h-full bg-[url(\'data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="1.5"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\')] opacity-20'
-            }
-          ></div>
-
-          {/* Floating Geometric Shapes */}
-          <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-xl float-animation"></div>
-          <div
-            className="absolute top-40 right-20 w-32 h-32 bg-gradient-to-br from-pink-400/20 to-red-400/20 rounded-full blur-xl float-animation"
-            style={{ animationDelay: "2s" }}
-          ></div>
-          <div
-            className="absolute bottom-40 left-20 w-24 h-24 bg-gradient-to-br from-emerald-400/20 to-blue-400/20 rounded-full blur-xl float-animation"
-            style={{ animationDelay: "4s" }}
-          ></div>
-          <div
-            className="absolute bottom-20 right-40 w-16 h-16 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-full blur-xl float-animation"
-            style={{ animationDelay: "1s" }}
-          ></div>
-
-          {/* Gradient Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-500/5 to-purple-500/10"></div>
-        </div>
-
+      <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <div className="relative bg-gradient-to-r from-red-600 via-red-700 to-red-800 text-white overflow-hidden">
           {/* Animated Background Pattern */}
