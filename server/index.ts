@@ -76,6 +76,7 @@ import {
   addBusinessManually,
   updateBusinessDetails,
 } from "./routes/manual-business-add";
+import { checkReviewsSchema } from "./routes/schema-check";
 // Temporarily disabled due to space constraints
 // import {
 //   downloadOptimizedPhotos,
