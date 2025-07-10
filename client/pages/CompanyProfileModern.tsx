@@ -72,6 +72,426 @@ import {
   UserCheck2,
 } from "lucide-react";
 
+// Write Review Component
+interface WriteReviewSectionProps {
+  businessId?: string;
+  businessName?: string;
+}
+
+interface ReviewData {
+  id: string;
+  rating: number;
+  title: string;
+  review: string;
+  authorName: string;
+  authorEmail: string;
+  date: string;
+  status: "pending" | "approved" | "rejected";
+  isOwnReview?: boolean;
+}
+
+function WriteReviewSection({
+  businessId,
+  businessName,
+}: WriteReviewSectionProps) {
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [hoveredStar, setHoveredStar] = useState(0);
+  const [selectedRating, setSelectedRating] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [userReviews, setUserReviews] = useState<ReviewData[]>([]);
+  const [reviewForm, setReviewForm] = useState({
+    title: "",
+    review: "",
+    authorName: "",
+    authorEmail: "",
+    rating: 0,
+  });
+
+  // Simulate user reviews (in real app, fetch from API)
+  useEffect(() => {
+    const savedReviews = localStorage.getItem(`reviews_${businessId}`);
+    if (savedReviews) {
+      setUserReviews(JSON.parse(savedReviews));
+    }
+  }, [businessId]);
+
+  const handleStarHover = (rating: number) => {
+    setHoveredStar(rating);
+  };
+
+  const handleStarClick = (rating: number) => {
+    setSelectedRating(rating);
+    setReviewForm({ ...reviewForm, rating });
+  };
+
+  const handleSubmitReview = async () => {
+    if (
+      !reviewForm.title ||
+      !reviewForm.review ||
+      !reviewForm.authorName ||
+      selectedRating === 0
+    ) {
+      alert("Please fill in all required fields and select a rating");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      const newReview: ReviewData = {
+        id: Date.now().toString(),
+        rating: selectedRating,
+        title: reviewForm.title,
+        review: reviewForm.review,
+        authorName: reviewForm.authorName,
+        authorEmail: reviewForm.authorEmail,
+        date: new Date().toISOString(),
+        status: "pending",
+        isOwnReview: true,
+      };
+
+      const updatedReviews = [...userReviews, newReview];
+      setUserReviews(updatedReviews);
+      localStorage.setItem(
+        `reviews_${businessId}`,
+        JSON.stringify(updatedReviews),
+      );
+
+      // Reset form
+      setReviewForm({
+        title: "",
+        review: "",
+        authorName: "",
+        authorEmail: "",
+        rating: 0,
+      });
+      setSelectedRating(0);
+      setShowReviewForm(false);
+
+      alert(
+        "Thank you! Your review has been submitted and is pending admin approval.",
+      );
+    } catch (error) {
+      alert("Failed to submit review. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const renderStars = (
+    rating: number,
+    interactive = false,
+    size = "h-6 w-6",
+  ) => {
+    return (
+      <div className="flex items-center space-x-1">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star
+            key={star}
+            className={`${size} cursor-pointer transition-all duration-200 ${
+              star <= (interactive ? hoveredStar || selectedRating : rating)
+                ? "text-yellow-400 fill-current"
+                : "text-gray-300"
+            } ${interactive ? "hover:scale-110" : ""}`}
+            onMouseEnter={() => interactive && handleStarHover(star)}
+            onMouseLeave={() => interactive && setHoveredStar(0)}
+            onClick={() => interactive && handleStarClick(star)}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="text-center">
+        <div className="inline-flex p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg mb-6">
+          <Edit3 className="h-12 w-12 text-white" />
+        </div>
+        <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          Share Your Experience
+        </h2>
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          Help others by sharing your honest review about {businessName}
+        </p>
+      </div>
+
+      {/* Write Review Button */}
+      {!showReviewForm && (
+        <div className="text-center">
+          <Button
+            onClick={() => setShowReviewForm(true)}
+            size="lg"
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+          >
+            <PenTool className="h-6 w-6 mr-3" />
+            Write a Review
+          </Button>
+        </div>
+      )}
+
+      {/* Review Form */}
+      {showReviewForm && (
+        <Card className="max-w-4xl mx-auto shadow-2xl border-0 bg-white/80 backdrop-blur-xl overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6">
+            <div className="flex items-center justify-between text-white">
+              <h3 className="text-2xl font-bold">Write Your Review</h3>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowReviewForm(false)}
+                className="text-white hover:bg-white/20 rounded-full"
+              >
+                <X className="h-6 w-6" />
+              </Button>
+            </div>
+          </div>
+
+          <CardContent className="p-8 space-y-6">
+            {/* Rating Section */}
+            <div className="text-center space-y-4">
+              <h4 className="text-xl font-semibold text-gray-900">
+                Rate Your Experience
+              </h4>
+              <div className="flex justify-center">
+                {renderStars(selectedRating, true, "h-10 w-10")}
+              </div>
+              <div className="text-lg font-medium text-gray-700">
+                {selectedRating === 0 && "Select a rating"}
+                {selectedRating === 1 && "Poor"}
+                {selectedRating === 2 && "Fair"}
+                {selectedRating === 3 && "Good"}
+                {selectedRating === 4 && "Very Good"}
+                {selectedRating === 5 && "Excellent"}
+              </div>
+            </div>
+
+            <Separator />
+
+            {/* Review Form Fields */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Your Name *
+                </label>
+                <Input
+                  type="text"
+                  placeholder="Enter your full name"
+                  value={reviewForm.authorName}
+                  onChange={(e) =>
+                    setReviewForm({ ...reviewForm, authorName: e.target.value })
+                  }
+                  className="rounded-xl border-2 focus:border-blue-500"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Email Address *
+                </label>
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={reviewForm.authorEmail}
+                  onChange={(e) =>
+                    setReviewForm({
+                      ...reviewForm,
+                      authorEmail: e.target.value,
+                    })
+                  }
+                  className="rounded-xl border-2 focus:border-blue-500"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Review Title *
+              </label>
+              <Input
+                type="text"
+                placeholder="Summarize your experience in a few words"
+                value={reviewForm.title}
+                onChange={(e) =>
+                  setReviewForm({ ...reviewForm, title: e.target.value })
+                }
+                className="rounded-xl border-2 focus:border-blue-500"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Your Review *
+              </label>
+              <textarea
+                placeholder="Share details about your experience, the quality of service, staff behavior, and any recommendations..."
+                value={reviewForm.review}
+                onChange={(e) =>
+                  setReviewForm({ ...reviewForm, review: e.target.value })
+                }
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors min-h-[120px] resize-none"
+                rows={5}
+              />
+            </div>
+
+            {/* Guidelines */}
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+              <h5 className="font-semibold text-blue-900 mb-2 flex items-center">
+                <Info className="h-4 w-4 mr-2" />
+                Review Guidelines
+              </h5>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Be honest and provide constructive feedback</li>
+                <li>• Focus on your personal experience with the service</li>
+                <li>• Avoid offensive language or personal attacks</li>
+                <li>• Your review will be visible after admin approval</li>
+              </ul>
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex space-x-4">
+              <Button
+                variant="outline"
+                onClick={() => setShowReviewForm(false)}
+                className="flex-1 rounded-xl"
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSubmitReview}
+                disabled={isSubmitting || selectedRating === 0}
+                className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <Send className="h-4 w-4 mr-2" />
+                    Submit Review
+                  </>
+                )}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* User's Reviews */}
+      {userReviews.length > 0 && (
+        <div className="max-w-4xl mx-auto">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+            Your Reviews
+          </h3>
+          <div className="space-y-4">
+            {userReviews.map((review) => (
+              <Card
+                key={review.id}
+                className="shadow-lg border-0 bg-white/90 backdrop-blur-sm"
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-3">
+                        {renderStars(review.rating)}
+                        <span className="text-sm text-gray-500">
+                          {new Date(review.date).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <h4 className="text-lg font-semibold text-gray-900">
+                        {review.title}
+                      </h4>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      {review.status === "pending" && (
+                        <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                          <Clock3 className="h-3 w-3 mr-1" />
+                          Pending Approval
+                        </Badge>
+                      )}
+                      {review.status === "approved" && (
+                        <Badge className="bg-green-100 text-green-800 border-green-200">
+                          <CheckCircle2 className="h-3 w-3 mr-1" />
+                          Approved
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+
+                  <p className="text-gray-700 leading-relaxed mb-4">
+                    {review.review}
+                  </p>
+
+                  <div className="flex items-center justify-between text-sm text-gray-500">
+                    <span className="flex items-center">
+                      <UserCheck2 className="h-4 w-4 mr-1" />
+                      {review.authorName}
+                    </span>
+                    {review.status === "pending" && (
+                      <span className="text-yellow-600 font-medium">
+                        Review will be visible to others after approval
+                      </span>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Call to Action */}
+      {!showReviewForm && userReviews.length === 0 && (
+        <div className="text-center bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-12 max-w-4xl mx-auto border border-blue-100">
+          <div className="space-y-6">
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="bg-blue-500 p-4 rounded-2xl inline-flex mb-4">
+                  <Star className="h-8 w-8 text-white fill-current" />
+                </div>
+                <h4 className="font-semibold text-gray-900 mb-2">
+                  Rate & Review
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Share your honest experience
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-purple-500 p-4 rounded-2xl inline-flex mb-4">
+                  <Users className="h-8 w-8 text-white" />
+                </div>
+                <h4 className="font-semibold text-gray-900 mb-2">
+                  Help Others
+                </h4>
+                <p className="text-sm text-gray-600">Guide future customers</p>
+              </div>
+              <div className="text-center">
+                <div className="bg-green-500 p-4 rounded-2xl inline-flex mb-4">
+                  <Shield className="h-8 w-8 text-white" />
+                </div>
+                <h4 className="font-semibold text-gray-900 mb-2">
+                  Build Trust
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Create a reliable community
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Beautiful Community Reports Component
 interface CommunityReportsSectionProps {
   businessId?: string;
