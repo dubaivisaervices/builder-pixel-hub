@@ -102,13 +102,6 @@ export default function ImageDownloadDashboard() {
     isRunning: false,
   });
 
-  const [optimizedProgress, setOptimizedProgress] = useState({
-    current: 0,
-    total: 0,
-    status: "idle",
-    isRunning: false,
-  });
-
   const [showDisconnectDialog, setShowDisconnectDialog] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
