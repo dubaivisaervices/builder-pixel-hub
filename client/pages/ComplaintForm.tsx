@@ -730,10 +730,9 @@ export default function ComplaintForm() {
                 Report Business Issues
               </h1>
 
-              <p className="text-lg sm:text-xl md:text-2xl text-red-100 max-w-4xl mx-auto mb-8 leading-relaxed">
-                Help safeguard Dubai's business ecosystem by reporting scams,
-                fraud, and unethical practices. Your voice creates a safer
-                marketplace for everyone.
+              <p className="text-lg text-blue-100 max-w-2xl mx-auto mb-6">
+                Help protect Dubai's business community by reporting scams,
+                fraud, and unethical practices.
               </p>
 
               {/* Feature Highlights */}
@@ -1166,7 +1165,7 @@ export default function ComplaintForm() {
                     <Input
                       id="employeeName"
                       type="text"
-                      placeholder="��� Name of the employee or contact person"
+                      placeholder="👤 Name of the employee or contact person"
                       value={reportData.employeeName || ""}
                       onChange={(e) =>
                         setReportData((prev) => ({
