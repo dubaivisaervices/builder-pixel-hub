@@ -125,13 +125,13 @@ const Navigation = () => {
                   <NavigationMenuItem key={item.path}>
                     <NavigationMenuLink
                       className={cn(
-                        "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+                        "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:scale-105 focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
                         isActive(item.path) &&
-                          "bg-accent text-accent-foreground",
+                          "bg-accent text-accent-foreground shadow-sm",
                       )}
                       onClick={() => handleNavigation(item.path)}
                     >
-                      <item.icon className="mr-2 h-4 w-4" />
+                      <item.icon className="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
                       {item.label}
                     </NavigationMenuLink>
                   </NavigationMenuItem>
