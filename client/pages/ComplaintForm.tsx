@@ -1561,16 +1561,14 @@ export default function ComplaintForm() {
           </form>
 
           {/* Community Impact Stats */}
-          <div className="mt-16 sm:mt-24 mb-12 sm:mb-16 fade-in-scale">
-            <div className="text-center mb-8 sm:mb-12 px-4">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6">
-                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  Community Protection Impact
-                </span>
+          <div className="mt-12 sm:mt-16 mb-8 sm:mb-12">
+            <div className="text-center mb-6 sm:mb-8 px-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+                Community Protection Impact
               </h2>
-              <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                Together we're building the safest business environment in the
-                Middle East 🌟
+              <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                Together we're building the safest business environment in Dubai
+                🌟
               </p>
             </div>
 
