@@ -584,7 +584,7 @@ function WriteReviewSection({
       )}
 
       {/* Call to Action */}
-      {!showReviewForm && userReviews.length === 0 && (
+      {userReviews.length === 1 && (
         <div className="text-center bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-12 max-w-4xl mx-auto border border-blue-100">
           <div className="space-y-6">
             <div className="grid md:grid-cols-3 gap-6">
