@@ -716,7 +716,7 @@ export default function ComplaintForm() {
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <div className="bg-blue-600 text-white">
-          <div className="max-w-6xl mx-auto px-4 py-8 sm:py-12">
+          <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
             <div className="text-center">
               {/* Main Icon */}
               <div className="flex justify-center mb-4">
