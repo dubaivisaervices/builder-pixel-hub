@@ -436,7 +436,7 @@ export default function ComplaintForm() {
 
   return (
     <>
-      <style jsx>{`
+      <style>{`
         @keyframes slideInUp {
           from {
             opacity: 0;
