@@ -612,10 +612,12 @@ export default function ComplaintForm() {
                 </div>
                 <div className="ml-3 sm:ml-4 text-left">
                   <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-                    Report Scam Company
+                    Report Scam Immigration Company
                   </h1>
-                  <p className="text-sm sm:text-base text-gray-600 mt-0.5">
-                    Protect our community together
+                  <p className="text-sm sm:text-base text-gray-600 mt-0.5 leading-relaxed">
+                    Help protect our community by reporting scam immigration
+                    companies, fake visa services, and unethical business
+                    practices in Dubai and UAE.
                   </p>
                 </div>
               </div>
