@@ -1419,6 +1419,21 @@ export default function CompanyProfileModern() {
                 <Phone className="h-5 w-5 mr-2" />
                 Call Now
               </Button>
+
+              {/* Write Review Button - Desktop Only */}
+              <Button
+                size="lg"
+                className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hidden md:flex items-center justify-center"
+                onClick={() => {
+                  const reviewSection = document.querySelector(
+                    "[data-review-section]",
+                  );
+                  reviewSection?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                <PenTool className="h-5 w-5 mr-2" />
+                Write Review ⭐
+              </Button>
             </div>
           </div>
         </div>
