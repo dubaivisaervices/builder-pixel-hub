@@ -861,8 +861,42 @@ export default function ComplaintForm() {
 
                   {showSuggestions && (
                     <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto backdrop-blur-sm bg-white/95">
-                      {searchSuggestions.length > 0
-                        ? searchSuggestions.map((business, index) => (
+                      {searchSuggestions.length > 0 ? (
+                        <>
+                          {/* Header with results count and controls */}
+                          <div className="sticky top-0 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-200 p-3 flex items-center justify-between">
+                            <span className="text-sm font-medium text-blue-800">
+                              {searchTerm
+                                ? `${searchSuggestions.length} results found`
+                                : `Showing ${searchSuggestions.length} of ${businesses.length} companies`
+                              }
+                            </span>
+                            <div className="flex items-center space-x-2">
+                              {searchSuggestions.length < businesses.length && (
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={showAllBusinesses}
+                                  className="text-xs text-blue-600 hover:text-blue-800 px-2 py-1"
+                                >
+                                  Show All {businesses.length}
+                                </Button>
+                              )}
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setShowSuggestions(false)}
+                                className="text-gray-500 hover:text-gray-700 px-2 py-1"
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+
+                          {/* Business List */}
+                          {searchSuggestions.map((business, index) => (
                             <div
                               key={business.id}
                               className="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 flex items-center space-x-3 transition-colors duration-200 hover:shadow-sm"
