@@ -597,7 +597,7 @@ export default function BusinessDirectory() {
                       onClick={() => handleSuggestionClick(business)}
                       style={{ animationDelay: `${index * 0.05}s` }}
                     >
-                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
                         {business.logoUrl ? (
                           <img
                             src={business.logoUrl}
@@ -611,13 +611,11 @@ export default function BusinessDirectory() {
                             }}
                           />
                         ) : null}
-                        <span className={business.logoUrl ? "hidden" : ""}>
-                          {business.name
-                            .split(" ")
-                            .map((word) => word[0])
-                            .join("")
-                            .substring(0, 2)}
-                        </span>
+                        <img
+                          src={generateSVGLogo(business.name, 40)}
+                          alt={business.name}
+                          className={`w-full h-full rounded-lg ${business.logoUrl ? "hidden" : ""}`}
+                        />
                       </div>
 
                       <div className="flex-1 min-w-0">
