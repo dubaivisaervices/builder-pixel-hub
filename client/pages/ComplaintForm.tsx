@@ -932,8 +932,10 @@ export default function ComplaintForm() {
                                 </div>
                               </div>
                             </div>
-                          ))
-                        : searchTerm.length >= 2 && (
+                          ))}
+                        </>
+                      ) : (
+                        searchTerm.length >= 2 && (
                             <div className="p-4 text-center">
                               <div className="space-y-4">
                                 <div className="flex flex-col items-center space-y-3">
