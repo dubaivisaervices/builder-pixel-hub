@@ -112,6 +112,34 @@ class Database {
         CREATE INDEX IF NOT EXISTS idx_reviews_business_id ON reviews(business_id);
       `);
 
+      await this.run(`
+        CREATE TABLE IF NOT EXISTS reports (
+          id TEXT PRIMARY KEY,
+          company_id TEXT NOT NULL,
+          company_name TEXT NOT NULL,
+          issue_type TEXT NOT NULL,
+          description TEXT NOT NULL,
+          reporter_name TEXT NOT NULL,
+          reporter_email TEXT NOT NULL,
+          amount_lost INTEGER DEFAULT 0,
+          date_of_incident TEXT,
+          evidence_description TEXT,
+          status TEXT DEFAULT 'pending',
+          admin_notes TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (company_id) REFERENCES businesses (id)
+        )
+      `);
+
+      await this.run(`
+        CREATE INDEX IF NOT EXISTS idx_reports_company_id ON reports(company_id);
+      `);
+
+      await this.run(`
+        CREATE INDEX IF NOT EXISTS idx_reports_status ON reports(status);
+      `);
+
       console.log("Database tables initialized successfully");
     } catch (error) {
       console.error("Error initializing database tables:", error);
