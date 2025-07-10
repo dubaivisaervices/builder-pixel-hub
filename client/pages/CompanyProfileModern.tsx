@@ -289,7 +289,7 @@ function WriteReviewSection({
             </h3>
           </div>
 
-          <CardContent className="p-4 md:p-8 space-y-6">
+          <CardContent className="p-3 sm:p-4 md:p-8 space-y-4 sm:space-y-6">
             {/* Rating Section */}
             <div className="text-center space-y-4">
               <h4 className="text-lg md:text-xl font-semibold text-gray-900">
