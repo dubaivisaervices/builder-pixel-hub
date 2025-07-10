@@ -313,7 +313,7 @@ export default function BusinessDirectory() {
 
     return (
       <Card
-        className={`group cursor-pointer transition-all duration-500 border-0 bg-white hover:shadow-2xl hover:-translate-y-2 relative overflow-hidden ${
+        className={`group cursor-pointer transition-all duration-500 border-0 bg-white hover:shadow-2xl hover:-translate-y-1 sm:hover:-translate-y-2 relative overflow-hidden ${
           animateCards ? "animate-in slide-in-from-bottom-4" : "opacity-0"
         }`}
         style={{
