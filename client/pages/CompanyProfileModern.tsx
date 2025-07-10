@@ -1319,7 +1319,7 @@ export default function CompanyProfileModern() {
   const contactInfo = generateContactInfo(businessData);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 overflow-x-hidden">
       {/* Hero Header */}
       <div className="relative bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
