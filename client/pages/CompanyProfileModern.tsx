@@ -813,19 +813,19 @@ function CommunityReportsSection({
         </CardTitle>
       </div>
 
-      <CardContent className="p-6">
+      <CardContent className="p-3 sm:p-4 md:p-6">
         {loading ? (
-          <div className="text-center py-12">
+          <div className="text-center py-8 sm:py-12">
             <div className="relative">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-200 border-t-orange-600 mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-4 border-orange-200 border-t-orange-600 mx-auto mb-4"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <MessageCircleQuestion className="h-6 w-6 text-orange-600" />
+                <MessageCircleQuestion className="h-5 w-5 sm:h-6 sm:w-6 text-orange-600" />
               </div>
             </div>
-            <p className="text-gray-600 font-medium">
+            <p className="text-gray-600 font-medium text-sm sm:text-base">
               Loading community feedback...
             </p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-xs sm:text-sm text-gray-500 mt-1">
               Gathering verified reports
             </p>
           </div>
