@@ -64,18 +64,8 @@ import {
   resetCounters,
   getCostReport,
 } from "./routes/api-control-simple";
-import {
-  searchBusinesses,
-  addBusinessComplete,
-  downloadBusinessReviews,
-  downloadBusinessMedia,
-  addCategoryBusinesses,
-  githubPull,
-} from "./routes/business-search-manager";
-import {
-  addBusinessManually,
-  updateBusinessDetails,
-} from "./routes/manual-business-add";
+// Simplified imports for space constraints
+import { addBusinessManually } from "./routes/manual-business-add";
 // Temporarily disabled due to space constraints
 // import {
 //   downloadOptimizedPhotos,
@@ -186,15 +176,8 @@ export function createServer() {
   app.post("/api/admin/api-reset-counters", resetCounters);
   app.get("/api/admin/api-cost-report", getCostReport);
 
-  // Business Search & Management routes
-  app.get("/api/admin/search-businesses", searchBusinesses);
-  app.post("/api/admin/add-business-complete", addBusinessComplete);
-  app.post("/api/admin/download-business-reviews", downloadBusinessReviews);
-  app.post("/api/admin/download-business-media", downloadBusinessMedia);
-  app.post("/api/admin/add-category-businesses", addCategoryBusinesses);
-  app.post("/api/admin/github-pull", githubPull);
+  // Simplified routes for space constraints
   app.post("/api/admin/add-business-manually", addBusinessManually);
-  app.post("/api/admin/update-business-details", updateBusinessDetails);
 
   // Temporarily disabled due to space constraints
   // app.post("/api/admin/download-optimized-photos", downloadOptimizedPhotos);

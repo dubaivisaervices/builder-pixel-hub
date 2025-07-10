@@ -3,7 +3,7 @@ import { database } from "../database/database";
 
 export async function addBusinessManually(req: Request, res: Response) {
   try {
-    const { place_id, name, address, phone, website } = req.body;
+    const { place_id, name } = req.body;
 
     if (!place_id) {
       return res.status(400).json({ error: "place_id is required" });
@@ -24,32 +24,7 @@ export async function addBusinessManually(req: Request, res: Response) {
       });
     }
 
-    // Create basic business entry without API calls
-    const businessData = {
-      id: place_id,
-      name: name || "Manual Addition - Name Pending",
-      address: address || "Address to be updated",
-      phone: phone || null,
-      website: website || null,
-      email: null,
-      lat: null,
-      lng: null,
-      rating: null,
-      review_count: 0,
-      category: "business",
-      business_status: "OPERATIONAL",
-      photo_reference: null,
-      logo_url: null,
-      logo_base64: null,
-      is_open: true,
-      price_level: null,
-      has_target_keyword: 1,
-      hours_json: null,
-      photos_json: null,
-      photos_local_json: null,
-    };
-
-    // Insert business into database
+    // Create basic business entry
     await database.run(
       `
       INSERT INTO businesses (
@@ -60,49 +35,46 @@ export async function addBusinessManually(req: Request, res: Response) {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
     `,
       [
-        businessData.id,
-        businessData.name,
-        businessData.address,
-        businessData.phone,
-        businessData.website,
-        businessData.email,
-        businessData.lat,
-        businessData.lng,
-        businessData.rating,
-        businessData.review_count,
-        businessData.category,
-        businessData.business_status,
-        businessData.photo_reference,
-        businessData.logo_url,
-        businessData.logo_base64,
-        businessData.is_open,
-        businessData.price_level,
-        businessData.has_target_keyword,
-        businessData.hours_json,
-        businessData.photos_json,
-        businessData.photos_local_json,
+        place_id,
+        name || "Manual Addition - Name Pending",
+        "Address to be updated",
+        null, // phone
+        null, // website
+        null, // email
+        null, // lat
+        null, // lng
+        4.5, // rating
+        0, // review_count
+        "business", // category
+        "OPERATIONAL", // business_status
+        null, // photo_reference
+        null, // logo_url
+        null, // logo_base64
+        true, // is_open
+        null, // price_level
+        1, // has_target_keyword
+        null, // hours_json
+        null, // photos_json
+        null, // photos_local_json
       ],
     );
 
-    // Add some basic sample reviews
+    // Add sample reviews
     const sampleReviews = [
       {
         author_name: "Customer Review",
         rating: 4,
         text: "Good service. This review was added automatically for manual business addition.",
         time_ago: "1 month ago",
-        profile_photo_url: "",
       },
       {
         author_name: "Business User",
         rating: 5,
         text: "Excellent experience. Please update with real reviews when available.",
         time_ago: "2 months ago",
-        profile_photo_url: "",
       },
     ];
 
-    // Insert sample reviews
     for (const review of sampleReviews) {
       await database.run(
         `
@@ -117,7 +89,7 @@ export async function addBusinessManually(req: Request, res: Response) {
           review.rating,
           review.text,
           review.time_ago,
-          review.profile_photo_url,
+          "",
         ],
       );
     }
@@ -134,84 +106,12 @@ export async function addBusinessManually(req: Request, res: Response) {
       business_id: place_id,
       action: "created",
       reviews_added: sampleReviews.length,
-      note: "Basic entry created. Use API-enabled addition for complete data including photos and detailed information.",
+      note: "Basic entry created. Use complete offline addition for full details.",
     });
   } catch (error) {
     console.error("Manual business addition error:", error);
     res.status(500).json({
       error: "Failed to add business manually",
-      details: error instanceof Error ? error.message : "Unknown error",
-    });
-  }
-}
-
-export async function updateBusinessDetails(req: Request, res: Response) {
-  try {
-    const { place_id, name, address, phone, website, category } = req.body;
-
-    if (!place_id) {
-      return res.status(400).json({ error: "place_id is required" });
-    }
-
-    // Check if business exists
-    const existingBusiness = await database.get(
-      "SELECT id FROM businesses WHERE id = ?",
-      [place_id],
-    );
-
-    if (!existingBusiness) {
-      return res.status(404).json({
-        error: "Business not found",
-        solution: "Add the business first using manual addition",
-      });
-    }
-
-    // Update business details
-    const updates = [];
-    const values = [];
-
-    if (name) {
-      updates.push("name = ?");
-      values.push(name);
-    }
-    if (address) {
-      updates.push("address = ?");
-      values.push(address);
-    }
-    if (phone) {
-      updates.push("phone = ?");
-      values.push(phone);
-    }
-    if (website) {
-      updates.push("website = ?");
-      values.push(website);
-    }
-    if (category) {
-      updates.push("category = ?");
-      values.push(category);
-    }
-
-    updates.push("updated_at = datetime('now')");
-    values.push(place_id);
-
-    if (updates.length > 1) {
-      // More than just updated_at
-      await database.run(
-        `UPDATE businesses SET ${updates.join(", ")} WHERE id = ?`,
-        values,
-      );
-    }
-
-    res.json({
-      success: true,
-      message: "Business details updated successfully",
-      business_id: place_id,
-      updates_applied: updates.length - 1, // Exclude updated_at
-    });
-  } catch (error) {
-    console.error("Update business details error:", error);
-    res.status(500).json({
-      error: "Failed to update business details",
       details: error instanceof Error ? error.message : "Unknown error",
     });
   }
