@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { openDb } from "../database/database";
+import { database } from "../database/database";
 
 export async function checkOldApiKeys(req: Request, res: Response) {
   try {
@@ -7,22 +7,22 @@ export async function checkOldApiKeys(req: Request, res: Response) {
 
     // Check for old API key in logo_url
     const oldLogoKeys = await db.all(`
-      SELECT COUNT(*) as count 
-      FROM businesses 
+      SELECT COUNT(*) as count
+      FROM businesses
       WHERE logo_url LIKE '%AIzaSyCDTJEgoCJ8tsbGxuHKIvcu-W0AdP-6lVk%'
     `);
 
     // Check for old API key in photos_json
     const oldPhotoKeys = await db.all(`
-      SELECT COUNT(*) as count 
-      FROM businesses 
+      SELECT COUNT(*) as count
+      FROM businesses
       WHERE photos_json LIKE '%AIzaSyCDTJEgoCJ8tsbGxuHKIvcu-W0AdP-6lVk%'
     `);
 
     // Get a sample business with old key
     const sampleBusiness = await db.get(`
-      SELECT id, name, logo_url 
-      FROM businesses 
+      SELECT id, name, logo_url
+      FROM businesses
       WHERE logo_url LIKE '%AIzaSyCDTJEgoCJ8tsbGxuHKIvcu-W0AdP-6lVk%'
       LIMIT 1
     `);
@@ -50,7 +50,7 @@ export async function updateOldApiKeys(req: Request, res: Response) {
     // Update logo_url with old API key
     const logoUpdate = await db.run(
       `
-      UPDATE businesses 
+      UPDATE businesses
       SET logo_url = REPLACE(logo_url, 'AIzaSyCDTJEgoCJ8tsbGxuHKIvcu-W0AdP-6lVk', ?)
       WHERE logo_url LIKE '%AIzaSyCDTJEgoCJ8tsbGxuHKIvcu-W0AdP-6lVk%'
     `,
@@ -60,7 +60,7 @@ export async function updateOldApiKeys(req: Request, res: Response) {
     // Update photos_json with old API key
     const photoUpdate = await db.run(
       `
-      UPDATE businesses 
+      UPDATE businesses
       SET photos_json = REPLACE(photos_json, 'AIzaSyCDTJEgoCJ8tsbGxuHKIvcu-W0AdP-6lVk', ?)
       WHERE photos_json LIKE '%AIzaSyCDTJEgoCJ8tsbGxuHKIvcu-W0AdP-6lVk%'
     `,
