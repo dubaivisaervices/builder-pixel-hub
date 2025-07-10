@@ -322,12 +322,28 @@ export default function ImageDownloadDashboard() {
   return (
     <div className="container mx-auto p-6 max-w-7xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Image Download Dashboard
-        </h1>
-        <p className="text-gray-600">
-          Manage API costs by downloading logos and business photos separately
-        </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Image Download Dashboard
+            </h1>
+            <p className="text-gray-600">
+              Manage API costs by downloading logos and business photos
+              separately
+            </p>
+          </div>
+          <Button
+            onClick={refreshAllData}
+            disabled={isRefreshing}
+            variant="outline"
+            className="flex items-center"
+          >
+            <RefreshCw
+              className={`h-4 w-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`}
+            />
+            {isRefreshing ? "Refreshing..." : "Refresh"}
+          </Button>
+        </div>
       </div>
 
       {/* API Connection Status */}
