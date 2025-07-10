@@ -658,14 +658,6 @@ export default function ImageDownloadDashboard() {
                   </AlertDescription>
                 </Alert>
               )}
-
-              <Alert>
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
-                  ⚠️ Photo downloads use significant disk space. System
-                  automatically limits downloads when database exceeds 50MB.
-                </AlertDescription>
-              </Alert>
             </div>
           </CardContent>
         </Card>
