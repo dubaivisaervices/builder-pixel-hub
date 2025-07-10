@@ -677,7 +677,7 @@ export default function ComplaintForm() {
               className={`shadow-lg border border-gray-200 bg-white hover-lift glassmorphism ${animateCards ? "card-animate" : ""}`}
             >
               <CardHeader className="bg-white border border-blue-400 p-6">
-                <CardTitle className="flex items-center space-x-2 text-lg font-semibold text-gray-900">
+                <CardTitle className="flex items-center space-x-2 text-lg font-semibold text-gray-800">
                   <Building2 className="h-5 w-5 text-blue-600" />
                   <span>Step 1: Select Company</span>
                   {completedSteps.includes(1) && (
