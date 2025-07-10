@@ -64,7 +64,6 @@ import {
   resetCounters,
   getCostReport,
 } from "./routes/api-control-simple";
-import { checkOldApiKeys, updateOldApiKeys } from "./routes/check-api-keys";
 // Temporarily disabled due to space constraints
 // import {
 //   downloadOptimizedPhotos,
