@@ -670,19 +670,7 @@ export default function Index() {
                 key={index}
                 className="group hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer border-0 bg-white/80 backdrop-blur-sm hover:bg-white"
                 onClick={() => {
-                  // Map service categories to URL slugs
-                  const categoryMap: { [key: string]: string } = {
-                    work: "work-visa",
-                    tourist: "tourist-visa",
-                    student: "student-visa",
-                    family: "family-visa",
-                    business: "business-visa",
-                    residence: "residence-visa",
-                    other: "all",
-                  };
-
-                  const categorySlug = categoryMap[service.category] || "all";
-                  navigate(`/services/${categorySlug}`);
+                  navigate("/dubai-businesses");
                 }}
               >
                 <CardContent className="p-4 sm:p-6 lg:p-8">
