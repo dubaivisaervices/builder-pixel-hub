@@ -963,10 +963,12 @@ export default function ComplaintForm() {
                           <p className="font-medium text-sm">
                             Upload Agreement Copy
                           </p>
-                          <p className="text-xs">PNG, JPG, PDF up to 5MB</p>
+                          <p className="text-xs text-red-600 font-medium">
+                            ⚠️ Max 5MB • PNG, JPG, PDF only
+                          </p>
                           {showTooltip === "agreement" && (
                             <div className="mt-2 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">
-                              Click to select file
+                              Click to select • Admin will review
                             </div>
                           )}
                         </div>
