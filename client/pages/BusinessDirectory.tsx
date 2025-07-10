@@ -366,24 +366,24 @@ export default function BusinessDirectory() {
           <div className="relative h-24 sm:h-32 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 overflow-hidden">
             <div className="absolute inset-0 bg-black/20"></div>
             <div className="absolute inset-0 flex items-center justify-center">
-              {business.logoUrl ? (
-                <img
-                  src={business.logoUrl}
-                  alt={business.name}
-                  className="h-12 w-12 sm:h-16 sm:w-16 object-cover rounded-xl border-2 border-white shadow-lg"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                    e.currentTarget.nextElementSibling?.classList.remove(
-                      "hidden",
-                    );
-                  }}
-                />
-              ) : null}
-              <div className={business.logoUrl ? "hidden" : ""}>
+              <div className="relative">
+                {business.logoUrl ? (
+                  <img
+                    src={business.logoUrl}
+                    alt={business.name}
+                    className="h-12 w-12 sm:h-16 sm:w-16 object-cover rounded-xl border-2 border-white shadow-lg"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                      e.currentTarget.parentElement
+                        ?.querySelector(".svg-fallback")
+                        ?.classList.remove("hidden");
+                    }}
+                  />
+                ) : null}
                 <img
                   src={generateSVGLogo(business.name, 64)}
                   alt={business.name}
-                  className="h-12 w-12 sm:h-16 sm:w-16 rounded-xl border-2 border-white shadow-lg"
+                  className={`svg-fallback h-12 w-12 sm:h-16 sm:w-16 rounded-xl border-2 border-white shadow-lg ${business.logoUrl ? "hidden" : ""}`}
                 />
               </div>
             </div>
