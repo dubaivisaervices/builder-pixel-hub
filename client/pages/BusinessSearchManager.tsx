@@ -31,6 +31,7 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
+  AlertTriangle,
   Building2,
 } from "lucide-react";
 
