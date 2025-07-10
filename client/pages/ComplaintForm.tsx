@@ -598,12 +598,13 @@ export default function ComplaintForm() {
                   </div>
 
                   {showSuggestions && searchSuggestions.length > 0 && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
-                      {searchSuggestions.map((business) => (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-80 overflow-y-auto glassmorphism">
+                      {searchSuggestions.map((business, index) => (
                         <div
                           key={business.id}
-                          className="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 flex items-center space-x-3"
+                          className="suggestion-item p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 flex items-center space-x-3"
                           onClick={() => handleCompanySelect(business)}
+                          style={{ animationDelay: `${index * 0.05}s` }}
                         >
                           <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                             {business.name
