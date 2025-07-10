@@ -1327,7 +1327,7 @@ export default function CompanyProfileModern() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Navigation */}
-          <div className="flex items-center space-x-1 sm:space-x-2 text-white/80 text-xs sm:text-sm mb-4 sm:mb-6 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center space-x-1 sm:space-x-2 text-white/80 text-xs sm:text-sm mb-4 sm:mb-6 overflow-x-auto">
             <Button
               variant="ghost"
               onClick={() => navigate("/")}
