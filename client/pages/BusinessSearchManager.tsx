@@ -108,10 +108,22 @@ export default function BusinessSearchManager() {
       const response = await fetch("/api/admin/api-status");
       if (response.ok) {
         const data = await response.json();
-        setApiStatus(data);
+        setApiStatus({
+          connected: data.connected || false,
+          key: data.key || "",
+          usageToday: data.usageToday || 0,
+          costSaved: data.costSaved || 0,
+        });
       }
     } catch (error) {
       console.error("Error checking API status:", error);
+      // Set default values on error
+      setApiStatus({
+        connected: false,
+        key: "",
+        usageToday: 0,
+        costSaved: 0,
+      });
     }
   };
 
