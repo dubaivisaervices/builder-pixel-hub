@@ -103,6 +103,7 @@ export default function ImageDownloadDashboard() {
   });
 
   const [showDisconnectDialog, setShowDisconnectDialog] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Fetch status on component mount
   useEffect(() => {
