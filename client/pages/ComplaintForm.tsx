@@ -758,11 +758,11 @@ export default function ComplaintForm() {
                       className={`flex flex-col items-center ${completedSteps.includes(step) ? "text-green-300" : currentStep === step ? "text-white" : "text-white/50"}`}
                     >
                       <div
-                        className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold mb-1 transition-all duration-300 step-indicator ${
+                        className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold mb-1 ${
                           completedSteps.includes(step)
-                            ? "bg-green-500 border-green-400 active"
+                            ? "bg-green-500 border-green-400"
                             : currentStep === step
-                              ? "bg-white/20 border-white glow-animation"
+                              ? "bg-white/20 border-white"
                               : "border-white/30"
                         }`}
                       >
