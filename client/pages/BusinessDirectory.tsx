@@ -570,28 +570,42 @@ export default function BusinessDirectory() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 -mt-4 relative z-10">
         {/* Search & Filter Section */}
-        <Card className="shadow-xl border-0 bg-white/95 backdrop-blur-xl mb-6">
+        <Card className="shadow-2xl border-0 bg-gradient-to-r from-white via-blue-50/50 to-white backdrop-blur-xl mb-6 ring-1 ring-blue-100">
           <CardContent className="p-4 sm:p-6">
             {/* Search Bar */}
             <div className="relative mb-4 sm:mb-6">
-              <div className="relative">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                 <Input
                   ref={searchRef}
                   type="text"
-                  placeholder="Search businesses by name, category, or location..."
+                  placeholder="🔍 Search businesses by name, category, or location..."
                   value={searchTerm}
                   onChange={(e) => handleSearchChange(e.target.value)}
-                  className="h-11 sm:h-14 pl-12 pr-4 bg-white border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 rounded-xl text-sm sm:text-base shadow-sm transition-all duration-200"
+                  className="relative h-12 sm:h-16 pl-14 pr-12 bg-white border-3 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 rounded-xl text-sm sm:text-lg shadow-lg transition-all duration-300 hover:shadow-xl font-medium placeholder:text-gray-500"
                 />
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 p-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+                  <Search className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                </div>
                 {searchTerm && (
                   <button
                     onClick={() => setSearchTerm("")}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 hover:text-gray-600"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 h-8 w-8 bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 rounded-full flex items-center justify-center transition-all duration-200 text-sm font-bold"
                   >
-                    ���
+                    ✕
                   </button>
                 )}
+              </div>
+
+              {/* Search Enhancement Text */}
+              <div className="text-center mt-3">
+                <p className="text-xs sm:text-sm text-gray-600">
+                  🏢 Find from{" "}
+                  <span className="font-bold text-blue-600">
+                    {businesses.length}+
+                  </span>{" "}
+                  verified Dubai businesses
+                </p>
               </div>
 
               {/* Search Suggestions */}
