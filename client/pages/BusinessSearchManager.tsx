@@ -321,7 +321,7 @@ export default function BusinessSearchManager() {
                   {apiStatus.connected ? "Connected" : "Disconnected"}
                 </Badge>
                 <p className="text-sm text-muted-foreground">
-                  Cost saved today: ${apiStatus.costSaved.toFixed(2)}
+                  Cost saved today: ${(apiStatus.costSaved || 0).toFixed(2)}
                 </p>
               </div>
               <Button
