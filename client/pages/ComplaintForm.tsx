@@ -887,38 +887,38 @@ export default function ComplaintForm() {
                 </div>
 
                 {selectedCompany && (
-                  <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-2xl fade-in-scale">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-lg font-bold shadow-lg">
+                  <div className="mt-4 sm:mt-6 p-3 sm:p-4 md:p-6 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-2xl fade-in-scale">
+                    <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
+                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-sm sm:text-lg font-bold shadow-lg flex-shrink-0 mx-auto sm:mx-0">
                         {selectedCompany.name
                           .split(" ")
                           .map((word) => word[0])
                           .join("")
                           .substring(0, 2)}
                       </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-gray-900 text-lg truncate">
+                      <div className="flex-1 min-w-0 text-center sm:text-left">
+                        <h3 className="font-bold text-gray-900 text-base sm:text-lg break-words">
                           {selectedCompany.name}
                         </h3>
-                        <p className="text-gray-600 flex items-center mt-1">
+                        <p className="text-gray-600 flex items-center justify-center sm:justify-start mt-1">
                           <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
-                          <span className="truncate">
+                          <span className="break-words">
                             {selectedCompany.address}
                           </span>
                         </p>
-                        <div className="flex items-center space-x-3 mt-2">
-                          <Badge className="bg-blue-100 text-blue-700 border-blue-200">
+                        <div className="flex items-center justify-center sm:justify-start flex-wrap gap-2 sm:gap-3 mt-2">
+                          <Badge className="bg-blue-100 text-blue-700 border-blue-200 text-xs sm:text-sm">
                             {selectedCompany.category}
                           </Badge>
                           <div className="flex items-center space-x-1">
                             <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                            <span className="text-sm text-gray-600 font-medium">
+                            <span className="text-xs sm:text-sm text-gray-600 font-medium">
                               {selectedCompany.rating}
                             </span>
                           </div>
                         </div>
                       </div>
-                      <CheckCircle className="h-8 w-8 text-green-500" />
+                      <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 text-green-500 flex-shrink-0 mx-auto sm:mx-0" />
                     </div>
                   </div>
                 )}
