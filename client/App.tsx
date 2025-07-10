@@ -1,7 +1,6 @@
 import "./global.css";
 
 import { Toaster } from "@/components/ui/toaster";
-import { createRoot } from "react-dom/client";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -62,31 +61,4 @@ const App = () => (
   </QueryClientProvider>
 );
 
-// Prevent duplicate root creation and add error handling
-console.log("🚀 Loading Dubai Visa Services App...");
-
-const container = document.getElementById("root");
-if (!container) {
-  console.error("❌ Root element not found!");
-} else {
-  console.log("✅ Root element found, creating React app...");
-
-  try {
-    if (!container.hasAttribute("data-root-created")) {
-      container.setAttribute("data-root-created", "true");
-      createRoot(container).render(<App />);
-      console.log("✅ React app rendered successfully!");
-    } else {
-      console.log("⚠️ Root already created, skipping...");
-    }
-  } catch (error) {
-    console.error("❌ Error creating React app:", error);
-    container.innerHTML = `
-      <div style="padding: 20px; text-align: center; font-family: Arial, sans-serif;">
-        <h1>Loading Error</h1>
-        <p>Failed to load Dubai Visa Services. Please refresh the page.</p>
-        <button onclick="location.reload()">Refresh Page</button>
-      </div>
-    `;
-  }
-}
+export default App;
