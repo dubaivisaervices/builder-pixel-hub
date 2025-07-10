@@ -409,6 +409,41 @@ export default function ComplaintForm() {
     fileInputRefs[field].current?.click();
   };
 
+  const handleAddCompanySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("/api/companies/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newCompanyData),
+      });
+
+      if (response.ok) {
+        alert(
+          "Company request submitted successfully! Our admin team will review it.",
+        );
+        setShowAddCompanyPopup(false);
+        setNewCompanyData({
+          name: "",
+          address: "",
+          phone: "",
+          email: "",
+          website: "",
+          category: "",
+          description: "",
+        });
+      } else {
+        throw new Error("Failed to submit company request");
+      }
+    } catch (error) {
+      console.error("Error submitting company request:", error);
+      alert("There was an error submitting your request. Please try again.");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedCompany) {
