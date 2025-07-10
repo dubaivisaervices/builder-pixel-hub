@@ -819,17 +819,6 @@ export default function ComplaintForm() {
                 <p className="text-gray-600">Community Support</p>
               </div>
             </div>
-
-            {/* Additional Report Scam Button */}
-            <div className="text-center mt-8">
-              <Button
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 text-lg rounded-lg shadow-lg"
-              >
-                <Shield className="h-5 w-5 mr-2" />
-                Report Another Scam
-              </Button>
-            </div>
           </div>
 
           {/* Footer Content */}
