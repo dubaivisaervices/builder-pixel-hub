@@ -26,12 +26,7 @@ import {
   deleteCategory,
   debugPhotoData,
 } from "./routes/admin";
-import {
-  getDatabaseStats,
-  getReviewStats,
-  clearAllData,
-  resyncGoogleData,
-} from "./routes/admin-sync";
+import { getDatabaseStats } from "./routes/admin-sync";
 import {
   downloadAllPhotos,
   stopPhotoDownload,
