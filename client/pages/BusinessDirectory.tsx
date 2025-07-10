@@ -522,14 +522,14 @@ export default function BusinessDirectory() {
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 leading-tight">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-3 leading-tight">
               Discover Dubai's
               <span className="block bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
                 Trusted Businesses
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg text-blue-100 max-w-2xl mx-auto leading-relaxed mb-6">
+            <p className="text-sm sm:text-base text-blue-100 max-w-xl mx-auto leading-relaxed mb-4">
               Connect with verified companies, read authentic reviews, and make
               informed decisions. Your gateway to Dubai's most trusted service
               providers.
