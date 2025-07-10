@@ -759,10 +759,10 @@ export default function ComplaintForm() {
                       value={searchTerm}
                       onChange={(e) => handleCompanySearch(e.target.value)}
                       onFocus={handleSearchFocus}
-                      className={`w-full h-14 sm:h-16 pl-14 pr-6 text-base sm:text-lg border-2 rounded-2xl focus:outline-none transition-all duration-300 shadow-lg hover:shadow-xl ${
+                      className={`w-full h-12 sm:h-14 pl-12 pr-6 text-base border-2 rounded-xl focus:outline-none transition-all duration-300 shadow-sm hover:shadow-md ${
                         isTyping
-                          ? "border-blue-400 ring-2 ring-blue-200 bg-blue-50/50 search-pulse"
-                          : "border-gray-300 bg-white hover:border-gray-400"
+                          ? "border-blue-500 ring-2 ring-blue-200 bg-blue-50"
+                          : "border-gray-300 bg-white hover:border-blue-400"
                       }`}
                       required
                     />
