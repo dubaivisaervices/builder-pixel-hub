@@ -259,8 +259,8 @@ export default function BusinessDirectory() {
     }
   };
 
-  // Generate SVG logo for businesses
-  const generateSVGLogo = (businessName: string, size: number = 64) => {
+  // Generate placeholder logo like company page
+  const generatePlaceholderLogo = (businessName: string) => {
     const initials = businessName
       .split(" ")
       .map((word) => word[0])
@@ -268,34 +268,7 @@ export default function BusinessDirectory() {
       .substring(0, 2)
       .toUpperCase();
 
-    const colors = [
-      ["#3B82F6", "#1D4ED8"],
-      ["#8B5CF6", "#7C3AED"],
-      ["#EF4444", "#DC2626"],
-      ["#10B981", "#059669"],
-      ["#F59E0B", "#D97706"],
-      ["#EC4899", "#DB2777"],
-      ["#06B6D4", "#0891B2"],
-      ["#84CC16", "#65A30D"],
-      ["#F97316", "#EA580C"],
-      ["#6366F1", "#4F46E5"],
-    ];
-
-    const colorIndex = businessName.length % colors.length;
-    const [color1, color2] = colors[colorIndex];
-
-    const svgString = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="grad${Date.now()}" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:${color1}"/>
-          <stop offset="100%" style="stop-color:${color2}"/>
-        </linearGradient>
-      </defs>
-      <rect width="100%" height="100%" rx="12" fill="url(#grad${Date.now()})"/>
-      <text x="50%" y="50%" font-family="system-ui, -apple-system, sans-serif" font-size="${Math.floor(size * 0.35)}" font-weight="600" fill="white" text-anchor="middle" dominant-baseline="middle">${initials}</text>
-    </svg>`;
-
-    return `data:image/svg+xml;base64,${btoa(svgString)}`;
+    return initials;
   };
 
   const BusinessCard = ({
