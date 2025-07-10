@@ -47,6 +47,7 @@ const App = () => (
           <Route path="/admin/manage" element={<AdminManage />} />
           <Route path="/admin/status" element={<DatabaseStatus />} />
           <Route path="/admin/images" element={<ImageDownloadDashboard />} />
+          <Route path="/admin/search" element={<BusinessSearchManager />} />
           <Route path="/data-persistence" element={<DataPersistence />} />
           <Route path="/reviews-sync" element={<ReviewsSync />} />
           <Route
