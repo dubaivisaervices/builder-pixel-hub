@@ -90,14 +90,14 @@ export async function addBusinessManually(req: Request, res: Response) {
         author_name: "Customer Review",
         rating: 4,
         text: "Good service. This review was added automatically for manual business addition.",
-        time: Math.floor(Date.now() / 1000) - 86400 * 30,
+        time_ago: "1 month ago",
         profile_photo_url: "",
       },
       {
         author_name: "Business User",
         rating: 5,
         text: "Excellent experience. Please update with real reviews when available.",
-        time: Math.floor(Date.now() / 1000) - 86400 * 60,
+        time_ago: "2 months ago",
         profile_photo_url: "",
       },
     ];
