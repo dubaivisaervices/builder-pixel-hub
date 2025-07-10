@@ -931,9 +931,9 @@ function CommunityReportsSection({
             </div>
 
             {/* Individual Reports */}
-            <div className="space-y-4">
-              <h5 className="font-semibold text-gray-900 flex items-center space-x-2">
-                <Eye className="h-5 w-5 text-orange-600" />
+            <div className="space-y-3 sm:space-y-4">
+              <h5 className="font-semibold text-gray-900 flex items-center space-x-2 text-sm sm:text-base">
+                <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-orange-600" />
                 <span>Detailed Reports</span>
               </h5>
 
@@ -946,7 +946,7 @@ function CommunityReportsSection({
                     key={report.id}
                     className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                   >
-                    <div className="p-6">
+                    <div className="p-3 sm:p-4 md:p-6">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center space-x-3">
                           <div
