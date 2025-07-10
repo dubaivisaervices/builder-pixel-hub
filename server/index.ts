@@ -173,12 +173,13 @@ export function createServer() {
   app.post("/api/admin/api-disable", disableApi);
   app.post("/api/admin/api-reset-counters", resetCounters);
   app.get("/api/admin/api-cost-report", getCostReport);
-  app.post("/api/admin/download-optimized-photos", downloadOptimizedPhotos);
-  app.post("/api/admin/stop-optimized-download", stopOptimizedDownload);
-  app.get(
-    "/api/admin/optimized-download-progress",
-    getOptimizedDownloadProgress,
-  );
+  // Temporarily disabled due to space constraints
+  // app.post("/api/admin/download-optimized-photos", downloadOptimizedPhotos);
+  // app.post("/api/admin/stop-optimized-download", stopOptimizedDownload);
+  // app.get(
+  //   "/api/admin/optimized-download-progress",
+  //   getOptimizedDownloadProgress,
+  // );
 
   // Real Google reviews API (cache-first, no fake reviews)
   app.get("/api/business-reviews/:businessId", getBusinessReviews);
