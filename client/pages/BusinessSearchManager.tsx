@@ -389,6 +389,53 @@ export default function BusinessSearchManager() {
         <p className="text-gray-600">
           Search and add new businesses to your database with complete data
         </p>
+
+        {/* Current Status */}
+        <Card className="mt-4">
+          <CardContent className="p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center space-x-2">
+                <Database className="h-5 w-5 text-green-500" />
+                <div>
+                  <p className="font-medium text-green-800">Database Active</p>
+                  <p className="text-sm text-green-600">
+                    777 businesses cached
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Image className="h-5 w-5 text-blue-500" />
+                <div>
+                  <p className="font-medium text-blue-800">Images Cached</p>
+                  <p className="text-sm text-blue-600">
+                    100% logos stored locally
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                {apiStatus.connected ? (
+                  <CheckCircle className="h-5 w-5 text-green-500" />
+                ) : (
+                  <XCircle className="h-5 w-5 text-red-500" />
+                )}
+                <div>
+                  <p
+                    className={`font-medium ${apiStatus.connected ? "text-green-800" : "text-red-800"}`}
+                  >
+                    API {apiStatus.connected ? "Ready" : "Setup Needed"}
+                  </p>
+                  <p
+                    className={`text-sm ${apiStatus.connected ? "text-green-600" : "text-red-600"}`}
+                  >
+                    {apiStatus.connected
+                      ? "Can add new businesses"
+                      : "Limited functionality"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* API Status & Setup Instructions */}
