@@ -719,20 +719,19 @@ export default function ComplaintForm() {
           <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
             <div className="text-center">
               {/* Main Icon */}
-              <div className="flex justify-center mb-4">
-                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center">
-                  <Shield className="h-8 w-8 text-white" />
+              <div className="flex justify-center mb-3">
+                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                  <Shield className="h-6 w-6 text-white" />
                 </div>
               </div>
 
               {/* Title */}
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">
                 Report Business Issues
               </h1>
 
-              <p className="text-lg text-blue-100 max-w-2xl mx-auto mb-6">
-                Help protect Dubai's business community by reporting scams,
-                fraud, and unethical practices.
+              <p className="text-base text-blue-100 max-w-xl mx-auto mb-4">
+                Help protect Dubai's business community.
               </p>
 
               {/* Progress Indicator */}
