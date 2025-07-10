@@ -589,10 +589,12 @@ export default function ComplaintForm() {
                       placeholder="Start typing company name..."
                       value={searchTerm}
                       onChange={(e) => handleCompanySearch(e.target.value)}
-                      className="h-11 pl-10 pr-4 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white"
+                      className={`h-11 pl-10 pr-4 text-base border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white transition-all duration-300 ${isTyping ? "typing-indicator" : ""}`}
                       required
                     />
-                    <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Search
+                      className={`absolute left-3 top-3 h-5 w-5 transition-colors duration-300 ${isTyping ? "text-blue-500" : "text-gray-400"}`}
+                    />
                   </div>
 
                   {showSuggestions && searchSuggestions.length > 0 && (
