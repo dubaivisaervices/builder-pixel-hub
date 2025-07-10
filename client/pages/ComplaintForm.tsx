@@ -757,40 +757,38 @@ export default function ComplaintForm() {
                   </p>
                 </div>
 
-                {/* Report Another Scam Button */}
-                <div className="text-center mt-6 pt-4 border-t border-gray-200">
+                {/* Submit Button */}
+                <div className="flex justify-center pt-4 sm:pt-6">
                   <Button
-                    onClick={() =>
-                      window.scrollTo({ top: 0, behavior: "smooth" })
-                    }
-                    variant="outline"
-                    className="w-full sm:w-auto border-red-600 text-red-600 hover:bg-red-50 px-6 py-2.5 text-base rounded-lg"
+                    type="submit"
+                    disabled={loading || !selectedCompany}
+                    className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white px-6 sm:px-8 py-3 text-base sm:text-lg rounded-lg min-w-[200px] shadow-lg"
                   >
-                    <Shield className="h-4 w-4 mr-2" />
-                    Report Another Scam
+                    {loading ? (
+                      <div className="flex items-center justify-center space-x-2">
+                        <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <span>Submitting...</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center space-x-2">
+                        <Shield className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <span>Submit Report</span>
+                      </div>
+                    )}
                   </Button>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Submit Button */}
-            <div className="flex justify-center pt-4 sm:pt-6 px-4">
+            {/* Report Another Scam Button */}
+            <div className="text-center mt-6 pt-4">
               <Button
-                type="submit"
-                disabled={loading || !selectedCompany}
-                className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white px-6 sm:px-8 py-3 text-base sm:text-lg rounded-lg min-w-[200px] shadow-lg"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                variant="outline"
+                className="w-full sm:w-auto border-red-600 text-red-600 hover:bg-red-50 px-6 py-2.5 text-base rounded-lg"
               >
-                {loading ? (
-                  <div className="flex items-center justify-center space-x-2">
-                    <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
-                    <span>Submitting...</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-center space-x-2">
-                    <Shield className="h-4 w-4 sm:h-5 sm:w-5" />
-                    <span>Submit Report</span>
-                  </div>
-                )}
+                <Shield className="h-4 w-4 mr-2" />
+                Report Another Scam
               </Button>
             </div>
           </form>
