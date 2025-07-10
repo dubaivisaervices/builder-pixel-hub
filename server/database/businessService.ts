@@ -491,16 +491,21 @@ export class BusinessService {
       photoReference: business.photo_reference,
       logoUrl: business.logo_base64
         ? `data:image/jpeg;base64,${business.logo_base64}`
-        : business.logo_url, // Use local base64 first, fallback to URL
+        : business.logo_url, // Use cached base64 first, avoid API calls
+      logoBase64: business.logo_base64, // Keep base64 data for caching
       isOpen: business.is_open,
       priceLevel: business.price_level,
       hasTargetKeyword: business.has_target_keyword,
       hours: business.hours_json ? JSON.parse(business.hours_json) : undefined,
       photos: business.photos_local_json
-        ? JSON.parse(business.photos_local_json) // Use local base64 photos first
+        ? JSON.parse(business.photos_local_json) // Always use cached photos first (no API cost)
         : business.photos_json
-          ? JSON.parse(business.photos_json)
-          : undefined, // Fallback to URL photos
+          ? JSON.parse(business.photos_json).map((photo: any) => ({
+              ...photo,
+              needsDownload: !photo.base64, // Flag photos that need downloading
+              source: photo.base64 ? "cache" : "api",
+            }))
+          : undefined, // Mark uncached photos
       reviews: reviews,
     };
   }
