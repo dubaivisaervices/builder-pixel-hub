@@ -779,7 +779,7 @@ export default function ComplaintForm() {
                   </div>
 
                   {showSuggestions && (
-                    <div className="absolute z-20 w-full mt-3 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-80 overflow-y-auto fade-in-scale">
+                    <div className="absolute z-50 w-full mt-3 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-80 overflow-y-auto">
                       {searchSuggestions.length > 0 ? (
                         <>
                           {/* Header */}
