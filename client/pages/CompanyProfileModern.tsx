@@ -1775,14 +1775,16 @@ export default function CompanyProfileModern() {
                   <CardContent>
                     {businessData.services &&
                     businessData.services.length > 0 ? (
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                         {businessData.services.map((service, index) => (
                           <div
                             key={index}
-                            className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg"
+                            className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
-                            <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                            <span className="text-gray-700">{service}</span>
+                            <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-green-600 flex-shrink-0" />
+                            <span className="text-sm md:text-base text-gray-700">
+                              {service}
+                            </span>
                           </div>
                         ))}
                       </div>
