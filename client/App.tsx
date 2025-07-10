@@ -36,6 +36,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Navigation />
+        <DatabaseStatusIndicator />
         <main className="min-h-screen">
           <Routes>
             <Route path="/" element={<Index />} />
