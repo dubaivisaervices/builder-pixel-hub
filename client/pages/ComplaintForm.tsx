@@ -716,9 +716,8 @@ export default function ComplaintForm() {
                         ? searchSuggestions.map((business, index) => (
                             <div
                               key={business.id}
-                              className="suggestion-item p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 flex items-center space-x-3"
+                              className="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 flex items-center space-x-3 transition-colors duration-200 hover:shadow-sm"
                               onClick={() => handleCompanySelect(business)}
-                              style={{ animationDelay: `${index * 0.05}s` }}
                             >
                               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                                 {business.name
