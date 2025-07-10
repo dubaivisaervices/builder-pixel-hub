@@ -44,6 +44,7 @@ import {
   Facebook,
   Twitter,
   Instagram,
+  X,
 } from "lucide-react";
 
 interface BusinessData {
