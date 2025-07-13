@@ -39,6 +39,16 @@ export function getBestImageUrl(imageData: ImageData): string | null {
  * Get the best available logo URL for a business
  */
 export function getBestLogoUrl(business: BusinessImageData): string | null {
+  // Debug logging to see what we're receiving
+  if (business.name && business.name.includes("FAMILY VISA")) {
+    console.log("getBestLogoUrl debug for FAMILY VISA:", {
+      logoS3Url: business.logoS3Url,
+      logoUrl: business.logoUrl,
+      logo_base64: business.logo_base64 ? "present" : "none",
+      businessKeys: Object.keys(business),
+    });
+  }
+
   // Prefer S3 URL
   if (business.logoS3Url) {
     return business.logoS3Url;
