@@ -96,7 +96,7 @@ export default function BusinessPhotoGallery({
 
   useEffect(() => {
     loadBusinessPhotos();
-  }, [businessId, photos, photosS3Urls]);
+  }, [businessId]); // Only depend on businessId to avoid infinite loops
 
   const loadBusinessPhotos = async () => {
     setLoading(true);
