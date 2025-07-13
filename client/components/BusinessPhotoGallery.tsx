@@ -117,10 +117,37 @@ export default function BusinessPhotoGallery({
 
         let processedPhotos: BusinessPhoto[] = [];
 
+        // Helper function to check if URL is from corrupted batch
+        const isCorruptedUrl = (url: string): boolean => {
+          const timestampMatch = url.match(/\/(\d{13})-/);
+          if (timestampMatch) {
+            const timestamp = parseInt(timestampMatch[1]);
+            // Block corrupted batch uploads from timestamp range 1752379060000-1752379100000
+            if (timestamp >= 1752379060000 && timestamp <= 1752379100000) {
+              console.warn("🚫 BLOCKED CORRUPTED S3 URL from bad batch:", url);
+              return true;
+            }
+          }
+          return false;
+        };
+
         // 1. Process S3 URLs first (highest priority)
         if (photosS3Urls && photosS3Urls.length > 0) {
           console.log("📸 Found S3 URLs:", photosS3Urls.length);
-          processedPhotos = photosS3Urls.map((url, index) => ({
+
+          // Filter out corrupted URLs before processing
+          const validS3Urls = photosS3Urls.filter((url) => {
+            const s3Key = url.replace(/^https?:\/\/[^\/]+\//, "");
+            return !isCorruptedUrl(s3Key);
+          });
+
+          if (validS3Urls.length < photosS3Urls.length) {
+            console.warn(
+              `📸 🚫 Filtered out ${photosS3Urls.length - validS3Urls.length} corrupted S3 URLs`,
+            );
+          }
+
+          processedPhotos = validS3Urls.map((url, index) => ({
             id: `s3-${index}`,
             url: `/api/s3-image/${encodeURIComponent(url.replace(/^https?:\/\/[^\/]+\//, ""))}`,
             s3Url: url,
