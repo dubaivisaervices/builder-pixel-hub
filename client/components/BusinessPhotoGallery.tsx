@@ -118,7 +118,10 @@ export default function BusinessPhotoGallery({
         let processedPhotos: BusinessPhoto[] = [];
 
         // Helper function to check if URL is from corrupted batch
+        // TEMPORARILY DISABLED - Testing if any S3 images actually work
         const isCorruptedUrl = (url: string): boolean => {
+          return false; // Temporarily allow all URLs to test if any work
+          /*
           const timestampMatch = url.match(/\/(\d{13})-/);
           if (timestampMatch) {
             const timestamp = parseInt(timestampMatch[1]);
@@ -129,6 +132,7 @@ export default function BusinessPhotoGallery({
             }
           }
           return false;
+          */
         };
 
         // 1. Process S3 URLs first (highest priority)
