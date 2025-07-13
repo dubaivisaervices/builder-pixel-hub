@@ -746,6 +746,24 @@ export function createServer() {
     }
   });
 
+  // Clear S3 URL for specific business
+  app.post("/api/admin/clear-s3-url/:businessId", async (req, res) => {
+    try {
+      const { businessId } = req.params;
+      const { businessService } = await import("./database/businessService");
+
+      await businessService.updateBusinessS3Urls(businessId, null);
+
+      res.json({
+        success: true,
+        message: `Cleared S3 URL for business: ${businessId}`,
+        businessId,
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Clean up corrupted S3 URLs by testing all S3 images
   app.post("/api/admin/cleanup-corrupted-s3", async (req, res) => {
     try {
