@@ -223,6 +223,21 @@ export default function S3Configuration() {
     );
   }
 
+  if (initialLoading) {
+    return (
+      <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-center py-8">
+            <div className="text-center">
+              <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading S3 configuration...</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* S3 Status Card */}
