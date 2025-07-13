@@ -445,6 +445,28 @@ export function createServer() {
     }
   });
 
+  // Check actual S3 URL format in database
+  app.get("/api/admin/check-s3-urls", async (req, res) => {
+    try {
+      const sampleUrls = await database.all(`
+        SELECT id, name, logo_s3_url
+        FROM businesses
+        WHERE logo_s3_url IS NOT NULL
+        LIMIT 3
+      `);
+
+      res.json({
+        success: true,
+        sampleUrls: sampleUrls,
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  });
+
   // Convert existing S3 URLs to proxy format
   app.post("/api/admin/convert-s3-urls", async (req, res) => {
     try {
