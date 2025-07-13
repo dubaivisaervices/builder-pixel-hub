@@ -223,6 +223,24 @@ export default function AdminDashboard() {
     }
   }, []);
 
+  useEffect(() => {
+    // Update active tab when URL changes
+    setActiveTab(getActiveTabFromUrl());
+  }, [location.pathname]);
+
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+    // Update URL to match tab
+    const urlMap = {
+      dashboard: "/admin",
+      requests: "/admin/requests",
+      search: "/admin/search",
+      sync: "/admin/sync",
+      database: "/admin/database",
+    };
+    navigate(urlMap[tabId as keyof typeof urlMap] || "/admin");
+  };
+
   // Login Screen
   if (!isAuthenticated) {
     return (
