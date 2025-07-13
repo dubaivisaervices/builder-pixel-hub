@@ -20,8 +20,8 @@ export class S3Service {
   private initialized = false;
 
   constructor() {
-    // Dubai-based bucket likely in Middle East region
-    this.region = process.env.AWS_REGION || "me-south-1";
+    // Bucket is in Asia Pacific South region based on error logs
+    this.region = process.env.AWS_REGION || "ap-south-1";
     this.bucketName = process.env.AWS_S3_BUCKET_NAME || "";
 
     if (!this.bucketName) {
