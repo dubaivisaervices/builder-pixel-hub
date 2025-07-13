@@ -25,6 +25,7 @@ import DatabaseStatus from "./pages/DatabaseStatus";
 import ImageDownloadDashboard from "./pages/ImageDownloadDashboard";
 import BusinessSearchManager from "./pages/BusinessSearchManager";
 import AdminImageManager from "./pages/AdminImageManager";
+import HostingerUpload from "./pages/HostingerUpload";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
