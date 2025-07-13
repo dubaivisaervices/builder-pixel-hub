@@ -182,6 +182,13 @@ export const syncSingleBusinessToS3: RequestHandler = async (req, res) => {
       });
     }
 
+    // Get raw business data to access original logo_url (not the processed S3 URL)
+    const { database } = await import("../database/database");
+    const rawBusiness = await database.get(
+      "SELECT logo_url, logo_s3_url FROM businesses WHERE id = ?",
+      [businessId],
+    );
+
     const s3Service = getS3Service();
     const result: S3SyncResult = {
       businessId: business.id,
