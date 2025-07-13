@@ -199,12 +199,12 @@ export const syncSingleBusinessToS3: RequestHandler = async (req, res) => {
       errors: [],
     };
 
-    // Upload logo
-    if (business.logoUrl) {
+    // Upload logo (use raw database URL, not processed S3 URL)
+    if (rawBusiness?.logo_url && !rawBusiness.logo_s3_url) {
       try {
         const logoS3Url = await s3Service.uploadBusinessLogo(
           business.id,
-          business.logoUrl,
+          rawBusiness.logo_url,
           business.name,
         );
         result.logoUploaded = true;
