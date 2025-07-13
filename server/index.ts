@@ -426,6 +426,25 @@ export function createServer() {
     }
   });
 
+  // S3 Image Proxy - serve S3 images through server to bypass CORS/permissions
+  app.get("/api/s3-image/:key(*)", async (req, res) => {
+    try {
+      const key = req.params.key;
+      const { S3Service } = await import("./utils/s3Service");
+      const s3Service = new S3Service();
+
+      // Get signed URL and redirect to it
+      const signedUrl = await s3Service.getSignedUrl(key, 3600); // 1 hour
+      res.redirect(signedUrl);
+    } catch (error: any) {
+      console.error("S3 image proxy error:", error);
+      res.status(404).json({
+        error: "Image not found",
+        message: error.message,
+      });
+    }
+  });
+
   // Debug specific business S3 URLs
   app.get("/api/admin/debug-business/:id", async (req, res) => {
     try {
