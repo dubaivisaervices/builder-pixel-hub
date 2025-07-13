@@ -259,6 +259,28 @@ export class S3Service {
   }
 
   /**
+   * Sanitize metadata values for HTTP headers (remove invalid characters)
+   */
+  private sanitizeMetadata(
+    metadata: Record<string, string>,
+  ): Record<string, string> {
+    const sanitized: Record<string, string> = {};
+
+    for (const [key, value] of Object.entries(metadata)) {
+      // Remove invalid characters for HTTP headers (non-ASCII, control chars, etc.)
+      const sanitizedValue = value
+        .replace(/[^\x20-\x7E]/g, "") // Remove non-printable ASCII chars
+        .replace(/[\r\n\t]/g, " ") // Replace line breaks with spaces
+        .substring(0, 500) // Limit length
+        .trim();
+
+      sanitized[key] = sanitizedValue;
+    }
+
+    return sanitized;
+  }
+
+  /**
    * Extract image extension from URL
    */
   private getImageExtension(url: string): string {
