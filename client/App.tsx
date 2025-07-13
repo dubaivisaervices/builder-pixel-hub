@@ -59,6 +59,7 @@ const App = () => (
             <Route path="/api-test" element={<ApiTest />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/*" element={<AdminDashboard />} />
+            <Route path="/admin-images" element={<AdminImageManager />} />
             <Route path="/data-persistence" element={<DataPersistence />} />
             <Route path="/reviews-sync" element={<ReviewsSync />} />
             <Route
