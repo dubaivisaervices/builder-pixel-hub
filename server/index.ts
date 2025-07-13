@@ -282,6 +282,10 @@ export function createServer() {
   app.get("/api/admin/fast-s3-stats", getSyncStats);
   app.get("/api/admin/fast-s3-progress-stream", syncProgressSSE);
 
+  // Smart S3 Sync routes (handles errors better)
+  app.post("/api/admin/smart-s3-sync", smartS3Sync);
+  app.get("/api/admin/smart-sync-stats", getSmartSyncStats);
+
   // Company reports and complaints API
   app.post("/api/reports/check-company", checkCompanyExists);
   app.post("/api/reports/submit-company", submitNewCompany);
