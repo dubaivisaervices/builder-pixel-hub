@@ -172,13 +172,25 @@ export default function S3Configuration() {
 
   const fetchSmartSyncStats = async () => {
     try {
+      console.log(
+        "Fetching smart sync stats from:",
+        "/api/admin/smart-sync-stats",
+      );
       const response = await fetch("/api/admin/smart-sync-stats");
-      if (response.ok) {
-        const data = await response.json();
-        setSmartSyncStats(data);
+
+      if (!response.ok) {
+        console.warn(
+          `Smart sync stats endpoint returned ${response.status}: ${response.statusText}`,
+        );
+        return;
       }
+
+      const data = await response.json();
+      console.log("Smart sync stats received:", data);
+      setSmartSyncStats(data);
     } catch (error) {
       console.error("Error fetching smart sync stats:", error);
+      // Don't show error to user for optional stats
     }
   };
 
