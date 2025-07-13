@@ -1407,25 +1407,27 @@ export default function CompanyProfileModern() {
                           e.currentTarget.naturalHeight,
                         );
 
-                        // Emergency: Block known corrupted URLs
-                        const knownCorruptedUrls = [
-                          "http://localhost:8080/api/s3-image/businesses/ChIJgYqjUtZCXz4R-srTBS-LusM/logos/1752379060492-6e89728a.jpg",
-                        ];
-
-                        if (
-                          knownCorruptedUrls.some((url) =>
-                            e.currentTarget.src.includes(url),
-                          )
-                        ) {
-                          console.error(
-                            "🚫 BLOCKED CORRUPTED URL - Forcing fallback immediately",
-                          );
-                          const img = e.currentTarget;
-                          img.style.display = "none";
-                          const fallback =
-                            img.nextElementSibling as HTMLElement;
-                          if (fallback) fallback.style.display = "flex";
-                          return;
+                        // Emergency: Block corrupted S3 URLs from bad batch upload
+                        if (e.currentTarget.src.includes("/api/s3-image/")) {
+                          const timestampMatch =
+                            e.currentTarget.src.match(/\/(\d{13})-/);
+                          if (timestampMatch) {
+                            const timestamp = parseInt(timestampMatch[1]);
+                            if (
+                              timestamp >= 1752379060000 &&
+                              timestamp <= 1752379100000
+                            ) {
+                              console.error(
+                                "🚫 BLOCKED CORRUPTED URL from bad batch - Forcing fallback immediately",
+                              );
+                              const img = e.currentTarget;
+                              img.style.display = "none";
+                              const fallback =
+                                img.nextElementSibling as HTMLElement;
+                              if (fallback) fallback.style.display = "flex";
+                              return;
+                            }
+                          }
                         }
 
                         // Try reloading once after a delay
