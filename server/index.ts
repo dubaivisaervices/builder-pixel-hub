@@ -104,6 +104,14 @@ import {
   syncSingleBusinessToS3,
 } from "./routes/s3-sync-businesses";
 import {
+  startFastS3Sync,
+  getFastSyncProgress,
+  stopFastS3Sync,
+  getFastSyncResults,
+  syncProgressSSE,
+  getSyncStats,
+} from "./routes/fast-s3-sync";
+import {
   checkCompanyExists,
   submitNewCompany,
   submitReport,
