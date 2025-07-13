@@ -121,6 +121,56 @@ export default function S3Configuration() {
     }
   };
 
+  const smartSync = async () => {
+    if (
+      !confirm(
+        "This will intelligently upload business images to S3, prioritizing local data and handling errors gracefully. Continue?",
+      )
+    ) {
+      return;
+    }
+
+    setLoading(true);
+    setSmartSyncResults(null);
+    try {
+      const response = await fetch("/api/admin/smart-s3-sync", {
+        method: "POST",
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSmartSyncResults(data.result);
+        const result = data.result;
+        alert(
+          `Smart Sync completed successfully!\n\nResults:\n- Businesses processed: ${result.processedBusinesses}\n- Logos uploaded: ${result.logosUploaded}\n- Photos uploaded: ${result.photosUploaded}\n- Base64 uploads: ${result.base64Uploads}\n- URL uploads: ${result.urlUploads}\n- Skipped URLs: ${result.skippedUrls}\n- Duration: ${(result.duration / 1000).toFixed(1)}s`,
+        );
+      } else {
+        alert(`Smart Sync failed: ${data.error}`);
+      }
+
+      fetchS3Status(); // Refresh stats
+      fetchSmartSyncStats(); // Refresh smart stats
+    } catch (error) {
+      console.error("Error running smart sync:", error);
+      alert("Smart Sync failed: Network error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchSmartSyncStats = async () => {
+    try {
+      const response = await fetch("/api/admin/smart-sync-stats");
+      if (response.ok) {
+        const data = await response.json();
+        setSmartSyncStats(data);
+      }
+    } catch (error) {
+      console.error("Error fetching smart sync stats:", error);
+    }
+  };
+
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
