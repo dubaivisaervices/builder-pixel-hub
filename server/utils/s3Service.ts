@@ -373,6 +373,9 @@ export class S3Service {
     businessCount: number;
   }> {
     try {
+      // Ensure we're using the correct region
+      await this.ensureCorrectRegion();
+
       const command = new ListObjectsV2Command({
         Bucket: this.bucketName,
         Prefix: "businesses/",
