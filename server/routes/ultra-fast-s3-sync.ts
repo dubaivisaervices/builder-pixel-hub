@@ -148,6 +148,18 @@ async function executeUltraFastSync(): Promise<void> {
       const chunkPromises = chunk.map(async (business) => {
         const uploadPromises: Promise<void>[] = [];
 
+        // Debug logging for first business
+        if (ultraFastProgress.businessesProcessed === 0) {
+          console.log(`🔍 Debug first business:`, {
+            name: business.name,
+            hasLogoUrl: !!business.logoUrl,
+            logoS3Url: business.logoS3Url,
+            logoS3UrlType: typeof business.logoS3Url,
+            hasPhotos: business.photos?.length || 0,
+            firstPhotoS3Url: business.photos?.[0]?.s3Url,
+          });
+        }
+
         // Handle logo upload
         if (
           business.logoUrl &&
