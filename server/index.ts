@@ -446,7 +446,7 @@ export function createServer() {
       const imageBuffer = await s3Service.downloadBuffer(key);
 
       // Validate image buffer
-      if (!imageBuffer || imageBuffer.length < 100) {
+      if (!imageBuffer || imageBuffer.length < 500) {
         console.error(
           `S3 image corrupted or too small: ${key}, size: ${imageBuffer?.length || 0}`,
         );
@@ -455,9 +455,55 @@ export function createServer() {
 
       // Check for basic JPEG signature
       const isJPEG = imageBuffer[0] === 0xff && imageBuffer[1] === 0xd8;
-      if (!isJPEG) {
-        console.error(`S3 image not a valid JPEG: ${key}`);
+      const hasEndMarker =
+        imageBuffer[imageBuffer.length - 2] === 0xff &&
+        imageBuffer[imageBuffer.length - 1] === 0xd9;
+
+      if (!isJPEG || !hasEndMarker) {
+        console.error(
+          `S3 image not a valid JPEG: ${key}, hasStart: ${isJPEG}, hasEnd: ${hasEndMarker}`,
+        );
         return res.status(404).json({ error: "Invalid image format" });
+      }
+
+      // Check for corruption (null byte sequences that indicate partial downloads)
+      let nullByteSequences = 0;
+      for (let i = 0; i < imageBuffer.length - 10; i++) {
+        let allNull = true;
+        for (let j = 0; j < 10; j++) {
+          if (imageBuffer[i + j] !== 0x00) {
+            allNull = false;
+            break;
+          }
+        }
+        if (allNull) {
+          nullByteSequences++;
+          break; // Found corruption, no need to continue
+        }
+      }
+
+      if (nullByteSequences > 0) {
+        console.error(
+          `S3 image corrupted with null sequences: ${key}, sequences: ${nullByteSequences}`,
+        );
+
+        // Try to clear the corrupted S3 URL from database
+        try {
+          const businessId = key.split("/")[1]; // Extract business ID from path
+          if (businessId) {
+            const { businessService } = await import(
+              "./database/businessService"
+            );
+            await businessService.updateBusinessS3Urls(businessId, null); // Clear S3 URL
+            console.log(`Cleared corrupted S3 URL for business: ${businessId}`);
+          }
+        } catch (error) {
+          console.error("Failed to clear corrupted S3 URL:", error);
+        }
+
+        return res
+          .status(404)
+          .json({ error: "Image corrupted, S3 URL cleared" });
       }
 
       // Set appropriate headers
