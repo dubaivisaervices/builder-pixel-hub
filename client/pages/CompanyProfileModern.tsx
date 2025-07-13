@@ -1148,9 +1148,20 @@ export default function CompanyProfileModern() {
         }
 
         const data = await response.json();
+        console.log(
+          "📦 Raw API Response data:",
+          JSON.stringify(data).substring(0, 500) + "...",
+        );
 
         if (data.businesses && data.businesses.length > 0) {
           let business = data.businesses[0]; // Default fallback
+          console.log("🔍 Default business data:", {
+            id: business.id,
+            name: business.name,
+            logoUrl: business.logoUrl,
+            logoS3Url: business.logoS3Url,
+            logo_base64: business.logo_base64 ? "present" : "missing",
+          });
 
           // Try to find matching business by name
           if (companyName) {
@@ -1163,6 +1174,13 @@ export default function CompanyProfileModern() {
             if (found) {
               business = found;
               console.log(`✅ Found matching business: ${business.name}`);
+              console.log("🔍 Matched business data:", {
+                id: business.id,
+                name: business.name,
+                logoUrl: business.logoUrl,
+                logoS3Url: business.logoS3Url,
+                logo_base64: business.logo_base64 ? "present" : "missing",
+              });
             } else {
               console.log(
                 `⚠️ No exact match found for "${companyName}", using first business: ${business.name}`,
