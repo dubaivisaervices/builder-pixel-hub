@@ -155,8 +155,17 @@ export default function RealTimeSmartSync() {
     eventSource.onerror = (error) => {
       console.error("SSE connection error:", error);
       eventSource.close();
+
+      // Update progress to show we're falling back to polling
+      setProgress((prev) => ({
+        ...prev,
+        currentBusiness: prev.currentBusiness + " (using fallback monitoring)",
+      }));
+
       // Fall back to polling
-      startProgressPolling();
+      setTimeout(() => {
+        startProgressPolling();
+      }, 1000);
     };
 
     // Store reference for cleanup
