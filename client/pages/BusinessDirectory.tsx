@@ -211,9 +211,7 @@ export default function BusinessDirectory() {
         .replace(/[^a-z0-9]/g, "-") || "dubai";
     const nameSlug = business.name.toLowerCase().replace(/[^a-z0-9]/g, "-");
 
-    navigate(`/modern-profile/${locationSlug}/${nameSlug}`, {
-      state: { businessData: business },
-    });
+    navigate(`/modern-profile/${locationSlug}/${nameSlug}`);
   };
 
   const toggleFavorite = (businessId: string, e: React.MouseEvent) => {
