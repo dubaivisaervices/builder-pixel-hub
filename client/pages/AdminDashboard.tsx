@@ -30,6 +30,7 @@ import {
 import BusinessSearchManager from "./BusinessSearchManager";
 import S3Configuration from "../components/S3Configuration";
 import UltraFastS3Sync from "../components/UltraFastS3Sync";
+import RealTimeSmartSync from "../components/RealTimeSmartSync";
 
 interface CompanyRequest {
   id: number;
