@@ -172,10 +172,10 @@ export class BusinessService {
   ): Promise<BusinessData[]> {
     const businesses = await database.all(
       `
-            SELECT
+                  SELECT
         id, name, address, phone, website, email, lat, lng,
         rating, review_count, category, business_status, photo_reference,
-        logo_url, logo_base64, logo_s3_url, photos_s3_urls,
+        logo_url, logo_base64,
         is_open, price_level, has_target_keyword,
         hours_json, photos_json, photos_local_json, created_at, updated_at
       FROM businesses
