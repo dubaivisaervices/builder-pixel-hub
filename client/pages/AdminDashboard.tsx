@@ -47,10 +47,24 @@ interface DatabaseStats {
 }
 
 export default function AdminDashboard() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loginForm, setLoginForm] = useState({ username: "", password: "" });
   const [loginError, setLoginError] = useState("");
-  const [activeTab, setActiveTab] = useState("dashboard");
+
+  // Get active tab from URL
+  const getActiveTabFromUrl = () => {
+    const path = location.pathname;
+    if (path === "/admin" || path === "/admin/") return "dashboard";
+    if (path.includes("/admin/sync")) return "sync";
+    if (path.includes("/admin/search")) return "search";
+    if (path.includes("/admin/requests")) return "requests";
+    if (path.includes("/admin/database")) return "database";
+    return "dashboard";
+  };
+
+  const [activeTab, setActiveTab] = useState(getActiveTabFromUrl());
   const [companyRequests, setCompanyRequests] = useState<CompanyRequest[]>([]);
   const [stats, setStats] = useState<DatabaseStats>({
     totalBusinesses: 0,
