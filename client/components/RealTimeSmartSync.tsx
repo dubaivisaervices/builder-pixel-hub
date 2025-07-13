@@ -102,15 +102,16 @@ export default function RealTimeSmartSync() {
         method: "POST",
       });
 
+      // Read the response body once
+      const data = await response.json();
+
       if (response.ok) {
-        const data = await response.json();
         console.log("🧠 Real-time Smart Sync started:", data);
 
         // Start real-time monitoring
         startRealTimeProgressMonitoring();
       } else {
-        const error = await response.json();
-        alert(`Failed to start Smart Sync: ${error.error}`);
+        alert(`Failed to start Smart Sync: ${data.error || "Unknown error"}`);
         setProgress((prev) => ({ ...prev, isRunning: false }));
       }
     } catch (error) {
