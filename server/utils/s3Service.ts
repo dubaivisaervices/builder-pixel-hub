@@ -119,13 +119,13 @@ export class S3Service {
       const imageBuffer = fetchResult.buffer!;
       const contentType = fetchResult.contentType || "image/jpeg";
 
-      // Upload to S3
+      // Upload to S3 (sanitize metadata to prevent header errors)
       const command = new PutObjectCommand({
         Bucket: this.bucketName,
         Key: key,
         Body: imageBuffer,
         ContentType: contentType,
-        Metadata: metadata,
+        Metadata: metadata ? this.sanitizeMetadata(metadata) : undefined,
       });
 
       await this.s3Client.send(command);
