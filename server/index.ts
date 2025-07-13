@@ -113,6 +113,11 @@ import {
 } from "./routes/fast-s3-sync";
 import { smartS3Sync, getSmartSyncStats } from "./routes/smart-s3-sync";
 import {
+  startRealtimeSmartSync,
+  getRealtimeSmartSyncProgress,
+  realtimeSmartSyncSSE,
+} from "./routes/realtime-smart-sync";
+import {
   checkCompanyExists,
   submitNewCompany,
   submitReport,
