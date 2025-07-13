@@ -260,7 +260,8 @@ export function createServer() {
   app.get("/api/admin/s3-status", getS3Status);
   app.post("/api/admin/s3-upload-image", uploadBusinessImageToS3);
   app.post("/api/admin/s3-batch-upload", batchUploadBusinessImages);
-  app.post("/api/admin/s3-sync-all", syncAllBusinessImagesToS3);
+  app.post("/api/admin/s3-sync-all", syncBusinessesToS3);
+  app.post("/api/admin/s3-sync-business/:businessId", syncSingleBusinessToS3);
   app.delete("/api/admin/s3-object/:key", deleteS3Object);
   app.get("/api/admin/s3-list-objects", listS3Objects);
 
