@@ -66,7 +66,7 @@ const App = () => (
             />
             <Route
               path="/modern-profile/:location/:companyName"
-              element={<CompanyProfileModern />}
+              element={<CompanyProfileModern key={`${Date.now()}`} />}
             />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
