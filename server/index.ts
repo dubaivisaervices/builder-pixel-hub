@@ -480,6 +480,60 @@ export function createServer() {
     }
   });
 
+  // Test S3 connectivity and check if specific objects exist
+  app.get("/api/admin/test-s3-objects", async (req, res) => {
+    try {
+      const { S3Service } = await import("./utils/s3Service");
+      const s3Service = new S3Service();
+
+      // Extract original S3 keys from proxy URLs in database
+      const businesses = await database.all(`
+        SELECT id, name, logo_s3_url
+        FROM businesses
+        WHERE logo_s3_url IS NOT NULL
+        LIMIT 5
+      `);
+
+      const tests = [];
+      for (const business of businesses) {
+        // Extract S3 key from proxy URL
+        const proxyUrl = business.logo_s3_url;
+        const s3Key = proxyUrl.replace(
+          "http://localhost:8080/api/s3-image/",
+          "",
+        );
+
+        try {
+          const exists = await s3Service.objectExists(s3Key);
+          tests.push({
+            businessId: business.id,
+            businessName: business.name,
+            s3Key: s3Key,
+            exists: exists,
+          });
+        } catch (error: any) {
+          tests.push({
+            businessId: business.id,
+            businessName: business.name,
+            s3Key: s3Key,
+            exists: false,
+            error: error.message,
+          });
+        }
+      }
+
+      res.json({
+        success: true,
+        tests: tests,
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  });
+
   // Convert existing S3 URLs to proxy format
   app.post("/api/admin/convert-s3-urls", async (req, res) => {
     try {
