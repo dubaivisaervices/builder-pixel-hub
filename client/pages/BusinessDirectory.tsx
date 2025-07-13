@@ -800,8 +800,27 @@ export default function BusinessDirectory() {
                           <div className="flex items-center space-x-4">
                             <div className="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
                               <div className="relative w-full h-full">
-                                {/* Always show company initials */}
-                                <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                                {getBestLogoUrl(business) ? (
+                                  <img
+                                    src={getBestLogoUrl(business)!}
+                                    alt={`${business.name} logo`}
+                                    className="w-full h-full object-cover rounded-xl"
+                                    onError={(e) => {
+                                      e.currentTarget.style.display = "none";
+                                      e.currentTarget.nextElementSibling!.style.display =
+                                        "flex";
+                                    }}
+                                  />
+                                ) : null}
+                                {/* Fallback to company initials */}
+                                <div
+                                  className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg"
+                                  style={{
+                                    display: getBestLogoUrl(business)
+                                      ? "none"
+                                      : "flex",
+                                  }}
+                                >
                                   {generatePlaceholderLogo(business.name)}
                                 </div>
                               </div>
