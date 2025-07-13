@@ -16,7 +16,7 @@ export const startFastS3Sync: RequestHandler = async (req, res) => {
 
     const sync = getFastS3Sync();
 
-    if (sync.isRunning()) {
+    if (sync.isSyncRunning()) {
       return res.status(409).json({
         error: "Sync already in progress",
         progress: sync.getProgress(),
