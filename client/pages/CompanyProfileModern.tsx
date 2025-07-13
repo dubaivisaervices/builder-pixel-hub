@@ -1361,6 +1361,12 @@ export default function CompanyProfileModern() {
                       src={businessData.logoUrl}
                       alt={`${businessData.name} logo`}
                       className="w-full h-full object-contain"
+                      onLoad={(e) => {
+                        console.log(
+                          "Logo loaded successfully:",
+                          businessData.logoUrl,
+                        );
+                      }}
                       onError={(e) => {
                         console.error(
                           "Logo failed to load:",
