@@ -62,6 +62,7 @@ export default function AdminDashboard() {
     if (path.includes("/admin/search")) return "search";
     if (path.includes("/admin/requests")) return "requests";
     if (path.includes("/admin/database")) return "database";
+    if (path.includes("/admin/s3")) return "s3";
     return "dashboard";
   };
 
