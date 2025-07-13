@@ -505,7 +505,14 @@ export class BusinessService {
         business.logo_s3_url || business.logo_base64
           ? business.logo_s3_url ||
             `data:image/jpeg;base64,${business.logo_base64}`
-          : business.logo_url, // Temporarily use Google Maps URL while S3 uploads are fixed
+          : business.logo_url &&
+              business.logo_url.includes("maps.googleapis.com") &&
+              !business.logo_url.includes("key=")
+            ? business.logo_url +
+              "&key=" +
+              (process.env.GOOGLE_PLACES_API_KEY ||
+                "AIzaSyCLdVuLJI-sCmDe8dcQ5i8R_3rxWTzmxl8")
+            : business.logo_url, // Add API key to Google Maps URLs
       logoBase64: business.logo_base64, // Keep base64 data for caching
       logoS3Url: business.logo_s3_url || undefined, // S3 URL for logo (may not exist yet)
       photosS3Urls: business.photos_s3_urls
