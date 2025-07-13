@@ -85,7 +85,11 @@ export default function S3Configuration() {
   };
 
   const syncAllImages = async () => {
-    if (!confirm("This will upload all business images to S3. Continue?")) {
+    if (
+      !confirm(
+        "This will upload all business images to S3. This may take several minutes. Continue?",
+      )
+    ) {
       return;
     }
 
@@ -96,7 +100,16 @@ export default function S3Configuration() {
       });
 
       const data = await response.json();
-      alert(data.message || "Sync completed");
+
+      if (response.ok) {
+        const summary = data.summary;
+        alert(
+          `Sync completed successfully!\n\nSummary:\n- Businesses processed: ${summary.businessesProcessed}\n- Logos uploaded: ${summary.totalLogosUploaded}\n- Photos uploaded: ${summary.totalPhotosUploaded}\n- Businesses with errors: ${summary.businessesWithErrors}`,
+        );
+      } else {
+        alert(`Sync failed: ${data.error}`);
+      }
+
       fetchS3Status(); // Refresh stats
     } catch (error) {
       console.error("Error syncing images:", error);
