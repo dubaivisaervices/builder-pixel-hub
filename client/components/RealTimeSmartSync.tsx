@@ -187,7 +187,11 @@ export default function RealTimeSmartSync() {
   // Stop progress monitoring
   const stopProgressMonitoring = () => {
     if (intervalRef.current) {
-      clearInterval(intervalRef.current);
+      if (intervalRef.current instanceof EventSource) {
+        intervalRef.current.close();
+      } else {
+        clearInterval(intervalRef.current);
+      }
       intervalRef.current = null;
     }
   };
