@@ -445,6 +445,34 @@ export function createServer() {
     }
   });
 
+  // Convert existing S3 URLs to proxy format
+  app.post("/api/admin/convert-s3-urls", async (req, res) => {
+    try {
+      const baseUrl = process.env.BASE_URL || "http://localhost:8080";
+      const bucketName =
+        process.env.AWS_S3_BUCKET_NAME || "dubai-business-images";
+      const region = process.env.AWS_REGION || "ap-south-1";
+
+      // Update logo S3 URLs
+      const logoUpdate = await database.run(`
+        UPDATE businesses
+        SET logo_s3_url = REPLACE(logo_s3_url, 'https://${bucketName}.s3.${region}.amazonaws.com/', '${baseUrl}/api/s3-image/')
+        WHERE logo_s3_url IS NOT NULL AND logo_s3_url LIKE 'https://${bucketName}.s3.${region}.amazonaws.com/%'
+      `);
+
+      res.json({
+        success: true,
+        message: "S3 URLs converted to proxy format",
+        logoUrlsUpdated: logoUpdate.changes,
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  });
+
   // Debug specific business S3 URLs
   app.get("/api/admin/debug-business/:id", async (req, res) => {
     try {
