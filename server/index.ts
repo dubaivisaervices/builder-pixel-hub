@@ -359,7 +359,8 @@ export function createServer() {
       const sample = await database.all(`
         SELECT id, name, logo_url, logo_s3_url, photos_s3_urls
         FROM businesses
-        LIMIT 5
+        WHERE logo_url IS NOT NULL
+        LIMIT 10
       `);
 
       res.json({
