@@ -528,8 +528,10 @@ export class BusinessService {
       logoBase64: business.logo_base64, // Keep base64 data for caching
       logoS3Url: validLogoS3Url, // Only set if not corrupted
       photosS3Urls: business.photos_s3_urls
-        ? JSON.parse(business.photos_s3_urls)
-        : undefined, // Array of S3 URLs
+        ? JSON.parse(business.photos_s3_urls).filter(
+            (url: string) => !this.isCorruptedUrl(url),
+          )
+        : undefined, // Array of S3 URLs (filtered for corrupted URLs)
       isOpen: business.is_open,
       priceLevel: business.price_level,
       hasTargetKeyword: business.has_target_keyword,
