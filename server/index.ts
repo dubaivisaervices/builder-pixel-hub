@@ -273,6 +273,14 @@ export function createServer() {
   app.delete("/api/admin/s3-object/:key", deleteS3Object);
   app.get("/api/admin/s3-list-objects", listS3Objects);
 
+  // Ultra-Fast S3 Sync routes
+  app.post("/api/admin/fast-s3-sync", startFastS3Sync);
+  app.get("/api/admin/fast-s3-progress", getFastSyncProgress);
+  app.post("/api/admin/fast-s3-stop", stopFastS3Sync);
+  app.get("/api/admin/fast-s3-results", getFastSyncResults);
+  app.get("/api/admin/fast-s3-stats", getSyncStats);
+  app.get("/api/admin/fast-s3-progress-stream", syncProgressSSE);
+
   // Company reports and complaints API
   app.post("/api/reports/check-company", checkCompanyExists);
   app.post("/api/reports/submit-company", submitNewCompany);
