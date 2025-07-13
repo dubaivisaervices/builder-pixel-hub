@@ -1176,9 +1176,9 @@ export default function CompanyProfileModern() {
           // Enhance business data with additional info
           const enhancedBusiness = {
             ...business,
-            logoUrl: business.logo_base64
-              ? `data:image/jpeg;base64,${business.logo_base64}`
-              : `/api/placeholder-logo/${encodeURIComponent(business.name.replace(/\s+/g, "-"))}`, // Use placeholder instead of broken external URL
+            logoUrl:
+              getBestLogoUrl(business) ||
+              `/api/placeholder-logo/${encodeURIComponent(business.name.replace(/\s+/g, "-"))}`, // Use S3 → base64 → placeholder hierarchy
             photos: business.photos_local_json
               ? JSON.parse(business.photos_local_json)
               : business.photos_json
