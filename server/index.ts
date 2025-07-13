@@ -345,6 +345,38 @@ export function createServer() {
     }
   });
 
+  // Debug S3 URL status
+  app.get("/api/admin/debug-s3-status", async (req, res) => {
+    try {
+      const result = await database.get(`
+        SELECT
+          COUNT(*) as total,
+          COUNT(logo_s3_url) as with_logo_s3,
+          COUNT(photos_s3_urls) as with_photos_s3
+        FROM businesses
+      `);
+
+      const sample = await database.all(`
+        SELECT id, name, logo_url, logo_s3_url, photos_s3_urls
+        FROM businesses
+        LIMIT 5
+      `);
+
+      res.json({
+        success: true,
+        stats: result,
+        sample: sample,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+        timestamp: new Date().toISOString(),
+      });
+    }
+  });
+
   // Database migration routes
   app.post("/api/admin/migrate/add-s3-columns", async (req, res) => {
     try {
