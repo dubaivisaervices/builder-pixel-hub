@@ -244,7 +244,10 @@ async function executeUltraFastSync(): Promise<void> {
   updateUltraCalculatedFields();
   emitUltraProgress();
 
-  console.log("🚀 ULTRA-FAST S3 sync completed!");
+  console.log(`🚀 ULTRA-FAST S3 sync completed!`);
+  console.log(
+    `📊 Total uploads processed: ${logoUploadsQueued} logos + ${photoUploadsQueued} photos = ${logoUploadsQueued + photoUploadsQueued} total`,
+  );
   ultraProgressEmitter.emit("complete", ultraFastProgress);
 }
 
