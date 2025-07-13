@@ -234,3 +234,5 @@ function AdminImageManager() {
     </div>
   );
 }
+
+export default AdminImageManager;
