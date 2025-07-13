@@ -53,10 +53,7 @@ export const syncBusinessesToS3: RequestHandler = async (req, res) => {
           console.log(`✅ Logo uploaded: ${logoS3Url}`);
 
           // Update business with S3 URL
-          await businessService.updateBusiness(business.id, {
-            ...business,
-            logoS3Url: logoS3Url,
-          });
+          await businessService.updateBusinessS3Urls(business.id, logoS3Url);
         } catch (error) {
           result.errors.push(
             `Logo upload failed: ${error instanceof Error ? error.message : "Unknown error"}`,
