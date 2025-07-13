@@ -39,9 +39,6 @@ import {
   syncAllReviews,
   checkSyncStatus,
 } from "./routes/photo-sync";
-<<<<<<< HEAD
-// Removed complex photo and API control routes to restore simpler state
-=======
 import {
   getBusinessPhotos,
   refreshBusinessPhotos,
@@ -63,7 +60,6 @@ import {
   voteOnReport,
   getReportsStats,
 } from "./routes/company-reports";
->>>>>>> origin/main
 import { fixBusinessEmailsAndWebsites } from "./routes/fix-business-data";
 import {
   addCompanyRequest,
@@ -97,8 +93,8 @@ export function createServer() {
   app.use(express.urlencoded({ extended: true }));
 
   // Ensure all API routes return JSON content-type
-  app.use('/api', (req, res, next) => {
-    res.setHeader('Content-Type', 'application/json');
+  app.use("/api", (req, res, next) => {
+    res.setHeader("Content-Type", "application/json");
     next();
   });
 
