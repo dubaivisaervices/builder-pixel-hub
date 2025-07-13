@@ -25,10 +25,13 @@ export interface BusinessData {
   photoReference?: string;
   logoUrl?: string;
   logoBase64?: string; // Base64 encoded logo for offline use
+  logoS3Url?: string; // S3 URL for logo
+  photosS3Urls?: string[]; // Array of S3 URLs for photos
   photos?: Array<{
     id: number;
     url: string;
     caption: string;
+    s3Url?: string; // S3 URL for this photo
   }>;
   photosLocal?: Array<{
     id: number;
