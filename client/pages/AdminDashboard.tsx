@@ -645,7 +645,8 @@ export default function AdminDashboard() {
 
         {/* S3 Storage Tab */}
         {activeTab === "s3" && (
-          <div>
+          <div className="space-y-8">
+            <UltraFastS3Sync />
             <S3Configuration />
           </div>
         )}
@@ -696,9 +697,7 @@ export default function AdminDashboard() {
                       <div className="text-center">
                         <Trash2 className="h-8 w-8 mx-auto mb-2" />
                         <div className="font-medium">Clear Database</div>
-                        <div className="text-xs opacity-80">
-                          ���️ Danger zone
-                        </div>
+                        <div className="text-xs opacity-80">⚠️ Danger zone</div>
                       </div>
                     </Button>
                   </div>
