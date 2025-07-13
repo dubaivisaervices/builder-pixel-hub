@@ -39,30 +39,13 @@ export function getBestImageUrl(imageData: ImageData): string | null {
  * Get the best available logo URL for a business
  */
 export function getBestLogoUrl(business: BusinessImageData): string | null {
-  // Prefer S3 URL (but only if it's not a proxy URL, since those might 404)
-  if (business.logoS3Url && !business.logoS3Url.includes("/api/s3-image/")) {
-    return business.logoS3Url;
-  }
-
-  // Fall back to base64 if available
+  // For now, only use base64 images (working) until S3 uploads are fixed
   if (business.logo_base64) {
     return `data:image/jpeg;base64,${business.logo_base64}`;
   }
 
-  // Try S3 proxy URL as last resort
-  if (business.logoS3Url && business.logoS3Url.includes("/api/s3-image/")) {
-    return business.logoS3Url;
-  }
-
-  // Skip Google Maps URLs as they're failing
-  // if (business.logoUrl) {
-  //   // If it's a Google Maps URL without key, add the API key
-  //   if (business.logoUrl.includes('maps.googleapis.com') && !business.logoUrl.includes('key=')) {
-  //     return business.logoUrl + '&key=AIzaSyCLdVuLJI-sCmDe8dcQ5i8R_3rxWTzmxl8';
-  //   }
-  //   return business.logoUrl;
-  // }
-
+  // All other sources (S3, Google Maps) are currently failing
+  // Return null to show placeholder initials
   return null;
 }
 
