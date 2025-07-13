@@ -334,6 +334,12 @@ export default function BusinessDirectory() {
                     alt={`${business.name} logo`}
                     className="h-full w-full object-cover rounded-xl border-2 border-white shadow-lg"
                     onError={(e) => {
+                      console.error(
+                        "Business card logo failed to load:",
+                        getBestLogoUrl(business),
+                        "for business:",
+                        business.name,
+                      );
                       e.currentTarget.style.display = "none";
                       e.currentTarget.nextElementSibling!.style.display =
                         "flex";
