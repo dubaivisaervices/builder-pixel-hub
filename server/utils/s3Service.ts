@@ -144,6 +144,9 @@ export class S3Service {
     metadata?: Record<string, string>,
   ): Promise<string> {
     try {
+      // Ensure we're using the correct region
+      await this.ensureCorrectRegion();
+
       const command = new PutObjectCommand({
         Bucket: this.bucketName,
         Key: key,
