@@ -180,8 +180,14 @@ async function executeUltraFastSync(): Promise<void> {
 
         // Handle photo uploads
         if (business.photos && Array.isArray(business.photos)) {
+          console.log(
+            `📷 Processing ${business.photos.length} photos for: ${business.name}`,
+          );
           for (const photo of business.photos) {
             if (photo.url && !photo.s3Url && isValidUrl(photo.url)) {
+              console.log(
+                `📷 Uploading photo: ${photo.url.substring(0, 50)}...`,
+              );
               const photoPromise = processUltraFastUpload(
                 "photo",
                 business.id,
