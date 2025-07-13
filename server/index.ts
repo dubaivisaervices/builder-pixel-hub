@@ -316,6 +316,7 @@ export function createServer() {
   // Debug routes for image analysis
   app.get("/api/admin/debug-images", debugBusinessImages);
   app.get("/api/admin/test-image-fetch", testSingleImageFetch);
+  app.get("/api/admin/analyze-image-types", analyzeImageTypes);
 
   // Company reports and complaints API
   app.post("/api/reports/check-company", checkCompanyExists);
