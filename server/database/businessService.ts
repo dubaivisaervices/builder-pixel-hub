@@ -513,6 +513,10 @@ export class BusinessService {
             `data:image/jpeg;base64,${business.logo_base64}`
           : business.logo_url, // Use S3 URL first, then cached base64, finally original URL
       logoBase64: business.logo_base64, // Keep base64 data for caching
+      logoS3Url: business.logo_s3_url, // S3 URL for logo
+      photosS3Urls: business.photos_s3_urls
+        ? JSON.parse(business.photos_s3_urls)
+        : undefined, // Array of S3 URLs
       isOpen: business.is_open,
       priceLevel: business.price_level,
       hasTargetKeyword: business.has_target_keyword,
