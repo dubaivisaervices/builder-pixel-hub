@@ -180,6 +180,120 @@ export function createServer() {
   app.get("/api/test-google-api", testGoogleAPI);
   app.get("/api/businesses", searchDubaiVisaServices);
   app.get("/api/dubai-visa-services", searchDubaiVisaServices);
+
+  // Business photos endpoint
+  app.get("/api/business-photos/:businessId", async (req, res) => {
+    try {
+      const { businessId } = req.params;
+      console.log(`📸 Fetching photos for business: ${businessId}`);
+
+      // Get business data including S3 URLs
+      const business = await businessService.getBusinessById(businessId);
+      if (!business) {
+        return res.status(404).json({
+          success: false,
+          error: "Business not found",
+          photos: [],
+        });
+      }
+
+      console.log(`📸 Business found: ${business.name}`);
+      console.log(`📸 S3 URLs available:`, business.photosS3Urls?.length || 0);
+      console.log(`📸 Regular photos:`, business.photos?.length || 0);
+
+      let photos = [];
+
+      // 1. Process S3 URLs first (highest quality)
+      if (business.photosS3Urls && business.photosS3Urls.length > 0) {
+        console.log(`📸 Processing ${business.photosS3Urls.length} S3 URLs`);
+
+        for (let i = 0; i < business.photosS3Urls.length; i++) {
+          const s3Url = business.photosS3Urls[i];
+          try {
+            // Extract S3 key from URL
+            const s3Key = s3Url.replace(/^https?:\/\/[^\/]+\//, "");
+
+            // Check if S3 object exists and get metadata
+            const exists = await s3Service.objectExists(s3Key);
+            if (exists) {
+              photos.push({
+                id: `s3-${i}`,
+                url: `/api/s3-image/${encodeURIComponent(s3Key)}`,
+                s3Url: s3Url,
+                s3Key: s3Key,
+                width: 800,
+                height: 600,
+                caption: `Business Photo ${i + 1}`,
+                source: "s3",
+                uploadedAt: new Date().toISOString(),
+              });
+              console.log(`📸 ✅ S3 photo ${i + 1} validated:`, s3Key);
+            } else {
+              console.log(`📸 ❌ S3 photo ${i + 1} not found:`, s3Key);
+            }
+          } catch (error) {
+            console.error(`📸 Error validating S3 photo ${i + 1}:`, error);
+          }
+        }
+      }
+
+      // 2. Process regular photos array as fallback
+      if (business.photos && business.photos.length > 0) {
+        console.log(`📸 Processing ${business.photos.length} regular photos`);
+
+        for (let i = 0; i < business.photos.length; i++) {
+          const photo = business.photos[i];
+
+          // Skip if we already have S3 photos
+          if (photos.length > 0 && photo.source !== "s3") {
+            continue;
+          }
+
+          photos.push({
+            id: photo.id || `photo-${i}`,
+            url: photo.url || photo.s3Url,
+            s3Url: photo.s3Url,
+            base64: photo.base64,
+            width: photo.width || 800,
+            height: photo.height || 600,
+            caption: photo.caption || `Business Photo ${photos.length + 1}`,
+            source: photo.source || "api",
+            needsDownload: photo.needsDownload,
+            uploadedAt: new Date().toISOString(),
+          });
+        }
+      }
+
+      // 3. If no photos found, return empty array (frontend will use defaults)
+      if (photos.length === 0) {
+        console.log(`📸 No photos found for business ${businessId}`);
+      }
+
+      console.log(`📸 Returning ${photos.length} photos for ${business.name}`);
+
+      res.json({
+        success: true,
+        businessId: businessId,
+        businessName: business.name,
+        photos: photos,
+        totalCount: photos.length,
+        s3Count: photos.filter((p) => p.source === "s3").length,
+        metadata: {
+          hasS3Photos:
+            business.photosS3Urls && business.photosS3Urls.length > 0,
+          hasRegularPhotos: business.photos && business.photos.length > 0,
+          fetchedAt: new Date().toISOString(),
+        },
+      });
+    } catch (error) {
+      console.error("📸 Error fetching business photos:", error);
+      res.status(500).json({
+        success: false,
+        error: "Failed to fetch business photos",
+        photos: [],
+      });
+    }
+  });
   app.get("/api/business/:placeId", getBusinessDetails);
   app.get("/api/business-photo/:photoReference", getBusinessPhoto);
   app.get("/api/business-db/:businessId", getBusinessById);
