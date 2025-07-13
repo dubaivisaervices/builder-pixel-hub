@@ -41,9 +41,9 @@ export class S3Service {
     if (this.initialized) return;
 
     const commonRegions = [
-      "us-east-1",
       "me-south-1",
       "eu-west-1",
+      "us-east-1",
       "ap-southeast-1",
       "us-west-2",
     ];
