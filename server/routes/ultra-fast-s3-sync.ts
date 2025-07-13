@@ -137,6 +137,9 @@ async function executeUltraFastSync(): Promise<void> {
       ULTRA_FAST_CONFIG.BATCH_SIZE,
     );
 
+    console.log(
+      `🔍 Fetched ${businesses.length} businesses at offset ${offset}`,
+    );
     if (businesses.length === 0) break;
 
     batchCount++;
