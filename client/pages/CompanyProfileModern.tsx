@@ -1202,11 +1202,14 @@ export default function CompanyProfileModern() {
           const bestLogoUrl = getBestLogoUrl(business);
           console.log("🔧 getBestLogoUrl returned:", bestLogoUrl);
 
+          // Ensure we always have a logo - use professional business logo as default
+          const finalLogoUrl =
+            bestLogoUrl ||
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=center";
+
           const enhancedBusiness = {
             ...business,
-            logoUrl:
-              bestLogoUrl ||
-              `/api/placeholder-logo/${encodeURIComponent(business.name.replace(/\s+/g, "-"))}`, // Use S3 → base64 → placeholder hierarchy
+            logoUrl: finalLogoUrl,
             photos: business.photos_local_json
               ? JSON.parse(business.photos_local_json)
               : business.photos_json
