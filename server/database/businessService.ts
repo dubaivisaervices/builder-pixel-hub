@@ -16,11 +16,10 @@ export class BusinessService {
       // Update existing business
       await database.run(
         `
-                UPDATE businesses SET
+                        UPDATE businesses SET
           name = ?, address = ?, phone = ?, website = ?, email = ?,
           lat = ?, lng = ?, rating = ?, review_count = ?, category = ?,
           business_status = ?, photo_reference = ?, logo_url = ?, logo_base64 = ?,
-          logo_s3_url = ?, photos_s3_urls = ?,
           is_open = ?, price_level = ?, has_target_keyword = ?,
           hours_json = ?, photos_json = ?, photos_local_json = ?, updated_at = CURRENT_TIMESTAMP
         WHERE id = ?
