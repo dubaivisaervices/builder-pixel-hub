@@ -43,12 +43,17 @@ export class S3Service {
     metadata?: Record<string, string>,
   ): Promise<string> {
     try {
-      // Use enhanced image fetcher for better Google Business URL handling
-      const fetchResult = await EnhancedImageFetcher.fetchImage(imageUrl);
+      // Use Google Maps aware image handler
+      const fetchResult =
+        await GoogleMapsImageHandler.handleGoogleMapsImage(imageUrl);
+
+      if (fetchResult.shouldSkip) {
+        throw new Error(`Skipped: ${fetchResult.error}`);
+      }
 
       if (!fetchResult.success) {
         throw new Error(
-          fetchResult.error || "Failed to fetch image with enhanced fetcher",
+          fetchResult.error || "Failed to fetch image with Google Maps handler",
         );
       }
 
