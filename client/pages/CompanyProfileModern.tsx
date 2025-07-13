@@ -1407,6 +1407,27 @@ export default function CompanyProfileModern() {
                           e.currentTarget.naturalHeight,
                         );
 
+                        // Emergency: Block known corrupted URLs
+                        const knownCorruptedUrls = [
+                          "http://localhost:8080/api/s3-image/businesses/ChIJgYqjUtZCXz4R-srTBS-LusM/logos/1752379060492-6e89728a.jpg",
+                        ];
+
+                        if (
+                          knownCorruptedUrls.some((url) =>
+                            e.currentTarget.src.includes(url),
+                          )
+                        ) {
+                          console.error(
+                            "🚫 BLOCKED CORRUPTED URL - Forcing fallback immediately",
+                          );
+                          const img = e.currentTarget;
+                          img.style.display = "none";
+                          const fallback =
+                            img.nextElementSibling as HTMLElement;
+                          if (fallback) fallback.style.display = "flex";
+                          return;
+                        }
+
                         // Try reloading once after a delay
                         const img = e.currentTarget;
                         if (!img.dataset.retried) {
