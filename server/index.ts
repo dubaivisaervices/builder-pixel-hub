@@ -492,6 +492,22 @@ export function createServer() {
     }
   });
 
+  app.get("/api/admin/business-list", async (req, res) => {
+    try {
+      const { BusinessService } = await import("./database/businessService");
+      const businessService = new BusinessService(database);
+
+      const businesses = await database.all(
+        "SELECT id, name, category, rating FROM businesses ORDER BY rating DESC LIMIT 50",
+      );
+
+      res.json(businesses);
+    } catch (error) {
+      console.error("Error fetching business list:", error);
+      res.status(500).json({ error: "Failed to fetch businesses" });
+    }
+  });
+
   // Google Reviews sync routes
   app.post("/api/admin/sync-google-reviews", syncAllGoogleReviews);
   app.post("/api/admin/sync-business-reviews/:businessId", syncBusinessReviews);
