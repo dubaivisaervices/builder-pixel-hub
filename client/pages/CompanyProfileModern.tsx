@@ -1133,14 +1133,11 @@ export default function CompanyProfileModern() {
         setLoading(true);
         setError(null);
 
-        // Check navigation state first
-        if (location.state?.businessData) {
-          console.log("✅ Using navigation state data");
-          const business = location.state.businessData;
-          setBusinessData(business);
-          setLoading(false);
-          return;
-        }
+        // Skip cached navigation state to ensure fresh data
+        // (cached data may contain stale S3 URLs)
+        console.log(
+          "🔄 Skipping cached navigation state, fetching fresh data...",
+        );
 
         // Fetch from API with cache busting
         console.log("🔍 Fetching from API...");
