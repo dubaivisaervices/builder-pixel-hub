@@ -64,6 +64,8 @@ export const downloadAllPhotos: RequestHandler = async (req, res) => {
         photosProcessed: 0,
         photosDownloaded: 0,
         photosSaved: 0,
+        s3UploadsSuccessful: 0,
+        s3UploadsFailed: 0,
         errors: [],
       };
 
