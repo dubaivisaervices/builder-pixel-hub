@@ -97,6 +97,9 @@ export class S3Service {
     metadata?: Record<string, string>,
   ): Promise<string> {
     try {
+      // Ensure we're using the correct region
+      await this.ensureCorrectRegion();
+
       // Use Google Maps aware image handler
       const fetchResult =
         await GoogleMapsImageHandler.handleGoogleMapsImage(imageUrl);
