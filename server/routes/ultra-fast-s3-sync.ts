@@ -329,10 +329,7 @@ async function updateBusinessWithS3Url(
     if (!business) return;
 
     if (type === "logo") {
-      await businessService.updateBusiness(businessId, {
-        ...business,
-        logoS3Url: s3Url,
-      });
+      await businessService.updateBusinessS3Urls(businessId, s3Url);
     } else {
       // Update the specific photo with S3 URL
       if (business.photos && Array.isArray(business.photos)) {
@@ -342,10 +339,11 @@ async function updateBusinessWithS3Url(
             : photo,
         );
 
-        await businessService.updateBusiness(businessId, {
-          ...business,
-          photos: updatedPhotos,
-        });
+        await businessService.updateBusinessS3Urls(
+          businessId,
+          undefined,
+          updatedPhotos,
+        );
       }
     }
   } catch (error) {
