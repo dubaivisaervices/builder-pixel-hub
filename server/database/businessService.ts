@@ -586,6 +586,25 @@ export class BusinessService {
     return businesses.map((business) => this.mapToBusinessData(business));
   }
 
+  // Update business logo S3 URL
+  async updateBusinessLogo(id: string, logoS3Url: string): Promise<void> {
+    await database.run(
+      "UPDATE businesses SET logo_s3_url = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+      [logoS3Url, id],
+    );
+  }
+
+  // Update business photos S3 URLs
+  async updateBusinessPhotos(
+    id: string,
+    photosS3Urls: string[],
+  ): Promise<void> {
+    await database.run(
+      "UPDATE businesses SET photos_s3_urls = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+      [JSON.stringify(photosS3Urls), id],
+    );
+  }
+
   // Update business with S3 URLs
   async updateBusinessS3Urls(
     id: string,
