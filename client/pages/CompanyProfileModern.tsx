@@ -1189,10 +1189,22 @@ export default function CompanyProfileModern() {
           }
 
           // Enhance business data with additional info
+          console.log("🔧 Creating enhanced business data...");
+          console.log("🔧 Original business before enhancement:", {
+            id: business.id,
+            name: business.name,
+            logoUrl: business.logoUrl,
+            logoS3Url: business.logoS3Url,
+            logo_base64: business.logo_base64 ? "present" : "missing",
+          });
+
+          const bestLogoUrl = getBestLogoUrl(business);
+          console.log("🔧 getBestLogoUrl returned:", bestLogoUrl);
+
           const enhancedBusiness = {
             ...business,
             logoUrl:
-              getBestLogoUrl(business) ||
+              bestLogoUrl ||
               `/api/placeholder-logo/${encodeURIComponent(business.name.replace(/\s+/g, "-"))}`, // Use S3 → base64 → placeholder hierarchy
             photos: business.photos_local_json
               ? JSON.parse(business.photos_local_json)
@@ -1280,7 +1292,7 @@ export default function CompanyProfileModern() {
       case "operational":
         return (
           <Badge className="bg-green-100 text-green-800 border-green-200">
-            ✅ Verified & Active
+            �� Verified & Active
           </Badge>
         );
       case "temporarily_closed":
