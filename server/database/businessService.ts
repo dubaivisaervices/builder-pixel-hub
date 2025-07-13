@@ -79,6 +79,8 @@ export class BusinessService {
           business.photoReference,
           business.logoUrl,
           business.logoBase64 || null,
+          business.logoS3Url || null,
+          business.photosS3Urls ? JSON.stringify(business.photosS3Urls) : null,
           business.isOpen,
           business.priceLevel,
           business.hasTargetKeyword,
