@@ -312,6 +312,10 @@ export function createServer() {
   app.get("/api/admin/ultra-fast-sync-stream", ultraFastSyncSSE);
   app.post("/api/admin/ultra-fast-stop", stopUltraFastSync);
 
+  // Debug routes for image analysis
+  app.get("/api/admin/debug-images", debugBusinessImages);
+  app.get("/api/admin/test-image-fetch", testSingleImageFetch);
+
   // Company reports and complaints API
   app.post("/api/reports/check-company", checkCompanyExists);
   app.post("/api/reports/submit-company", submitNewCompany);
