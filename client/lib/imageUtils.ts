@@ -49,9 +49,14 @@ export function getBestLogoUrl(business: BusinessImageData): string | null {
     return `data:image/jpeg;base64,${business.logo_base64}`;
   }
 
-  // Fall back to original logo URL as last resort
+  // Fall back to original logo URL as last resort (but skip expired Google Maps URLs)
   if (business?.logoUrl && !business.logoUrl.includes("maps.googleapis.com")) {
     return business.logoUrl;
+  }
+
+  // Return a default business logo for Dubai businesses
+  if (business?.name) {
+    return `https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=center`;
   }
 
   return null;
