@@ -125,6 +125,7 @@ export class S3Service {
         Key: key,
         Body: imageBuffer,
         ContentType: contentType,
+        ACL: "public-read", // Make images publicly accessible
         Metadata: metadata ? this.sanitizeMetadata(metadata) : undefined,
       });
 
@@ -187,12 +188,11 @@ export class S3Service {
   }
 
   /**
-   * Get public URL for an object through server proxy
+   * Get direct public URL for an S3 object
    */
   getPublicUrl(key: string): string {
-    // Use server proxy to handle S3 authentication
-    const baseUrl = process.env.BASE_URL || "http://localhost:8080";
-    return `${baseUrl}/api/s3-image/${key}`;
+    // Return direct S3 URL now that bucket has public read policy
+    return `https://${this.bucketName}.s3.${this.region}.amazonaws.com/${key}`;
   }
 
   /**
