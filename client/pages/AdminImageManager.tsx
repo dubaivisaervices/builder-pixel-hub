@@ -19,7 +19,7 @@ interface Business {
   rating: number;
 }
 
-export function AdminImageManager() {
+function AdminImageManager() {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>([]);
   const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(
