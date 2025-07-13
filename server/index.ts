@@ -124,6 +124,10 @@ import {
   stopUltraFastSync,
 } from "./routes/ultra-fast-s3-sync";
 import {
+  debugBusinessImages,
+  testSingleImageFetch,
+} from "./routes/debug-images";
+import {
   checkCompanyExists,
   submitNewCompany,
   submitReport,
