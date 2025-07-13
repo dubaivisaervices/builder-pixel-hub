@@ -632,15 +632,66 @@ export function createServer() {
 
       const imageBuffer = await s3Service.downloadBuffer(key);
       const isJPEG = imageBuffer[0] === 0xff && imageBuffer[1] === 0xd8;
+      const hasEndMarker =
+        imageBuffer[imageBuffer.length - 2] === 0xff &&
+        imageBuffer[imageBuffer.length - 1] === 0xd9;
+
+      // Check for critical JPEG segments
+      let hasSOI = false; // Start of Image
+      let hasEOI = false; // End of Image
+      let hasAPP0 = false; // JFIF marker
+      let corruptionIssues = [];
+
+      if (imageBuffer[0] === 0xff && imageBuffer[1] === 0xd8) hasSOI = true;
+      if (
+        imageBuffer[imageBuffer.length - 2] === 0xff &&
+        imageBuffer[imageBuffer.length - 1] === 0xd9
+      )
+        hasEOI = true;
+
+      // Look for JFIF marker (FF E0)
+      for (let i = 0; i < Math.min(imageBuffer.length - 1, 20); i++) {
+        if (imageBuffer[i] === 0xff && imageBuffer[i + 1] === 0xe0) {
+          hasAPP0 = true;
+          break;
+        }
+      }
+
+      // Check for common corruption patterns
+      if (!hasSOI) corruptionIssues.push("Missing SOI marker");
+      if (!hasEOI) corruptionIssues.push("Missing EOI marker");
+      if (!hasAPP0) corruptionIssues.push("Missing JFIF APP0 segment");
+      if (imageBuffer.length < 500)
+        corruptionIssues.push("File too small for valid JPEG");
+
+      // Check for repeated null bytes (corruption indicator)
+      let nullByteSequences = 0;
+      for (let i = 0; i < imageBuffer.length - 10; i++) {
+        let allNull = true;
+        for (let j = 0; j < 10; j++) {
+          if (imageBuffer[i + j] !== 0x00) {
+            allNull = false;
+            break;
+          }
+        }
+        if (allNull) nullByteSequences++;
+      }
+      if (nullByteSequences > 0)
+        corruptionIssues.push(`Found ${nullByteSequences} null byte sequences`);
 
       res.json({
         exists: true,
         size: imageBuffer.length,
         isValidJPEG: isJPEG,
-        firstBytes: Array.from(imageBuffer.slice(0, 10))
+        hasSOI,
+        hasEOI,
+        hasAPP0,
+        corruptionIssues,
+        isHealthy: corruptionIssues.length === 0,
+        firstBytes: Array.from(imageBuffer.slice(0, 20))
           .map((b) => `0x${b.toString(16).padStart(2, "0")}`)
           .join(" "),
-        lastBytes: Array.from(imageBuffer.slice(-10))
+        lastBytes: Array.from(imageBuffer.slice(-20))
           .map((b) => `0x${b.toString(16).padStart(2, "0")}`)
           .join(" "),
       });
@@ -852,7 +903,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const app = createServer();
 
   app.listen(PORT, () => {
-    console.log(`�� Server running on port ${PORT}`);
+    console.log(`✅ Server running on port ${PORT}`);
     console.log(`🌐 Frontend: http://localhost:${PORT}`);
     console.log(`🔗 API: http://localhost:${PORT}/api`);
   });
