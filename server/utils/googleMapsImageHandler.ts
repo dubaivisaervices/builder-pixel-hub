@@ -134,10 +134,11 @@ export class GoogleMapsImageHandler {
     }
 
     if (this.requiresGoogleMapsApiKey(url)) {
+      const hasApiKey = !!process.env.GOOGLE_PLACES_API_KEY;
       return {
         type: "maps_api",
         requiresAuth: true,
-        canDownload: false,
+        canDownload: hasApiKey, // Can download if we have API key
       };
     }
 
