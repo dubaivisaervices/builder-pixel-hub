@@ -39,33 +39,26 @@ export function getBestImageUrl(imageData: ImageData): string | null {
  * Get the best available logo URL for a business
  */
 export function getBestLogoUrl(business: BusinessImageData): string | null {
-  const businessName = business?.name || "Unknown Business";
-
   // Prefer S3 URL (now working!)
   if (business?.logoS3Url) {
-    console.log(`Using S3 URL for ${businessName}:`, business.logoS3Url);
     return business.logoS3Url;
   }
 
   // Fall back to base64 if available
   if (business?.logo_base64) {
-    console.log(`Using base64 for ${businessName}`);
     return `data:image/jpeg;base64,${business.logo_base64}`;
   }
 
   // Fall back to original logo URL as last resort (but skip expired Google Maps URLs)
   if (business?.logoUrl && !business.logoUrl.includes("maps.googleapis.com")) {
-    console.log(`Using custom URL for ${businessName}:`, business.logoUrl);
     return business.logoUrl;
   }
 
   // Return a default business logo for Dubai businesses
   if (business?.name) {
-    console.log(`Using default logo for ${businessName}`);
     return `https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=center`;
   }
 
-  console.log(`No logo available for ${businessName}`);
   return null;
 }
 
