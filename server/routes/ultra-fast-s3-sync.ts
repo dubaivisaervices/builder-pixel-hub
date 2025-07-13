@@ -133,8 +133,9 @@ async function executeUltraFastSync(): Promise<void> {
 
   while (true) {
     const businesses = await businessService.getBusinessesPaginated(
-      offset,
       ULTRA_FAST_CONFIG.BATCH_SIZE,
+      offset,
+      false,
     );
 
     console.log(
