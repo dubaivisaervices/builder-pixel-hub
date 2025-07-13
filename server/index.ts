@@ -118,6 +118,12 @@ import {
   realtimeSmartSyncSSE,
 } from "./routes/realtime-smart-sync";
 import {
+  startUltraFastS3Sync,
+  getUltraFastProgress,
+  ultraFastSyncSSE,
+  stopUltraFastSync,
+} from "./routes/ultra-fast-s3-sync";
+import {
   checkCompanyExists,
   submitNewCompany,
   submitReport,
