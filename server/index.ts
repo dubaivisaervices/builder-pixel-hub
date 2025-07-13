@@ -187,9 +187,10 @@ export function createServer() {
       const { businessId } = req.params;
       console.log(`📸 Fetching photos for business: ${businessId}`);
 
-      // Import S3 service
+      // Import required services
       const { S3Service } = await import("./utils/s3Service");
       const s3Service = new S3Service();
+      const { businessService } = await import("./database/businessService");
 
       // Get business data including S3 URLs
       const business = await businessService.getBusinessById(businessId);
