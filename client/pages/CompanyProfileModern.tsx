@@ -1833,6 +1833,16 @@ export default function CompanyProfileModern() {
                 </Card>
               </TabsContent>
 
+              {/* Photos Tab */}
+              <TabsContent value="photos" className="space-y-4 sm:space-y-6">
+                <BusinessPhotoGallery
+                  businessId={businessData.id}
+                  businessName={businessData.name}
+                  photos={businessData.photos}
+                  photosS3Urls={businessData.photosS3Urls}
+                />
+              </TabsContent>
+
               {/* Reviews Tab */}
               <TabsContent value="reviews" className="space-y-4 sm:space-y-6">
                 <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
