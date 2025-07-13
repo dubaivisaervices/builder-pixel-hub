@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { getBestLogoUrl } from "../lib/imageUtils";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
