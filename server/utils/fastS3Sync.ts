@@ -373,7 +373,7 @@ export class FastS3Sync extends EventEmitter {
   /**
    * Check if sync is currently running
    */
-  isRunning(): boolean {
+  isSyncRunning(): boolean {
     return this.isRunning;
   }
 
