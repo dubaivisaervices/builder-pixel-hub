@@ -569,6 +569,30 @@ export function createServer() {
     }
   });
 
+  // Restore original Google Maps URLs by clearing S3 URLs
+  app.post("/api/admin/restore-original-urls", async (req, res) => {
+    try {
+      // Clear the S3 URLs so the mapping will use original logoUrl field
+      const logoUpdate = await database.run(`
+        UPDATE businesses
+        SET logo_s3_url = NULL
+        WHERE logo_s3_url IS NOT NULL
+      `);
+
+      res.json({
+        success: true,
+        message:
+          "S3 URLs cleared, businesses will now use original Google Maps URLs",
+        logoUrlsCleared: logoUpdate.changes,
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  });
+
   // Debug specific business S3 URLs
   app.get("/api/admin/debug-business/:id", async (req, res) => {
     try {
