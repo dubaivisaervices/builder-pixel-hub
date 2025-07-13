@@ -13,12 +13,36 @@ export class GoogleMapsImageHandler {
   }> {
     // Check if this is a Google Maps API URL that requires a key
     if (this.requiresGoogleMapsApiKey(imageUrl)) {
-      return {
-        success: false,
-        shouldSkip: true,
-        error:
-          "Google Maps API URLs require authentication - skipping for demo",
-      };
+      const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+
+      if (!apiKey) {
+        return {
+          success: false,
+          shouldSkip: true,
+          error:
+            "Google Maps API URLs require API key - please configure GOOGLE_PLACES_API_KEY",
+        };
+      }
+
+      // Add API key to the URL
+      const authenticatedUrl = this.addApiKeyToUrl(imageUrl, apiKey);
+
+      try {
+        const result = await EnhancedImageFetcher.fetchImage(authenticatedUrl);
+        return {
+          success: result.success,
+          buffer: result.buffer,
+          contentType: result.contentType,
+          error: result.error,
+          shouldSkip: false,
+        };
+      } catch (error) {
+        return {
+          success: false,
+          shouldSkip: false,
+          error: error instanceof Error ? error.message : "Unknown error",
+        };
+      }
     }
 
     // For other Google images, try the enhanced fetcher
