@@ -108,13 +108,25 @@ export default function RealTimeSmartSync() {
         method: "POST",
       });
 
-      // Read the response body once
-      const data = await response.json();
+      let data;
+      try {
+        // Safely read the response body
+        data = await response.json();
+      } catch (jsonError) {
+        console.error("Error parsing JSON response:", jsonError);
+        throw new Error("Invalid response from server");
+      }
 
       if (response.ok) {
         console.log("🧠 Real-time Smart Sync started:", data);
 
         // Start real-time monitoring
+        startRealTimeProgressMonitoring();
+      } else if (response.status === 409) {
+        // Sync already running - start monitoring existing sync
+        console.log("Sync already running, connecting to existing sync...");
+        alert("Smart Sync is already running. Connecting to existing sync...");
+        setProgress((prev) => ({ ...prev, isRunning: true }));
         startRealTimeProgressMonitoring();
       } else {
         alert(`Failed to start Smart Sync: ${data.error || "Unknown error"}`);
@@ -122,8 +134,26 @@ export default function RealTimeSmartSync() {
       }
     } catch (error) {
       console.error("Error starting Smart Sync:", error);
-      alert("Failed to start Smart Sync: Network error");
-      setProgress((prev) => ({ ...prev, isRunning: false }));
+
+      // If there's a network error, let's check if there's already a sync running
+      try {
+        const progressResponse = await fetch(
+          "/api/admin/realtime-smart-progress",
+        );
+        const progressData = await progressResponse.json();
+
+        if (progressData.isRunning) {
+          alert("Connecting to existing Smart Sync...");
+          setProgress(progressData);
+          startRealTimeProgressMonitoring();
+        } else {
+          alert("Failed to start Smart Sync: Network error");
+          setProgress((prev) => ({ ...prev, isRunning: false }));
+        }
+      } catch (fallbackError) {
+        alert("Failed to start Smart Sync: Network error");
+        setProgress((prev) => ({ ...prev, isRunning: false }));
+      }
     } finally {
       setIsStarting(false);
     }
