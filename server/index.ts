@@ -378,6 +378,28 @@ export function createServer() {
     }
   });
 
+  // Simple S3 URL test
+  app.get("/api/admin/test-s3-url/:id", async (req, res) => {
+    try {
+      const businessId = req.params.id;
+
+      const result = await database.get(
+        "SELECT id, name, logo_s3_url IS NOT NULL as has_s3_url, LENGTH(logo_s3_url) as s3_url_length FROM businesses WHERE id = ?",
+        [businessId],
+      );
+
+      res.json({
+        success: true,
+        result: result,
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  });
+
   // Debug specific business S3 URLs
   app.get("/api/admin/debug-business/:id", async (req, res) => {
     try {
