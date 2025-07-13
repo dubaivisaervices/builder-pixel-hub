@@ -480,11 +480,31 @@ export class BusinessService {
     }
   }
 
+  // Helper method to check if URL is from corrupted batch
+  private isCorruptedUrl(url: string): boolean {
+    const timestampMatch = url.match(/\/(\d{13})-/);
+    if (timestampMatch) {
+      const timestamp = parseInt(timestampMatch[1]);
+      // Block corrupted batch uploads from timestamp range 1752379060000-1752379100000
+      if (timestamp >= 1752379060000 && timestamp <= 1752379100000) {
+        console.warn("🚫 SERVER: BLOCKED CORRUPTED URL from bad batch:", url);
+        return true;
+      }
+    }
+    return false;
+  }
+
   // Helper method to map database row to BusinessData
   private mapToBusinessData(
     business: any,
     reviews: BusinessReview[],
   ): BusinessData {
+    // Filter out corrupted S3 URLs for logos
+    const validLogoS3Url =
+      business.logo_s3_url && !this.isCorruptedUrl(business.logo_s3_url)
+        ? business.logo_s3_url
+        : undefined;
+
     return {
       id: business.id,
       name: business.name,
@@ -502,12 +522,11 @@ export class BusinessService {
       businessStatus: business.business_status,
       photoReference: business.photo_reference,
       logoUrl:
-        business.logo_s3_url || business.logo_base64
-          ? business.logo_s3_url ||
-            `data:image/jpeg;base64,${business.logo_base64}`
-          : undefined, // Skip Google Maps URLs as they're expired - let frontend handle default logo
+        validLogoS3Url || business.logo_base64
+          ? validLogoS3Url || `data:image/jpeg;base64,${business.logo_base64}`
+          : undefined, // Skip Google Maps URLs and corrupted S3 URLs - let frontend handle default logo
       logoBase64: business.logo_base64, // Keep base64 data for caching
-      logoS3Url: business.logo_s3_url || undefined, // S3 URL for logo (may not exist yet)
+      logoS3Url: validLogoS3Url, // Only set if not corrupted
       photosS3Urls: business.photos_s3_urls
         ? JSON.parse(business.photos_s3_urls)
         : undefined, // Array of S3 URLs
