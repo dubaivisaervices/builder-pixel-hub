@@ -97,17 +97,17 @@ export default function RealTimeSmartSync() {
     });
 
     try {
-      // Start the sync process
-      const response = await fetch("/api/admin/smart-s3-sync", {
+      // Start the real-time sync process
+      const response = await fetch("/api/admin/realtime-smart-sync", {
         method: "POST",
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log("🧠 Smart Sync started:", data);
+        console.log("🧠 Real-time Smart Sync started:", data);
 
-        // Start monitoring progress
-        startProgressMonitoring();
+        // Start real-time monitoring
+        startRealTimeProgressMonitoring();
       } else {
         const error = await response.json();
         alert(`Failed to start Smart Sync: ${error.error}`);
