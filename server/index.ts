@@ -378,6 +378,52 @@ export function createServer() {
     }
   });
 
+  // Debug specific business S3 URLs
+  app.get("/api/admin/debug-business/:id", async (req, res) => {
+    try {
+      const businessId = req.params.id;
+
+      // Get raw database row
+      const rawBusiness = await database.get(
+        "SELECT * FROM businesses WHERE id = ?",
+        [businessId],
+      );
+
+      if (!rawBusiness) {
+        return res.status(404).json({ error: "Business not found" });
+      }
+
+      // Get business via service (mapped)
+      const mappedBusiness = await businessService.getBusinessById(businessId);
+
+      res.json({
+        success: true,
+        raw: {
+          id: rawBusiness.id,
+          name: rawBusiness.name,
+          logo_url: rawBusiness.logo_url,
+          logo_s3_url: rawBusiness.logo_s3_url,
+          logo_base64: rawBusiness.logo_base64 ? "present" : "none",
+          photos_json: rawBusiness.photos_json ? "present" : "none",
+          photos_s3_urls: rawBusiness.photos_s3_urls,
+        },
+        mapped: {
+          id: mappedBusiness?.id,
+          name: mappedBusiness?.name,
+          logoUrl: mappedBusiness?.logoUrl,
+          logoS3Url: mappedBusiness?.logoS3Url,
+          logoBase64: mappedBusiness?.logoBase64 ? "present" : "none",
+          photosS3Urls: mappedBusiness?.photosS3Urls,
+        },
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  });
+
   // Database migration routes
   app.post("/api/admin/migrate/add-s3-columns", async (req, res) => {
     try {
