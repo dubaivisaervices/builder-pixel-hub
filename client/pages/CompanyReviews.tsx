@@ -986,7 +986,7 @@ export default function CompanyReviews() {
                 {/* Enhanced Logo */}
                 <div className="relative flex-shrink-0">
                   <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-white shadow-lg border-2 border-blue-100 flex items-center justify-center overflow-hidden group hover:shadow-xl transition-all duration-300">
-                    {businessData?.logoUrl ? (
+                    {getBestLogoUrl(businessData) ? (
                       <>
                         <img
                           src={businessData.logoUrl}
