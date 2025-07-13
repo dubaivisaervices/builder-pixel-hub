@@ -25,6 +25,48 @@ export class S3Service {
       throw new Error("AWS_S3_BUCKET_NAME environment variable is required");
     }
 
+    // Try different common regions for Dubai-based bucket
+    this.initializeS3Client();
+  }
+
+  private async initializeS3Client() {
+    const commonRegions = [
+      "us-east-1",
+      "me-south-1",
+      "eu-west-1",
+      "ap-southeast-1",
+    ];
+
+    for (const region of commonRegions) {
+      try {
+        const testClient = new S3Client({
+          region: region,
+          credentials: {
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+          },
+        });
+
+        // Test connection with a simple head bucket operation
+        const command = new ListObjectsV2Command({
+          Bucket: this.bucketName,
+          MaxKeys: 1,
+        });
+
+        await testClient.send(command);
+
+        // If successful, use this region
+        this.region = region;
+        this.s3Client = testClient;
+        console.log(`Successfully connected to S3 bucket in region: ${region}`);
+        return;
+      } catch (error) {
+        console.log(`Failed to connect with region ${region}:`, error.message);
+        continue;
+      }
+    }
+
+    // Fallback to original configuration
     this.s3Client = new S3Client({
       region: this.region,
       credentials: {
