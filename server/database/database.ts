@@ -71,6 +71,8 @@ class Database {
           photo_reference TEXT,
           logo_url TEXT,
           logo_base64 TEXT, -- Base64 encoded logo for offline use
+          logo_s3_url TEXT, -- S3 URL for logo
+          photos_s3_urls TEXT, -- JSON array of S3 URLs for photos
           is_open BOOLEAN,
           price_level INTEGER,
           has_target_keyword BOOLEAN DEFAULT FALSE,
