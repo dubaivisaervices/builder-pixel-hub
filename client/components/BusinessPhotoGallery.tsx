@@ -59,6 +59,7 @@ export default function BusinessPhotoGallery({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loadingPhotos, setLoadingPhotos] = useState<Set<string>>(new Set());
+  const hasLoadedRef = useRef(false);
 
   // Default business photos as fallback - memoized to prevent recreation
   const defaultBusinessPhotos: BusinessPhoto[] = useMemo(
