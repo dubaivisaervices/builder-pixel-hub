@@ -377,22 +377,41 @@ export default function S3Configuration() {
           <CardContent>
             <div className="space-y-4">
               <Button
+                onClick={smartSync}
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
+              >
+                {loading ? (
+                  <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                ) : (
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                )}
+                Smart Sync (Recommended)
+              </Button>
+
+              <Button
                 onClick={syncAllImages}
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                variant="outline"
+                className="w-full"
               >
                 {loading ? (
                   <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
                 ) : (
                   <CloudUpload className="h-4 w-4 mr-2" />
                 )}
-                Sync All Business Images to S3
+                Force Sync All Images
               </Button>
 
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-600 space-y-2">
                 <p>
-                  This will upload all business logos and photos from your
-                  database to S3. Existing images in S3 will be skipped.
+                  <strong>Smart Sync:</strong> Intelligently uploads images,
+                  prioritizing local base64 data and gracefully handling URL
+                  errors.
+                </p>
+                <p>
+                  <strong>Force Sync:</strong> Attempts to upload all images
+                  from URLs (may encounter errors).
                 </p>
               </div>
             </div>
