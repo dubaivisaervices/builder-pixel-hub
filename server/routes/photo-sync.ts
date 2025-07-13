@@ -116,11 +116,41 @@ export const downloadAllPhotos: RequestHandler = async (req, res) => {
           const base64 = buffer.toString("base64");
 
           // Update photo with base64 data
-          const updatedPhoto = {
+          let updatedPhoto = {
             ...photo,
             base64: base64,
             downloadedAt: new Date().toISOString(),
           };
+
+          // Also upload to S3 if configured
+          if (isS3Configured()) {
+            try {
+              const s3Service = getS3Service();
+              const s3Url = await s3Service.uploadBusinessPhoto(
+                business.id,
+                photo.url,
+                business.name,
+                photo.caption,
+              );
+
+              updatedPhoto = {
+                ...updatedPhoto,
+                s3Url: s3Url,
+                s3UploadedAt: new Date().toISOString(),
+              };
+
+              result.s3UploadsSuccessful++;
+              console.log(`☁️ Uploaded to S3: ${s3Url}`);
+            } catch (s3Error) {
+              result.s3UploadsFailed++;
+              result.errors.push(
+                `S3 upload failed: ${s3Error instanceof Error ? s3Error.message : "Unknown S3 error"}`,
+              );
+              console.error(
+                `❌ S3 upload failed: ${s3Error instanceof Error ? s3Error.message : "Unknown S3 error"}`,
+              );
+            }
+          }
 
           updatedPhotos.push(updatedPhoto);
           result.photosDownloaded++;
