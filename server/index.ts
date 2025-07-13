@@ -100,6 +100,10 @@ import {
   listS3Objects,
 } from "./routes/s3-management";
 import {
+  syncBusinessesToS3,
+  syncSingleBusinessToS3,
+} from "./routes/s3-sync-businesses";
+import {
   checkCompanyExists,
   submitNewCompany,
   submitReport,
