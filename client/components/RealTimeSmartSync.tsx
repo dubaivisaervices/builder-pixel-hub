@@ -376,7 +376,9 @@ export default function RealTimeSmartSync() {
                   ) : (
                     <Play className="h-5 w-5 mr-2" />
                   )}
-                  {isStarting ? "Starting Smart Sync..." : "Start Smart Sync"}
+                  {isStarting
+                    ? "Connecting to Smart Sync..."
+                    : "Start Smart Sync"}
                 </Button>
               ) : (
                 <Button disabled className="flex-1 py-3 bg-green-600">
