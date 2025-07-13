@@ -49,10 +49,17 @@ export function getBestLogoUrl(business: BusinessImageData): string | null {
     return `data:image/jpeg;base64,${business.logo_base64}`;
   }
 
-  // Skip Google Maps URLs as they're currently failing
-  // if (business.logoUrl && !business.logoUrl.includes('maps.googleapis.com')) {
-  //   return business.logoUrl;
-  // }
+  // Fall back to original logo URL (Google Maps with proper API key)
+  if (business.logoUrl) {
+    // If it's a Google Maps URL without key, add the API key
+    if (
+      business.logoUrl.includes("maps.googleapis.com") &&
+      !business.logoUrl.includes("key=")
+    ) {
+      return business.logoUrl + "&key=AIzaSyCLdVuLJI-sCmDe8dcQ5i8R_3rxWTzmxl8";
+    }
+    return business.logoUrl;
+  }
 
   return null;
 }
