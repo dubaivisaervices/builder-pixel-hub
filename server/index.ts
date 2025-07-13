@@ -471,9 +471,15 @@ export function createServer() {
   app.post("/api/admin/convert-s3-urls", async (req, res) => {
     try {
       const baseUrl = process.env.BASE_URL || "http://localhost:8080";
-      const bucketName =
-        process.env.AWS_S3_BUCKET_NAME || "dubai-business-images";
-      const region = process.env.AWS_REGION || "ap-south-1";
+      const bucketName = "dubai-business-images";
+      const region = "ap-south-1";
+
+      // Count matching URLs first
+      const countResult = await database.get(`
+        SELECT COUNT(*) as count
+        FROM businesses
+        WHERE logo_s3_url IS NOT NULL AND logo_s3_url LIKE 'https://${bucketName}.s3.${region}.amazonaws.com/%'
+      `);
 
       // Update logo S3 URLs
       const logoUpdate = await database.run(`
@@ -485,6 +491,7 @@ export function createServer() {
       res.json({
         success: true,
         message: "S3 URLs converted to proxy format",
+        matchingUrls: countResult.count,
         logoUrlsUpdated: logoUpdate.changes,
       });
     } catch (error: any) {
