@@ -54,47 +54,50 @@ export default function BusinessPhotoGallery({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loadingPhotos, setLoadingPhotos] = useState<Set<string>>(new Set());
 
-    // Default business photos as fallback - memoized to prevent recreation
-  const defaultBusinessPhotos: BusinessPhoto[] = useMemo(() => [
-    {
-      id: "default-1",
-      url: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=600&fit=crop&q=80",
-      caption: "Modern Office Space",
-      source: "default",
-    },
-    {
-      id: "default-2",
-      url: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop&q=80",
-      caption: "Professional Workspace",
-      source: "default",
-    },
-    {
-      id: "default-3",
-      url: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop&q=80",
-      caption: "Business Meeting Room",
-      source: "default",
-    },
-    {
-      id: "default-4",
-      url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop&q=80",
-      caption: "Corporate Environment",
-      source: "default",
-    },
-    {
-      id: "default-5",
-      url: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop&q=80",
-      caption: "Office Reception",
-      source: "default",
-    },
-    {
-      id: "default-6",
-      url: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&h=600&fit=crop&q=80",
-      caption: "Modern Building",
-      source: "default",
-    },
-  ], []);
+  // Default business photos as fallback - memoized to prevent recreation
+  const defaultBusinessPhotos: BusinessPhoto[] = useMemo(
+    () => [
+      {
+        id: "default-1",
+        url: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=600&fit=crop&q=80",
+        caption: "Modern Office Space",
+        source: "default",
+      },
+      {
+        id: "default-2",
+        url: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop&q=80",
+        caption: "Professional Workspace",
+        source: "default",
+      },
+      {
+        id: "default-3",
+        url: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop&q=80",
+        caption: "Business Meeting Room",
+        source: "default",
+      },
+      {
+        id: "default-4",
+        url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop&q=80",
+        caption: "Corporate Environment",
+        source: "default",
+      },
+      {
+        id: "default-5",
+        url: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop&q=80",
+        caption: "Office Reception",
+        source: "default",
+      },
+      {
+        id: "default-6",
+        url: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&h=600&fit=crop&q=80",
+        caption: "Modern Building",
+        source: "default",
+      },
+    ],
+    [],
+  );
 
-    const loadBusinessPhotos = useCallback(async () => {
+  const loadBusinessPhotos = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -187,7 +190,11 @@ export default function BusinessPhotoGallery({
     } finally {
       setLoading(false);
     }
-  };
+  }, [businessId, businessName, photos, photosS3Urls, defaultBusinessPhotos]);
+
+  useEffect(() => {
+    loadBusinessPhotos();
+  }, [loadBusinessPhotos]);
 
   const handleImageError = (photoId: string, photoUrl: string) => {
     console.warn("📸 Image failed to load:", photoUrl);
