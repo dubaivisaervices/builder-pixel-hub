@@ -68,7 +68,7 @@ export const getFastSyncProgress: RequestHandler = async (req, res) => {
       ...progress,
       completionPercentage: Math.round(completionPercentage * 100) / 100,
       elapsedTime: Math.round(elapsedTime),
-      isRunning: sync.isRunning(),
+      isRunning: sync.isSyncRunning(),
       throughput: {
         uploadsPerSecond: progress.averageSpeed,
         imagesProcessed: progress.completedTasks,
@@ -182,7 +182,7 @@ export const syncProgressSSE: RequestHandler = (req, res) => {
       `data: ${JSON.stringify({
         ...progress,
         completionPercentage: Math.round(completionPercentage * 100) / 100,
-        isRunning: sync.isRunning(),
+        isRunning: sync.isSyncRunning(),
       })}\n\n`,
     );
   };
@@ -222,7 +222,7 @@ export const getSyncStats: RequestHandler = async (req, res) => {
 
     const stats = {
       current: {
-        isRunning: sync.isRunning(),
+        isRunning: sync.isSyncRunning(),
         progress: progress,
         activeUploads: progress.currentlyProcessing,
       },
