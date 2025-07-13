@@ -159,7 +159,33 @@ export default function BusinessPhotoGallery({
         // 2. Process regular photos array (from database)
         if (photos && photos.length > 0) {
           console.log("📸 Found regular photos:", photos.length);
-          const regularPhotos = photos.map((photo, index) => ({
+
+          // Filter out corrupted URLs from regular photos too
+          const validPhotos = photos.filter((photo) => {
+            if (photo.url && isCorruptedUrl(photo.url)) {
+              console.warn(
+                "🚫 BLOCKED CORRUPTED photo URL from bad batch:",
+                photo.url,
+              );
+              return false;
+            }
+            if (photo.s3Url && isCorruptedUrl(photo.s3Url)) {
+              console.warn(
+                "🚫 BLOCKED CORRUPTED photo S3 URL from bad batch:",
+                photo.s3Url,
+              );
+              return false;
+            }
+            return true;
+          });
+
+          if (validPhotos.length < photos.length) {
+            console.warn(
+              `📸 🚫 Filtered out ${photos.length - validPhotos.length} corrupted photos`,
+            );
+          }
+
+          const regularPhotos = validPhotos.map((photo, index) => ({
             ...photo,
             id: photo.id || `photo-${index}`,
             caption:
