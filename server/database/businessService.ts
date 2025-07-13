@@ -505,7 +505,7 @@ export class BusinessService {
         business.logo_s3_url || business.logo_base64
           ? business.logo_s3_url ||
             `data:image/jpeg;base64,${business.logo_base64}`
-          : business.logo_url, // Use S3 URL first, then cached base64, finally original URL
+          : undefined, // Only use S3 URL or base64, no Google Maps fallback
       logoBase64: business.logo_base64, // Keep base64 data for caching
       logoS3Url: business.logo_s3_url || undefined, // S3 URL for logo (may not exist yet)
       photosS3Urls: business.photos_s3_urls
