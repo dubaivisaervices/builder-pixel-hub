@@ -302,6 +302,12 @@ export function createServer() {
   app.get("/api/admin/realtime-smart-progress", getRealtimeSmartSyncProgress);
   app.get("/api/admin/realtime-smart-sync-stream", realtimeSmartSyncSSE);
 
+  // Ultra-Fast S3 Sync routes (Maximum Performance)
+  app.post("/api/admin/ultra-fast-s3-sync", startUltraFastS3Sync);
+  app.get("/api/admin/ultra-fast-progress", getUltraFastProgress);
+  app.get("/api/admin/ultra-fast-sync-stream", ultraFastSyncSSE);
+  app.post("/api/admin/ultra-fast-stop", stopUltraFastSync);
+
   // Company reports and complaints API
   app.post("/api/reports/check-company", checkCompanyExists);
   app.post("/api/reports/submit-company", submitNewCompany);
