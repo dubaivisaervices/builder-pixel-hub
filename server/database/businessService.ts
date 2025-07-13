@@ -482,22 +482,17 @@ export class BusinessService {
 
   // Helper method to check if URL is from corrupted batch
   private isCorruptedUrl(url: string): boolean {
-    // TEMPORARILY DISABLED - Let's test if any S3 images actually work
-    // We'll re-enable this after checking if there are valid images
-    return false;
-
-    /*
     const timestampMatch = url.match(/\/(\d{13})-/);
     if (timestampMatch) {
       const timestamp = parseInt(timestampMatch[1]);
       // Block corrupted batch uploads from timestamp range 1752379060000-1752379100000
+      // Note: ALL S3 logos in database are from this corrupted batch - none are valid
       if (timestamp >= 1752379060000 && timestamp <= 1752379100000) {
-        console.warn("🚫 SERVER: BLOCKED CORRUPTED URL from bad batch:", url);
+        // console.warn("🚫 SERVER: BLOCKED CORRUPTED URL from bad batch:", url);
         return true;
       }
     }
     return false;
-    */
   }
 
   // Helper method to map database row to BusinessData
