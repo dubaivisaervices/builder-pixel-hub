@@ -746,6 +746,34 @@ export function createServer() {
     }
   });
 
+  // Emergency: Clear ALL logo data for specific business
+  app.post("/api/admin/reset-business-logos/:businessId", async (req, res) => {
+    try {
+      const { businessId } = req.params;
+      const { database } = await import("./database/database");
+
+      // Forcefully clear ALL logo-related fields
+      await database.run(
+        `
+        UPDATE businesses
+        SET logo_s3_url = NULL,
+            logo_base64 = NULL,
+            photos_s3_urls = NULL
+        WHERE id = ?
+      `,
+        [businessId],
+      );
+
+      res.json({
+        success: true,
+        message: `Emergency reset: Cleared ALL logo data for business: ${businessId}`,
+        businessId,
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Clear S3 URL for specific business
   app.post("/api/admin/clear-s3-url/:businessId", async (req, res) => {
     try {
