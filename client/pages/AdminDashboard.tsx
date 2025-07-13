@@ -341,7 +341,7 @@ export default function AdminDashboard() {
             ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => handleTabChange(tab.id)}
                 className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-lg transition-all ${
                   activeTab === tab.id
                     ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg"
