@@ -400,6 +400,32 @@ export function createServer() {
     }
   });
 
+  // Test business mapping with S3 URLs
+  app.get("/api/admin/test-mapping/:id", async (req, res) => {
+    try {
+      const businessId = req.params.id;
+      const { businessService } = await import("./database/businessService");
+
+      const business = await businessService.getBusinessById(businessId);
+
+      res.json({
+        success: true,
+        business: {
+          id: business?.id,
+          name: business?.name,
+          logoUrl: business?.logoUrl,
+          logoS3Url: business?.logoS3Url,
+          hasLogoS3Url: !!business?.logoS3Url,
+        },
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  });
+
   // Debug specific business S3 URLs
   app.get("/api/admin/debug-business/:id", async (req, res) => {
     try {
