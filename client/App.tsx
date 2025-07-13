@@ -57,12 +57,7 @@ const App = () => (
             <Route path="/help-center" element={<HelpCenter />} />
             <Route path="/api-test" element={<ApiTest />} />
             <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/sync" element={<AdminSync />} />
-            <Route path="/admin/manage" element={<AdminManage />} />
-            <Route path="/admin/status" element={<DatabaseStatus />} />
-            <Route path="/admin/images" element={<ImageDownloadDashboard />} />
-            <Route path="/admin/search" element={<BusinessSearchManager />} />
+            <Route path="/admin/*" element={<AdminDashboard />} />
             <Route path="/data-persistence" element={<DataPersistence />} />
             <Route path="/reviews-sync" element={<ReviewsSync />} />
             <Route
