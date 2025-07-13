@@ -24,6 +24,7 @@ import ReviewsSync from "./pages/ReviewsSync";
 import DatabaseStatus from "./pages/DatabaseStatus";
 import ImageDownloadDashboard from "./pages/ImageDownloadDashboard";
 import BusinessSearchManager from "./pages/BusinessSearchManager";
+import AdminImageManager from "./pages/AdminImageManager";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
