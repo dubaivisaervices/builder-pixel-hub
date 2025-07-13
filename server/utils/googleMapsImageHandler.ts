@@ -69,6 +69,21 @@ export class GoogleMapsImageHandler {
   }
 
   /**
+   * Add API key to Google Maps URL
+   */
+  private static addApiKeyToUrl(url: string, apiKey: string): string {
+    try {
+      const urlObj = new URL(url);
+      urlObj.searchParams.set("key", apiKey);
+      return urlObj.toString();
+    } catch (error) {
+      // If URL parsing fails, try simple append
+      const separator = url.includes("?") ? "&" : "?";
+      return `${url}${separator}key=${apiKey}`;
+    }
+  }
+
+  /**
    * Try to extract a usable image URL from Google Business data
    */
   static extractUsableImageUrl(originalUrl: string): string | null {
