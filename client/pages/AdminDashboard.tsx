@@ -239,6 +239,7 @@ export default function AdminDashboard() {
       search: "/admin/search",
       sync: "/admin/sync",
       database: "/admin/database",
+      s3: "/admin/s3",
     };
     navigate(urlMap[tabId as keyof typeof urlMap] || "/admin");
   };
