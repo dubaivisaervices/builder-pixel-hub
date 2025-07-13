@@ -273,14 +273,29 @@ export default function RealTimeSmartSync() {
     // Check if there's already a sync running
     const checkExistingSync = async () => {
       try {
-        const response = await fetch("/api/admin/smart-sync-stats");
+        const response = await fetch("/api/admin/realtime-smart-progress");
         if (response.ok) {
-          const stats = await response.json();
-          // If we have stats, initialize the display
-          setProgress((prev) => ({
-            ...prev,
-            totalBusinesses: stats.totalBusinesses,
-          }));
+          const progressData = await response.json();
+
+          if (progressData.isRunning) {
+            console.log("Found existing running sync, connecting...");
+            setProgress(progressData);
+            startRealTimeProgressMonitoring();
+          } else {
+            // If no sync running, just get basic stats
+            try {
+              const statsResponse = await fetch("/api/admin/smart-sync-stats");
+              if (statsResponse.ok) {
+                const stats = await statsResponse.json();
+                setProgress((prev) => ({
+                  ...prev,
+                  totalBusinesses: stats.totalBusinesses,
+                }));
+              }
+            } catch (statsError) {
+              console.error("Error getting stats:", statsError);
+            }
+          }
         }
       } catch (error) {
         console.error("Error checking existing sync:", error);
