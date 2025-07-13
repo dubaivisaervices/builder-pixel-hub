@@ -252,6 +252,14 @@ export function createServer() {
   app.post("/api/admin/sync-business-reviews/:businessId", syncBusinessReviews);
   app.get("/api/admin/review-sync-stats", getReviewSyncStats);
 
+  // S3 Management routes
+  app.get("/api/admin/s3-status", getS3Status);
+  app.post("/api/admin/s3-upload-image", uploadBusinessImageToS3);
+  app.post("/api/admin/s3-batch-upload", batchUploadBusinessImages);
+  app.post("/api/admin/s3-sync-all", syncAllBusinessImagesToS3);
+  app.delete("/api/admin/s3-object/:key", deleteS3Object);
+  app.get("/api/admin/s3-list-objects", listS3Objects);
+
   // Company reports and complaints API
   app.post("/api/reports/check-company", checkCompanyExists);
   app.post("/api/reports/submit-company", submitNewCompany);
