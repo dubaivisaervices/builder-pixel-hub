@@ -127,6 +127,7 @@ import {
   debugBusinessImages,
   testSingleImageFetch,
 } from "./routes/debug-images";
+import { analyzeImageTypes } from "./routes/analyze-image-types";
 import {
   checkCompanyExists,
   submitNewCompany,
