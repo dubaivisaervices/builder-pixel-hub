@@ -58,6 +58,8 @@ export default function S3Configuration() {
         configured: false,
         message: `Failed to fetch S3 status: ${error.message}`,
       });
+    } finally {
+      setInitialLoading(false);
     }
   };
 
