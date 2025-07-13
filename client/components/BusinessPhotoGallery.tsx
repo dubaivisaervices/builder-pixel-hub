@@ -206,7 +206,33 @@ export default function BusinessPhotoGallery({
               const data = await response.json();
               if (data.success && data.photos && data.photos.length > 0) {
                 console.log("📸 Fetched photos from API:", data.photos.length);
-                processedPhotos = data.photos.map(
+
+                // Filter out corrupted URLs from API response
+                const validApiPhotos = data.photos.filter((photo: any) => {
+                  if (photo.url && isCorruptedUrl(photo.url)) {
+                    console.warn(
+                      "🚫 BLOCKED CORRUPTED API photo URL from bad batch:",
+                      photo.url,
+                    );
+                    return false;
+                  }
+                  if (photo.s3Url && isCorruptedUrl(photo.s3Url)) {
+                    console.warn(
+                      "🚫 BLOCKED CORRUPTED API photo S3 URL from bad batch:",
+                      photo.s3Url,
+                    );
+                    return false;
+                  }
+                  return true;
+                });
+
+                if (validApiPhotos.length < data.photos.length) {
+                  console.warn(
+                    `📸 🚫 Filtered out ${data.photos.length - validApiPhotos.length} corrupted API photos`,
+                  );
+                }
+
+                processedPhotos = validApiPhotos.map(
                   (photo: any, index: number) => ({
                     id: photo.id || `api-${index}`,
                     url:
