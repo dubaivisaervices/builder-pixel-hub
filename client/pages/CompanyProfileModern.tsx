@@ -1361,6 +1361,7 @@ export default function CompanyProfileModern() {
                       src={businessData.logoUrl}
                       alt={`${businessData.name} logo`}
                       className="w-full h-full object-contain"
+                      crossOrigin="anonymous"
                       onLoad={(e) => {
                         console.log(
                           "Logo loaded successfully:",
@@ -1378,8 +1379,25 @@ export default function CompanyProfileModern() {
                           "x",
                           e.currentTarget.naturalHeight,
                         );
-                        // Don't hide the image - let it show as broken so we can debug
-                        // e.currentTarget.style.display = "none";
+
+                        // Try reloading once after a delay
+                        const img = e.currentTarget;
+                        if (!img.dataset.retried) {
+                          img.dataset.retried = "true";
+                          setTimeout(() => {
+                            console.log(
+                              "Retrying image load:",
+                              businessData.logoUrl,
+                            );
+                            img.src = img.src + "?retry=" + Date.now();
+                          }, 1000);
+                        } else {
+                          console.error("Image retry failed, giving up");
+                          img.style.display = "none";
+                          const fallback =
+                            img.nextElementSibling as HTMLElement;
+                          if (fallback) fallback.style.display = "flex";
+                        }
                       }}
                     />
                   ) : (
