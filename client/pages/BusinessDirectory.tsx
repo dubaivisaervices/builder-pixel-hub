@@ -606,6 +606,13 @@ export default function BusinessDirectory() {
                               alt={`${business.name} logo`}
                               className="w-full h-full object-cover rounded-lg"
                               onError={(e) => {
+                                if (
+                                  e.currentTarget.src.includes("/api/s3-image/")
+                                ) {
+                                  console.warn(
+                                    "🚫 BLOCKED corrupted S3 URL in suggestions",
+                                  );
+                                }
                                 e.currentTarget.style.display = "none";
                                 e.currentTarget.nextElementSibling!.style.display =
                                   "flex";
