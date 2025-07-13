@@ -12,6 +12,8 @@ interface PhotoDownloadResult {
   photosProcessed: number;
   photosDownloaded: number;
   photosSaved: number;
+  s3UploadsSuccessful: number;
+  s3UploadsFailed: number;
   errors: string[];
 }
 
