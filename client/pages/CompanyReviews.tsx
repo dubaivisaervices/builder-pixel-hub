@@ -989,7 +989,7 @@ export default function CompanyReviews() {
                     {getBestLogoUrl(businessData) ? (
                       <>
                         <img
-                          src={businessData.logoUrl}
+                          src={getBestLogoUrl(businessData)!}
                           alt={`${businessData.name} logo`}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                           onError={(e) => {
