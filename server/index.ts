@@ -345,6 +345,56 @@ export function createServer() {
     }
   });
 
+  // Database migration routes
+  app.post("/api/admin/migrate/add-s3-columns", async (req, res) => {
+    try {
+      console.log("🔄 Adding S3 URL columns to businesses table...");
+
+      // Add logo_s3_url column
+      try {
+        await database.run(
+          "ALTER TABLE businesses ADD COLUMN logo_s3_url TEXT",
+        );
+        console.log("✅ Added logo_s3_url column");
+      } catch (err: any) {
+        if (err.message.includes("duplicate column name")) {
+          console.log("ℹ️ logo_s3_url column already exists");
+        } else {
+          throw err;
+        }
+      }
+
+      // Add photos_s3_urls column
+      try {
+        await database.run(
+          "ALTER TABLE businesses ADD COLUMN photos_s3_urls TEXT",
+        );
+        console.log("✅ Added photos_s3_urls column");
+      } catch (err: any) {
+        if (err.message.includes("duplicate column name")) {
+          console.log("ℹ️ photos_s3_urls column already exists");
+        } else {
+          throw err;
+        }
+      }
+
+      console.log("🎉 Database migration completed successfully!");
+
+      res.json({
+        success: true,
+        message: "S3 URL columns added successfully",
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error: any) {
+      console.error("❌ Database migration failed:", error);
+      res.status(500).json({
+        success: false,
+        error: error.message,
+        timestamp: new Date().toISOString(),
+      });
+    }
+  });
+
   // Simplified endpoints - complex API control removed for stability
 
   // Let Vite handle all development assets and modules
