@@ -122,60 +122,66 @@ export default function RealTimeSmartSync() {
     }
   };
 
-  // Start real-time progress monitoring
-  const startProgressMonitoring = () => {
-    intervalRef.current = setInterval(async () => {
+  // Start real-time progress monitoring with SSE
+  const startRealTimeProgressMonitoring = () => {
+    const eventSource = new EventSource(
+      "/api/admin/realtime-smart-sync-stream",
+    );
+
+    eventSource.onmessage = (event) => {
       try {
-        // Check if sync is still running by trying to get results
-        const response = await fetch("/api/admin/smart-sync-stats");
+        const data = JSON.parse(event.data);
+        if (data.type === "complete") {
+          console.log("✅ Smart Sync completed!");
+          eventSource.close();
+        } else if (data.type === "error") {
+          console.error("❌ Smart Sync error:", data.error);
+          eventSource.close();
+          setProgress((prev) => ({
+            ...prev,
+            isRunning: false,
+            errors: [...prev.errors, data.error],
+          }));
+        } else {
+          // Update progress with real data
+          setProgress(data);
+        }
+      } catch (error) {
+        console.error("Error parsing SSE data:", error);
+      }
+    };
+
+    eventSource.onerror = (error) => {
+      console.error("SSE connection error:", error);
+      eventSource.close();
+      // Fall back to polling
+      startProgressPolling();
+    };
+
+    // Store reference for cleanup
+    intervalRef.current = eventSource as any;
+  };
+
+  // Fallback polling method
+  const startProgressPolling = () => {
+    const pollInterval = setInterval(async () => {
+      try {
+        const response = await fetch("/api/admin/realtime-smart-progress");
         if (response.ok) {
-          const stats = await response.json();
+          const data = await response.json();
+          setProgress(data);
 
-          // Simulate progress based on API calls
-          const now = Date.now();
-          const elapsed = (now - progress.startTime) / 1000;
-
-          // Update progress based on heuristics
-          setProgress((prev) => {
-            const newElapsed = elapsed;
-            const estimatedTotal =
-              stats.totalBusinesses || prev.totalBusinesses;
-            const estimatedProcessed = Math.min(
-              Math.floor(elapsed * 2), // Assume ~2 businesses per second
-              estimatedTotal,
-            );
-
-            const speed = estimatedProcessed / Math.max(elapsed, 1);
-            const remaining =
-              estimatedTotal > estimatedProcessed
-                ? (estimatedTotal - estimatedProcessed) / Math.max(speed, 0.1)
-                : 0;
-
-            return {
-              ...prev,
-              totalBusinesses: estimatedTotal,
-              processedBusinesses: estimatedProcessed,
-              elapsedTime: newElapsed,
-              uploadSpeed: speed,
-              estimatedTimeRemaining: remaining,
-              currentBusiness:
-                estimatedProcessed < estimatedTotal
-                  ? `Processing business ${estimatedProcessed + 1}...`
-                  : "Finalizing...",
-            };
-          });
-
-          // Check if we should stop monitoring
-          if (elapsed > 300) {
-            // Stop after 5 minutes max
-            stopProgressMonitoring();
-            checkFinalResults();
+          // Stop polling if sync is complete
+          if (!data.isRunning) {
+            clearInterval(pollInterval);
           }
         }
       } catch (error) {
-        console.error("Error monitoring progress:", error);
+        console.error("Error polling progress:", error);
       }
-    }, 1000); // Update every second
+    }, 2000); // Poll every 2 seconds
+
+    intervalRef.current = pollInterval as any;
   };
 
   // Stop progress monitoring
