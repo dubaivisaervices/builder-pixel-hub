@@ -593,6 +593,66 @@ export function createServer() {
     }
   });
 
+  // Test S3 connectivity and configuration
+  app.get("/api/admin/test-s3-connection", async (req, res) => {
+    try {
+      const { getS3Service } = await import("./utils/s3Service");
+      const s3Service = getS3Service();
+
+      // Test basic S3 operations
+      const testResults = {
+        awsConfig: {
+          bucketName: process.env.AWS_S3_BUCKET_NAME,
+          region: process.env.AWS_REGION,
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID?.substring(0, 8) + "...",
+        },
+        tests: [],
+      };
+
+      // Test 1: List objects
+      try {
+        const objects = await s3Service.listObjects("businesses/", 1);
+        testResults.tests.push({
+          name: "List Objects",
+          status: "success",
+          result: `Found ${objects.length} objects`,
+        });
+      } catch (error) {
+        testResults.tests.push({
+          name: "List Objects",
+          status: "failed",
+          error: error.message,
+        });
+      }
+
+      // Test 2: Storage stats
+      try {
+        const stats = await s3Service.getStorageStats();
+        testResults.tests.push({
+          name: "Storage Stats",
+          status: "success",
+          result: stats,
+        });
+      } catch (error) {
+        testResults.tests.push({
+          name: "Storage Stats",
+          status: "failed",
+          error: error.message,
+        });
+      }
+
+      res.json({
+        success: true,
+        ...testResults,
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  });
+
   // Debug specific business S3 URLs
   app.get("/api/admin/debug-business/:id", async (req, res) => {
     try {
