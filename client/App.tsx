@@ -61,6 +61,7 @@ const App = () => (
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/*" element={<AdminDashboard />} />
             <Route path="/admin-images" element={<AdminImageManager />} />
+            <Route path="/hostinger-upload" element={<HostingerUpload />} />
             <Route path="/data-persistence" element={<DataPersistence />} />
             <Route path="/reviews-sync" element={<ReviewsSync />} />
             <Route
