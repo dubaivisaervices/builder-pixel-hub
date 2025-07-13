@@ -642,6 +642,13 @@ export default function AdminDashboard() {
           </div>
         )}
 
+        {/* S3 Storage Tab */}
+        {activeTab === "s3" && (
+          <div>
+            <S3Configuration />
+          </div>
+        )}
+
         {/* Database Tab */}
         {activeTab === "database" && (
           <div className="space-y-6">
