@@ -181,6 +181,7 @@ export default function S3Configuration() {
 
   useEffect(() => {
     fetchS3Status();
+    fetchSmartSyncStats();
   }, []);
 
   if (!s3Status) {
