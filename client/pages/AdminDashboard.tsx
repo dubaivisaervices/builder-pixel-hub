@@ -28,6 +28,7 @@ import {
   Plus,
 } from "lucide-react";
 import BusinessSearchManager from "./BusinessSearchManager";
+import S3Configuration from "../components/S3Configuration";
 
 interface CompanyRequest {
   id: number;
