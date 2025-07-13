@@ -166,6 +166,7 @@ async function executeUltraFastSync(): Promise<void> {
           !business.logoS3Url &&
           isValidUrl(business.logoUrl)
         ) {
+          console.log(`📸 Processing logo for: ${business.name}`);
           const logoPromise = processUltraFastUpload(
             "logo",
             business.id,
