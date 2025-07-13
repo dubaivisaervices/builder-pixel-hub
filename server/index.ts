@@ -394,6 +394,7 @@ export function createServer() {
       }
 
       // Get business via service (mapped)
+      const { businessService } = await import("./database/businessService");
       const mappedBusiness = await businessService.getBusinessById(businessId);
 
       res.json({
