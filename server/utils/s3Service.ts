@@ -212,6 +212,45 @@ export class S3Service {
   }
 
   /**
+   * Download a file from S3 as a buffer
+   */
+  async downloadBuffer(key: string): Promise<Buffer> {
+    try {
+      await this.ensureCorrectRegion();
+
+      const command = new GetObjectCommand({
+        Bucket: this.bucketName,
+        Key: key,
+      });
+
+      const response = await this.s3Client.send(command);
+
+      if (!response.Body) {
+        throw new Error("No response body from S3");
+      }
+
+      // Convert the stream to buffer
+      const chunks: Uint8Array[] = [];
+      const reader = response.Body as any;
+
+      if (reader.transformToByteArray) {
+        // AWS SDK v3 style
+        const byteArray = await reader.transformToByteArray();
+        return Buffer.from(byteArray);
+      } else {
+        // Stream style fallback
+        for await (const chunk of reader) {
+          chunks.push(chunk);
+        }
+        return Buffer.concat(chunks);
+      }
+    } catch (error) {
+      console.error("Error downloading file from S3:", error);
+      throw error;
+    }
+  }
+
+  /**
    * Delete an object from S3
    */
   async deleteObject(key: string): Promise<void> {
