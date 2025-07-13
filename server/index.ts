@@ -274,8 +274,33 @@ export function createServer() {
       if (business.photos && business.photos.length > 0) {
         console.log(`📸 Processing ${business.photos.length} regular photos`);
 
-        for (let i = 0; i < business.photos.length; i++) {
-          const photo = business.photos[i];
+        // Filter out corrupted URLs from regular photos
+        const validPhotos = business.photos.filter((photo) => {
+          if (photo.url && isCorruptedUrl(photo.url)) {
+            console.warn(
+              "🚫 SERVER: BLOCKED CORRUPTED photo URL from bad batch:",
+              photo.url,
+            );
+            return false;
+          }
+          if (photo.s3Url && isCorruptedUrl(photo.s3Url)) {
+            console.warn(
+              "🚫 SERVER: BLOCKED CORRUPTED photo S3 URL from bad batch:",
+              photo.s3Url,
+            );
+            return false;
+          }
+          return true;
+        });
+
+        if (validPhotos.length < business.photos.length) {
+          console.warn(
+            `📸 🚫 SERVER: Filtered out ${business.photos.length - validPhotos.length} corrupted regular photos`,
+          );
+        }
+
+        for (let i = 0; i < validPhotos.length; i++) {
+          const photo = validPhotos[i];
 
           // Skip if we already have S3 photos
           if (photos.length > 0 && photo.source !== "s3") {
@@ -1197,7 +1222,7 @@ export function createServer() {
         await database.run(
           "ALTER TABLE businesses ADD COLUMN photos_s3_urls TEXT",
         );
-        console.log("✅ Added photos_s3_urls column");
+        console.log("��� Added photos_s3_urls column");
       } catch (err: any) {
         if (err.message.includes("duplicate column name")) {
           console.log("ℹ️ photos_s3_urls column already exists");
