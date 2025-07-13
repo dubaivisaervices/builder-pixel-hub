@@ -111,6 +111,7 @@ import {
   syncProgressSSE,
   getSyncStats,
 } from "./routes/fast-s3-sync";
+import { smartS3Sync, getSmartSyncStats } from "./routes/smart-s3-sync";
 import {
   checkCompanyExists,
   submitNewCompany,
