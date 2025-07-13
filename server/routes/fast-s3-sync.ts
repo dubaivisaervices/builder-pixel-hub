@@ -91,7 +91,7 @@ export const stopFastS3Sync: RequestHandler = async (req, res) => {
   try {
     const sync = getFastS3Sync();
 
-    if (!sync.isRunning()) {
+    if (!sync.isSyncRunning()) {
       return res.status(400).json({
         error: "No sync is currently running",
       });
