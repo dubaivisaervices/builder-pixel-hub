@@ -187,20 +187,12 @@ export class S3Service {
   }
 
   /**
-   * Get public URL for an object (use signed URL for private buckets)
+   * Get public URL for an object through server proxy
    */
   getPublicUrl(key: string): string {
-    // Return signed URL with 7-day expiration for images
-    return this.getSignedUrlSync(key, 604800); // 7 days
-  }
-
-  /**
-   * Get signed URL synchronously (for immediate use)
-   */
-  private getSignedUrlSync(key: string, expiresIn: number = 3600): string {
-    // For now, return the direct URL and handle signing later if needed
-    // This is a temporary solution until we implement proper signed URL caching
-    return `https://${this.bucketName}.s3.${this.region}.amazonaws.com/${key}`;
+    // Use server proxy to handle S3 authentication
+    const baseUrl = process.env.BASE_URL || "http://localhost:8080";
+    return `${baseUrl}/api/s3-image/${key}`;
   }
 
   /**
