@@ -1610,12 +1610,18 @@ export default function CompanyProfileModern() {
               onValueChange={setActiveTab}
               className="w-full"
             >
-              <TabsList className="grid w-full grid-cols-3 sm:grid-cols-5 bg-white shadow-sm border rounded-lg">
+              <TabsList className="grid w-full grid-cols-4 sm:grid-cols-6 bg-white shadow-sm border rounded-lg">
                 <TabsTrigger
                   value="overview"
                   className="text-xs sm:text-sm px-1 sm:px-2 py-2"
                 >
                   Overview
+                </TabsTrigger>
+                <TabsTrigger
+                  value="photos"
+                  className="text-xs sm:text-sm px-1 sm:px-2 py-2"
+                >
+                  Photos
                 </TabsTrigger>
                 <TabsTrigger
                   value="reviews"
