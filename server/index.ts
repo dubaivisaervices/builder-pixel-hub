@@ -433,9 +433,22 @@ export function createServer() {
       const { S3Service } = await import("./utils/s3Service");
       const s3Service = new S3Service();
 
-      // Get signed URL and redirect to it
-      const signedUrl = await s3Service.getSignedUrl(key, 3600); // 1 hour
-      res.redirect(signedUrl);
+      // Check if object exists first
+      const exists = await s3Service.objectExists(key);
+      if (!exists) {
+        return res.status(404).json({ error: "Image not found" });
+      }
+
+      // Get image data directly from S3 and stream it
+      const imageBuffer = await s3Service.downloadBuffer(key);
+
+      // Set appropriate headers
+      res.setHeader("Content-Type", "image/jpeg");
+      res.setHeader("Cache-Control", "public, max-age=86400"); // 24 hours
+      res.setHeader("Access-Control-Allow-Origin", "*");
+
+      // Send the image buffer
+      res.send(imageBuffer);
     } catch (error: any) {
       console.error("S3 image proxy error:", error);
       res.status(404).json({
