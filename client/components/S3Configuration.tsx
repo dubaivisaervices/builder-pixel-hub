@@ -41,11 +41,22 @@ export default function S3Configuration() {
 
   const fetchS3Status = async () => {
     try {
+      console.log("Fetching S3 status from:", "/api/admin/s3-status");
       const response = await fetch("/api/admin/s3-status");
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
       const data = await response.json();
+      console.log("S3 status received:", data);
       setS3Status(data);
     } catch (error) {
       console.error("Error fetching S3 status:", error);
+      setS3Status({
+        configured: false,
+        message: `Failed to fetch S3 status: ${error.message}`,
+      });
     }
   };
 
