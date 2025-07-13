@@ -1362,11 +1362,18 @@ export default function CompanyProfileModern() {
                       alt={`${businessData.name} logo`}
                       className="w-full h-full object-contain"
                       onError={(e) => {
-                        console.log(
+                        console.error(
                           "Logo failed to load:",
                           businessData.logoUrl,
+                          "Error:",
+                          e.currentTarget.src,
+                          "Natural dimensions:",
+                          e.currentTarget.naturalWidth,
+                          "x",
+                          e.currentTarget.naturalHeight,
                         );
-                        e.currentTarget.style.display = "none";
+                        // Don't hide the image - let it show as broken so we can debug
+                        // e.currentTarget.style.display = "none";
                       }}
                     />
                   ) : (
