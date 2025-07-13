@@ -39,19 +39,13 @@ export function getBestImageUrl(imageData: ImageData): string | null {
  * Get the best available logo URL for a business
  */
 export function getBestLogoUrl(business: BusinessImageData): string | null {
-  // DEBUG: Log what we're receiving
-  if (business.name && business.name.includes("Benchmark")) {
-    console.log("DEBUG getBestLogoUrl for Benchmark:", {
-      logoS3Url: business.logoS3Url,
-      logoUrl: business.logoUrl,
-      logo_base64: business.logo_base64 ? "present" : "none",
-      allKeys: Object.keys(business),
-    });
+  // Prefer S3 URL
+  if (business.logoS3Url) {
+    return business.logoS3Url;
   }
 
-  // For now, skip S3 URLs and use original URLs directly
-  // since S3 objects may not exist
-  if (business.logoUrl && !business.logoUrl.includes("/api/s3-image/")) {
+  // Fall back to original logo URL
+  if (business.logoUrl) {
     return business.logoUrl;
   }
 
