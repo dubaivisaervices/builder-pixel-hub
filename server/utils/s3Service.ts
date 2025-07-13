@@ -42,27 +42,17 @@ export class S3Service {
     metadata?: Record<string, string>,
   ): Promise<string> {
     try {
-      // Download the image with proper headers
-      const response = await fetch(imageUrl, {
-        headers: {
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-          Accept: "image/webp,image/apng,image/*,*/*;q=0.8",
-          "Accept-Language": "en-US,en;q=0.9",
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-        },
-        timeout: 15000, // 15 second timeout
-      });
+      // Use enhanced image fetcher for better Google Business URL handling
+      const fetchResult = await EnhancedImageFetcher.fetchImage(imageUrl);
 
-      if (!response.ok) {
+      if (!fetchResult.success) {
         throw new Error(
-          `Failed to fetch image: ${response.status} ${response.statusText}`,
+          fetchResult.error || "Failed to fetch image with enhanced fetcher",
         );
       }
 
-      const imageBuffer = await response.buffer();
-      const contentType = response.headers.get("content-type") || "image/jpeg";
+      const imageBuffer = fetchResult.buffer!;
+      const contentType = fetchResult.contentType || "image/jpeg";
 
       // Upload to S3
       const command = new PutObjectCommand({
