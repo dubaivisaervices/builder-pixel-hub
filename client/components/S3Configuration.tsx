@@ -36,6 +36,8 @@ export default function S3Configuration() {
   const [uploadResults, setUploadResults] = useState<any>(null);
   const [testImageUrl, setTestImageUrl] = useState("");
   const [testBusinessId, setTestBusinessId] = useState("test-business");
+  const [smartSyncResults, setSmartSyncResults] = useState<any>(null);
+  const [smartSyncStats, setSmartSyncStats] = useState<any>(null);
 
   const fetchS3Status = async () => {
     try {
