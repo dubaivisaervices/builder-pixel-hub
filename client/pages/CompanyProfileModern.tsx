@@ -1731,6 +1731,15 @@ export default function CompanyProfileModern() {
                   businessName={businessData?.name}
                 />
 
+                {/* Business Photo Gallery */}
+                <BusinessPhotoGallery
+                  businessId={businessData.id}
+                  businessName={businessData.name}
+                  photos={businessData.photos}
+                  photosS3Urls={businessData.photosS3Urls}
+                  className="shadow-lg"
+                />
+
                 {/* Government Authorization Section */}
                 <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
                   <CardHeader>
