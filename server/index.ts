@@ -92,6 +92,14 @@ import {
   getReviewSyncStats,
 } from "./routes/sync-google-reviews";
 import {
+  getS3Status,
+  uploadBusinessImageToS3,
+  batchUploadBusinessImages,
+  syncAllBusinessImagesToS3,
+  deleteS3Object,
+  listS3Objects,
+} from "./routes/s3-management";
+import {
   checkCompanyExists,
   submitNewCompany,
   submitReport,
