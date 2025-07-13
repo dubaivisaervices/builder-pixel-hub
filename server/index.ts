@@ -291,6 +291,11 @@ export function createServer() {
   app.post("/api/admin/smart-s3-sync", smartS3Sync);
   app.get("/api/admin/smart-sync-stats", getSmartSyncStats);
 
+  // Real-time Smart S3 Sync routes
+  app.post("/api/admin/realtime-smart-sync", startRealtimeSmartSync);
+  app.get("/api/admin/realtime-smart-progress", getRealtimeSmartSyncProgress);
+  app.get("/api/admin/realtime-smart-sync-stream", realtimeSmartSyncSSE);
+
   // Company reports and complaints API
   app.post("/api/reports/check-company", checkCompanyExists);
   app.post("/api/reports/submit-company", submitNewCompany);
