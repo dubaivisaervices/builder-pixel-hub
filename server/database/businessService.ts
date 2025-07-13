@@ -482,6 +482,11 @@ export class BusinessService {
 
   // Helper method to check if URL is from corrupted batch
   private isCorruptedUrl(url: string): boolean {
+    // TEMPORARILY DISABLED - Let's test if any S3 images actually work
+    // We'll re-enable this after checking if there are valid images
+    return false;
+
+    /*
     const timestampMatch = url.match(/\/(\d{13})-/);
     if (timestampMatch) {
       const timestamp = parseInt(timestampMatch[1]);
@@ -492,6 +497,7 @@ export class BusinessService {
       }
     }
     return false;
+    */
   }
 
   // Helper method to map database row to BusinessData
