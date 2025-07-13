@@ -294,7 +294,32 @@ export default function BusinessPhotoGallery({
   const handleImageError = (photoId: string, photoUrl: string) => {
     console.warn("📸 Image failed to load:", photoUrl);
 
-    // Mark this photo as loading to show spinner
+    // Check if this is a corrupted URL from the bad batch
+    const timestampMatch = photoUrl.match(/\/(\d{13})-/);
+    if (timestampMatch) {
+      const timestamp = parseInt(timestampMatch[1]);
+      if (timestamp >= 1752379060000 && timestamp <= 1752379100000) {
+        console.error(
+          "🚫 CORRUPTED IMAGE from bad batch detected - removing from gallery:",
+          photoUrl,
+        );
+
+        // Remove this corrupted photo from the gallery
+        setGalleryPhotos((prev) =>
+          prev.filter((photo) => photo.id !== photoId),
+        );
+
+        // Remove from loading state
+        setLoadingPhotos((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(photoId);
+          return newSet;
+        });
+        return;
+      }
+    }
+
+    // Mark this photo as loading to show spinner for legitimate retries
     setLoadingPhotos((prev) => new Set([...prev, photoId]));
 
     // Try to reload after a delay
