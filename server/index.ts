@@ -449,6 +449,49 @@ export function createServer() {
   // Real Google reviews API (cache-first, no fake reviews)
   app.get("/api/business-reviews/:businessId", getBusinessReviews);
 
+  // S3 image upload endpoints
+  app.post(
+    "/api/upload-business-image",
+    upload.single("file"),
+    async (req, res) => {
+      try {
+        const { businessId, type } = req.body;
+        const file = req.file;
+
+        if (!file || !businessId || !type) {
+          return res.status(400).json({ error: "Missing required fields" });
+        }
+
+        const s3Url = await uploadBusinessImageToS3(file, businessId, type);
+        res.json({ s3Url });
+      } catch (error) {
+        console.error("Upload error:", error);
+        res.status(500).json({ error: "Upload failed" });
+      }
+    },
+  );
+
+  app.patch("/api/businesses/:businessId/update-images", async (req, res) => {
+    try {
+      const { businessId } = req.params;
+      const { type, urls } = req.body;
+
+      const { BusinessService } = await import("./database/businessService");
+      const businessService = new BusinessService(database);
+
+      if (type === "logo") {
+        await businessService.updateBusinessLogo(businessId, urls[0]);
+      } else {
+        await businessService.updateBusinessPhotos(businessId, urls);
+      }
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Update error:", error);
+      res.status(500).json({ error: "Update failed" });
+    }
+  });
+
   // Google Reviews sync routes
   app.post("/api/admin/sync-google-reviews", syncAllGoogleReviews);
   app.post("/api/admin/sync-business-reviews/:businessId", syncBusinessReviews);
