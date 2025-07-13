@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +7,6 @@ import {
   Zap,
   Upload,
   Pause,
-  Play,
   BarChart3,
   Clock,
   CheckCircle,
@@ -33,73 +32,37 @@ interface SyncProgress {
   errors: string[];
 }
 
-interface SyncStats {
-  current: {
-    isRunning: boolean;
-    activeUploads: number;
-  };
-  performance: {
-    averageSpeed: number;
-    totalUploaded: number;
-    errorRate: number;
-  };
-  estimates: {
-    timeRemaining: number;
-    completionTime: string | null;
-  };
-}
-
 export default function UltraFastS3Sync() {
   const [progress, setProgress] = useState<SyncProgress | null>(null);
-  const [stats, setStats] = useState<SyncStats | null>(null);
   const [isStarting, setIsStarting] = useState(false);
   const [isStopping, setIsStopping] = useState(false);
-  const [lastUpdate, setLastUpdate] = useState<number>(Date.now());
-  const eventSourceRef = useRef<EventSource | null>(null);
 
-  // Format time in seconds to human readable
   const formatTime = (seconds: number): string => {
     if (seconds < 60) return `${Math.round(seconds)}s`;
-    if (seconds < 3600) return `${Math.round(seconds / 60)}m ${Math.round(seconds % 60)}s`;
+    if (seconds < 3600)
+      return `${Math.round(seconds / 60)}m ${Math.round(seconds % 60)}s`;
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     return `${hours}h ${minutes}m`;
   };
 
-  // Format speed for display
   const formatSpeed = (speed: number): string => {
     if (speed < 1) return `${(speed * 1000).toFixed(0)}ms/upload`;
     return `${speed.toFixed(1)}/sec`;
   };
 
-  // Fetch current progress
   const fetchProgress = async () => {
     try {
       const response = await fetch("/api/admin/fast-s3-progress");
       if (response.ok) {
         const data = await response.json();
         setProgress(data);
-        setLastUpdate(Date.now());
       }
     } catch (error) {
       console.error("Error fetching progress:", error);
     }
   };
 
-  // Fetch performance stats
-  const fetchStats = async () => {
-    try {
-      const response = await fetch("/api/admin/fast-s3-stats");
-      if (response.ok) {
-        const data = await response.json();
-        setStats(data);
-      }
-    } catch (error) {
-      console.error("Error fetching stats:", error);
-    }
-  };
-
-  // Start ultra-fast sync
   const startSync = async () => {
     setIsStarting(true);
     try {
@@ -110,11 +73,6 @@ export default function UltraFastS3Sync() {
       if (response.ok) {
         const data = await response.json();
         console.log("🚀 Ultra-fast sync started:", data);
-        
-        // Start real-time progress monitoring
-        startProgressStream();
-        
-        // Refresh progress immediately
         setTimeout(fetchProgress, 1000);
       } else {
         const error = await response.json();
@@ -128,7 +86,6 @@ export default function UltraFastS3Sync() {
     }
   };
 
-  // Stop sync
   const stopSync = async () => {
     setIsStopping(true);
     try {
@@ -138,8 +95,7 @@ export default function UltraFastS3Sync() {
 
       if (response.ok) {
         console.log("🛑 Sync stopped");
-        stopProgressStream();
-        fetchProgress(); // Get final state
+        fetchProgress();
       } else {
         const error = await response.json();
         alert(`Failed to stop sync: ${error.error}`);
@@ -152,60 +108,10 @@ export default function UltraFastS3Sync() {
     }
   };
 
-  // Start Server-Sent Events for real-time progress
-  const startProgressStream = () => {
-    stopProgressStream(); // Clean up any existing connection
-
-    eventSourceRef.current = new EventSource("/api/admin/fast-s3-progress-stream");
-    
-    eventSourceRef.current.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        if (data.type === "complete") {
-          console.log("✅ Sync completed!");
-          stopProgressStream();
-        } else if (data.type === "error") {
-          console.error("❌ Sync error:", data.error);
-          stopProgressStream();
-        } else {
-          setProgress(data);
-          setLastUpdate(Date.now());
-        }
-      } catch (error) {
-        console.error("Error parsing SSE data:", error);
-      }
-    };
-
-    eventSourceRef.current.onerror = (error) => {
-      console.error("SSE connection error:", error);
-      stopProgressStream();
-    };
-  };
-
-  // Stop progress stream
-  const stopProgressStream = () => {
-    if (eventSourceRef.current) {
-      eventSourceRef.current.close();
-      eventSourceRef.current = null;
-    }
-  };
-
-  // Initialize and cleanup
   useEffect(() => {
     fetchProgress();
-    fetchStats();
-    
-    const interval = setInterval(() => {
-      fetchStats();
-      if (!eventSourceRef.current) {
-        fetchProgress();
-      }
-    }, 5000);
-
-    return () => {
-      clearInterval(interval);
-      stopProgressStream();
-    };
+    const interval = setInterval(fetchProgress, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   const isRunning = progress?.isRunning || false;
@@ -269,7 +175,9 @@ export default function UltraFastS3Sync() {
                   ) : (
                     <Zap className="h-5 w-5 mr-2" />
                   )}
-                  {isStarting ? "Starting Ultra-Fast Sync..." : "Start Ultra-Fast Sync"}
+                  {isStarting
+                    ? "Starting Ultra-Fast Sync..."
+                    : "Start Ultra-Fast Sync"}
                 </Button>
               ) : (
                 <Button
@@ -314,16 +222,15 @@ export default function UltraFastS3Sync() {
                 <Clock className="h-8 w-8 text-orange-600" />
               </div>
               <div className="text-2xl font-bold text-orange-700">
-                {progress.estimatedTimeRemaining > 0 
+                {progress.estimatedTimeRemaining > 0
                   ? formatTime(progress.estimatedTimeRemaining)
-                  : "Calculating..."
-                }
+                  : "Calculating..."}
               </div>
               <div className="text-xs text-orange-600">Time Remaining</div>
             </CardContent>
           </Card>
 
-          {/* Success Rate */}
+          {/* Success Count */}
           <Card className="border-0 bg-gradient-to-br from-blue-50 to-cyan-50">
             <CardContent className="p-4 text-center">
               <div className="flex items-center justify-center mb-2">
@@ -358,16 +265,15 @@ export default function UltraFastS3Sync() {
             <CardTitle className="flex items-center space-x-2">
               <BarChart3 className="h-5 w-5" />
               <span>Performance Metrics</span>
-              <Badge variant="outline" className="text-xs">
-                Updated {Math.round((Date.now() - lastUpdate) / 1000)}s ago
-              </Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               <div className="space-y-1">
                 <div className="text-sm text-gray-600">Total Tasks</div>
-                <div className="text-xl font-semibold">{progress.totalTasks.toLocaleString()}</div>
+                <div className="text-xl font-semibold">
+                  {progress.totalTasks.toLocaleString()}
+                </div>
               </div>
               <div className="space-y-1">
                 <div className="text-sm text-gray-600">Completed</div>
@@ -383,21 +289,31 @@ export default function UltraFastS3Sync() {
               </div>
               <div className="space-y-1">
                 <div className="text-sm text-gray-600">Elapsed Time</div>
-                <div className="text-xl font-semibold">{formatTime(progress.elapsedTime)}</div>
+                <div className="text-xl font-semibold">
+                  {formatTime(progress.elapsedTime)}
+                </div>
               </div>
               <div className="space-y-1">
                 <div className="text-sm text-gray-600">Success Rate</div>
                 <div className="text-xl font-semibold text-blue-600">
-                  {progress.completedTasks > 0 
-                    ? ((progress.successfulUploads / progress.completedTasks) * 100).toFixed(1)
-                    : "0"
-                  }%
+                  {progress.completedTasks > 0
+                    ? (
+                        (progress.successfulUploads / progress.completedTasks) *
+                        100
+                      ).toFixed(1)
+                    : "0"}
+                  %
                 </div>
               </div>
               <div className="space-y-1">
                 <div className="text-sm text-gray-600">Throughput</div>
                 <div className="text-xl font-semibold text-purple-600">
-                  {(progress.successfulUploads / Math.max(progress.elapsedTime, 1) * 60).toFixed(1)}/min
+                  {(
+                    (progress.successfulUploads /
+                      Math.max(progress.elapsedTime, 1)) *
+                    60
+                  ).toFixed(1)}
+                  /min
                 </div>
               </div>
             </div>
@@ -407,7 +323,9 @@ export default function UltraFastS3Sync() {
               <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
                 <div className="flex items-center space-x-2 mb-2">
                   <XCircle className="h-5 w-5 text-red-600" />
-                  <span className="font-semibold text-red-800">Recent Errors</span>
+                  <span className="font-semibold text-red-800">
+                    Recent Errors
+                  </span>
                   <Badge variant="destructive">{progress.errors.length}</Badge>
                 </div>
                 <div className="text-sm text-red-700 space-y-1 max-h-32 overflow-y-auto">
@@ -424,9 +342,9 @@ export default function UltraFastS3Sync() {
                 </div>
               </div>
             )}
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
 
       {/* System Info */}
       <Card className="shadow-lg border-0 bg-gradient-to-r from-gray-50 to-slate-50">
