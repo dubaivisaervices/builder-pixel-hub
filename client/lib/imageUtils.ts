@@ -39,6 +39,8 @@ export function getBestImageUrl(imageData: ImageData): string | null {
  * Get the best available logo URL for a business
  */
 export function getBestLogoUrl(business: BusinessImageData): string | null {
+  // TEMPORARILY DISABLED - Testing if any S3 images actually work
+  /*
   // Emergency: Block S3 URLs from corrupted batch (timestamp range 1752379060000-1752379100000)
   // These were uploaded from expired Google Maps sources and are corrupted
   if (business?.logoS3Url && business.logoS3Url.includes("/api/s3-image/")) {
@@ -55,6 +57,7 @@ export function getBestLogoUrl(business: BusinessImageData): string | null {
       }
     }
   }
+  */
 
   // Prefer S3 URL (now working!)
   if (business?.logoS3Url) {
