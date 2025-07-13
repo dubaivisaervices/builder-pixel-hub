@@ -168,7 +168,10 @@ async function executeUltraFastSync(): Promise<void> {
           !business.logoS3Url &&
           isValidUrl(business.logoUrl)
         ) {
-          console.log(`📸 Processing logo for: ${business.name}`);
+          logoUploadsQueued++;
+          console.log(
+            `📸 Processing logo ${logoUploadsQueued} for: ${business.name}`,
+          );
           const logoPromise = processUltraFastUpload(
             "logo",
             business.id,
@@ -227,7 +230,7 @@ async function executeUltraFastSync(): Promise<void> {
     ultraFastProgress.batchesPerSecond = batchCount / batchTime;
 
     console.log(
-      `🚀 ULTRA-FAST: Completed batch ${batchCount}, ${ultraFastProgress.processedBusinesses}/${totalBusinesses} businesses processed`,
+      `���� ULTRA-FAST: Completed batch ${batchCount}, ${ultraFastProgress.processedBusinesses}/${totalBusinesses} businesses processed`,
     );
   }
 
