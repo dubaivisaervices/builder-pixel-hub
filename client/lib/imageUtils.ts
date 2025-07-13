@@ -40,13 +40,20 @@ export function getBestImageUrl(imageData: ImageData): string | null {
  */
 export function getBestLogoUrl(business: BusinessImageData): string | null {
   // Debug logging to see what we're receiving
-  if (business.name && business.name.includes("FAMILY VISA")) {
-    console.log("getBestLogoUrl debug for FAMILY VISA:", {
-      logoS3Url: business.logoS3Url,
-      logoUrl: business.logoUrl,
-      logo_base64: business.logo_base64 ? "present" : "none",
-      businessKeys: Object.keys(business),
-    });
+  console.log("getBestLogoUrl debug:", {
+    name: business.name?.substring(0, 30),
+    logoS3Url: business.logoS3Url ? "present" : "none",
+    logoUrl: business.logoUrl ? "present" : "none",
+    logo_base64: business.logo_base64 ? "present" : "none",
+    businessKeys: Object.keys(business),
+  });
+
+  // Test hardcoded S3 URL for first business
+  if (business.name && business.name.includes("Benchmark")) {
+    const testS3Url =
+      "https://dubai-business-images.s3.ap-south-1.amazonaws.com/logos/ChIJgYqjUtZCXz4R-srTBS-LusM.jpg";
+    console.log("Testing hardcoded S3 URL for Benchmark:", testS3Url);
+    return testS3Url;
   }
 
   // Prefer S3 URL
