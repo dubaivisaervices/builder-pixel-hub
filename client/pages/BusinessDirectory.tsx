@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import CommunityProtection from "@/components/CommunityProtection";
 import GovernmentSection from "@/components/GovernmentSection";
 import Footer from "@/components/Footer";
+import { BusinessData } from "@shared/google-business";
 import {
   Search,
   Star,
@@ -31,20 +32,6 @@ import {
   Eye,
   MessageCircle,
 } from "lucide-react";
-
-interface BusinessData {
-  id: string;
-  name: string;
-  address: string;
-  rating: number;
-  reviewCount: number;
-  category: string;
-  phone?: string;
-  website?: string;
-  logoUrl?: string;
-  hasTargetKeyword?: boolean;
-  photos?: any[];
-}
 
 export default function BusinessDirectory() {
   const [businesses, setBusinesses] = useState<BusinessData[]>([]);
