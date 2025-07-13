@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import BusinessSearchManager from "./BusinessSearchManager";
 import S3Configuration from "../components/S3Configuration";
+import UltraFastS3Sync from "../components/UltraFastS3Sync";
 
 interface CompanyRequest {
   id: number;
@@ -695,7 +696,9 @@ export default function AdminDashboard() {
                       <div className="text-center">
                         <Trash2 className="h-8 w-8 mx-auto mb-2" />
                         <div className="font-medium">Clear Database</div>
-                        <div className="text-xs opacity-80">⚠️ Danger zone</div>
+                        <div className="text-xs opacity-80">
+                          ���️ Danger zone
+                        </div>
                       </div>
                     </Button>
                   </div>
