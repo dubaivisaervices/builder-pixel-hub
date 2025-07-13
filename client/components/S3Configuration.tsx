@@ -33,6 +33,7 @@ interface S3Status {
 export default function S3Configuration() {
   const [s3Status, setS3Status] = useState<S3Status | null>(null);
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [uploadResults, setUploadResults] = useState<any>(null);
   const [testImageUrl, setTestImageUrl] = useState("");
   const [testBusinessId, setTestBusinessId] = useState("test-business");
