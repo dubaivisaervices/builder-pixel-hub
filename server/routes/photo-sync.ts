@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { businessService } from "../database/businessService";
 import fetch from "node-fetch";
+import { getS3Service, isS3Configured } from "../utils/s3Service";
 
 // Track if download is in progress to prevent multiple simultaneous downloads
 let downloadInProgress = false;
