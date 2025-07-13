@@ -495,9 +495,11 @@ export class BusinessService {
       category: business.category,
       businessStatus: business.business_status,
       photoReference: business.photo_reference,
-      logoUrl: business.logo_base64
-        ? `data:image/jpeg;base64,${business.logo_base64}`
-        : business.logo_url, // Use cached base64 first, avoid API calls
+      logoUrl:
+        business.logo_s3_url || business.logo_base64
+          ? business.logo_s3_url ||
+            `data:image/jpeg;base64,${business.logo_base64}`
+          : business.logo_url, // Use S3 URL first, then cached base64, finally original URL
       logoBase64: business.logo_base64, // Keep base64 data for caching
       isOpen: business.is_open,
       priceLevel: business.price_level,
