@@ -17,6 +17,8 @@ export class S3Service {
   private bucketName: string;
   private region: string;
 
+  private initialized = false;
+
   constructor() {
     this.region = process.env.AWS_REGION || "us-east-1";
     this.bucketName = process.env.AWS_S3_BUCKET_NAME || "";
@@ -25,16 +27,24 @@ export class S3Service {
       throw new Error("AWS_S3_BUCKET_NAME environment variable is required");
     }
 
-    // Try different common regions for Dubai-based bucket
-    this.initializeS3Client();
+    this.s3Client = new S3Client({
+      region: this.region,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+      },
+    });
   }
 
-  private async initializeS3Client() {
+  private async ensureCorrectRegion(): Promise<void> {
+    if (this.initialized) return;
+
     const commonRegions = [
       "us-east-1",
       "me-south-1",
       "eu-west-1",
       "ap-southeast-1",
+      "us-west-2",
     ];
 
     for (const region of commonRegions) {
@@ -56,8 +66,12 @@ export class S3Service {
         await testClient.send(command);
 
         // If successful, use this region
-        this.region = region;
-        this.s3Client = testClient;
+        if (region !== this.region) {
+          console.log(`Switching S3 region from ${this.region} to ${region}`);
+          this.region = region;
+          this.s3Client = testClient;
+        }
+        this.initialized = true;
         console.log(`Successfully connected to S3 bucket in region: ${region}`);
         return;
       } catch (error) {
@@ -66,14 +80,12 @@ export class S3Service {
       }
     }
 
-    // Fallback to original configuration
-    this.s3Client = new S3Client({
-      region: this.region,
-      credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
-      },
-    });
+    // If all regions fail, keep original and mark as initialized
+    this.initialized = true;
+    console.warn(
+      "Could not auto-detect correct S3 region, using default:",
+      this.region,
+    );
   }
 
   /**
