@@ -746,6 +746,107 @@ export function createServer() {
     }
   });
 
+  // Clean up corrupted S3 URLs by testing all S3 images
+  app.post("/api/admin/cleanup-corrupted-s3", async (req, res) => {
+    try {
+      const { businessService } = await import("./database/businessService");
+      const { S3Service } = await import("./utils/s3Service");
+      const s3Service = new S3Service();
+
+      // Get all businesses with S3 URLs
+      const businesses = await businessService.getBusinessesNeedingS3Upload();
+      const results = [];
+      let clearedCount = 0;
+
+      for (const business of businesses) {
+        if (!business.logoS3Url) continue;
+
+        try {
+          // Extract S3 key from URL
+          const urlMatch = business.logoS3Url.match(/\/api\/s3-image\/(.+)$/);
+          if (!urlMatch) continue;
+
+          const key = urlMatch[1];
+
+          // Check if S3 object exists and is healthy
+          const exists = await s3Service.objectExists(key);
+          if (!exists) {
+            await businessService.updateBusinessS3Urls(business.id, null);
+            results.push({
+              businessId: business.id,
+              issue: "S3 object not found",
+              cleared: true,
+            });
+            clearedCount++;
+            continue;
+          }
+
+          // Download and validate image
+          const imageBuffer = await s3Service.downloadBuffer(key);
+
+          // Check for corruption
+          let corruptionFound = false;
+          if (imageBuffer.length < 500) corruptionFound = true;
+
+          const isJPEG = imageBuffer[0] === 0xff && imageBuffer[1] === 0xd8;
+          const hasEndMarker =
+            imageBuffer[imageBuffer.length - 2] === 0xff &&
+            imageBuffer[imageBuffer.length - 1] === 0xd9;
+          if (!isJPEG || !hasEndMarker) corruptionFound = true;
+
+          // Check for null byte sequences
+          for (let i = 0; i < imageBuffer.length - 10; i++) {
+            let allNull = true;
+            for (let j = 0; j < 10; j++) {
+              if (imageBuffer[i + j] !== 0x00) {
+                allNull = false;
+                break;
+              }
+            }
+            if (allNull) {
+              corruptionFound = true;
+              break;
+            }
+          }
+
+          if (corruptionFound) {
+            await businessService.updateBusinessS3Urls(business.id, null);
+            results.push({
+              businessId: business.id,
+              issue: "Corrupted image data",
+              cleared: true,
+            });
+            clearedCount++;
+          } else {
+            results.push({
+              businessId: business.id,
+              issue: "none",
+              cleared: false,
+            });
+          }
+        } catch (error) {
+          await businessService.updateBusinessS3Urls(business.id, null);
+          results.push({
+            businessId: business.id,
+            issue: error.message,
+            cleared: true,
+          });
+          clearedCount++;
+        }
+      }
+
+      res.json({
+        success: true,
+        message: `Cleanup completed. Cleared ${clearedCount} corrupted S3 URLs.`,
+        clearedCount,
+        totalChecked: results.length,
+        results: results.slice(0, 10), // Show first 10 results
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Test S3 connectivity and configuration
   app.get("/api/admin/test-s3-connection", async (req, res) => {
     try {
