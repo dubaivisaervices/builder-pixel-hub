@@ -1142,9 +1142,9 @@ export default function CompanyProfileModern() {
           return;
         }
 
-        // Fetch from API
+        // Fetch from API with cache busting
         console.log("🔍 Fetching from API...");
-        const response = await fetch("/api/businesses");
+        const response = await fetch(`/api/businesses?_t=${Date.now()}`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch businesses");
