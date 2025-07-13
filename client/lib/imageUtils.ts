@@ -39,13 +39,21 @@ export function getBestImageUrl(imageData: ImageData): string | null {
  * Get the best available logo URL for a business
  */
 export function getBestLogoUrl(business: BusinessImageData): string | null {
-  // For now, only use base64 images (working) until S3 uploads are fixed
+  // Prefer S3 URL (now working!)
+  if (business.logoS3Url) {
+    return business.logoS3Url;
+  }
+
+  // Fall back to base64 if available
   if (business.logo_base64) {
     return `data:image/jpeg;base64,${business.logo_base64}`;
   }
 
-  // All other sources (S3, Google Maps) are currently failing
-  // Return null to show placeholder initials
+  // Fall back to original logo URL as last resort
+  if (business.logoUrl && !business.logoUrl.includes("maps.googleapis.com")) {
+    return business.logoUrl;
+  }
+
   return null;
 }
 
