@@ -197,11 +197,15 @@ export default function BusinessPhotoGallery({
     } finally {
       setLoading(false);
     }
-  }, [businessId, businessName, photos, photosS3Urls, defaultBusinessPhotos]);
+  }, [businessId, businessName, defaultBusinessPhotos]);
 
   useEffect(() => {
-    loadBusinessPhotos();
-  }, [loadBusinessPhotos]);
+    // Only load if we haven't loaded for this business yet
+    if (!hasLoadedRef.current || hasLoadedRef.current !== businessId) {
+      hasLoadedRef.current = businessId;
+      loadBusinessPhotos();
+    }
+  }, [businessId, loadBusinessPhotos]);
 
   const handleImageError = (photoId: string, photoUrl: string) => {
     console.warn("📸 Image failed to load:", photoUrl);
