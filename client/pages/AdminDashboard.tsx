@@ -32,6 +32,7 @@ import S3Configuration from "../components/S3Configuration";
 import UltraFastS3Sync from "../components/UltraFastS3Sync";
 import RealTimeSmartSync from "../components/RealTimeSmartSync";
 import UltraFastS3SyncNew from "../components/UltraFastS3Sync";
+import { DatabaseMigration } from "../components/DatabaseMigration";
 
 interface CompanyRequest {
   id: number;
