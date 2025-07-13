@@ -430,12 +430,15 @@ export function createServer() {
   app.get("/api/s3-image/:key(*)", async (req, res) => {
     try {
       const key = req.params.key;
+      console.log(`S3 proxy request for: ${key}`);
+
       const { S3Service } = await import("./utils/s3Service");
       const s3Service = new S3Service();
 
       // Check if object exists first
       const exists = await s3Service.objectExists(key);
       if (!exists) {
+        console.log(`S3 object not found: ${key}`);
         return res.status(404).json({ error: "Image not found" });
       }
 
