@@ -47,6 +47,16 @@ export function getBestLogoUrl(business: BusinessImageData): string | null {
     logo_base64: business?.logo_base64 ? "present" : "missing",
   });
 
+  // Emergency: Block known corrupted S3 URLs
+  const knownCorruptedUrls = [
+    "http://localhost:8080/api/s3-image/businesses/ChIJgYqjUtZCXz4R-srTBS-LusM/logos/1752379060492-6e89728a.jpg",
+  ];
+
+  if (business?.logoS3Url && knownCorruptedUrls.includes(business.logoS3Url)) {
+    console.log("🚫 BLOCKED corrupted S3 URL:", business.logoS3Url);
+    business.logoS3Url = undefined; // Clear it
+  }
+
   // Prefer S3 URL (now working!)
   if (business?.logoS3Url) {
     console.log("🔍 Using S3 URL:", business.logoS3Url);
