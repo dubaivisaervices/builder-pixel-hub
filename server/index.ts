@@ -508,6 +508,20 @@ export function createServer() {
     }
   });
 
+  // Hostinger upload routes
+  const {
+    uploadAllImagesToHostinger,
+    uploadBusinessToHostinger,
+    testHostingerConnection,
+  } = await import("./routes/hostinger-upload");
+
+  app.post("/api/admin/upload-all-to-hostinger", uploadAllImagesToHostinger);
+  app.post(
+    "/api/admin/upload-business-to-hostinger/:businessId",
+    uploadBusinessToHostinger,
+  );
+  app.get("/api/admin/test-hostinger", testHostingerConnection);
+
   // Google Reviews sync routes
   app.post("/api/admin/sync-google-reviews", syncAllGoogleReviews);
   app.post("/api/admin/sync-business-reviews/:businessId", syncBusinessReviews);
