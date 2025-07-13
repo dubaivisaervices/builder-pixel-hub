@@ -539,13 +539,21 @@ export class BusinessService {
       photos: business.photos_local_json
         ? JSON.parse(business.photos_local_json) // Always use cached photos first (no API cost)
         : business.photos_json
-          ? JSON.parse(business.photos_json).map((photo: any) => ({
-              ...photo,
-              url: photo.s3Url || photo.url, // Use S3 URL if available, otherwise original
-              needsDownload: !photo.s3Url && !photo.base64, // Flag photos that need downloading
-              source: photo.s3Url ? "s3" : photo.base64 ? "cache" : "api",
-            }))
-          : undefined, // Mark uncached photos
+          ? JSON.parse(business.photos_json)
+              .filter((photo: any) => {
+                // Filter out photos with corrupted URLs
+                if (photo.url && this.isCorruptedUrl(photo.url)) return false;
+                if (photo.s3Url && this.isCorruptedUrl(photo.s3Url))
+                  return false;
+                return true;
+              })
+              .map((photo: any) => ({
+                ...photo,
+                url: photo.s3Url || photo.url, // Use S3 URL if available, otherwise original
+                needsDownload: !photo.s3Url && !photo.base64, // Flag photos that need downloading
+                source: photo.s3Url ? "s3" : photo.base64 ? "cache" : "api",
+              }))
+          : undefined, // Mark uncached photos (filtered for corrupted URLs)
       reviews: reviews,
     };
   }
