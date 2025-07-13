@@ -625,20 +625,46 @@ export function createServer() {
         });
       }
 
-      // Test 2: Storage stats
-      try {
-        const stats = await s3Service.getStorageStats();
-        testResults.tests.push({
-          name: "Storage Stats",
-          status: "success",
-          result: stats,
-        });
-      } catch (error) {
-        testResults.tests.push({
-          name: "Storage Stats",
-          status: "failed",
-          error: error.message,
-        });
+      // Test 2: Try different regions to find the correct one
+      const testRegions = [
+        "us-east-1",
+        "ap-south-1",
+        "me-south-1",
+        "eu-west-1",
+        "us-west-2",
+      ];
+      for (const region of testRegions) {
+        try {
+          const { S3Client, ListObjectsV2Command } = await import(
+            "@aws-sdk/client-s3"
+          );
+          const testClient = new S3Client({
+            region: region,
+            credentials: {
+              accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+              secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+            },
+          });
+
+          const command = new ListObjectsV2Command({
+            Bucket: process.env.AWS_S3_BUCKET_NAME,
+            MaxKeys: 1,
+          });
+
+          await testClient.send(command);
+          testResults.tests.push({
+            name: `Region Test: ${region}`,
+            status: "success",
+            result: "✅ Bucket accessible from this region",
+          });
+          break; // Found working region
+        } catch (error) {
+          testResults.tests.push({
+            name: `Region Test: ${region}`,
+            status: "failed",
+            error: error.message.substring(0, 100) + "...",
+          });
+        }
       }
 
       res.json({
