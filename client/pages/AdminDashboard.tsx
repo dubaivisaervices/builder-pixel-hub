@@ -649,6 +649,7 @@ export default function AdminDashboard() {
         {/* S3 Storage Tab */}
         {activeTab === "s3" && (
           <div className="space-y-8">
+            <DatabaseMigration />
             <UltraFastS3SyncNew />
             <RealTimeSmartSync />
             <S3Configuration />
