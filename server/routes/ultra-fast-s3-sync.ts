@@ -127,6 +127,8 @@ async function executeUltraFastSync(): Promise<void> {
     `🚀 ULTRA-FAST: Processing ${totalBusinesses} businesses with ${ULTRA_FAST_CONFIG.CONCURRENT_UPLOADS} concurrent uploads`,
   );
 
+  let logoUploadsQueued = 0;
+  let photoUploadsQueued = 0;
   const activeUploads = new Map<string, Promise<void>>();
 
   while (true) {
