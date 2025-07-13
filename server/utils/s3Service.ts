@@ -154,7 +154,7 @@ export class S3Service {
         Key: key,
         Body: buffer,
         ContentType: contentType,
-        Metadata: metadata,
+        Metadata: metadata ? this.sanitizeMetadata(metadata) : undefined,
       });
 
       await this.s3Client.send(command);
