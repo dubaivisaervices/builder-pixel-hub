@@ -510,8 +510,9 @@ export class BusinessService {
         : business.photos_json
           ? JSON.parse(business.photos_json).map((photo: any) => ({
               ...photo,
-              needsDownload: !photo.base64, // Flag photos that need downloading
-              source: photo.base64 ? "cache" : "api",
+              url: photo.s3Url || photo.url, // Use S3 URL if available, otherwise original
+              needsDownload: !photo.s3Url && !photo.base64, // Flag photos that need downloading
+              source: photo.s3Url ? "s3" : photo.base64 ? "cache" : "api",
             }))
           : undefined, // Mark uncached photos
       reviews: reviews,
