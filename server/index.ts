@@ -608,6 +608,37 @@ export function createServer() {
     }
   });
 
+  // Get S3 image metadata for debugging
+  app.get("/api/admin/s3-image-info/:key(*)", async (req, res) => {
+    try {
+      const key = req.params.key;
+      const { S3Service } = await import("./utils/s3Service");
+      const s3Service = new S3Service();
+
+      const exists = await s3Service.objectExists(key);
+      if (!exists) {
+        return res.json({ exists: false });
+      }
+
+      const imageBuffer = await s3Service.downloadBuffer(key);
+      const isJPEG = imageBuffer[0] === 0xff && imageBuffer[1] === 0xd8;
+
+      res.json({
+        exists: true,
+        size: imageBuffer.length,
+        isValidJPEG: isJPEG,
+        firstBytes: Array.from(imageBuffer.slice(0, 10))
+          .map((b) => `0x${b.toString(16).padStart(2, "0")}`)
+          .join(" "),
+        lastBytes: Array.from(imageBuffer.slice(-10))
+          .map((b) => `0x${b.toString(16).padStart(2, "0")}`)
+          .join(" "),
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Test S3 connectivity and configuration
   app.get("/api/admin/test-s3-connection", async (req, res) => {
     try {
