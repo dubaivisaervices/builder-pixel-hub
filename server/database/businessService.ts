@@ -509,6 +509,84 @@ export class BusinessService {
       reviews: reviews,
     };
   }
+  // Get total business count
+  async getBusinessCount(): Promise<number> {
+    const result = await database.get(
+      "SELECT COUNT(*) as count FROM businesses",
+    );
+    return result?.count || 0;
+  }
+
+  // Get businesses with pagination for memory efficiency
+  async getBusinessesPaginated(
+    offset: number = 0,
+    limit: number = 100,
+  ): Promise<BusinessData[]> {
+    const businesses = await database.all(
+      `
+      SELECT
+        id, name, address, phone, website, email, lat, lng,
+        rating, review_count, category, business_status, photo_reference,
+        logo_url, logo_base64, is_open, price_level, has_target_keyword,
+        hours_json, photos_json, photos_local_json, created_at, updated_at
+      FROM businesses
+      ORDER BY created_at DESC
+      LIMIT ? OFFSET ?
+      `,
+      [limit, offset],
+    );
+
+    return businesses.map((business) => this.mapToBusinessData(business));
+  }
+
+  // Get businesses with images that need S3 upload
+  async getBusinessesNeedingS3Upload(): Promise<BusinessData[]> {
+    const businesses = await database.all(
+      `
+      SELECT
+        id, name, address, phone, website, email, lat, lng,
+        rating, review_count, category, business_status, photo_reference,
+        logo_url, logo_base64, is_open, price_level, has_target_keyword,
+        hours_json, photos_json, photos_local_json, created_at, updated_at
+      FROM businesses
+      WHERE (logo_url IS NOT NULL AND logo_url != '')
+         OR (photos_json IS NOT NULL AND photos_json != '[]' AND photos_json != '')
+      ORDER BY has_target_keyword DESC, rating DESC
+      `,
+    );
+
+    return businesses.map((business) => this.mapToBusinessData(business));
+  }
+
+  // Update business with S3 URLs
+  async updateBusinessS3Urls(
+    id: string,
+    logoS3Url?: string,
+    photosWithS3?: any[],
+  ): Promise<void> {
+    const updateFields = [];
+    const updateValues = [];
+
+    if (logoS3Url) {
+      updateFields.push("logo_s3_url = ?");
+      updateValues.push(logoS3Url);
+    }
+
+    if (photosWithS3) {
+      updateFields.push("photos_json = ?");
+      updateValues.push(JSON.stringify(photosWithS3));
+    }
+
+    if (updateFields.length > 0) {
+      updateFields.push("updated_at = CURRENT_TIMESTAMP");
+      updateValues.push(id);
+
+      await database.run(
+        `UPDATE businesses SET ${updateFields.join(", ")} WHERE id = ?`,
+        updateValues,
+      );
+    }
+  }
 }
 
 export const businessService = new BusinessService();
