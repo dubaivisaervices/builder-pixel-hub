@@ -39,8 +39,8 @@ export function getBestImageUrl(imageData: ImageData): string | null {
  * Get the best available logo URL for a business
  */
 export function getBestLogoUrl(business: BusinessImageData): string | null {
-  // Prefer S3 URL
-  if (business.logoS3Url) {
+  // Prefer S3 URL (but only if it's not a proxy URL, since those might 404)
+  if (business.logoS3Url && !business.logoS3Url.includes("/api/s3-image/")) {
     return business.logoS3Url;
   }
 
@@ -49,17 +49,19 @@ export function getBestLogoUrl(business: BusinessImageData): string | null {
     return `data:image/jpeg;base64,${business.logo_base64}`;
   }
 
-  // Fall back to original logo URL (Google Maps with proper API key)
-  if (business.logoUrl) {
-    // If it's a Google Maps URL without key, add the API key
-    if (
-      business.logoUrl.includes("maps.googleapis.com") &&
-      !business.logoUrl.includes("key=")
-    ) {
-      return business.logoUrl + "&key=AIzaSyCLdVuLJI-sCmDe8dcQ5i8R_3rxWTzmxl8";
-    }
-    return business.logoUrl;
+  // Try S3 proxy URL as last resort
+  if (business.logoS3Url && business.logoS3Url.includes("/api/s3-image/")) {
+    return business.logoS3Url;
   }
+
+  // Skip Google Maps URLs as they're failing
+  // if (business.logoUrl) {
+  //   // If it's a Google Maps URL without key, add the API key
+  //   if (business.logoUrl.includes('maps.googleapis.com') && !business.logoUrl.includes('key=')) {
+  //     return business.logoUrl + '&key=AIzaSyCLdVuLJI-sCmDe8dcQ5i8R_3rxWTzmxl8';
+  //   }
+  //   return business.logoUrl;
+  // }
 
   return null;
 }
