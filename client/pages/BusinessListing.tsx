@@ -269,9 +269,9 @@ export default function BusinessListing() {
                   {/* Business Header */}
                   <div className="flex items-start space-x-3 mb-4">
                     <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                      {business.logoUrl ? (
+                      {getBestLogoUrl(business) ? (
                         <img
-                          src={business.logoUrl}
+                          src={getBestLogoUrl(business)!}
                           alt={`${business.name} logo`}
                           className="w-full h-full object-cover rounded-xl"
                         />
