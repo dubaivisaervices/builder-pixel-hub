@@ -338,6 +338,15 @@ export default function BusinessDirectory() {
                         "for business:",
                         business.name,
                       );
+
+                      // Emergency: Block any S3 URLs that are still failing
+                      if (e.currentTarget.src.includes("/api/s3-image/")) {
+                        console.warn(
+                          "🚫 BLOCKED corrupted S3 URL for:",
+                          business.name,
+                        );
+                      }
+
                       e.currentTarget.style.display = "none";
                       e.currentTarget.nextElementSibling!.style.display =
                         "flex";
