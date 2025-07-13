@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useMemo,
-  useCallback,
-  useRef,
-} from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -59,7 +53,6 @@ export default function BusinessPhotoGallery({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loadingPhotos, setLoadingPhotos] = useState<Set<string>>(new Set());
-  const hasLoadedRef = useRef(false);
 
   // Default business photos as fallback - memoized to prevent recreation
   const defaultBusinessPhotos: BusinessPhoto[] = useMemo(
@@ -104,108 +97,120 @@ export default function BusinessPhotoGallery({
     [],
   );
 
-  const loadBusinessPhotos = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  // Convert photosS3Urls to string for stable comparison
+  const s3UrlsString = useMemo(() => {
+    return (photosS3Urls || []).join(",");
+  }, [photosS3Urls]);
 
-    try {
-      console.log("📸 Loading business photos for:", businessName);
-
-      let processedPhotos: BusinessPhoto[] = [];
-
-      // 1. Process S3 URLs first (highest priority)
-      if (photosS3Urls && photosS3Urls.length > 0) {
-        console.log("📸 Found S3 URLs:", photosS3Urls.length);
-        processedPhotos = photosS3Urls.map((url, index) => ({
-          id: `s3-${index}`,
-          url: `/api/s3-image/${encodeURIComponent(url.replace(/^https?:\/\/[^\/]+\//, ""))}`,
-          s3Url: url,
-          caption: `Business Photo ${index + 1}`,
-          source: "s3" as const,
-        }));
-      }
-
-      // 2. Process regular photos array (from database)
-      if (photos && photos.length > 0) {
-        console.log("📸 Found regular photos:", photos.length);
-        const regularPhotos = photos.map((photo, index) => ({
-          ...photo,
-          id: photo.id || `photo-${index}`,
-          caption:
-            photo.caption ||
-            `Business Photo ${processedPhotos.length + index + 1}`,
-        }));
-        processedPhotos = [...processedPhotos, ...regularPhotos];
-      }
-
-      // 3. If no photos available, try to fetch from API
-      if (processedPhotos.length === 0) {
-        console.log("📸 No photos found, trying to fetch from API...");
-        try {
-          const response = await fetch(
-            `/api/business-photos/${businessId}?_t=${Date.now()}`,
-          );
-          if (response.ok) {
-            const data = await response.json();
-            if (data.success && data.photos && data.photos.length > 0) {
-              console.log("📸 Fetched photos from API:", data.photos.length);
-              processedPhotos = data.photos.map(
-                (photo: any, index: number) => ({
-                  id: photo.id || `api-${index}`,
-                  url:
-                    photo.s3Url || photo.url || photo.base64
-                      ? `data:image/jpeg;base64,${photo.base64}`
-                      : photo.url,
-                  s3Url: photo.s3Url,
-                  base64: photo.base64,
-                  width: photo.width,
-                  height: photo.height,
-                  caption: photo.caption || `Business Photo ${index + 1}`,
-                  source: photo.s3Url ? "s3" : photo.base64 ? "cache" : "api",
-                  needsDownload: photo.needsDownload,
-                }),
-              );
-            }
-          }
-        } catch (apiError) {
-          console.warn("📸 Failed to fetch photos from API:", apiError);
-        }
-      }
-
-      // 4. Use default photos if still no photos
-      if (processedPhotos.length === 0) {
-        console.log("📸 Using default business photos");
-        processedPhotos = defaultBusinessPhotos;
-      }
-
-      // Validate and filter out any invalid photos
-      const validPhotos = processedPhotos.filter(
-        (photo) => photo.url && photo.url.trim() !== "",
-      );
-
-      setGalleryPhotos(validPhotos);
-      console.log(
-        "📸 Final gallery photos:",
-        validPhotos.length,
-        "photos loaded",
-      );
-    } catch (err) {
-      console.error("📸 Error loading business photos:", err);
-      setError("Failed to load photos");
-      // Use default photos on error
-      setGalleryPhotos(defaultBusinessPhotos);
-    } finally {
-      setLoading(false);
-    }
-  }, [businessId, businessName, defaultBusinessPhotos]);
+  // Convert photos to string for stable comparison
+  const photosString = useMemo(() => {
+    return JSON.stringify(photos || []);
+  }, [photos]);
 
   useEffect(() => {
-    // Only load if we haven't loaded for this business yet
-    if (!hasLoadedRef.current || hasLoadedRef.current !== businessId) {
-      hasLoadedRef.current = businessId;
-      loadBusinessPhotos();
-    }
-  }, [businessId, loadBusinessPhotos]);
+    const loadBusinessPhotos = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        console.log("📸 Loading business photos for:", businessName);
+
+        let processedPhotos: BusinessPhoto[] = [];
+
+        // 1. Process S3 URLs first (highest priority)
+        if (photosS3Urls && photosS3Urls.length > 0) {
+          console.log("📸 Found S3 URLs:", photosS3Urls.length);
+          processedPhotos = photosS3Urls.map((url, index) => ({
+            id: `s3-${index}`,
+            url: `/api/s3-image/${encodeURIComponent(url.replace(/^https?:\/\/[^\/]+\//, ""))}`,
+            s3Url: url,
+            caption: `Business Photo ${index + 1}`,
+            source: "s3" as const,
+          }));
+        }
+
+        // 2. Process regular photos array (from database)
+        if (photos && photos.length > 0) {
+          console.log("📸 Found regular photos:", photos.length);
+          const regularPhotos = photos.map((photo, index) => ({
+            ...photo,
+            id: photo.id || `photo-${index}`,
+            caption:
+              photo.caption ||
+              `Business Photo ${processedPhotos.length + index + 1}`,
+          }));
+          processedPhotos = [...processedPhotos, ...regularPhotos];
+        }
+
+        // 3. If no photos available, try to fetch from API
+        if (processedPhotos.length === 0) {
+          console.log("📸 No photos found, trying to fetch from API...");
+          try {
+            const response = await fetch(
+              `/api/business-photos/${businessId}?_t=${Date.now()}`,
+            );
+            if (response.ok) {
+              const data = await response.json();
+              if (data.success && data.photos && data.photos.length > 0) {
+                console.log("📸 Fetched photos from API:", data.photos.length);
+                processedPhotos = data.photos.map(
+                  (photo: any, index: number) => ({
+                    id: photo.id || `api-${index}`,
+                    url:
+                      photo.s3Url || photo.url || photo.base64
+                        ? `data:image/jpeg;base64,${photo.base64}`
+                        : photo.url,
+                    s3Url: photo.s3Url,
+                    base64: photo.base64,
+                    width: photo.width,
+                    height: photo.height,
+                    caption: photo.caption || `Business Photo ${index + 1}`,
+                    source: photo.s3Url ? "s3" : photo.base64 ? "cache" : "api",
+                    needsDownload: photo.needsDownload,
+                  }),
+                );
+              }
+            }
+          } catch (apiError) {
+            console.warn("📸 Failed to fetch photos from API:", apiError);
+          }
+        }
+
+        // 4. Use default photos if still no photos
+        if (processedPhotos.length === 0) {
+          console.log("📸 Using default business photos");
+          processedPhotos = defaultBusinessPhotos;
+        }
+
+        // Validate and filter out any invalid photos
+        const validPhotos = processedPhotos.filter(
+          (photo) => photo.url && photo.url.trim() !== "",
+        );
+
+        setGalleryPhotos(validPhotos);
+        console.log(
+          "📸 Final gallery photos:",
+          validPhotos.length,
+          "photos loaded",
+        );
+      } catch (err) {
+        console.error("📸 Error loading business photos:", err);
+        setError("Failed to load photos");
+        // Use default photos on error
+        setGalleryPhotos(defaultBusinessPhotos);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBusinessPhotos();
+  }, [
+    businessId,
+    businessName,
+    s3UrlsString,
+    photosString,
+    defaultBusinessPhotos,
+  ]);
 
   const handleImageError = (photoId: string, photoUrl: string) => {
     console.warn("📸 Image failed to load:", photoUrl);
@@ -303,6 +308,13 @@ export default function BusinessPhotoGallery({
     }
   };
 
+  const retryLoadPhotos = () => {
+    setError(null);
+    setLoading(true);
+    // Force re-run of effect by changing a state that triggers reload
+    setGalleryPhotos([]);
+  };
+
   if (loading) {
     return (
       <Card
@@ -353,7 +365,7 @@ export default function BusinessPhotoGallery({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={loadBusinessPhotos}
+                onClick={retryLoadPhotos}
                 className="text-orange-600 border-orange-300 hover:bg-orange-50"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
@@ -372,7 +384,7 @@ export default function BusinessPhotoGallery({
                 Failed to Load Photos
               </h3>
               <p className="text-sm text-red-600 mb-4">{error}</p>
-              <Button onClick={loadBusinessPhotos} variant="outline">
+              <Button onClick={retryLoadPhotos} variant="outline">
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Try Again
               </Button>
