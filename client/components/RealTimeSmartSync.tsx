@@ -75,6 +75,12 @@ export default function RealTimeSmartSync() {
 
   // Start Smart Sync with real-time monitoring
   const startSmartSync = async () => {
+    // Prevent multiple starts
+    if (isStarting || progress.isRunning) {
+      console.log("Sync already running or starting");
+      return;
+    }
+
     setIsStarting(true);
     setSyncResult(null);
 
