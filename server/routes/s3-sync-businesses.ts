@@ -206,10 +206,7 @@ export const syncSingleBusinessToS3: RequestHandler = async (req, res) => {
         result.logoUploaded = true;
 
         // Update business with S3 URL
-        await businessService.updateBusiness(business.id, {
-          ...business,
-          logoS3Url: logoS3Url,
-        });
+        await businessService.updateBusinessS3Urls(business.id, logoS3Url);
       } catch (error) {
         result.errors.push(`Logo upload failed: ${error}`);
       }
