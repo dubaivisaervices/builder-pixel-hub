@@ -154,6 +154,7 @@ export class S3Service {
         Key: key,
         Body: buffer,
         ContentType: contentType,
+        ACL: "public-read", // Make images publicly accessible
         Metadata: metadata ? this.sanitizeMetadata(metadata) : undefined,
       });
 
