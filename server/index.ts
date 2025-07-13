@@ -464,6 +464,13 @@ export function createServer() {
       res.setHeader("Content-Type", "image/jpeg");
       res.setHeader("Cache-Control", "public, max-age=86400"); // 24 hours
       res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader("Access-Control-Allow-Methods", "GET");
+      res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+      res.setHeader("Content-Length", imageBuffer.length.toString());
+
+      console.log(
+        `S3 proxy serving: ${key}, size: ${imageBuffer.length} bytes`,
+      );
 
       // Send the image buffer
       res.send(imageBuffer);
@@ -845,7 +852,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const app = createServer();
 
   app.listen(PORT, () => {
-    console.log(`✅ Server running on port ${PORT}`);
+    console.log(`�� Server running on port ${PORT}`);
     console.log(`🌐 Frontend: http://localhost:${PORT}`);
     console.log(`🔗 API: http://localhost:${PORT}/api`);
   });
