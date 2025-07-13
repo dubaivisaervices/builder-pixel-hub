@@ -442,6 +442,21 @@ export function createServer() {
       // Get image data directly from S3 and stream it
       const imageBuffer = await s3Service.downloadBuffer(key);
 
+      // Validate image buffer
+      if (!imageBuffer || imageBuffer.length < 100) {
+        console.error(
+          `S3 image corrupted or too small: ${key}, size: ${imageBuffer?.length || 0}`,
+        );
+        return res.status(404).json({ error: "Image corrupted or invalid" });
+      }
+
+      // Check for basic JPEG signature
+      const isJPEG = imageBuffer[0] === 0xff && imageBuffer[1] === 0xd8;
+      if (!isJPEG) {
+        console.error(`S3 image not a valid JPEG: ${key}`);
+        return res.status(404).json({ error: "Invalid image format" });
+      }
+
       // Set appropriate headers
       res.setHeader("Content-Type", "image/jpeg");
       res.setHeader("Cache-Control", "public, max-age=86400"); // 24 hours
