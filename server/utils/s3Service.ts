@@ -10,6 +10,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { v4 as uuidv4 } from "uuid";
 import fetch from "node-fetch";
 import { EnhancedImageFetcher } from "./enhancedImageFetcher";
+import { GoogleMapsImageHandler } from "./googleMapsImageHandler";
 
 export class S3Service {
   private s3Client: S3Client;
