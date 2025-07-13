@@ -9,6 +9,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 
 import GoogleReviewsWidget from "@/components/GoogleReviewsWidget";
+import { getBestLogoUrl } from "@/lib/imageUtils";
 import {
   ArrowLeft,
   AlertTriangle,
