@@ -44,15 +44,15 @@ export function getBestLogoUrl(business: BusinessImageData): string | null {
     return business.logoS3Url;
   }
 
-  // Fall back to original logo URL
-  if (business.logoUrl) {
-    return business.logoUrl;
-  }
-
   // Fall back to base64 if available
   if (business.logo_base64) {
     return `data:image/jpeg;base64,${business.logo_base64}`;
   }
+
+  // Skip Google Maps URLs as they're currently failing
+  // if (business.logoUrl && !business.logoUrl.includes('maps.googleapis.com')) {
+  //   return business.logoUrl;
+  // }
 
   return null;
 }
