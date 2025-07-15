@@ -28,6 +28,18 @@ export async function debugHostingerConnection(req: Request, res: Response) {
       `📁 Files in public_html: ${htmlList.map((f) => f.name).join(", ")}`,
     );
 
+    // Check if business-images exists and its details
+    const businessImagesItem = htmlList.find(
+      (item) => item.name === "business-images",
+    );
+    if (businessImagesItem) {
+      results.push(
+        `📂 business-images found - Type: ${businessImagesItem.type === 1 ? "file" : businessImagesItem.type === 2 ? "directory" : "unknown"}, Size: ${businessImagesItem.size}`,
+      );
+    } else {
+      results.push("❌ business-images not found in public_html");
+    }
+
     console.log("📂 Working with business-images directory...");
     try {
       // First try to cd to business-images
