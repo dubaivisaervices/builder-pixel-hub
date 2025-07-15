@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ProtectedAdmin } from "../components/ProtectedAdmin";
 import { AdminImageUpload } from "../components/AdminImageUpload";
 import {
   Card,
