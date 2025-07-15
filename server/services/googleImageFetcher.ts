@@ -265,7 +265,7 @@ export class GoogleImageFetcher {
 
     // Get all businesses from database
     const businesses = await database.all(`
-      SELECT id, name, place_id, photo_reference, lat, lng, address, category, rating
+            SELECT id, name, photo_reference, lat, lng, address, category, rating
       FROM businesses 
       WHERE name IS NOT NULL 
       ORDER BY rating DESC, has_target_keyword DESC
