@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { createHostingerService } from "../services/hostingerUpload";
-import { createGoogleImageFetcher } from "../services/googleImageFetcher";
+import { createSimpleGoogleImageFetcher } from "../services/simpleGoogleImageFetcher";
 
 // Hostinger FTP Configuration
 const HOSTINGER_CONFIG = {
