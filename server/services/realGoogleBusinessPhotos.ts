@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 
 interface PlaceSearchResponse {
-  candidates: Array<{
+  results: Array<{
     place_id: string;
   }>;
   status: string;
