@@ -665,6 +665,15 @@ function HostingerUpload() {
               >
                 Next Batch →
               </Button>
+              <Button
+                onClick={testProgressTracking}
+                disabled={uploading}
+                variant="outline"
+                size="sm"
+                className="bg-yellow-50 border-yellow-300 text-yellow-800"
+              >
+                🧪 Test Progress
+              </Button>
             </div>
           </CardContent>
         </Card>
