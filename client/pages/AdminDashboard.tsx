@@ -56,9 +56,6 @@ interface DatabaseStats {
 export default function AdminDashboard() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loginForm, setLoginForm] = useState({ username: "", password: "" });
-  const [loginError, setLoginError] = useState("");
 
   // Get active tab from URL
   const getActiveTabFromUrl = () => {
