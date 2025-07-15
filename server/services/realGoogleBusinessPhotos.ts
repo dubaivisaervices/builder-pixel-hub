@@ -36,7 +36,7 @@ export class RealGoogleBusinessPhotos {
   }
 
   /**
-   * Step 1: Find Place ID using Find Place API
+   * Step 1: Find Place ID using Text Search API (more compatible)
    */
   async findPlaceId(
     businessName: string,
@@ -46,13 +46,11 @@ export class RealGoogleBusinessPhotos {
       const searchQuery = location
         ? `${businessName} ${location}`
         : businessName;
-      const url = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json`;
+      const url = `https://maps.googleapis.com/maps/api/place/textsearch/json`;
 
       const response = await axios.get<PlaceSearchResponse>(url, {
         params: {
-          input: searchQuery,
-          inputtype: "textquery",
-          fields: "place_id",
+          query: searchQuery,
           key: this.apiKey,
         },
       });
