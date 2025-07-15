@@ -401,7 +401,7 @@ async function processAllBatchesAutomatically(
       }
 
       // Small delay between batches to prevent overwhelming
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 200));
     } catch (error) {
       console.error(`❌ AUTO BATCH ${batchNumber}: Error -`, error);
       overallStats.totalErrors.push(`Batch ${batchNumber}: ${error.message}`);
