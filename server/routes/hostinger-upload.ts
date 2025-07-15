@@ -760,6 +760,10 @@ export async function uploadBatch50RealGooglePhotos(
       batchSize,
     };
 
+    // Initialize progress tracking
+    const { progressTracker } = await import("../services/progressTracker");
+    progressTracker.startBatch(batchNumber, businesses.length);
+
     // Process businesses one by one
     for (const business of businesses) {
       try {
