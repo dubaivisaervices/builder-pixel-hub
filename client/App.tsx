@@ -67,6 +67,7 @@ const App = () => (
             <Route path="/hostinger-upload" element={<HostingerUpload />} />
             <Route path="/admin-login" element={<AdminBypass />} />
             <Route path="/admin-access" element={<InstantAdmin />} />
+            <Route path="/data-diagnostic" element={<DataDiagnostic />} />
             <Route path="/data-persistence" element={<DataPersistence />} />
             <Route path="/reviews-sync" element={<ReviewsSync />} />
             <Route
