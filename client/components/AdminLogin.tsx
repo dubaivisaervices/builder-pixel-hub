@@ -28,10 +28,7 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
     setError("");
 
     // Simulate authentication check
-    if (
-      credentials.id === "crossborder_admin" &&
-      credentials.password === "Dubai@2024!Upload"
-    ) {
+    if (credentials.id === "admin" && credentials.password === "admin123") {
       localStorage.setItem("admin_authenticated", "true");
       onLogin();
     } else {
