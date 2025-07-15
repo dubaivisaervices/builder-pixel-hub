@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ProtectedAdmin } from "../components/ProtectedAdmin";
 import {
   Card,
   CardContent,
