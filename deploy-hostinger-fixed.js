@@ -10,8 +10,8 @@ const __dirname = path.dirname(__filename);
 
 // Hostinger FTP Configuration
 const HOSTINGER_CONFIG = {
-  host: process.env.HOSTINGER_FTP_HOST || "crossbordersmigrations.com",
-  user: process.env.HOSTINGER_FTP_USER || "u611952859.crossborder1120",
+  host: process.env.HOSTINGER_FTP_HOST || "reportvisascam.com",
+  user: process.env.HOSTINGER_FTP_USER || "u611952859.reportvisascam",
   password: process.env.HOSTINGER_FTP_PASSWORD || "One@click1",
   port: parseInt(process.env.HOSTINGER_FTP_PORT || "21"),
 };
@@ -178,7 +178,7 @@ readfile('index.html');
 
     console.log("\n🎉 Deployment completed successfully!");
     console.log(
-      "🌐 Website should be accessible at: https://crossbordersmigrations.com",
+      "🌐 Website should be accessible at: https://reportvisascam.com",
     );
     console.log("📝 Deployed files:");
     console.log("   ✅ React application (index.html + assets)");
