@@ -23,6 +23,8 @@
     "deploy-fix": "node deploy-database-fix.js",
     "deploy-now": "node deploy-fixed.js",
     "fix-mime": "node fix-mime-types.js",
+    "diagnose": "node diagnose-hosting-issue.js",
+    "fix-deployment": "node fix-deployment-now.js",
     "create-sqlite": "node create-sqlite-database.js",
     "upload-sqlite": "node upload-sqlite-hostinger.js",
     "sqlite-full": "npm run create-sqlite && npm run upload-sqlite",
