@@ -73,6 +73,7 @@ async function deployFixed() {
       "favicon.ico",
       "robots.txt",
       "placeholder.svg",
+      ".htaccess",
     ];
 
     for (const file of mainFiles) {
