@@ -4,8 +4,8 @@ import { createGoogleImageFetcher } from "../services/googleImageFetcher";
 
 // Hostinger FTP Configuration
 const HOSTINGER_CONFIG = {
-  host: process.env.HOSTINGER_FTP_HOST || "crossbordersmigrations.com", // Try domain itself
-  user: process.env.HOSTINGER_FTP_USER || "crossborder1120",
+  host: process.env.HOSTINGER_FTP_HOST || "crossbordersmigrations.com",
+  user: process.env.HOSTINGER_FTP_USER || "u611952859.crossborder1120",
   password: process.env.HOSTINGER_FTP_PASSWORD || "One@click1",
   port: parseInt(process.env.HOSTINGER_FTP_PORT || "21"),
   remotePath: "/public_html/business-images", // Path on your hosting server
