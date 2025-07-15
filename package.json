@@ -22,6 +22,7 @@
     "inspect-ftp": "node inspect-ftp.js",
     "explore": "node explore-ftp.js",
     "export-data": "node export-data.mjs",
+    "inspect-schema": "node inspect-schema.mjs",
     "test": "vitest --run",
     "format.fix": "prettier --write .",
     "typecheck": "tsc"
