@@ -68,35 +68,64 @@ export async function uploadAllRealGooglePhotosToHostinger(
         console.log(`\n🔍 Processing: ${business.name}`);
         results.processed++;
 
-        // Step 1-4: Get real business photo using the complete workflow
-        const photoResult = await realPhotoService.getRealBusinessPhoto(
-          business.name,
-          "Dubai",
-        );
-
-        if (!photoResult.success || !photoResult.filePath) {
-          console.log(
-            `❌ No real photo found for ${business.name}: ${photoResult.error}`,
-          );
+        // Use existing photo reference to download real Google photo
+        if (!business.photo_reference) {
+          console.log(`❌ No photo reference for ${business.name}`);
           results.failed++;
-          results.errors.push(`${business.name}: ${photoResult.error}`);
+          results.errors.push(`${business.name}: No photo reference`);
           continue;
         }
 
-        // Step 5: Upload to Hostinger
-        const fs = await import("fs");
-        const imageBuffer = fs.readFileSync(photoResult.filePath);
-        const logoUrl = await hostingerService.uploadBusinessLogo(
-          imageBuffer,
-          business.id,
-          photoResult.filePath,
-        );
+        const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${business.photo_reference}&key=${apiKey}`;
 
-        // Step 6: Save to database
-        await businessService.updateBusinessLogo(business.id, logoUrl);
+        try {
+          const axios = await import("axios");
+          const path = await import("path");
+          const fs = await import("fs");
 
-        // Cleanup temp file
-        realPhotoService.cleanupTempFile(photoResult.filePath);
+          const photoResponse = await axios.default.get(photoUrl, {
+            responseType: "stream",
+            maxRedirects: 5,
+          });
+
+          const tempDir = path.resolve(__dirname, "../temp_images");
+          if (!fs.existsSync(tempDir)) {
+            fs.mkdirSync(tempDir, { recursive: true });
+          }
+
+          const fileName = `${business.name.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${Date.now()}.jpg`;
+          const filePath = path.resolve(tempDir, fileName);
+          const writer = fs.createWriteStream(filePath);
+
+          photoResponse.data.pipe(writer);
+
+          await new Promise((resolve, reject) => {
+            writer.on("finish", resolve);
+            writer.on("error", reject);
+          });
+
+          // Upload to Hostinger
+          const imageBuffer = fs.readFileSync(filePath);
+          const logoUrl = await hostingerService.uploadBusinessLogo(
+            imageBuffer,
+            business.id,
+            filePath,
+          );
+
+          // Save to database
+          await businessService.updateBusinessLogo(business.id, logoUrl);
+
+          // Cleanup temp file
+          fs.unlinkSync(filePath);
+        } catch (photoError) {
+          console.error(
+            `❌ Error downloading photo for ${business.name}:`,
+            photoError,
+          );
+          results.failed++;
+          results.errors.push(`${business.name}: ${photoError.message}`);
+          continue;
+        }
 
         console.log(`✅ Successfully uploaded real photo for ${business.name}`);
         results.successful++;
