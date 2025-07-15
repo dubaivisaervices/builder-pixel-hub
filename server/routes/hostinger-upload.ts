@@ -18,6 +18,52 @@ const HOSTINGER_CONFIG = {
 };
 
 /**
+ * Upload all business images using hybrid Google+Fallback approach (WORKS EVEN WHEN GOOGLE FAILS)
+ */
+export async function uploadAllHybridImagesToHostinger(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+
+    if (!apiKey) {
+      return res.status(400).json({
+        success: false,
+        error: "Google Places API key not configured",
+      });
+    }
+
+    console.log(
+      "🚀 Starting HYBRID Google+Fallback bulk fetch and upload to Hostinger...",
+    );
+
+    const hostingerService = createHostingerService(HOSTINGER_CONFIG);
+    const hybridFetcher = createHybridGoogleImageFetcher(
+      apiKey,
+      hostingerService,
+    );
+
+    const results = await hybridFetcher.processAllBusinesses();
+
+    console.log("✅ Hybrid Google+Fallback bulk upload completed:", results);
+
+    res.json({
+      success: true,
+      message:
+        "Hybrid Google+Fallback upload to Hostinger completed successfully",
+      results,
+    });
+  } catch (error) {
+    console.error("❌ Hybrid Google+Fallback bulk upload error:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+}
+
+/**
  * Upload all business images from Google Places API to Hostinger (IMPROVED METHOD)
  */
 export async function uploadAllImprovedGoogleImagesToHostinger(
