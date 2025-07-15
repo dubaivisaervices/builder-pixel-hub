@@ -329,6 +329,19 @@ function HostingerUpload() {
 
           <div className="space-y-3">
             <Button
+              onClick={uploadAllCachedImages}
+              disabled={uploading}
+              className="w-full bg-green-600 hover:bg-green-700"
+              size="lg"
+            >
+              {uploading
+                ? "Uploading Cached Images..."
+                : "✅ Upload from Cached Images (WORKING)"}
+            </Button>
+
+            <div className="text-center text-sm text-gray-500">or</div>
+
+            <Button
               onClick={uploadAllGoogleImages}
               disabled={uploading}
               className="w-full bg-blue-600 hover:bg-blue-700"
@@ -336,10 +349,8 @@ function HostingerUpload() {
             >
               {uploading
                 ? "Fetching from Google Places..."
-                : "🚀 Fetch ALL from Google Places API"}
+                : "🚀 Fetch from Google Places API (May fail)"}
             </Button>
-
-            <div className="text-center text-sm text-gray-500">or</div>
 
             <Button
               onClick={uploadAllImages}
