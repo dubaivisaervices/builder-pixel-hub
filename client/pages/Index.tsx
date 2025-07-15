@@ -439,9 +439,8 @@ export default function Index() {
                 </Badge>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold">
-                <span className="bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 bg-clip-text text-transparent">
-<<<<<<< HEAD
-                  Report Visa
+                                <span className="bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 bg-clip-text text-transparent">
+                  Stop Visa Fraudsters
                 </span>
                 <br />
                 <span className="text-gray-900">Scams & Fraud</span>
