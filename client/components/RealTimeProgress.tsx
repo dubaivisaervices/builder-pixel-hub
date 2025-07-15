@@ -163,8 +163,8 @@ export function RealTimeProgress({
           <div className="flex justify-between text-sm">
             <span>Overall Progress</span>
             <span>
-              {progressData.currentBusiness} / {progressData.totalBusinesses}{" "}
-              businesses
+              {safeProgressData.currentBusiness} /{" "}
+              {safeProgressData.totalBusinesses} businesses
             </span>
           </div>
           <Progress value={progressPercentage} className="h-3" />
