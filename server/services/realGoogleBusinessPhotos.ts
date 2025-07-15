@@ -55,11 +55,8 @@ export class RealGoogleBusinessPhotos {
         },
       });
 
-      if (
-        response.data.status === "OK" &&
-        response.data.candidates.length > 0
-      ) {
-        return response.data.candidates[0].place_id;
+      if (response.data.status === "OK" && response.data.results.length > 0) {
+        return response.data.results[0].place_id;
       }
 
       if (response.data.status === "REQUEST_DENIED") {
