@@ -80,36 +80,6 @@ export default function AdminDashboard() {
   const [syncStatus, setSyncStatus] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
-  // Secure credentials (in production, this should be backend-validated)
-  const ADMIN_CREDENTIALS = {
-    username: "dubaiadmin2024",
-    password: "SecureVisa!@#2024",
-  };
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoginError("");
-
-    if (
-      loginForm.username === ADMIN_CREDENTIALS.username &&
-      loginForm.password === ADMIN_CREDENTIALS.password
-    ) {
-      setIsAuthenticated(true);
-      localStorage.setItem("admin_session", "authenticated");
-      fetchDashboardData();
-    } else {
-      setLoginError("Invalid credentials. Access denied.");
-      // Add delay to prevent brute force attacks
-      setTimeout(() => setLoginError(""), 3000);
-    }
-  };
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem("admin_session");
-    setLoginForm({ username: "", password: "" });
-  };
-
   const fetchDashboardData = async () => {
     try {
       // Fetch company requests
