@@ -1543,6 +1543,14 @@ export function createServer() {
 
   // Simplified endpoints - complex API control removed for stability
 
+  // DEBUG: Test Hostinger FTP connection and directory setup
+  app.get("/api/admin/debug-hostinger", async (req, res) => {
+    const { debugHostingerConnection } = await import(
+      "./routes/debug-hostinger"
+    );
+    return debugHostingerConnection(req, res);
+  });
+
   // Let Vite handle all development assets and modules
   // Only intercept non-API, non-asset routes for SPA fallback
   app.get(
