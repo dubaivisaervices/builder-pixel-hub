@@ -2,8 +2,17 @@ import sqlite3 from "sqlite3";
 import { promisify } from "util";
 import path from "path";
 
-// Database file path
-const DB_PATH = path.join(__dirname, "dubai_businesses.db");
+// Database file path - handle both development and production
+const getDBPath = () => {
+  // In production (Hostinger), database will be in /public_html/database/
+  if (process.env.NODE_ENV === "production") {
+    return process.env.DB_PATH || "/public_html/database/dubai_businesses.db";
+  }
+  // In development, database is in the same directory
+  return path.join(__dirname, "dubai_businesses.db");
+};
+
+const DB_PATH = getDBPath();
 
 class Database {
   private db: sqlite3.Database | null = null;
