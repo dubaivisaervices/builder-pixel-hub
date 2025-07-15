@@ -187,6 +187,14 @@ export function createServer() {
     return testGoogleAPI(req, res);
   });
 
+  // NEW: Test Google API access permissions
+  app.get("/api/admin/test-google-api-access", async (req, res) => {
+    const { testGoogleAPIAccess } = await import(
+      "./routes/test-google-api-access"
+    );
+    return testGoogleAPIAccess(req, res);
+  });
+
   // Business photos endpoint
   app.get("/api/business-photos/:businessId", async (req, res) => {
     try {
