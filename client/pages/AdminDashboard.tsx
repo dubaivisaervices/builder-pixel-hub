@@ -242,6 +242,9 @@ export default function AdminDashboard() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Upload Alert */}
+        <UploadAlert />
+
         {/* Navigation Tabs */}
         <div className="mb-8">
           <div className="flex space-x-1 bg-white/60 backdrop-blur-xl rounded-xl p-1 shadow-lg">
