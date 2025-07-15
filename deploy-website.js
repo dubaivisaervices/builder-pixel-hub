@@ -81,10 +81,90 @@ async function deployWebsite() {
     // Upload all files from dist/spa to public_html root
     await uploadDirectory(client, spaPath, "/public_html");
 
-    console.log("🎉 Website deployment completed successfully!");
-    console.log(
-      "🌐 Your website should now be live at: https://crossbordersmigrations.com",
+    // 2. Upload SQLite database
+    console.log("📊 Uploading SQLite database...");
+
+    // Create database directory
+    try {
+      await client.ensureDir("/public_html/database");
+      console.log("📂 Created database directory");
+    } catch (error) {
+      console.log("📂 Database directory already exists or created");
+    }
+
+    // Upload SQLite database file
+    const dbPath = path.join(
+      __dirname,
+      "server",
+      "database",
+      "dubai_businesses.db",
     );
+    if (fs.existsSync(dbPath)) {
+      await client.uploadFrom(
+        dbPath,
+        "/public_html/database/dubai_businesses.db",
+      );
+      console.log("✅ Uploaded SQLite database");
+
+      // Upload WAL and SHM files if they exist (SQLite transaction files)
+      const walPath = path.join(
+        __dirname,
+        "server",
+        "database",
+        "dubai_businesses.db-wal",
+      );
+      const shmPath = path.join(
+        __dirname,
+        "server",
+        "database",
+        "dubai_businesses.db-shm",
+      );
+
+      if (fs.existsSync(walPath)) {
+        await client.uploadFrom(
+          walPath,
+          "/public_html/database/dubai_businesses.db-wal",
+        );
+        console.log("✅ Uploaded SQLite WAL file");
+      }
+
+      if (fs.existsSync(shmPath)) {
+        await client.uploadFrom(
+          shmPath,
+          "/public_html/database/dubai_businesses.db-shm",
+        );
+        console.log("✅ Uploaded SQLite SHM file");
+      }
+    } else {
+      console.log(
+        "⚠️  SQLite database file not found, skipping database upload",
+      );
+    }
+
+    // 3. Upload server files (Node.js application)
+    console.log("🚀 Uploading server application...");
+    const serverPath = path.join(__dirname, "dist", "server");
+
+    if (fs.existsSync(serverPath)) {
+      // Create server directory
+      try {
+        await client.ensureDir("/public_html/server");
+        console.log("📂 Created server directory");
+      } catch (error) {
+        console.log("📂 Server directory already exists or created");
+      }
+
+      // Upload server files
+      await uploadDirectory(client, serverPath, "/public_html/server");
+      console.log("✅ Uploaded server application");
+    } else {
+      console.log("⚠️  Server build not found, skipping server upload");
+    }
+
+    console.log("🎉 Complete deployment finished successfully!");
+    console.log("🌐 Website: https://crossbordersmigrations.com");
+    console.log("🗄️  Database: Uploaded to /public_html/database/");
+    console.log("🚀 Server: Uploaded to /public_html/server/");
   } catch (error) {
     console.error("❌ Deployment failed:", error.message);
     throw error;
