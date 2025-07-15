@@ -290,14 +290,32 @@ function HostingerUpload() {
             </span>
           </div>
 
-          <Button
-            onClick={uploadAllImages}
-            disabled={uploading}
-            className="w-full"
-            size="lg"
-          >
-            {uploading ? "Uploading All Images..." : "Start Bulk Upload"}
-          </Button>
+          <div className="space-y-3">
+            <Button
+              onClick={uploadAllGoogleImages}
+              disabled={uploading}
+              className="w-full bg-blue-600 hover:bg-blue-700"
+              size="lg"
+            >
+              {uploading
+                ? "Fetching from Google Places..."
+                : "🚀 Fetch ALL from Google Places API"}
+            </Button>
+
+            <div className="text-center text-sm text-gray-500">or</div>
+
+            <Button
+              onClick={uploadAllImages}
+              disabled={uploading}
+              variant="outline"
+              className="w-full"
+              size="lg"
+            >
+              {uploading
+                ? "Uploading All Images..."
+                : "Upload from Database URLs"}
+            </Button>
+          </div>
 
           {uploadResults && (
             <div className="space-y-3">
