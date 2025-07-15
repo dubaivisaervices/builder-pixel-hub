@@ -52,7 +52,7 @@ const SimpleNavigation = () => {
               Report Visa Scam
             </span>
             <span className="sm:hidden font-bold text-xl text-gray-900">
-              DBD
+              Report Visa Scam
             </span>
           </Link>
 
