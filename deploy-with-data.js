@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 const HOSTINGER_CONFIG = {
   host: "crossbordersmigrations.com",
-  user: "u611952859.crossborder1120",
+  user: "u611952859.reportvisascam.com",
   password: "One@click1",
   port: 21,
 };
