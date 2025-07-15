@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const HOSTINGER_CONFIG = {
-  host: "crossbordersmigrations.com",
+  host: "reportvisascam.com",
   user: "u611952859.reportvisascam.com",
   password: "One@click1",
   port: 21,
@@ -101,7 +101,7 @@ async function deployWithData() {
     });
 
     console.log("\n🎉 DEPLOYMENT COMPLETED!");
-    console.log("✅ Website: https://crossbordersmigrations.com");
+    console.log("✅ Website: https://reportvisascam.com");
     console.log("✅ Data: /data/businesses.json");
     console.log("✅ All 841 businesses now available!");
   } catch (error) {
