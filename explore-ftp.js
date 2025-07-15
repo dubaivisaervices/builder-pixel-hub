@@ -3,7 +3,7 @@
 import * as ftp from "basic-ftp";
 
 const HOSTINGER_CONFIG = {
-  host: "crossbordersmigrations.com",
+  host: "reportvisascam.com",
   user: "u611952859.crossborder1120",
   password: "One@click1",
   port: 21,
