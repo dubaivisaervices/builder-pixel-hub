@@ -49,9 +49,9 @@ export async function uploadAllRealGooglePhotosToHostinger(
     const hostingerService = createHostingerService(HOSTINGER_CONFIG);
     const realPhotoService = new RealGoogleBusinessPhotos(apiKey);
 
-    // Get businesses for real Google API testing (prioritize those without logos, but get some anyway)
+    // Get businesses that already have photo references in database
     const businesses = await database.all(
-      "SELECT id, name, address FROM businesses ORDER BY CASE WHEN logo_s3_url IS NULL OR logo_s3_url = '' THEN 0 ELSE 1 END LIMIT 10",
+      "SELECT id, name, address, photo_reference FROM businesses WHERE photo_reference IS NOT NULL AND photo_reference != '' LIMIT 10",
     );
 
     console.log(`📊 Found ${businesses.length} businesses to process`);
