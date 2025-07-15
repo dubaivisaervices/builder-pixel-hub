@@ -458,36 +458,42 @@ function HostingerUpload() {
 
           {uploadResults && (
             <div className="space-y-3">
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
                 <div className="text-center p-3 bg-blue-50 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">
+                  <div className="text-xl font-bold text-blue-600">
                     {uploadResults.processed}
                   </div>
-                  <div className="text-sm text-blue-800">Processed</div>
+                  <div className="text-xs text-blue-800">Processed</div>
                 </div>
                 <div className="text-center p-3 bg-green-50 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">
+                  <div className="text-xl font-bold text-green-600">
                     {uploadResults.successful}
                   </div>
-                  <div className="text-sm text-green-800">Successful</div>
+                  <div className="text-xs text-green-800">Successful</div>
                 </div>
                 <div className="text-center p-3 bg-purple-50 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">
+                  <div className="text-xl font-bold text-purple-600">
                     {uploadResults.totalLogos || 0}
                   </div>
-                  <div className="text-sm text-purple-800">Logos</div>
+                  <div className="text-xs text-purple-800">Logos</div>
                 </div>
                 <div className="text-center p-3 bg-indigo-50 rounded-lg">
-                  <div className="text-2xl font-bold text-indigo-600">
+                  <div className="text-xl font-bold text-indigo-600">
                     {uploadResults.totalPhotos || 0}
                   </div>
-                  <div className="text-sm text-indigo-800">Photos</div>
+                  <div className="text-xs text-indigo-800">Photos</div>
+                </div>
+                <div className="text-center p-3 bg-orange-50 rounded-lg">
+                  <div className="text-xl font-bold text-orange-600">
+                    {uploadResults.base64Cleared || 0}
+                  </div>
+                  <div className="text-xs text-orange-800">Base64 Cleared</div>
                 </div>
                 <div className="text-center p-3 bg-red-50 rounded-lg">
-                  <div className="text-2xl font-bold text-red-600">
+                  <div className="text-xl font-bold text-red-600">
                     {uploadResults.errors.length}
                   </div>
-                  <div className="text-sm text-red-800">Errors</div>
+                  <div className="text-xs text-red-800">Errors</div>
                 </div>
               </div>
 
