@@ -56,6 +56,7 @@ function HostingerUpload() {
   };
 
   const superFastBatchUpload = async (batchNumber: number = 1) => {
+    console.log(`⚡ Starting super fast batch ${batchNumber} upload...`);
     setUploading(true);
     setUploadResults(null);
     setShowRealTimeProgress(true);
@@ -967,7 +968,7 @@ function HostingerUpload() {
             >
               {uploading
                 ? "No data..."
-                : "📁 Cached Images (No data available)"}
+                : "���� Cached Images (No data available)"}
             </Button>
 
             <Button
