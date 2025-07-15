@@ -815,6 +815,21 @@ function HostingerUpload() {
               >
                 {showRealTimeProgress ? "Hide" : "Show"} Progress
               </Button>
+              <Button
+                onClick={async () => {
+                  const response = await fetch(
+                    "/api/admin/debug-progress-status",
+                  );
+                  const result = await response.json();
+                  console.log("Debug progress status:", result);
+                  alert(JSON.stringify(result, null, 2));
+                }}
+                variant="outline"
+                size="sm"
+                className="bg-red-50 border-red-300 text-red-800"
+              >
+                🐛 Debug
+              </Button>
             </div>
           </CardContent>
         </Card>
