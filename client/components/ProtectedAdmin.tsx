@@ -37,7 +37,7 @@ export function ProtectedAdmin({ children }: ProtectedAdminProps) {
   }
 
   if (!isAuthenticated) {
-    return <AdminLogin onLogin={handleLogin} />;
+    return <SecureAdminAuth onAuthenticated={handleLogin} />;
   }
 
   return (
