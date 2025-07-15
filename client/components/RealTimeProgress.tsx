@@ -141,12 +141,12 @@ export function RealTimeProgress({
 
   return (
     <Card
-      className={`${statusColor[progressData.status]} transition-all duration-300`}
+      className={`${statusColor[safeProgressData.status]} transition-all duration-300`}
     >
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
-          {statusIcon[progressData.status]}
-          Real-Time Progress - Batch {progressData.batchNumber}
+          {statusIcon[safeProgressData.status]}
+          Real-Time Progress - Batch {safeProgressData.batchNumber}
           {isConnected && (
             <Badge
               variant="outline"
