@@ -181,7 +181,7 @@ export async function uploadAllRealGooglePhotosToHostinger(
     }
 
     console.log(
-      "�� STEP-BY-STEP Google Places photo processing completed:",
+      "✅ STEP-BY-STEP Google Places photo processing completed:",
       results,
     );
 
@@ -702,7 +702,7 @@ export async function uploadBatch50RealGooglePhotos(
 
     // Get 50 businesses for this batch, prioritizing those without logos
     const businesses = await database.all(
-      `SELECT id, name, address FROM businesses
+      `SELECT id, name, address, logo_s3_url FROM businesses
        ORDER BY CASE WHEN logo_s3_url IS NULL OR logo_s3_url = '' OR logo_s3_url LIKE '%s3.ap-south-1.amazonaws.com%' THEN 0 ELSE 1 END, id
        LIMIT ? OFFSET ?`,
       [batchSize, offset],
@@ -711,6 +711,26 @@ export async function uploadBatch50RealGooglePhotos(
     console.log(
       `📊 Found ${businesses.length} businesses in batch ${batchNumber}`,
     );
+
+    // Debug: Show current logo status
+    const withoutLogos = businesses.filter(
+      (b) =>
+        !b.logo_s3_url ||
+        b.logo_s3_url === "" ||
+        b.logo_s3_url.includes("s3.ap-south-1.amazonaws.com"),
+    );
+    console.log(
+      `🔍 Debug: ${withoutLogos.length} businesses without valid logos, ${businesses.length - withoutLogos.length} with logos`,
+    );
+
+    if (withoutLogos.length > 0) {
+      console.log(
+        `📋 First few businesses without logos:`,
+        withoutLogos
+          .slice(0, 3)
+          .map((b) => ({ name: b.name, logo_s3_url: b.logo_s3_url })),
+      );
+    }
 
     if (businesses.length === 0) {
       return res.json({
