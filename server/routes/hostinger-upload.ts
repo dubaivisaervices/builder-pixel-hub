@@ -59,6 +59,37 @@ export async function uploadAllGoogleImagesToHostinger(
 }
 
 /**
+ * Upload all business images from cached data to Hostinger (WORKING METHOD)
+ */
+export async function uploadAllCachedImagesToHostinger(
+  req: Request,
+  res: Response,
+) {
+  try {
+    console.log("🚀 Starting cached image upload to Hostinger...");
+
+    const hostingerService = createHostingerService(HOSTINGER_CONFIG);
+    const cachedUploader = createCachedImageUploader(hostingerService);
+
+    const results = await cachedUploader.processAllCachedBusinessImages();
+
+    console.log("✅ Cached image upload completed:", results);
+
+    res.json({
+      success: true,
+      message: "Cached image upload to Hostinger completed",
+      results,
+    });
+  } catch (error) {
+    console.error("❌ Cached image upload error:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+}
+
+/**
  * Upload all business images from existing database URLs to Hostinger (OLD METHOD)
  */
 export async function uploadAllImagesToHostinger(req: Request, res: Response) {
