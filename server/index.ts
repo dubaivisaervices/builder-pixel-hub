@@ -548,7 +548,18 @@ export function createServer() {
     },
   );
 
-  // WORKING: Cached images to Hostinger routes
+  // FIXED: Google Photos proxy to Hostinger routes
+  app.post(
+    "/api/admin/upload-all-google-photos-to-hostinger",
+    async (req, res) => {
+      const { uploadAllGooglePhotosToHostinger } = await import(
+        "./routes/hostinger-upload"
+      );
+      return uploadAllGooglePhotosToHostinger(req, res);
+    },
+  );
+
+  // WORKING: Cached images to Hostinger routes (but no cached data available)
   app.post("/api/admin/upload-all-cached-to-hostinger", async (req, res) => {
     const { uploadAllCachedImagesToHostinger } = await import(
       "./routes/hostinger-upload"
