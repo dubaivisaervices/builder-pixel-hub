@@ -23,6 +23,11 @@ interface UploadResults {
   processed: number;
   successful: number;
   errors: string[];
+  totalLogos?: number;
+  totalPhotos?: number;
+  batchNumber?: number;
+  batchSize?: number;
+  base64Cleared?: number;
 }
 
 function HostingerUpload() {
@@ -480,7 +485,7 @@ function HostingerUpload() {
             code/server/routes/hostinger-upload.ts
           </code>
           <div className="mt-3 space-y-1 text-sm">
-            <p>• Replace HOSTINGER_CONFIG with your actual FTP credentials</p>
+            <p>��� Replace HOSTINGER_CONFIG with your actual FTP credentials</p>
             <p>• Set your domain URL for image access</p>
             <p>• Ensure /public_html/business-images directory exists</p>
           </div>
