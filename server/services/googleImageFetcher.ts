@@ -93,55 +93,6 @@ export class GoogleImageFetcher {
 
       // Method 2: Use existing photo_reference from database
       if (business.photo_reference) {
-        if (placeDetails?.photos) {
-          // Upload logo (first photo as logo)
-          if (placeDetails.photos.length > 0) {
-            try {
-              const logoBuffer = await this.downloadPhotoFromReference(
-                placeDetails.photos[0].photo_reference,
-                400,
-              );
-              result.logoUrl = await this.hostingerService.uploadBusinessLogo(
-                logoBuffer,
-                business.id,
-                this.getPhotoUrl(placeDetails.photos[0].photo_reference, 400),
-              );
-              console.log(`✅ Logo uploaded: ${result.logoUrl}`);
-            } catch (error) {
-              result.errors.push(`Logo upload failed: ${error.message}`);
-            }
-          }
-
-          // Upload additional photos (skip first one used as logo)
-          const additionalPhotos = placeDetails.photos.slice(1, 7); // Max 6 additional photos
-
-          if (additionalPhotos.length > 0) {
-            try {
-              const photoBuffers = await Promise.all(
-                additionalPhotos.map(async (photo) => ({
-                  buffer: await this.downloadPhotoFromReference(
-                    photo.photo_reference,
-                    800,
-                  ),
-                  originalUrl: this.getPhotoUrl(photo.photo_reference, 800),
-                })),
-              );
-
-              result.photoUrls =
-                await this.hostingerService.uploadBusinessPhotos(
-                  photoBuffers,
-                  business.id,
-                );
-              console.log(`✅ ${result.photoUrls.length} photos uploaded`);
-            } catch (error) {
-              result.errors.push(`Photos upload failed: ${error.message}`);
-            }
-          }
-        }
-      }
-
-      // Method 2: Use existing photo_reference from database
-      else if (business.photo_reference) {
         try {
           const logoBuffer = await this.downloadPhotoFromReference(
             business.photo_reference,
