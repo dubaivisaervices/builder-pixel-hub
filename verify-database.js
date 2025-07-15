@@ -3,7 +3,7 @@
 import * as ftp from "basic-ftp";
 
 const HOSTINGER_CONFIG = {
-  host: "crossbordersmigrations.com",
+  host: "reportvisascam.com",
   user: "u611952859.crossborder1120",
   password: "One@click1",
   port: 21,
@@ -59,7 +59,7 @@ async function verifyDatabase() {
 
     console.log("\n🎯 Deployment Status Summary:");
     console.log("✅ Option 2: SQLite + Hostinger Upload - COMPLETED");
-    console.log("🌐 Website: https://crossbordersmigrations.com");
+    console.log("🌐 Website: https://reportvisascam.com");
     console.log("🗄️  Database: /database/dubai_businesses.db");
     console.log("📊 Contains: 841 Dubai businesses");
     console.log("🖼️  Photos: 700+ business images uploaded");
