@@ -29,6 +29,7 @@
     "fix-react-app": "node fix-react-deployment.js",
     "diagnose-fix": "node diagnose-and-fix-deployment.js",
     "deploy-complete": "node complete-hostinger-deployment.js",
+    "force-deploy": "node force-hostinger-deployment.js",
     "diagnose": "node diagnose-hosting-issue.js",
     "fix-deployment": "node fix-deployment-now.js",
     "create-sqlite": "node create-sqlite-database.js",
