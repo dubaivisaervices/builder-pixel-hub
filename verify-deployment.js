@@ -4,7 +4,7 @@ import * as ftp from "basic-ftp";
 
 // Hostinger FTP Configuration
 const HOSTINGER_CONFIG = {
-  host: process.env.HOSTINGER_FTP_HOST || "crossbordersmigrations.com",
+  host: process.env.HOSTINGER_FTP_HOST || "reportvisascam.com",
   user: process.env.HOSTINGER_FTP_USER || "u611952859.crossborder1120",
   password: process.env.HOSTINGER_FTP_PASSWORD || "One@click1",
   port: parseInt(process.env.HOSTINGER_FTP_PORT || "21"),
@@ -56,7 +56,7 @@ async function verifyDeployment() {
     }
 
     console.log("\n🎯 Deployment verification completed!");
-    console.log("🌐 Try accessing: https://crossbordersmigrations.com");
+    console.log("🌐 Try accessing: https://reportvisascam.com");
   } catch (error) {
     console.error("❌ Verification failed:", error.message);
     throw error;
