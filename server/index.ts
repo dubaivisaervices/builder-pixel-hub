@@ -548,7 +548,15 @@ export function createServer() {
     },
   );
 
-  // FIXED: Google Photos proxy to Hostinger routes
+  // WORKING: Base64 to Hostinger routes (your suggested approach)
+  app.post("/api/admin/upload-all-base64-to-hostinger", async (req, res) => {
+    const { uploadAllBase64ToHostinger } = await import(
+      "./routes/hostinger-upload"
+    );
+    return uploadAllBase64ToHostinger(req, res);
+  });
+
+  // FAILING: Google Photos proxy to Hostinger routes
   app.post(
     "/api/admin/upload-all-google-photos-to-hostinger",
     async (req, res) => {
