@@ -53,7 +53,7 @@ function HostingerUpload() {
     }
   };
 
-  const uploadAllImages = async () => {
+    const uploadAllImages = async () => {
     setUploading(true);
     setUploadResults(null);
 
@@ -88,12 +88,9 @@ function HostingerUpload() {
     setUploadResults(null);
 
     try {
-      const response = await fetch(
-        "/api/admin/upload-all-google-to-hostinger",
-        {
-          method: "POST",
-        },
-      );
+      const response = await fetch("/api/admin/upload-all-google-to-hostinger", {
+        method: "POST",
+      });
       const result = await response.json();
 
       if (result.success) {
@@ -144,8 +141,9 @@ function HostingerUpload() {
     }
   };
 
-  return (
-    <div className="container mx-auto p-6 space-y-6">
+    return (
+    <ProtectedAdmin>
+      <div className="container mx-auto p-6 space-y-6">
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold flex items-center justify-center gap-2">
           <Server className="h-8 w-8" />
@@ -291,16 +289,14 @@ function HostingerUpload() {
             </span>
           </div>
 
-          <div className="space-y-3">
+                    <div className="space-y-3">
             <Button
               onClick={uploadAllGoogleImages}
               disabled={uploading}
               className="w-full bg-blue-600 hover:bg-blue-700"
               size="lg"
             >
-              {uploading
-                ? "Fetching from Google Places..."
-                : "🚀 Fetch ALL from Google Places API"}
+              {uploading ? "Fetching from Google Places..." : "🚀 Fetch ALL from Google Places API"}
             </Button>
 
             <div className="text-center text-sm text-gray-500">or</div>
@@ -312,13 +308,11 @@ function HostingerUpload() {
               className="w-full"
               size="lg"
             >
-              {uploading
-                ? "Uploading All Images..."
-                : "Upload from Database URLs"}
+              {uploading ? "Uploading All Images..." : "Upload from Database URLs"}
             </Button>
           </div>
 
-          {uploadResults && (
+                    {uploadResults && (
             <div className="space-y-3">
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div className="text-center p-3 bg-blue-50 rounded-lg">
