@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { createHostingerService } from "../services/hostingerUpload";
 import { createSimpleGoogleImageFetcher } from "../services/simpleGoogleImageFetcher";
 import { createCachedImageUploader } from "../services/cachedImageUploader";
+import { createGooglePhotoProxy } from "../services/googlePhotoProxy";
 
 // Hostinger FTP Configuration
 const HOSTINGER_CONFIG = {
