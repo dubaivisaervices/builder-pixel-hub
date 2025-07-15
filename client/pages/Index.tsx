@@ -814,11 +814,11 @@ export default function Index() {
                     </Badge>
 
                     <Button
-                      className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
-                      onClick={() => navigate("/dubai-businesses")}
+                      className="w-full bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700"
+                      onClick={() => navigate("/complaint")}
                     >
-                      <Building2 className="h-4 w-4 mr-2" />
-                      Dubai Business Directory
+                      <AlertTriangle className="h-4 w-4 mr-2" />
+                      Report This Company
                     </Button>
                   </CardContent>
                 </Card>
