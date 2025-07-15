@@ -423,7 +423,7 @@ async function processAllBatchesAutomatically(
 async function processSingleBatchInternal(batchNumber: number) {
   // This is a simplified version of the batch processing for internal use
   // We'll reuse the super fast batch logic
-  const mockReq = { body: { batchNumber, concurrency: 5 } } as Request;
+  const mockReq = { body: { batchNumber, concurrency: 10 } } as Request;
   let result: any;
 
   const mockRes = {
