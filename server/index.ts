@@ -606,15 +606,28 @@ export function createServer() {
 
     const { progressTracker } = require("./services/progressTracker");
 
+    console.log("📡 SSE: New client connected");
+
+    // Send initial connection confirmation
+    res.write(
+      `data: ${JSON.stringify({ type: "connected", timestamp: Date.now() })}\n\n`,
+    );
+
     // Send current progress if available
     const currentProgress = progressTracker.getCurrentProgress();
     if (currentProgress) {
+      console.log("📤 SSE: Sending current progress:", currentProgress);
       res.write(`data: ${JSON.stringify(currentProgress)}\n\n`);
     }
 
     // Subscribe to progress updates
     const unsubscribe = progressTracker.subscribe((update) => {
-      res.write(`data: ${JSON.stringify(update)}\n\n`);
+      try {
+        console.log("📤 SSE: Broadcasting update:", update);
+        res.write(`data: ${JSON.stringify(update)}\n\n`);
+      } catch (writeError) {
+        console.error("❌ SSE: Write error:", writeError);
+      }
     });
 
     // Handle client disconnect
