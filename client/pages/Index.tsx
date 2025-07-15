@@ -435,20 +435,21 @@ export default function Index() {
               <div className="flex items-center justify-center space-x-2 mb-4">
                 <Badge className="bg-gradient-to-r from-red-500 to-orange-600 text-white px-4 py-2">
                   <Sparkles className="h-4 w-4 mr-2" />
-                  UAE's #1 Visa Scam Reporting Platform
+                  🛡️ UAE's Most Trusted Scam Protection Platform
                 </Badge>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold">
                 <span className="bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 bg-clip-text text-transparent">
-                  Report Visa
+                  Stop Visa Fraudsters
                 </span>
                 <br />
-                <span className="text-gray-900">Scams</span>
+                <span className="text-gray-900">Before They Strike</span>
               </h1>
               <p className="text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Protect yourself and others by reporting visa scams. Browse
-                verified companies, read real reviews, and help build a safer
-                immigration community in Dubai.
+                ��� Expose scammers, protect your money, and save others from
+                fraud. Access verified company reviews, report suspicious
+                activities, and join thousands protecting the UAE immigration
+                community.
               </p>
             </div>
 
