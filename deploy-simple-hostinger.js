@@ -9,9 +9,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const HOSTINGER_CONFIG = {
-  host: process.env.HOSTINGER_FTP_HOST || "reportvisascam.com",
-  user: process.env.HOSTINGER_FTP_USER,
-  password: process.env.HOSTINGER_FTP_PASSWORD,
+  host: process.env.HOSTINGER_FTP_HOST || "ftp.reportvisascam.com",
+  user: process.env.HOSTINGER_FTP_USER || "reportvisascam",
+  password: process.env.HOSTINGER_FTP_PASSWORD || "reportvisascam123",
   port: parseInt(process.env.HOSTINGER_FTP_PORT || "21"),
 };
 
