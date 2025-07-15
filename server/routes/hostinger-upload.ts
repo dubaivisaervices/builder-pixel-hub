@@ -81,7 +81,78 @@ export async function uploadAllImagesToHostinger(req: Request, res: Response) {
 }
 
 /**
- * Upload single business images to Hostinger
+ * Upload single business images from Google Places to Hostinger (NEW METHOD)
+ */
+export async function uploadBusinessGoogleToHostinger(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const { businessId } = req.params;
+    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+
+    if (!businessId) {
+      return res.status(400).json({ error: "Business ID required" });
+    }
+
+    if (!apiKey) {
+      return res.status(400).json({
+        error: "Google Places API key not configured",
+      });
+    }
+
+    console.log(
+      `🔄 Uploading business ${businessId} from Google Places to Hostinger...`,
+    );
+
+    const { database } = await import("../database/database");
+    const business = await database.get(
+      "SELECT id, name, place_id, photo_reference, lat, lng, address FROM businesses WHERE id = ?",
+      [businessId],
+    );
+
+    if (!business) {
+      return res.status(404).json({ error: "Business not found" });
+    }
+
+    const hostingerService = createHostingerService(HOSTINGER_CONFIG);
+    const googleFetcher = createGoogleImageFetcher(apiKey, hostingerService);
+
+    const result = await googleFetcher.processBusinessImages(business);
+
+    // Update database
+    if (result.logoUrl || result.photoUrls.length > 0) {
+      const { BusinessService } = await import("../database/businessService");
+      const businessService = new BusinessService(database);
+
+      if (result.logoUrl) {
+        await businessService.updateBusinessLogo(business.id, result.logoUrl);
+      }
+
+      if (result.photoUrls.length > 0) {
+        await businessService.updateBusinessPhotos(
+          business.id,
+          result.photoUrls,
+        );
+      }
+    }
+
+    res.json({
+      success: true,
+      business: business.name,
+      result,
+    });
+  } catch (error) {
+    console.error("❌ Single business Google Places upload error:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+}
+
+/**
+ * Upload single business images to Hostinger (OLD METHOD - from existing URLs)
  */
 export async function uploadBusinessToHostinger(req: Request, res: Response) {
   try {
