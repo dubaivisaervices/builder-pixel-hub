@@ -120,8 +120,9 @@ export function RealTimeProgress({
   };
 
   const progressPercentage =
-    progressData.totalBusinesses > 0
-      ? (progressData.currentBusiness / progressData.totalBusinesses) * 100
+    safeProgressData.totalBusinesses > 0
+      ? (safeProgressData.currentBusiness / safeProgressData.totalBusinesses) *
+        100
       : 0;
 
   const statusIcon = {
