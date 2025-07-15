@@ -789,7 +789,7 @@ function HostingerUpload() {
                 variant="outline"
                 size="sm"
               >
-                �� Previous Batch
+                ← Previous Batch
               </Button>
               <Button
                 onClick={() => setCurrentBatch(currentBatch + 1)}
@@ -847,9 +847,9 @@ function HostingerUpload() {
               successful:
                 (data.currentBusiness || data.totalBusinesses) -
                 (data.errors?.length || 0),
-              totalLogos: data.logos,
-              totalPhotos: data.photos,
-              errors: data.errors,
+              totalLogos: data.logos || 0,
+              totalPhotos: data.photos || 0,
+              errors: data.errors || [],
               batchNumber: data.batchNumber,
               batchSize: 50,
             });
