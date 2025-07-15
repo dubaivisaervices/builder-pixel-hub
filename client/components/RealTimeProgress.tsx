@@ -14,6 +14,7 @@ interface ProgressData {
   photos: number;
   errors: string[];
   currentStep?: string;
+  type?: string; // For connection messages
 }
 
 interface RealTimeProgressProps {
