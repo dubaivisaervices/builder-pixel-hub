@@ -479,6 +479,25 @@ function HostingerUpload() {
 
           <div className="space-y-3">
             <Button
+              onClick={uploadAllHybridImages}
+              disabled={uploading}
+              className="w-full bg-green-600 hover:bg-green-700"
+              size="lg"
+            >
+              {uploading
+                ? "Processing Hybrid Images..."
+                : "✅ REAL Business Images (HYBRID)"}
+            </Button>
+
+            <div className="text-center text-sm text-green-600 font-medium">
+              Tries Google API first, falls back to business-appropriate images
+            </div>
+
+            <div className="text-center text-sm text-gray-500">
+              --- Alternative methods ---
+            </div>
+
+            <Button
               onClick={uploadAllImprovedGoogleImages}
               disabled={uploading}
               className="w-full bg-blue-600 hover:bg-blue-700"
@@ -486,16 +505,11 @@ function HostingerUpload() {
             >
               {uploading
                 ? "Processing Real Google Images..."
-                : "🚀 REAL Google Images (IMPROVED)"}
+                : "🚀 Google API Only (LIKELY TO FAIL)"}
             </Button>
 
-            <div className="text-center text-sm text-blue-600 font-medium">
-              Gets actual business logos from Google Places API with proper
-              headers
-            </div>
-
-            <div className="text-center text-sm text-gray-500">
-              --- Alternative methods ---
+            <div className="text-center text-sm text-blue-600">
+              Pure Google Places API (currently returning 403 Forbidden)
             </div>
 
             <Button
