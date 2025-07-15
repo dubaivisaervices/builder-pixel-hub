@@ -704,34 +704,34 @@ export default function Index() {
 
           {/* Quick Stats Section */}
           <div className="mt-12 sm:mt-16 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl">
-              <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1 sm:mb-2">
-                500+
+            <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl">
+              <div className="text-2xl sm:text-3xl font-bold text-red-600 mb-1 sm:mb-2">
+                {stats.scamReports || 145}+
               </div>
               <div className="text-xs sm:text-sm text-gray-600">
-                Verified Partners
+                Scams Reported
+              </div>
+            </div>
+            <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl">
+              <div className="text-2xl sm:text-3xl font-bold text-orange-600 mb-1 sm:mb-2">
+                850+
+              </div>
+              <div className="text-xs sm:text-sm text-gray-600">
+                Companies Listed
               </div>
             </div>
             <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl">
               <div className="text-2xl sm:text-3xl font-bold text-green-600 mb-1 sm:mb-2">
-                98%
-              </div>
-              <div className="text-xs sm:text-sm text-gray-600">
-                Success Rate
-              </div>
-            </div>
-            <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl">
-              <div className="text-2xl sm:text-3xl font-bold text-orange-600 mb-1 sm:mb-2">
                 24/7
               </div>
               <div className="text-xs sm:text-sm text-gray-600">Support</div>
             </div>
-            <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl">
-              <div className="text-2xl sm:text-3xl font-bold text-purple-600 mb-1 sm:mb-2">
-                50k+
+            <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl">
+              <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1 sm:mb-2">
+                5k+
               </div>
               <div className="text-xs sm:text-sm text-gray-600">
-                Happy Clients
+                Protected Users
               </div>
             </div>
           </div>
