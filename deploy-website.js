@@ -59,13 +59,12 @@ async function deployWebsite() {
     await client.access(HOSTINGER_CONFIG);
     console.log("✅ Connected to Hostinger FTP");
 
-    // Navigate to public_html directory
-    await client.cd("/public_html");
-    console.log("📂 Navigated to /public_html");
+    // Stay in root directory (no public_html needed for this hosting)
+    console.log("📂 Working in root directory");
 
     // Get current directory listing
     const files = await client.list();
-    console.log("📋 Current files in public_html:");
+    console.log("📋 Current files in root:");
     files.forEach((file) => console.log(`  - ${file.name}`));
 
     // Upload the built SPA files
@@ -78,8 +77,8 @@ async function deployWebsite() {
       );
     }
 
-    // Upload all files from dist/spa to public_html root
-    await uploadDirectory(client, spaPath, "/public_html");
+    // Upload all files from dist/spa to root directory
+    await uploadDirectory(client, spaPath, "/");
 
     // 2. Upload SQLite database
     console.log("📊 Uploading SQLite database...");
