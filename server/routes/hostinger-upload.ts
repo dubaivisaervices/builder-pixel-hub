@@ -172,7 +172,7 @@ export async function uploadAllRealGooglePhotosToHostinger(
         }
 
         // Small delay to avoid rate limiting
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       } catch (error) {
         console.error(`❌ Error processing ${business.name}:`, error);
         results.failed++;
