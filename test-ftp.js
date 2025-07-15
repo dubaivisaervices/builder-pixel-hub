@@ -6,7 +6,7 @@ const credentials = [
   {
     name: "New Credentials",
     config: {
-      host: "crossbordersmigrations.com",
+      host: "reportvisascam.com",
       user: "u611952859.reportvisascam.com",
       password: "One@click1",
       port: 21,
@@ -15,7 +15,7 @@ const credentials = [
   {
     name: "Original Credentials",
     config: {
-      host: "crossbordersmigrations.com",
+      host: "reportvisascam.com",
       user: "u611952859.crossborder1120",
       password: "One@click1",
       port: 21,
