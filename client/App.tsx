@@ -29,6 +29,7 @@ import HostingerUpload from "./pages/HostingerUpload";
 import AdminBypass from "./pages/AdminBypass";
 import InstantAdmin from "./pages/InstantAdmin";
 import NotFound from "./pages/NotFound";
+import DataDiagnostic from "./components/DataDiagnostic";
 
 const queryClient = new QueryClient();
 
