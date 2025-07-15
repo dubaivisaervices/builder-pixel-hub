@@ -294,12 +294,13 @@ export default function Index() {
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
-    if (value.length >= 3) {
+    if (value.length >= 3 && Array.isArray(allBusinesses)) {
       const filtered = allBusinesses.filter(
         (business) =>
-          business.name.toLowerCase().includes(value.toLowerCase()) ||
-          business.category?.toLowerCase().includes(value.toLowerCase()) ||
-          business.address.toLowerCase().includes(value.toLowerCase()),
+          business &&
+          (business.name?.toLowerCase().includes(value.toLowerCase()) ||
+            business.category?.toLowerCase().includes(value.toLowerCase()) ||
+            business.address?.toLowerCase().includes(value.toLowerCase())),
       );
       setSearchSuggestions(filtered.slice(0, 8));
       setShowSuggestions(true);
