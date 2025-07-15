@@ -516,6 +516,25 @@ function HostingerUpload() {
 
           <div className="space-y-3">
             <Button
+              onClick={uploadAllRemainingHybridImages}
+              disabled={uploading}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold"
+              size="lg"
+            >
+              {uploading
+                ? "Processing ALL Remaining Businesses..."
+                : "🚀 UPLOAD ALL REMAINING BUSINESSES"}
+            </Button>
+
+            <div className="text-center text-sm text-blue-600 font-bold">
+              Processes ALL businesses without logos (~791 businesses)
+            </div>
+
+            <div className="text-center text-sm text-gray-500">
+              --- Smaller batches ---
+            </div>
+
+            <Button
               onClick={uploadAllHybridImages}
               disabled={uploading}
               className="w-full bg-green-600 hover:bg-green-700"
@@ -523,15 +542,15 @@ function HostingerUpload() {
             >
               {uploading
                 ? "Processing Hybrid Images..."
-                : "✅ REAL Business Images (HYBRID)"}
+                : "✅ Small Batch (50 businesses)"}
             </Button>
 
-            <div className="text-center text-sm text-green-600 font-medium">
-              Tries Google API first, falls back to business-appropriate images
+            <div className="text-center text-sm text-green-600">
+              Process 50 businesses at a time for testing
             </div>
 
             <div className="text-center text-sm text-gray-500">
-              --- Alternative methods ---
+              --- Other methods ---
             </div>
 
             <Button
