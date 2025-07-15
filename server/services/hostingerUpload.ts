@@ -77,6 +77,40 @@ export class HostingerUploadService {
   }
 
   /**
+   * Get or create FTP connection
+   */
+  private async ensureConnection(): Promise<ftp.Client> {
+    if (this.ftpClient && this.connectionPromise) {
+      await this.connectionPromise;
+      return this.ftpClient;
+    }
+
+    this.ftpClient = new ftp.Client();
+    this.connectionPromise = this.ftpClient.access({
+      host: this.config.host,
+      user: this.config.user,
+      password: this.config.password,
+      port: this.config.port || 21,
+    });
+
+    await this.connectionPromise;
+    console.log("🔗 FTP connection established");
+    return this.ftpClient;
+  }
+
+  /**
+   * Close FTP connection
+   */
+  async closeConnection(): Promise<void> {
+    if (this.ftpClient) {
+      this.ftpClient.close();
+      this.ftpClient = null;
+      this.connectionPromise = null;
+      console.log("🔌 FTP connection closed");
+    }
+  }
+
+  /**
    * Upload file buffer to Hostinger via FTP
    */
   private async uploadFile(buffer: Buffer, remotePath: string): Promise<void> {
