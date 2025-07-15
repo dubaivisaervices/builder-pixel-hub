@@ -746,10 +746,11 @@ export default function Index() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                Top Rated Services
+                Recently Reported Companies
               </h2>
               <p className="text-xl text-gray-600">
-                Discover Dubai's most trusted visa service providers
+                These companies have recent scam reports - be cautious and check
+                reviews
               </p>
             </div>
 
