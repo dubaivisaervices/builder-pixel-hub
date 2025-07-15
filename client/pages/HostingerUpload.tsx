@@ -574,6 +574,77 @@ function HostingerUpload() {
             </Button>
           </CardContent>
         </Card>
+
+        {/* Batch Processing */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Upload className="h-5 w-5" />
+              Batch Processing (50 at a time)
+            </CardTitle>
+            <CardDescription>
+              Process businesses in batches of 50 using Real Google Places
+              photos
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+              <CheckCircle className="h-4 w-4 text-green-600" />
+              <span className="text-sm text-green-800">
+                Recommended: Process all businesses systematically in batches of
+                50
+              </span>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <label className="text-sm font-medium">Batch Number:</label>
+              <Input
+                type="number"
+                min="1"
+                value={currentBatch}
+                onChange={(e) => setCurrentBatch(parseInt(e.target.value) || 1)}
+                className="w-20"
+              />
+              <span className="text-sm text-gray-600">
+                (Businesses {(currentBatch - 1) * 50 + 1}-{currentBatch * 50})
+              </span>
+            </div>
+
+            <Button
+              onClick={() => uploadBatch50RealGooglePhotos(currentBatch)}
+              disabled={uploading}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold"
+              size="lg"
+            >
+              {uploading
+                ? `Processing Batch ${currentBatch}...`
+                : `🚀 PROCESS BATCH ${currentBatch} (50 businesses)`}
+            </Button>
+
+            <div className="text-center text-sm text-blue-600 font-bold">
+              ✅ Uses Real Google Places API for authentic business photos
+            </div>
+
+            <div className="flex gap-2">
+              <Button
+                onClick={() => setCurrentBatch(Math.max(1, currentBatch - 1))}
+                disabled={uploading || currentBatch <= 1}
+                variant="outline"
+                size="sm"
+              >
+                ← Previous Batch
+              </Button>
+              <Button
+                onClick={() => setCurrentBatch(currentBatch + 1)}
+                disabled={uploading}
+                variant="outline"
+                size="sm"
+              >
+                Next Batch →
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Bulk Upload */}
