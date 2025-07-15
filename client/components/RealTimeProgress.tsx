@@ -174,18 +174,18 @@ export function RealTimeProgress({
         </div>
 
         {/* Current Business */}
-        {progressData.status === "processing" && (
+        {safeProgressData.status === "processing" && (
           <div className="bg-white p-3 rounded-lg border">
             <div className="flex items-center gap-2 mb-1">
               <Clock className="h-4 w-4 text-blue-600 animate-spin" />
               <span className="font-medium">Currently Processing:</span>
             </div>
             <div className="text-sm text-gray-700 truncate">
-              {progressData.businessName}
+              {safeProgressData.businessName}
             </div>
-            {progressData.currentStep && (
+            {safeProgressData.currentStep && (
               <div className="text-xs text-gray-500 mt-1">
-                {progressData.currentStep}
+                {safeProgressData.currentStep}
               </div>
             )}
           </div>
