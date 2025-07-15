@@ -325,6 +325,9 @@ export default function AdminDashboard() {
               ))}
             </div>
 
+            {/* Hostinger Upload Access */}
+            <QuickUploadAccess />
+
             {/* Recent Activity */}
             <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
               <CardHeader>
