@@ -4,7 +4,7 @@ import { createGoogleImageFetcher } from "../services/googleImageFetcher";
 
 // Hostinger FTP Configuration
 const HOSTINGER_CONFIG = {
-  host: process.env.HOSTINGER_FTP_HOST || "ftp.crossbordersmigrations.com",
+  host: process.env.HOSTINGER_FTP_HOST || "files.000webhost.com", // Common Hostinger FTP server
   user: process.env.HOSTINGER_FTP_USER || "crossborder1120",
   password: process.env.HOSTINGER_FTP_PASSWORD || "One@click1",
   port: parseInt(process.env.HOSTINGER_FTP_PORT || "21"),
