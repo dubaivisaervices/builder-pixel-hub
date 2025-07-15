@@ -40,6 +40,7 @@ function HostingerUpload() {
   );
   const [selectedBusinessId, setSelectedBusinessId] = useState("");
   const [currentBatch, setCurrentBatch] = useState(1);
+  const [showRealTimeProgress, setShowRealTimeProgress] = useState(false);
 
   const testConnection = async () => {
     setTesting(true);
