@@ -181,7 +181,7 @@ export async function uploadAllRealGooglePhotosToHostinger(
     }
 
     console.log(
-      "✅ STEP-BY-STEP Google Places photo processing completed:",
+      "�� STEP-BY-STEP Google Places photo processing completed:",
       results,
     );
 
@@ -662,6 +662,200 @@ export async function uploadBusinessToHostinger(req: Request, res: Response) {
     });
   } catch (error) {
     console.error("❌ Single business upload error:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+}
+
+/**
+ * Upload businesses in batches of 50 using Real Google Places photos
+ */
+export async function uploadBatch50RealGooglePhotos(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+
+    if (!apiKey) {
+      return res.status(400).json({
+        success: false,
+        error: "Google Places API key not configured",
+      });
+    }
+
+    const { batchNumber = 1 } = req.body; // Default to batch 1 if not specified
+    const batchSize = 50;
+    const offset = (batchNumber - 1) * batchSize;
+
+    console.log(
+      `🚀 Starting batch ${batchNumber} (businesses ${offset + 1}-${offset + batchSize}) Real Google Places photo upload...`,
+    );
+
+    const { database } = await import("../database/database");
+    const { BusinessService } = await import("../database/businessService");
+    const businessService = new BusinessService(database);
+    const hostingerService = createHostingerService(HOSTINGER_CONFIG);
+    const stepByStepService = new StepByStepGooglePhotos(apiKey);
+
+    // Get 50 businesses for this batch, prioritizing those without logos
+    const businesses = await database.all(
+      `SELECT id, name, address FROM businesses
+       ORDER BY CASE WHEN logo_s3_url IS NULL OR logo_s3_url = '' OR logo_s3_url LIKE '%s3.ap-south-1.amazonaws.com%' THEN 0 ELSE 1 END, id
+       LIMIT ? OFFSET ?`,
+      [batchSize, offset],
+    );
+
+    console.log(
+      `📊 Found ${businesses.length} businesses in batch ${batchNumber}`,
+    );
+
+    if (businesses.length === 0) {
+      return res.json({
+        success: true,
+        message: `No more businesses to process in batch ${batchNumber}`,
+        results: {
+          processed: 0,
+          successful: 0,
+          failed: 0,
+          totalLogos: 0,
+          totalPhotos: 0,
+          errors: [],
+          batchNumber,
+          batchSize,
+        },
+      });
+    }
+
+    const results = {
+      processed: 0,
+      successful: 0,
+      failed: 0,
+      totalLogos: 0,
+      totalPhotos: 0,
+      errors: [] as string[],
+      batchNumber,
+      batchSize,
+    };
+
+    // Process businesses one by one
+    for (const business of businesses) {
+      try {
+        console.log(
+          `\n🔍 Processing ${results.processed + 1}/${businesses.length}: ${business.name}`,
+        );
+        results.processed++;
+
+        // Execute complete step-by-step workflow
+        const photoResult = await stepByStepService.getBusinessPhoto(
+          business.name,
+        );
+
+        if (
+          !photoResult.success ||
+          (!photoResult.logoPath && !photoResult.businessPhotos?.length)
+        ) {
+          console.log(
+            `❌ Step-by-step workflow failed for ${business.name}: ${photoResult.error}`,
+          );
+          results.failed++;
+          results.errors.push(`${business.name}: ${photoResult.error}`);
+          continue;
+        }
+
+        try {
+          const fs = await import("fs");
+          let logoUrl: string | undefined;
+          const businessPhotoUrls: string[] = [];
+
+          // Upload logo if available
+          if (photoResult.logoPath) {
+            console.log(`📋 Uploading logo for ${business.name}...`);
+            const logoBuffer = fs.readFileSync(photoResult.logoPath);
+            logoUrl = await hostingerService.uploadBusinessLogo(
+              logoBuffer,
+              business.id,
+              photoResult.logoPath,
+            );
+            console.log(`✅ Logo uploaded: ${logoUrl}`);
+            results.totalLogos++;
+          }
+
+          // Upload business photos if available
+          if (photoResult.businessPhotos?.length > 0) {
+            console.log(
+              `📋 Uploading ${photoResult.businessPhotos.length} business photos for ${business.name}...`,
+            );
+
+            for (let i = 0; i < photoResult.businessPhotos.length; i++) {
+              const photoPath = photoResult.businessPhotos[i];
+              const photoBuffer = fs.readFileSync(photoPath);
+
+              const photoUrl = await hostingerService.uploadBusinessPhoto(
+                photoBuffer,
+                business.id,
+                `photo_${i + 1}`,
+                photoPath,
+              );
+              businessPhotoUrls.push(photoUrl);
+              console.log(`✅ Business photo ${i + 1} uploaded: ${photoUrl}`);
+              results.totalPhotos++;
+            }
+          }
+
+          // Save to database
+          if (logoUrl) {
+            await businessService.updateBusinessLogo(business.id, logoUrl);
+          }
+
+          if (businessPhotoUrls.length > 0) {
+            await businessService.updateBusinessPhotos(
+              business.id,
+              businessPhotoUrls,
+            );
+          }
+
+          // Cleanup temp files
+          const allFiles = [
+            photoResult.logoPath,
+            ...(photoResult.businessPhotos || []),
+          ].filter(Boolean);
+          stepByStepService.cleanupFiles(allFiles);
+
+          results.successful++;
+          console.log(
+            `✅ Successfully processed ${business.name}: Logo: ${logoUrl ? "Yes" : "No"}, Photos: ${businessPhotoUrls.length}`,
+          );
+        } catch (uploadError) {
+          console.error(`❌ Upload error for ${business.name}:`, uploadError);
+          results.failed++;
+          results.errors.push(
+            `${business.name}: Upload failed - ${uploadError.message}`,
+          );
+        }
+
+        // Small delay to avoid overwhelming the API
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      } catch (error) {
+        console.error(`❌ Processing error for ${business.name}:`, error);
+        results.failed++;
+        results.errors.push(
+          `${business.name}: Processing failed - ${error.message}`,
+        );
+      }
+    }
+
+    console.log(`\n✅ Batch ${batchNumber} completed:`, results);
+
+    res.json({
+      success: true,
+      results,
+      message: `Batch ${batchNumber} completed: ${results.successful}/${results.processed} businesses processed successfully`,
+    });
+  } catch (error) {
+    console.error("❌ Batch upload error:", error);
     res.status(500).json({
       success: false,
       error: error.message,
