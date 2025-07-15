@@ -37,7 +37,7 @@ export class StepByStepGooglePhotos {
 
       const response = await axios.get(url, { params });
 
-      console.log(`���� Find Place Response Status: ${response.data.status}`);
+      console.log(`📋 Find Place Response Status: ${response.data.status}`);
       console.log(
         `📋 Find Place Response:`,
         JSON.stringify(response.data, null, 2),
@@ -327,5 +327,16 @@ export class StepByStepGooglePhotos {
     } catch (error) {
       console.error(`❌ Error cleaning up file ${filePath}:`, error);
     }
+  }
+
+  /**
+   * Clean up multiple files
+   */
+  cleanupFiles(filePaths: string[]): void {
+    filePaths.forEach((filePath) => {
+      if (filePath) {
+        this.cleanupFile(filePath);
+      }
+    });
   }
 }
