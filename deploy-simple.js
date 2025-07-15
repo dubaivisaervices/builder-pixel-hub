@@ -66,7 +66,12 @@ async function deploySimple() {
 
     // 2. Upload SQLite database
     console.log("\n📊 Uploading database...");
-    await client.send("MKD database");
+    try {
+      await client.send("MKD database");
+      console.log("📂 Database directory created");
+    } catch (error) {
+      console.log("📂 Database directory already exists");
+    }
 
     // Main database
     const dbPath = path.join(
