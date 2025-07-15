@@ -442,21 +442,22 @@ export default function Index() {
             {/* Main Heading */}
             <div className="space-y-4">
               <div className="flex items-center justify-center space-x-2 mb-4">
-                <Badge className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2">
-                  <Sparkles className="h-4 w-4 mr-2" />
-                  Dubai's #1 Visa Service Directory
+                <Badge className="bg-gradient-to-r from-red-500 to-orange-600 text-white px-4 py-2">
+                  <Shield className="h-4 w-4 mr-2" />
+                  Dubai's #1 Visa Scam Protection Platform
                 </Badge>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold">
-                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  Find Trusted
+                <span className="bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 bg-clip-text text-transparent">
+                  Report Visa
                 </span>
                 <br />
-                <span className="text-gray-900">Visa Services</span>
+                <span className="text-gray-900">Scams & Fraud</span>
               </h1>
               <p className="text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Discover verified immigration consultants in Dubai with real
-                reviews, ratings, and community protection against scams.
+                Protect Dubai's community by reporting fraudulent visa services,
+                immigration scams, and unethical business practices. Your voice
+                helps keep others safe.
               </p>
             </div>
 
