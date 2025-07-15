@@ -7,6 +7,7 @@ import { createBase64ToHostingerUploader } from "../services/base64ToHostingerUp
 import { createImprovedGoogleImageFetcher } from "../services/improvedGoogleImageFetcher";
 import { createHybridGoogleImageFetcher } from "../services/hybridGoogleImageFetcher";
 import { createHybridGoogleImageFetcherAll } from "../services/hybridGoogleImageFetcherAll";
+import { RealGoogleBusinessPhotos } from "../services/realGoogleBusinessPhotos";
 
 // Hostinger FTP Configuration
 const HOSTINGER_CONFIG = {
@@ -17,6 +18,110 @@ const HOSTINGER_CONFIG = {
   remotePath: "/public_html/business-images", // Path on your hosting server
   baseUrl: "https://crossbordersmigrations.com/business-images", // Your domain URL
 };
+
+/**
+ * Upload ALL business images using REAL Google Places API photos (AUTHENTIC BUSINESS PHOTOS)
+ */
+export async function uploadAllRealGooglePhotosToHostinger(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+
+    if (!apiKey) {
+      return res.status(400).json({
+        success: false,
+        error: "Google Places API key not configured",
+      });
+    }
+
+    console.log(
+      "🚀 Starting REAL Google Places photo processing for ALL businesses...",
+    );
+
+    const { database } = await import("../database/database");
+    const { BusinessService } = await import("../database/businessService");
+    const businessService = new BusinessService(database);
+    const hostingerService = createHostingerService(HOSTINGER_CONFIG);
+    const realPhotoService = new RealGoogleBusinessPhotos(apiKey);
+
+    // Get all businesses without logos
+    const businesses = await database.all(
+      "SELECT id, name, address, place_id FROM businesses WHERE logo_s3_url IS NULL OR logo_s3_url = '' LIMIT 100",
+    );
+
+    console.log(`📊 Found ${businesses.length} businesses to process`);
+
+    const results = {
+      processed: 0,
+      successful: 0,
+      failed: 0,
+      errors: [] as string[],
+    };
+
+    for (const business of businesses) {
+      try {
+        console.log(`\n🔍 Processing: ${business.name}`);
+        results.processed++;
+
+        // Step 1-4: Get real business photo using the complete workflow
+        const photoResult = await realPhotoService.getRealBusinessPhoto(
+          business.name,
+          "Dubai",
+        );
+
+        if (!photoResult.success || !photoResult.filePath) {
+          console.log(
+            `❌ No real photo found for ${business.name}: ${photoResult.error}`,
+          );
+          results.failed++;
+          results.errors.push(`${business.name}: ${photoResult.error}`);
+          continue;
+        }
+
+        // Step 5: Upload to Hostinger
+        const fs = await import("fs");
+        const imageBuffer = fs.readFileSync(photoResult.filePath);
+        const logoUrl = await hostingerService.uploadBusinessLogo(
+          imageBuffer,
+          business.id,
+          photoResult.filePath,
+        );
+
+        // Step 6: Save to database
+        await businessService.updateBusinessLogo(business.id, logoUrl);
+
+        // Cleanup temp file
+        realPhotoService.cleanupTempFile(photoResult.filePath);
+
+        console.log(`✅ Successfully uploaded real photo for ${business.name}`);
+        results.successful++;
+
+        // Small delay to avoid rate limiting
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      } catch (error) {
+        console.error(`❌ Error processing ${business.name}:`, error);
+        results.failed++;
+        results.errors.push(`${business.name}: ${error.message}`);
+      }
+    }
+
+    console.log("✅ REAL Google Places photo processing completed:", results);
+
+    res.json({
+      success: true,
+      message: "REAL Google Places photos processed successfully",
+      results,
+    });
+  } catch (error) {
+    console.error("❌ REAL Google Places photo processing error:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+}
 
 /**
  * Upload ALL REMAINING business images using hybrid approach (PROCESSES ALL BUSINESSES)
