@@ -110,12 +110,12 @@ export function RealTimeProgress({
   const safeProgressData = {
     batchNumber: progressData.batchNumber || 1,
     totalBusinesses: progressData.totalBusinesses || 0,
-    currentBusiness: progressData.currentBusiness || 0,
+    currentBusiness: safeProgressData.currentBusiness || 0,
     businessName: progressData.businessName || "",
-    status: progressData.status || "processing",
-    logos: progressData.logos || 0,
-    photos: progressData.photos || 0,
-    errors: progressData.errors || [],
+    status: safeProgressData.status || "processing",
+    logos: safeProgressData.logos || 0,
+    photos: safeProgressData.photos || 0,
+    errors: safeProgressData.errors || [],
     currentStep: progressData.currentStep || "",
   };
 
@@ -197,7 +197,7 @@ export function RealTimeProgress({
             <div className="flex items-center justify-center gap-1 mb-1">
               <Image className="h-4 w-4 text-purple-600" />
               <span className="text-lg font-bold text-purple-600">
-                {progressData.logos}
+                {safeProgressData.logos}
               </span>
             </div>
             <div className="text-xs text-gray-600">Logos</div>
@@ -206,7 +206,7 @@ export function RealTimeProgress({
             <div className="flex items-center justify-center gap-1 mb-1">
               <Upload className="h-4 w-4 text-indigo-600" />
               <span className="text-lg font-bold text-indigo-600">
-                {progressData.photos}
+                {safeProgressData.photos}
               </span>
             </div>
             <div className="text-xs text-gray-600">Photos</div>
@@ -215,7 +215,7 @@ export function RealTimeProgress({
             <div className="flex items-center justify-center gap-1 mb-1">
               <XCircle className="h-4 w-4 text-red-600" />
               <span className="text-lg font-bold text-red-600">
-                {progressData.errors?.length || 0}
+                {safeProgressData.errors?.length || 0}
               </span>
             </div>
             <div className="text-xs text-gray-600">Errors</div>
@@ -223,26 +223,27 @@ export function RealTimeProgress({
         </div>
 
         {/* Status Message */}
-        {progressData.status === "completed" && (
+        {safeProgressData.status === "completed" && (
           <div className="bg-green-100 border border-green-200 p-3 rounded-lg">
             <div className="flex items-center gap-2 text-green-800">
               <CheckCircle className="h-4 w-4" />
               <span className="font-medium">Batch Completed!</span>
             </div>
             <div className="text-sm text-green-700 mt-1">
-              Successfully processed {progressData.currentBusiness} businesses
+              Successfully processed {safeProgressData.currentBusiness}{" "}
+              businesses
             </div>
           </div>
         )}
 
         {/* Recent Errors */}
-        {progressData.errors && progressData.errors.length > 0 && (
+        {safeProgressData.errors && safeProgressData.errors.length > 0 && (
           <div className="space-y-2">
             <div className="text-sm font-medium text-red-800">
               Recent Errors:
             </div>
             <div className="max-h-24 overflow-y-auto space-y-1">
-              {progressData.errors.slice(-3).map((error, index) => (
+              {safeProgressData.errors.slice(-3).map((error, index) => (
                 <div
                   key={index}
                   className="text-xs text-red-600 bg-red-50 p-2 rounded"
@@ -251,9 +252,9 @@ export function RealTimeProgress({
                 </div>
               ))}
             </div>
-            {progressData.errors.length > 3 && (
+            {safeProgressData.errors.length > 3 && (
               <div className="text-xs text-gray-500 text-center">
-                ... and {progressData.errors.length - 3} more errors
+                ... and {safeProgressData.errors.length - 3} more errors
               </div>
             )}
           </div>
