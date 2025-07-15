@@ -11,7 +11,7 @@ import Index from "./pages/Index";
 import ComplaintForm from "./pages/ComplaintForm";
 import CompanyReviews from "./pages/CompanyReviewsWorking";
 import CompanyProfileModern from "./pages/CompanyProfileModern";
-import BusinessDirectory from "./pages/BusinessDirectory";
+import BusinessDirectory from "./pages/BusinessDirectoryFixed";
 import BusinessListing from "./pages/BusinessListing";
 import HelpCenter from "./pages/HelpCenter";
 import ApiTest from "./pages/ApiTest";
