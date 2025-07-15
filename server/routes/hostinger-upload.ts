@@ -60,7 +60,47 @@ export async function uploadAllGoogleImagesToHostinger(
 }
 
 /**
- * Upload all business images from cached data to Hostinger (WORKING METHOD)
+ * Upload all business images using Google Photos proxy to Hostinger (FIXED METHOD)
+ */
+export async function uploadAllGooglePhotosToHostinger(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+
+    if (!apiKey) {
+      return res.status(400).json({
+        success: false,
+        error: "Google Places API key not configured",
+      });
+    }
+
+    console.log("🚀 Starting Google Photos proxy upload to Hostinger...");
+
+    const hostingerService = createHostingerService(HOSTINGER_CONFIG);
+    const googlePhotoProxy = createGooglePhotoProxy(apiKey, hostingerService);
+
+    const results = await googlePhotoProxy.processAllBusinessesWithProxy();
+
+    console.log("✅ Google Photos proxy upload completed:", results);
+
+    res.json({
+      success: true,
+      message: "Google Photos proxy upload to Hostinger completed",
+      results,
+    });
+  } catch (error) {
+    console.error("❌ Google Photos proxy upload error:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+}
+
+/**
+ * Upload all business images from cached data to Hostinger (NO DATA AVAILABLE)
  */
 export async function uploadAllCachedImagesToHostinger(
   req: Request,
