@@ -531,6 +531,23 @@ export function createServer() {
     return testHostingerConnection(req, res);
   });
 
+  // NEW: Google Places to Hostinger routes
+  app.post("/api/admin/upload-all-google-to-hostinger", async (req, res) => {
+    const { uploadAllGoogleImagesToHostinger } = await import(
+      "./routes/hostinger-upload"
+    );
+    return uploadAllGoogleImagesToHostinger(req, res);
+  });
+  app.post(
+    "/api/admin/upload-business-google-to-hostinger/:businessId",
+    async (req, res) => {
+      const { uploadBusinessGoogleToHostinger } = await import(
+        "./routes/hostinger-upload"
+      );
+      return uploadBusinessGoogleToHostinger(req, res);
+    },
+  );
+
   // Google Reviews sync routes
   app.post("/api/admin/sync-google-reviews", syncAllGoogleReviews);
   app.post("/api/admin/sync-business-reviews/:businessId", syncBusinessReviews);
