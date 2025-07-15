@@ -18,7 +18,7 @@
     "start": "node dist/server/node-build.mjs",
     "deploy": "node deploy-simple.js",
     "deploy-db": "node deploy-database.js",
-    "verify": "node verify-deployment.js",
+    "verify": "node verify-database.js",
     "inspect-ftp": "node inspect-ftp.js",
     "test": "vitest --run",
     "format.fix": "prettier --write .",
