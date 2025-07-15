@@ -281,6 +281,8 @@ function HostingerUpload() {
       });
     } finally {
       setUploading(false);
+      // Keep progress visible for a few seconds after completion
+      setTimeout(() => setShowRealTimeProgress(false), 5000);
     }
   };
 
