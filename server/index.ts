@@ -556,6 +556,14 @@ export function createServer() {
     return uploadAllCachedImagesToHostinger(req, res);
   });
 
+  // Inspect cached image data
+  app.get("/api/admin/inspect-cached-data", async (req, res) => {
+    const { inspectCachedImageData } = await import(
+      "./routes/inspect-cached-data"
+    );
+    return inspectCachedImageData(req, res);
+  });
+
   // Admin authentication endpoints
   app.post("/api/admin/login", async (req, res) => {
     const { directAdminLogin } = await import("./routes/admin-auth");
