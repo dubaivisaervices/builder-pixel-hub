@@ -639,6 +639,18 @@ export function createServer() {
     return testProgressTracking(req, res);
   });
 
+  // SUPER FAST: Parallel batch processing for maximum speed
+  app.post("/api/admin/super-fast-batch-upload", async (req, res) => {
+    const { superFastBatchUpload } = await import("./routes/super-fast-upload");
+    return superFastBatchUpload(req, res);
+  });
+
+  // AUTO PROCESS ALL: Automatically process all businesses
+  app.post("/api/admin/auto-process-all", async (req, res) => {
+    const { autoProcessAll } = await import("./routes/super-fast-upload");
+    return autoProcessAll(req, res);
+  });
+
   // FULL PROCESSING: Upload ALL remaining businesses
   app.post(
     "/api/admin/upload-all-remaining-hybrid-to-hostinger",
