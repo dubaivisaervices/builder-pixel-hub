@@ -190,12 +190,7 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    // Check if already authenticated
-    const session = localStorage.getItem("admin_session");
-    if (session === "authenticated") {
-      setIsAuthenticated(true);
-      fetchDashboardData();
-    }
+    fetchDashboardData();
   }, []);
 
   useEffect(() => {
