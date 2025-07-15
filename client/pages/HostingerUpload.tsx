@@ -33,6 +33,7 @@ function HostingerUpload() {
     null,
   );
   const [selectedBusinessId, setSelectedBusinessId] = useState("");
+  const [currentBatch, setCurrentBatch] = useState(1);
 
   const testConnection = async () => {
     setTesting(true);
@@ -696,7 +697,7 @@ function HostingerUpload() {
               className="w-full bg-red-600 hover:bg-red-700"
               size="lg"
             >
-              {uploading ? "Failing..." : "�� Google Photos Proxy (FAILING)"}
+              {uploading ? "Failing..." : "❌ Google Photos Proxy (FAILING)"}
             </Button>
 
             <Button
