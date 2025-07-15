@@ -4,9 +4,9 @@ import path from "path";
 
 // Database file path - handle both development and production
 const getDBPath = () => {
-  // In production (Hostinger), database will be in /public_html/database/
+  // In production (Hostinger), database will be in /database/ (root directory hosting)
   if (process.env.NODE_ENV === "production") {
-    return process.env.DB_PATH || "/public_html/database/dubai_businesses.db";
+    return process.env.DB_PATH || "/database/dubai_businesses.db";
   }
   // In development, database is in the same directory
   return path.join(__dirname, "dubai_businesses.db");
