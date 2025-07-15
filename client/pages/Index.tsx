@@ -459,7 +459,7 @@ export default function Index() {
                 <div className="hidden md:block">
                   <Input
                     type="text"
-                    placeholder="Search visa services, company names, or locations..."
+                    placeholder="Search companies, report scams, or check reviews..."
                     value={searchTerm}
                     onChange={(e) => handleSearchChange(e.target.value)}
                     onKeyPress={(e) => e.key === "Enter" && handleSearch()}
