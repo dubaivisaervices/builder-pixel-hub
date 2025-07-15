@@ -18,7 +18,7 @@
     "build:server": "vite build --config vite.config.server.ts",
     "start": "node dist/server/node-build.mjs",
     "start:sqlite": "node dist/server/sqlite-server.js",
-    "deploy": "node deploy-hostinger-fixed.js",
+    "deploy": "node deploy-simple-hostinger.js",
     "deploy-website": "node deploy-website-only.js",
     "deploy-auto": "node deploy-automatic.js --auto",
     "deploy-fix": "node deploy-database-fix.js",
