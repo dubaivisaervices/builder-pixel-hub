@@ -442,6 +442,26 @@ function HostingerUpload() {
 
           <div className="space-y-3">
             <Button
+              onClick={uploadAllImprovedGoogleImages}
+              disabled={uploading}
+              className="w-full bg-blue-600 hover:bg-blue-700"
+              size="lg"
+            >
+              {uploading
+                ? "Processing Real Google Images..."
+                : "🚀 REAL Google Images (IMPROVED)"}
+            </Button>
+
+            <div className="text-center text-sm text-blue-600 font-medium">
+              Gets actual business logos from Google Places API with proper
+              headers
+            </div>
+
+            <div className="text-center text-sm text-gray-500">
+              --- Alternative methods ---
+            </div>
+
+            <Button
               onClick={uploadAllBase64ToHostinger}
               disabled={uploading}
               className="w-full bg-green-600 hover:bg-green-700"
@@ -449,16 +469,16 @@ function HostingerUpload() {
             >
               {uploading
                 ? "Processing Base64 → Hostinger..."
-                : "✅ Base64 → Hostinger (YOUR APPROACH)"}
+                : "✅ Base64 → Hostinger (Unsplash Stock)"}
             </Button>
 
             <div className="text-center text-sm text-gray-600">
-              Downloads images → Stores as base64 → Uploads to Hostinger →
+              Downloads stock images → Stores as base64 → Uploads to Hostinger →
               Clears base64
             </div>
 
             <div className="text-center text-sm text-gray-500">
-              --- Other methods (all failing) ---
+              --- Failing methods ---
             </div>
 
             <Button
