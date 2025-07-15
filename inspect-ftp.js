@@ -3,7 +3,7 @@
 import * as ftp from "basic-ftp";
 
 const HOSTINGER_CONFIG = {
-  host: process.env.HOSTINGER_FTP_HOST || "crossbordersmigrations.com",
+  host: process.env.HOSTINGER_FTP_HOST || "reportvisascam.com",
   user: process.env.HOSTINGER_FTP_USER || "u611952859.crossborder1120",
   password: process.env.HOSTINGER_FTP_PASSWORD || "One@click1",
   port: parseInt(process.env.HOSTINGER_FTP_PORT || "21"),
