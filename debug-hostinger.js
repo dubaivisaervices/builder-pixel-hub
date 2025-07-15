@@ -7,7 +7,7 @@ async function debugHostingerUpload() {
   try {
     console.log("🔗 Connecting to Hostinger FTP...");
     await client.access({
-      host: "crossbordersmigrations.com",
+      host: "reportvisascam.com",
       user: "u611952859.crossborder1120",
       password: "One@click1",
       port: 21,
