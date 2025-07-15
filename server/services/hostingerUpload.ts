@@ -37,6 +37,24 @@ export class HostingerUploadService {
   }
 
   /**
+   * Upload single business photo to Hostinger
+   */
+  async uploadBusinessPhoto(
+    imageBuffer: Buffer,
+    businessId: string,
+    photoName: string,
+    originalUrl: string,
+  ): Promise<string> {
+    const fileExtension = this.getFileExtension(originalUrl);
+    const fileName = `${photoName}-${businessId}${fileExtension}`;
+    const remotePath = `/photos/${fileName}`;
+
+    await this.uploadFile(imageBuffer, remotePath);
+
+    return `${this.config.baseUrl}/photos/${fileName}`;
+  }
+
+  /**
    * Upload business photos to Hostinger
    */
   async uploadBusinessPhotos(
