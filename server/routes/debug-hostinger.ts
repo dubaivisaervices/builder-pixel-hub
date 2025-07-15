@@ -28,12 +28,16 @@ export async function debugHostingerConnection(req: Request, res: Response) {
       `📁 Files in public_html: ${htmlList.map((f) => f.name).join(", ")}`,
     );
 
-    console.log("📂 Creating business-images directory...");
+    console.log("📂 Working with business-images directory...");
     try {
-      await client.ensureDir("business-images");
-      results.push("✅ business-images directory created/exists");
-
+      // First try to cd to business-images
       await client.cd("business-images");
+      results.push("✅ Successfully navigated to business-images directory");
+
+      const businessImagesFiles = await client.list();
+      results.push(
+        `📁 Files in business-images: ${businessImagesFiles.map((f) => f.name).join(", ")}`,
+      );
 
       console.log("📂 Creating logos directory...");
       await client.ensureDir("logos");
@@ -43,21 +47,27 @@ export async function debugHostingerConnection(req: Request, res: Response) {
       await client.ensureDir("photos");
       results.push("✅ photos directory created/exists");
 
-      console.log("📄 Creating test file...");
+      // Test file upload using relative path
+      console.log("📄 Uploading test file...");
       const testContent = "This is a test file to verify FTP upload works";
-      await client.uploadFrom(
-        Buffer.from(testContent),
-        "/public_html/business-images/test.txt",
-      );
+      await client.uploadFrom(Buffer.from(testContent), "test.txt");
       results.push("✅ Test file uploaded successfully");
 
-      // Test logo upload
+      // Test logo upload using relative path
       console.log("🖼️ Uploading test logo...");
-      await client.cd("/public_html/business-images/logos");
-      await client.uploadFrom(Buffer.from(testContent), "test-logo.jpg");
+      await client.uploadFrom(Buffer.from(testContent), "logos/test-logo.jpg");
       results.push("✅ Test logo uploaded to logos directory");
+
+      // Test photo upload
+      console.log("📷 Uploading test photo...");
+      await client.uploadFrom(
+        Buffer.from(testContent),
+        "photos/test-photo.jpg",
+      );
+      results.push("✅ Test photo uploaded to photos directory");
     } catch (dirError) {
       results.push(`❌ Directory operation error: ${dirError.message}`);
+      console.error("Directory error details:", dirError);
     }
 
     res.json({
