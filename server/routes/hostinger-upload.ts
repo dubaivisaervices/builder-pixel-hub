@@ -772,6 +772,13 @@ export async function uploadBatch50RealGooglePhotos(
         );
         results.processed++;
 
+        // Update progress tracker
+        progressTracker.updateBusiness(
+          results.processed,
+          business.name,
+          "Finding Google Places data...",
+        );
+
         // Execute complete step-by-step workflow
         const photoResult = await stepByStepService.getBusinessPhoto(
           business.name,
