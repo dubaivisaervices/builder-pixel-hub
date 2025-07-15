@@ -122,17 +122,25 @@ export class HostingerUploadService {
         port: this.config.port || 21,
       });
 
-      // Ensure directory exists
-      const remoteDir = path.dirname(`${this.config.remotePath}${remotePath}`);
-      try {
-        await client.ensureDir(remoteDir);
-      } catch (error) {
-        console.log("Directory might already exist:", remoteDir);
+      // Navigate to public_html first
+      await client.cd("/public_html");
+
+      // Navigate to business-images directory
+      await client.cd("business-images");
+
+      // Ensure subdirectory exists (logos or photos)
+      const remoteDir = path.dirname(remotePath);
+      if (remoteDir && remoteDir !== ".") {
+        try {
+          await client.ensureDir(remoteDir);
+        } catch (error) {
+          console.log("Directory might already exist:", remoteDir);
+        }
       }
 
-      // Upload file
+      // Upload file using relative path
       const stream = Readable.from(buffer);
-      await client.uploadFrom(stream, `${this.config.remotePath}${remotePath}`);
+      await client.uploadFrom(stream, remotePath);
 
       console.log(`✅ Uploaded to Hostinger: ${remotePath}`);
     } catch (error) {
