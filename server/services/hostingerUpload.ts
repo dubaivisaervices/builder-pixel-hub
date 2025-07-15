@@ -236,7 +236,7 @@ export class HostingerUploadService {
         }
 
         // Add delay to avoid overwhelming the servers
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       } catch (error) {
         const errorMsg = `${business.name}: ${error.message}`;
         errors.push(errorMsg);
