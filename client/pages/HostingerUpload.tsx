@@ -18,6 +18,7 @@ import {
   Settings,
   Globe,
 } from "lucide-react";
+import { RealTimeProgress } from "../components/RealTimeProgress";
 
 interface UploadResults {
   processed: number;
