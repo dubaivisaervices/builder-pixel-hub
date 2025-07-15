@@ -65,9 +65,7 @@ export class StepByStepGooglePhotos {
    */
   async getPlacePhotos(placeId: string): Promise<string[]> {
     try {
-      console.log(
-        `���� Step 2: Getting Place Details & Photos for: ${placeId}`,
-      );
+      console.log(`📸 Step 2: Getting Place Details & Photos for: ${placeId}`);
 
       const url = "https://maps.googleapis.com/maps/api/place/details/json";
       const params = {
@@ -104,9 +102,67 @@ export class StepByStepGooglePhotos {
   }
 
   /**
-   * Step 3: Get Photo from Place Photos API
+   * Step 3: Download multiple photos (logo + business photos)
    */
-  async downloadPhoto(
+  async downloadMultiplePhotos(
+    photoReferences: string[],
+    businessName: string,
+  ): Promise<{
+    logoPath?: string;
+    businessPhotos: string[];
+    errors: string[];
+  }> {
+    const result = {
+      logoPath: undefined as string | undefined,
+      businessPhotos: [] as string[],
+      errors: [] as string[],
+    };
+
+    // Download up to 6 photos (1 logo + 5 business photos)
+    const maxPhotos = Math.min(photoReferences.length, 6);
+
+    for (let i = 0; i < maxPhotos; i++) {
+      const photoReference = photoReferences[i];
+      const photoType = i === 0 ? "logo" : "photo";
+      const fileName = `${businessName.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${photoType}_${i}_${Date.now()}.jpg`;
+
+      try {
+        console.log(
+          `⬬ Step 3.${i + 1}: Downloading ${photoType} with reference: ${photoReference.substring(0, 30)}...`,
+        );
+
+        const filePath = await this.downloadSinglePhoto(
+          photoReference,
+          fileName,
+        );
+
+        if (filePath) {
+          if (i === 0) {
+            result.logoPath = filePath;
+            console.log(`✅ Logo downloaded: ${filePath}`);
+          } else {
+            result.businessPhotos.push(filePath);
+            console.log(`✅ Business photo ${i} downloaded: ${filePath}`);
+          }
+        } else {
+          result.errors.push(`Failed to download ${photoType} ${i + 1}`);
+        }
+      } catch (error) {
+        console.error(`❌ Error downloading ${photoType} ${i + 1}:`, error);
+        result.errors.push(`${photoType} ${i + 1}: ${error.message}`);
+      }
+    }
+
+    console.log(
+      `📊 Download summary: Logo: ${result.logoPath ? "Yes" : "No"}, Business photos: ${result.businessPhotos.length}, Errors: ${result.errors.length}`,
+    );
+    return result;
+  }
+
+  /**
+   * Download single photo helper
+   */
+  async downloadSinglePhoto(
     photoReference: string,
     fileName: string,
   ): Promise<string | null> {
