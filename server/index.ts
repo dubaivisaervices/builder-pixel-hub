@@ -664,6 +664,18 @@ export function createServer() {
     return autoProcessAll(req, res);
   });
 
+  // DEBUG: Debug progress tracking status
+  app.get("/api/admin/debug-progress-status", async (req, res) => {
+    const { debugProgressStatus } = await import("./routes/debug-progress");
+    return debugProgressStatus(req, res);
+  });
+
+  // DEBUG: Trigger test progress sequence
+  app.post("/api/admin/trigger-test-progress", async (req, res) => {
+    const { triggerTestProgress } = await import("./routes/debug-progress");
+    return triggerTestProgress(req, res);
+  });
+
   // FULL PROCESSING: Upload ALL remaining businesses
   app.post(
     "/api/admin/upload-all-remaining-hybrid-to-hostinger",
