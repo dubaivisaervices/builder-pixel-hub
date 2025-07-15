@@ -19,6 +19,7 @@ import {
   Globe,
 } from "lucide-react";
 import { RealTimeProgress } from "../components/RealTimeProgress";
+import { ErrorBoundary } from "../components/ErrorBoundary";
 
 interface UploadResults {
   processed: number;
