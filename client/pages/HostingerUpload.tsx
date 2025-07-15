@@ -337,6 +337,7 @@ function HostingerUpload() {
   };
 
   const uploadBatch50RealGooglePhotos = async (batchNumber: number = 1) => {
+    console.log(`🚀 Starting batch ${batchNumber} upload...`);
     setUploading(true);
     setUploadResults(null);
     setShowRealTimeProgress(true);
@@ -549,7 +550,7 @@ function HostingerUpload() {
       if (result.success) {
         alert(`✅ Successfully uploaded images for ${result.business}`);
       } else {
-        alert(`��� Upload failed: ${result.error}`);
+        alert(`❌ Upload failed: ${result.error}`);
       }
     } catch (error) {
       alert(`❌ Upload failed: ${error.message}`);
