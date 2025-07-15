@@ -152,7 +152,7 @@ export async function superFastBatchUpload(req: Request, res: Response) {
       });
     }
 
-    const { batchNumber = 1, concurrency = 5 } = req.body;
+    const { batchNumber = 1, concurrency = 10 } = req.body;
     const batchSize = 50;
     const offset = (batchNumber - 1) * batchSize;
 
