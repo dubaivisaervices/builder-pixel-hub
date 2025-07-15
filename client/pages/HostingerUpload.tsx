@@ -657,6 +657,25 @@ function HostingerUpload() {
         </Card>
       </div>
 
+      {/* Real-Time Progress */}
+      {showRealTimeProgress && (
+        <RealTimeProgress
+          isActive={showRealTimeProgress}
+          onComplete={(data) => {
+            console.log("Batch completed:", data);
+            setUploadResults({
+              processed: data.totalBusinesses,
+              successful: data.totalBusinesses - data.errors.length,
+              totalLogos: data.logos,
+              totalPhotos: data.photos,
+              errors: data.errors,
+              batchNumber: data.batchNumber,
+              batchSize: 50,
+            });
+          }}
+        />
+      )}
+
       {/* Bulk Upload */}
       <Card>
         <CardHeader>
