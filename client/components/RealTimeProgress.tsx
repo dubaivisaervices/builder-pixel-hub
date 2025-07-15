@@ -51,6 +51,18 @@ export function RealTimeProgress({
         try {
           const data: ProgressData = JSON.parse(event.data);
           console.log("📊 Progress update received:", data);
+
+          // Skip connection messages
+          if (data.type === "connected") {
+            console.log("✅ Connection confirmed");
+            return;
+          }
+
+          // Ensure errors array exists
+          if (!data.errors) {
+            data.errors = [];
+          }
+
           setProgressData(data);
 
           if (data.status === "completed" && onComplete) {
