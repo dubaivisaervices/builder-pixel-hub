@@ -471,11 +471,7 @@ export default function Index() {
                 <div className="hidden md:block">
                   <Input
                     type="text"
-<<<<<<< HEAD
-                    placeholder="Search companies to report, business names, or scam types..."
-=======
                     placeholder="Search companies, report scams, or check reviews..."
->>>>>>> 838e10c9c5ebe7b1e404ff4cf27218635bc564b8
                     value={searchTerm}
                     onChange={(e) => handleSearchChange(e.target.value)}
                     onKeyPress={(e) => e.key === "Enter" && handleSearch()}
