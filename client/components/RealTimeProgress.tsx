@@ -36,36 +36,56 @@ export function RealTimeProgress({
     }
 
     console.log("🔄 Connecting to progress stream...");
-    const eventSource = new EventSource("/api/admin/progress-stream");
 
-    eventSource.onopen = () => {
-      console.log("✅ Connected to progress stream");
-      setIsConnected(true);
-    };
+    // Add a small delay to ensure backend is ready
+    const connectTimer = setTimeout(() => {
+      const eventSource = new EventSource("/api/admin/progress-stream");
 
-    eventSource.onmessage = (event) => {
-      try {
-        const data: ProgressData = JSON.parse(event.data);
-        console.log("📊 Progress update:", data);
-        setProgressData(data);
+      eventSource.onopen = () => {
+        console.log("✅ Connected to progress stream");
+        setIsConnected(true);
+      };
 
-        if (data.status === "completed" && onComplete) {
-          onComplete(data);
+      eventSource.onmessage = (event) => {
+        try {
+          const data: ProgressData = JSON.parse(event.data);
+          console.log("📊 Progress update received:", data);
+          setProgressData(data);
+
+          if (data.status === "completed" && onComplete) {
+            console.log("🎉 Processing completed, calling onComplete");
+            onComplete(data);
+          }
+        } catch (error) {
+          console.error("❌ Error parsing progress data:", error);
         }
-      } catch (error) {
-        console.error("❌ Error parsing progress data:", error);
-      }
-    };
+      };
 
-    eventSource.onerror = (error) => {
-      console.error("❌ Progress stream error:", error);
-      setIsConnected(false);
-    };
+      eventSource.onerror = (error) => {
+        console.error("❌ Progress stream error:", error);
+        setIsConnected(false);
+
+        // Try to reconnect after a short delay
+        setTimeout(() => {
+          if (isActive) {
+            console.log("🔄 Attempting to reconnect...");
+            eventSource.close();
+            // This will trigger the useEffect to run again
+            setIsConnected(false);
+          }
+        }, 2000);
+      };
+
+      // Cleanup function
+      return () => {
+        console.log("🔌 Disconnecting from progress stream");
+        eventSource.close();
+        setIsConnected(false);
+      };
+    }, 500);
 
     return () => {
-      console.log("🔌 Disconnecting from progress stream");
-      eventSource.close();
-      setIsConnected(false);
+      clearTimeout(connectTimer);
     };
   }, [isActive, onComplete]);
 
