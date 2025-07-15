@@ -119,7 +119,10 @@ export async function uploadBusinessGoogleToHostinger(
     }
 
     const hostingerService = createHostingerService(HOSTINGER_CONFIG);
-    const googleFetcher = createGoogleImageFetcher(apiKey, hostingerService);
+    const googleFetcher = createSimpleGoogleImageFetcher(
+      apiKey,
+      hostingerService,
+    );
 
     const result = await googleFetcher.processBusinessImages(business);
 
