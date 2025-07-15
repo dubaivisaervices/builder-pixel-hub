@@ -110,12 +110,12 @@ export function RealTimeProgress({
   const safeProgressData = {
     batchNumber: progressData.batchNumber || 1,
     totalBusinesses: progressData.totalBusinesses || 0,
-    currentBusiness: safeProgressData.currentBusiness || 0,
+    currentBusiness: progressData.currentBusiness || 0,
     businessName: progressData.businessName || "",
-    status: safeProgressData.status || "processing",
-    logos: safeProgressData.logos || 0,
-    photos: safeProgressData.photos || 0,
-    errors: safeProgressData.errors || [],
+    status: progressData.status || "processing",
+    logos: progressData.logos || 0,
+    photos: progressData.photos || 0,
+    errors: progressData.errors || [],
     currentStep: progressData.currentStep || "",
   };
 
