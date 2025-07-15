@@ -55,6 +55,91 @@ function HostingerUpload() {
     }
   };
 
+  const superFastBatchUpload = async (batchNumber: number = 1) => {
+    setUploading(true);
+    setUploadResults(null);
+    setShowRealTimeProgress(true);
+
+    try {
+      const response = await fetch("/api/admin/super-fast-batch-upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ batchNumber, concurrency: 5 }),
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        setUploadResults(result.results);
+      } else {
+        setUploadResults({
+          processed: 0,
+          successful: 0,
+          totalLogos: 0,
+          totalPhotos: 0,
+          errors: [result.error],
+          batchNumber,
+          batchSize: 50,
+        });
+      }
+    } catch (error) {
+      setUploadResults({
+        processed: 0,
+        successful: 0,
+        totalLogos: 0,
+        totalPhotos: 0,
+        errors: [error.message],
+        batchNumber,
+        batchSize: 50,
+      });
+    } finally {
+      setUploading(false);
+      setTimeout(() => setShowRealTimeProgress(false), 5000);
+    }
+  };
+
+  const autoProcessAll = async () => {
+    setUploading(true);
+    setUploadResults(null);
+    setShowRealTimeProgress(true);
+
+    try {
+      const response = await fetch("/api/admin/auto-process-all", {
+        method: "POST",
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        console.log(
+          `🤖 AUTO PROCESS: Started processing ${result.totalBusinesses} businesses across ${result.totalBatches} batches`,
+        );
+        // The processing will continue in the background
+        // Progress will be shown via real-time updates
+      } else {
+        setUploadResults({
+          processed: 0,
+          successful: 0,
+          totalLogos: 0,
+          totalPhotos: 0,
+          errors: [result.error],
+        });
+        setUploading(false);
+        setTimeout(() => setShowRealTimeProgress(false), 5000);
+      }
+    } catch (error) {
+      setUploadResults({
+        processed: 0,
+        successful: 0,
+        totalLogos: 0,
+        totalPhotos: 0,
+        errors: [error.message],
+      });
+      setUploading(false);
+      setTimeout(() => setShowRealTimeProgress(false), 5000);
+    }
+  };
+
   const testConnection = async () => {
     setTesting(true);
     setTestResult(null);
