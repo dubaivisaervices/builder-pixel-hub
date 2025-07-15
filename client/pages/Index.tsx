@@ -486,7 +486,7 @@ export default function Index() {
                   <div className="relative">
                     <Input
                       type="text"
-                      placeholder="Search visa services..."
+                      placeholder="Search or report scams..."
                       value={searchTerm}
                       onChange={(e) => handleSearchChange(e.target.value)}
                       onKeyPress={(e) => e.key === "Enter" && handleSearch()}
