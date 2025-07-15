@@ -193,6 +193,43 @@ function HostingerUpload() {
     }
   };
 
+  const uploadAllRealGooglePhotos = async () => {
+    setUploading(true);
+    setUploadResults(null);
+
+    try {
+      const response = await fetch(
+        "/api/admin/upload-all-real-google-to-hostinger",
+        {
+          method: "POST",
+        },
+      );
+      const result = await response.json();
+
+      if (result.success) {
+        setUploadResults(result.results);
+      } else {
+        setUploadResults({
+          processed: 0,
+          successful: 0,
+          totalLogos: 0,
+          totalPhotos: 0,
+          errors: [result.error],
+        });
+      }
+    } catch (error) {
+      setUploadResults({
+        processed: 0,
+        successful: 0,
+        totalLogos: 0,
+        totalPhotos: 0,
+        errors: [error.message],
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const uploadAllRemainingHybridImages = async () => {
     setUploading(true);
     setUploadResults(null);
@@ -515,6 +552,26 @@ function HostingerUpload() {
           </div>
 
           <div className="space-y-3">
+            <Button
+              onClick={uploadAllRealGooglePhotos}
+              disabled={uploading}
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-bold"
+              size="lg"
+            >
+              {uploading
+                ? "Getting REAL Business Photos..."
+                : "📸 REAL GOOGLE PLACES PHOTOS"}
+            </Button>
+
+            <div className="text-center text-sm text-green-600 font-bold">
+              Uses complete Google Places API workflow: Find Place ID → Get
+              Place Details → Download Real Photos
+            </div>
+
+            <div className="text-center text-sm text-gray-500">
+              --- Fallback options ---
+            </div>
+
             <Button
               onClick={uploadAllRemainingHybridImages}
               disabled={uploading}
