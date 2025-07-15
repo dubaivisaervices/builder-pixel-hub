@@ -23,6 +23,7 @@
     "explore": "node explore-ftp.js",
     "export-data": "node export-businesses.mjs",
     "inspect-schema": "node inspect-schema.mjs",
+    "test-ftp": "node test-ftp.js",
     "test": "vitest --run",
     "format.fix": "prettier --write .",
     "typecheck": "tsc"
