@@ -64,6 +64,16 @@ export class RealGoogleBusinessPhotos {
         return response.data.candidates[0].place_id;
       }
 
+      if (response.data.status === "REQUEST_DENIED") {
+        console.error(
+          `❌ Google Places API REQUEST_DENIED for: ${searchQuery}`,
+          "Check API key permissions and billing",
+        );
+        throw new Error(
+          `Google Places API REQUEST_DENIED - Check API key and billing`,
+        );
+      }
+
       console.log(
         `No place found for: ${searchQuery}, Status: ${response.data.status}`,
       );
