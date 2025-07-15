@@ -7,9 +7,8 @@ export async function directAdminLogin(req: Request, res: Response) {
   try {
     const { adminId, password } = req.body;
 
-    const validAdminId = process.env.ADMIN_PANEL_ID || "crossborder_admin";
-    const validPassword =
-      process.env.ADMIN_PANEL_PASSWORD || "Dubai@2024!Upload";
+    const validAdminId = process.env.ADMIN_PANEL_ID || "admin";
+    const validPassword = process.env.ADMIN_PANEL_PASSWORD || "admin123";
 
     if (adminId === validAdminId && password === validPassword) {
       res.json({
