@@ -504,19 +504,19 @@ export default function Index() {
                     <Button
                       onClick={handleSearch}
                       size="lg"
-                      className="px-12 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-xl shadow-lg"
+                      className="px-12 py-3 bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 rounded-xl shadow-lg text-white font-semibold"
                     >
                       <Search className="h-5 w-5 mr-2" />
-                      Search Services
+                      Check Company Safety
                     </Button>
                     <Button
                       onClick={() => navigate("/dubai-businesses")}
                       size="lg"
                       variant="outline"
-                      className="border-2 border-blue-500 text-blue-600 hover:bg-blue-50 shadow-lg px-8 py-3 rounded-xl font-semibold"
+                      className="border-2 border-red-500 text-red-600 hover:bg-red-50 shadow-lg px-8 py-3 rounded-xl font-semibold"
                     >
                       <Building2 className="h-5 w-5 mr-2" />
-                      All Dubai Visa Services Directory
+                      Browse Verified Companies
                     </Button>
                   </div>
                 </div>
