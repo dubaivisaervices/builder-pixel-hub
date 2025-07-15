@@ -47,12 +47,17 @@ class ProgressTracker {
 
     this.currentProgress = { ...this.currentProgress, ...update };
 
+    // Debug logging
+    console.log(
+      `📊 Progress Update: Batch ${this.currentProgress.batchNumber}, Business ${this.currentProgress.currentBusiness}/${this.currentProgress.totalBusinesses}, Listeners: ${this.listeners.length}`,
+    );
+
     // Notify all listeners
-    this.listeners.forEach((callback) => {
+    this.listeners.forEach((callback, index) => {
       try {
         callback(this.currentProgress!);
       } catch (error) {
-        console.error("Progress tracker callback error:", error);
+        console.error(`Progress tracker callback ${index} error:`, error);
       }
     });
   }
