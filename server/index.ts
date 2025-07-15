@@ -548,6 +548,14 @@ export function createServer() {
     },
   );
 
+  // WORKING: Cached images to Hostinger routes
+  app.post("/api/admin/upload-all-cached-to-hostinger", async (req, res) => {
+    const { uploadAllCachedImagesToHostinger } = await import(
+      "./routes/hostinger-upload"
+    );
+    return uploadAllCachedImagesToHostinger(req, res);
+  });
+
   // Admin authentication endpoints
   app.post("/api/admin/login", async (req, res) => {
     const { directAdminLogin } = await import("./routes/admin-auth");
