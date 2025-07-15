@@ -433,14 +433,9 @@ export default function Index() {
             {/* Main Heading */}
             <div className="space-y-4">
               <div className="flex items-center justify-center space-x-2 mb-4">
-                <Badge className="bg-gradient-to-r from-red-500 to-orange-600 text-white px-4 py-2">
-<<<<<<< HEAD
+                                <Badge className="bg-gradient-to-r from-red-500 to-orange-600 text-white px-4 py-2">
                   <Shield className="h-4 w-4 mr-2" />
-                  Dubai's #1 Visa Scam Protection Platform
-=======
-                  <Sparkles className="h-4 w-4 mr-2" />
                   🛡️ UAE's Most Trusted Scam Protection Platform
->>>>>>> 838e10c9c5ebe7b1e404ff4cf27218635bc564b8
                 </Badge>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold">
