@@ -74,7 +74,10 @@ export async function uploadAllRealGooglePhotosToHostinger(
           business.name,
         );
 
-        if (!photoResult.success || !photoResult.filePath) {
+        if (
+          !photoResult.success ||
+          (!photoResult.logoPath && !photoResult.businessPhotos?.length)
+        ) {
           console.log(
             `❌ Step-by-step workflow failed for ${business.name}: ${photoResult.error}`,
           );
@@ -88,23 +91,65 @@ export async function uploadAllRealGooglePhotosToHostinger(
         }
 
         try {
-          // Upload to Hostinger
           const fs = await import("fs");
-          const imageBuffer = fs.readFileSync(photoResult.filePath);
-          const logoUrl = await hostingerService.uploadBusinessLogo(
-            imageBuffer,
-            business.id,
-            photoResult.filePath,
-          );
+          let logoUrl: string | undefined;
+          const businessPhotoUrls: string[] = [];
+
+          // Upload logo if available
+          if (photoResult.logoPath) {
+            console.log(`📋 Uploading logo for ${business.name}...`);
+            const logoBuffer = fs.readFileSync(photoResult.logoPath);
+            logoUrl = await hostingerService.uploadBusinessLogo(
+              logoBuffer,
+              business.id,
+              photoResult.logoPath,
+            );
+            console.log(`✅ Logo uploaded: ${logoUrl}`);
+          }
+
+          // Upload business photos if available
+          if (photoResult.businessPhotos?.length > 0) {
+            console.log(
+              `📋 Uploading ${photoResult.businessPhotos.length} business photos for ${business.name}...`,
+            );
+
+            for (let i = 0; i < photoResult.businessPhotos.length; i++) {
+              const photoPath = photoResult.businessPhotos[i];
+              const photoBuffer = fs.readFileSync(photoPath);
+
+              // Upload business photo
+              const photoUrl = await hostingerService.uploadBusinessPhoto(
+                photoBuffer,
+                business.id,
+                `photo_${i + 1}`,
+                photoPath,
+              );
+              businessPhotoUrls.push(photoUrl);
+              console.log(`✅ Business photo ${i + 1} uploaded: ${photoUrl}`);
+            }
+          }
 
           // Save to database
-          await businessService.updateBusinessLogo(business.id, logoUrl);
+          if (logoUrl) {
+            await businessService.updateBusinessLogo(business.id, logoUrl);
+          }
 
-          // Cleanup temp file
-          stepByStepService.cleanupFile(photoResult.filePath);
+          if (businessPhotoUrls.length > 0) {
+            await businessService.updateBusinessPhotos(
+              business.id,
+              businessPhotoUrls,
+            );
+          }
+
+          // Cleanup temp files
+          const allFiles = [
+            photoResult.logoPath,
+            ...(photoResult.businessPhotos || []),
+          ].filter(Boolean);
+          stepByStepService.cleanupFiles(allFiles);
 
           console.log(
-            `✅ Successfully processed ${business.name} with step-by-step workflow`,
+            `✅ Successfully processed ${business.name}: Logo: ${logoUrl ? "Yes" : "No"}, Photos: ${businessPhotoUrls.length}`,
           );
           results.successful++;
         } catch (uploadError) {
@@ -117,8 +162,12 @@ export async function uploadAllRealGooglePhotosToHostinger(
             `${business.name}: Upload failed - ${uploadError.message}`,
           );
 
-          // Cleanup temp file even on error
-          stepByStepService.cleanupFile(photoResult.filePath);
+          // Cleanup temp files even on error
+          const allFiles = [
+            photoResult.logoPath,
+            ...(photoResult.businessPhotos || []),
+          ].filter(Boolean);
+          stepByStepService.cleanupFiles(allFiles);
           continue;
         }
 
