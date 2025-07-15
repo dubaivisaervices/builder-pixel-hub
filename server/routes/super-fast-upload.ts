@@ -156,9 +156,12 @@ export async function superFastBatchUpload(req: Request, res: Response) {
     const batchSize = 50;
     const offset = (batchNumber - 1) * batchSize;
 
-    console.log(
-      `🚀 SUPER FAST: Starting batch ${batchNumber} with ${concurrency} parallel workers...`,
-    );
+    // Minimal logging for maximum speed
+    if (batchNumber % 10 === 1) {
+      console.log(
+        `🚀 SUPER FAST: Starting batch ${batchNumber} with ${concurrency} parallel workers...`,
+      );
+    }
 
     const { database } = await import("../database/database");
     const { BusinessService } = await import("../database/businessService");
