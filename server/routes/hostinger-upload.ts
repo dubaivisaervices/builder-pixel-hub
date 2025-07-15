@@ -4,6 +4,7 @@ import { createSimpleGoogleImageFetcher } from "../services/simpleGoogleImageFet
 import { createCachedImageUploader } from "../services/cachedImageUploader";
 import { createGooglePhotoProxy } from "../services/googlePhotoProxy";
 import { createBase64ToHostingerUploader } from "../services/base64ToHostingerUploader";
+import { createImprovedGoogleImageFetcher } from "../services/improvedGoogleImageFetcher";
 
 // Hostinger FTP Configuration
 const HOSTINGER_CONFIG = {
