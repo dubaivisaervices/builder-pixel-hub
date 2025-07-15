@@ -1,14 +1,15 @@
 import { Request, Response } from "express";
 import { createHostingerService } from "../services/hostingerUpload";
 
-// REPLACE THESE WITH YOUR ACTUAL HOSTINGER CREDENTIALS
+// Hostinger FTP Configuration
 const HOSTINGER_CONFIG = {
-  host: process.env.HOSTINGER_FTP_HOST || "your-domain.com",
-  user: process.env.HOSTINGER_FTP_USER || "your-ftp-username",
-  password: process.env.HOSTINGER_FTP_PASSWORD || "your-ftp-password",
+  host:
+    process.env.HOSTINGER_FTP_HOST || "u611952859.crossbordersmigrations.com",
+  user: process.env.HOSTINGER_FTP_USER || "u611952859", // Usually matches the subdomain
+  password: process.env.HOSTINGER_FTP_PASSWORD || "YOUR_FTP_PASSWORD", // You need to provide this
   port: parseInt(process.env.HOSTINGER_FTP_PORT || "21"),
   remotePath: "/public_html/business-images", // Path on your hosting server
-  baseUrl: "https://your-domain.com/business-images", // Your domain URL
+  baseUrl: "https://crossbordersmigrations.com/business-images", // Your domain URL
 };
 
 /**
