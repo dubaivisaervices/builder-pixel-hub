@@ -564,6 +564,17 @@ export function createServer() {
     return uploadAllHybridImagesToHostinger(req, res);
   });
 
+  // REAL GOOGLE PHOTOS: Upload real business photos using complete Google Places API workflow
+  app.post(
+    "/api/admin/upload-all-real-google-to-hostinger",
+    async (req, res) => {
+      const { uploadAllRealGooglePhotosToHostinger } = await import(
+        "./routes/hostinger-upload"
+      );
+      return uploadAllRealGooglePhotosToHostinger(req, res);
+    },
+  );
+
   // FULL PROCESSING: Upload ALL remaining businesses
   app.post(
     "/api/admin/upload-all-remaining-hybrid-to-hostinger",
