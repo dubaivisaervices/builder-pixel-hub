@@ -50,10 +50,17 @@ const SimpleNavigation = () => {
               <Shield className="h-5 w-5 text-white" />
             </div>
             <span className="hidden sm:inline-block font-bold text-xl text-gray-900">
+<<<<<<< HEAD
               Dubai Visa Scam Report
             </span>
             <span className="sm:hidden font-bold text-xl text-gray-900">
               DVSR
+=======
+              Report Visa Scam
+            </span>
+            <span className="sm:hidden font-bold text-xl text-gray-900">
+              Report Visa Scam
+>>>>>>> 838e10c9c5ebe7b1e404ff4cf27218635bc564b8
             </span>
           </Link>
 

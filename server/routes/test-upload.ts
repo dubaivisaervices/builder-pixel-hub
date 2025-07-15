@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import { createHostingerService } from "../services/hostingerUpload";
 
 const HOSTINGER_CONFIG = {
-  host: "crossbordersmigrations.com",
+  host: "reportvisascam.com",
   user: "u611952859.crossborder1120",
   password: "One@click1",
   port: 21,
   remotePath: "/public_html/business-images",
-  baseUrl: "https://crossbordersmigrations.com/business-images",
+  baseUrl: "https://reportvisascam.com/business-images",
 };
 
 export async function testHostingerUpload(req: Request, res: Response) {

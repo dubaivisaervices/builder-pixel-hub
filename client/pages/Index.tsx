@@ -85,43 +85,34 @@ export default function Index() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Try to fetch ALL business data from database
+        // Try to fetch business data (static first, then API)
         let businesses = [];
 
-        // Try different API endpoints to get all businesses
+        // Try static data first (for production)
         try {
-          console.log(
-            "🔍 Attempting to fetch all 840 businesses from database...",
-          );
-          const response = await fetch(
-            "/api/dubai-visa-services?limit=1000&includeAll=true",
-          );
-          const data = await response.json();
-          businesses = data.businesses || [];
-
-          if (businesses.length < 500) {
-            // If we get limited results, try the admin endpoint for all businesses
+          console.log("🔍 Loading business data from static file...");
+          const response = await fetch("/data/businesses.json");
+          if (response.ok) {
+            const data = await response.json();
+            businesses = data.businesses || [];
             console.log(
-              `⚠️ Only got ${businesses.length} businesses, trying admin endpoint...`,
+              `✅ Loaded ${businesses.length} businesses from static data`,
             );
-            const adminResponse = await fetch(
-              "/api/admin/businesses-by-category",
-            );
-            const adminData = await adminResponse.json();
-
-            if (adminData.success && adminData.data) {
-              // Flatten category-based data into single array
-              businesses = Object.values(adminData.data).flat();
-              console.log(
-                `✅ Admin endpoint returned ${businesses.length} businesses`,
-              );
-            }
           }
         } catch (error) {
-          console.log("📡 Using fallback API call...");
-          const response = await fetch("/api/businesses");
-          const data = await response.json();
-          businesses = data.businesses || [];
+          console.log("📡 Static data not found, trying API...");
+        }
+
+        // Fallback to API if static data not available
+        if (businesses.length === 0) {
+          try {
+            const response = await fetch("/api/dubai-visa-services?limit=1000");
+            const data = await response.json();
+            businesses = data.businesses || [];
+            console.log(`✅ Loaded ${businesses.length} businesses from API`);
+          } catch (error) {
+            console.log("❌ API also failed, using fallback data");
+          }
         }
 
         console.log(
@@ -443,12 +434,18 @@ export default function Index() {
             <div className="space-y-4">
               <div className="flex items-center justify-center space-x-2 mb-4">
                 <Badge className="bg-gradient-to-r from-red-500 to-orange-600 text-white px-4 py-2">
+<<<<<<< HEAD
                   <Shield className="h-4 w-4 mr-2" />
                   Dubai's #1 Visa Scam Protection Platform
+=======
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  🛡️ UAE's Most Trusted Scam Protection Platform
+>>>>>>> 838e10c9c5ebe7b1e404ff4cf27218635bc564b8
                 </Badge>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold">
                 <span className="bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 bg-clip-text text-transparent">
+<<<<<<< HEAD
                   Report Visa
                 </span>
                 <br />
@@ -458,6 +455,18 @@ export default function Index() {
                 Protect Dubai's community by reporting fraudulent visa services,
                 immigration scams, and unethical business practices. Your voice
                 helps keep others safe.
+=======
+                  Stop Visa Fraudsters
+                </span>
+                <br />
+                <span className="text-gray-900">Before They Strike</span>
+              </h1>
+              <p className="text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                ��� Expose scammers, protect your money, and save others from
+                fraud. Access verified company reviews, report suspicious
+                activities, and join thousands protecting the UAE immigration
+                community.
+>>>>>>> 838e10c9c5ebe7b1e404ff4cf27218635bc564b8
               </p>
             </div>
 
@@ -468,7 +477,11 @@ export default function Index() {
                 <div className="hidden md:block">
                   <Input
                     type="text"
+<<<<<<< HEAD
                     placeholder="Search companies to report, business names, or scam types..."
+=======
+                    placeholder="Search companies, report scams, or check reviews..."
+>>>>>>> 838e10c9c5ebe7b1e404ff4cf27218635bc564b8
                     value={searchTerm}
                     onChange={(e) => handleSearchChange(e.target.value)}
                     onKeyPress={(e) => e.key === "Enter" && handleSearch()}
@@ -495,7 +508,11 @@ export default function Index() {
                   <div className="relative">
                     <Input
                       type="text"
+<<<<<<< HEAD
                       placeholder="Search companies to report..."
+=======
+                      placeholder="Search or report scams..."
+>>>>>>> 838e10c9c5ebe7b1e404ff4cf27218635bc564b8
                       value={searchTerm}
                       onChange={(e) => handleSearchChange(e.target.value)}
                       onKeyPress={(e) => e.key === "Enter" && handleSearch()}
@@ -512,20 +529,52 @@ export default function Index() {
                     <Button
                       onClick={() => navigate("/complaint")}
                       size="lg"
+<<<<<<< HEAD
                       className="px-12 py-3 bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 rounded-xl shadow-lg"
                     >
                       <AlertTriangle className="h-5 w-5 mr-2" />
                       Report Scam Now
+=======
+                      className="px-12 py-3 bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 rounded-xl shadow-lg text-white font-semibold"
+                    >
+                      <Search className="h-5 w-5 mr-2" />
+                      Check Company Safety
+>>>>>>> 838e10c9c5ebe7b1e404ff4cf27218635bc564b8
                     </Button>
                     <Button
                       onClick={handleSearch}
                       size="lg"
                       variant="outline"
+<<<<<<< HEAD
                       className="border-2 border-gray-500 text-gray-600 hover:bg-gray-50 shadow-lg px-8 py-3 rounded-xl font-semibold"
                     >
                       <Search className="h-5 w-5 mr-2" />
                       Search Companies
+=======
+                      className="border-2 border-red-500 text-red-600 hover:bg-red-50 shadow-lg px-8 py-3 rounded-xl font-semibold"
+                    >
+                      <Building2 className="h-5 w-5 mr-2" />
+                      Browse Verified Companies
+>>>>>>> 838e10c9c5ebe7b1e404ff4cf27218635bc564b8
                     </Button>
+                  </div>
+
+                  {/* Emergency Report Button */}
+                  <div className="mt-6 flex justify-center">
+                    <Button
+                      onClick={() => navigate("/complaint")}
+                      size="lg"
+                      className="px-16 py-4 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 hover:from-yellow-600 hover:via-orange-600 hover:to-red-600 text-white font-bold text-lg rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300 animate-pulse"
+                    >
+                      🚨 REPORT SCAM NOW
+                    </Button>
+                  </div>
+
+                  <div className="mt-4 text-center">
+                    <p className="text-sm text-gray-500">
+                      ⚡ Already been scammed? Report it immediately to warn
+                      others
+                    </p>
                   </div>
                 </div>
 
@@ -817,8 +866,13 @@ export default function Index() {
                       className="w-full bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700"
                       onClick={() => navigate("/complaint")}
                     >
+<<<<<<< HEAD
                       <AlertTriangle className="h-4 w-4 mr-2" />
                       Report This Company
+=======
+                      <Building2 className="h-4 w-4 mr-2" />
+                      Report Visa Scam
+>>>>>>> 838e10c9c5ebe7b1e404ff4cf27218635bc564b8
                     </Button>
                   </CardContent>
                 </Card>

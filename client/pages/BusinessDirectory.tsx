@@ -95,59 +95,37 @@ export default function BusinessDirectory() {
     setFilteredBusinesses(filtered);
   }, [searchTerm, businesses, selectedCategory]);
 
-  const fetchBusinesses = async () => {
+      const fetchBusinesses = async () => {
     try {
-      console.log("🔄 Fetching businesses for directory...");
-      const response = await fetch("/api/dubai-visa-services?limit=1000");
-      if (response.ok) {
-        const data = await response.json();
-        console.log(
-          "✅ Successfully loaded",
-          data.businesses?.length || 0,
-          "businesses",
-        );
-        setBusinesses(data.businesses || []);
+      console.log("🔄 Loading businesses using enhanced data loader...");
+
+      // Import and use the enhanced data loader
+      const { dataLoader } = await import("../utils/dataLoader");
+      const data = await dataLoader.loadBusinessData();
+
+      console.log(
+        "✅ Successfully loaded businesses:",
+        data.businesses.length,
+        "from source:",
+        data.meta.source
+      );
+
+      setBusinesses(data.businesses || []);
+
+      // Log additional info for debugging
+      if (data.businesses.length > 100) {
+        console.log("🎉 Full dataset loaded - all 841 businesses available!");
+      } else if (data.businesses.length === 3) {
+        console.log("⚠️ Fallback data detected - connection issue");
       } else {
-        console.error("❌ Failed to fetch businesses:", response.status);
-        // Fallback with sample data
-        setBusinesses([
-          {
-            id: "sample1",
-            name: "Dubai Visa Solutions",
-            address: "Business Bay, Dubai, UAE",
-            rating: 4.8,
-            reviewCount: 156,
-            category: "Visa Services",
-            phone: "+971 4 123 4567",
-            website: "dubaivisasolutions.com",
-            hasTargetKeyword: true,
-          },
-          {
-            id: "sample2",
-            name: "Emirates Immigration Consultants",
-            address: "DIFC, Dubai, UAE",
-            rating: 4.6,
-            reviewCount: 89,
-            category: "Immigration Services",
-            phone: "+971 4 987 6543",
-            website: "emiratesimmigration.ae",
-            hasTargetKeyword: true,
-          },
-          {
-            id: "sample3",
-            name: "Al Majid PRO Services",
-            address: "Deira, Dubai, UAE",
-            rating: 4.5,
-            reviewCount: 234,
-            category: "PRO Services",
-            phone: "+971 4 555 0123",
-            hasTargetKeyword: false,
-          },
-        ]);
+        console.log("📊 Partial dataset loaded:", data.businesses.length, "businesses");
       }
+
+      return;
     } catch (error) {
-      console.error("❌ Error fetching businesses:", error);
-      // Fallback with sample data
+      console.error("❌ Enhanced data loader failed:", error);
+
+      // Final fallback with sample data
       setBusinesses([
         {
           id: "sample1",
@@ -171,10 +149,59 @@ export default function BusinessDirectory() {
           website: "emiratesimmigration.ae",
           hasTargetKeyword: true,
         },
+        {
+          id: "sample3",
+          name: "Al Majid PRO Services",
+          address: "Deira, Dubai, UAE",
+          rating: 4.5,
+          reviewCount: 234,
+          category: "PRO Services",
+          phone: "+971 4 555 0123",
+          hasTargetKeyword: false,
+        },
       ]);
     } finally {
       setLoading(false);
     }
+  };
+      console.error("❌ Error fetching businesses:", error);
+      // Fallback with sample data
+            setBusinesses([
+        {
+          id: "sample1",
+          name: "Dubai Visa Solutions",
+          address: "Business Bay, Dubai, UAE",
+          rating: 4.8,
+          reviewCount: 156,
+          category: "Visa Services",
+          phone: "+971 4 123 4567",
+          website: "dubaivisasolutions.com",
+          hasTargetKeyword: true,
+        },
+        {
+          id: "sample2",
+          name: "Emirates Immigration Consultants",
+          address: "DIFC, Dubai, UAE",
+          rating: 4.6,
+          reviewCount: 89,
+          category: "Immigration Services",
+          phone: "+971 4 987 6543",
+          website: "emiratesimmigration.ae",
+          hasTargetKeyword: true,
+        },
+        {
+          id: "sample3",
+          name: "Al Majid PRO Services",
+          address: "Deira, Dubai, UAE",
+          rating: 4.5,
+          reviewCount: 234,
+          category: "PRO Services",
+          phone: "+971 4 555 0123",
+                    hasTargetKeyword: false,
+        },
+      ]);
+    }
+    setLoading(false);
   };
 
   const handleSearchChange = (value: string) => {

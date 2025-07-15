@@ -11,7 +11,7 @@ import Index from "./pages/Index";
 import ComplaintForm from "./pages/ComplaintForm";
 import CompanyReviews from "./pages/CompanyReviewsWorking";
 import CompanyProfileModern from "./pages/CompanyProfileModern";
-import BusinessDirectory from "./pages/BusinessDirectory";
+import BusinessDirectory from "./pages/BusinessDirectoryFixed";
 import BusinessListing from "./pages/BusinessListing";
 import HelpCenter from "./pages/HelpCenter";
 import ApiTest from "./pages/ApiTest";
@@ -29,6 +29,7 @@ import HostingerUpload from "./pages/HostingerUpload";
 import AdminBypass from "./pages/AdminBypass";
 import InstantAdmin from "./pages/InstantAdmin";
 import NotFound from "./pages/NotFound";
+import DataDiagnostic from "./components/DataDiagnostic";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,7 @@ const App = () => (
             <Route path="/hostinger-upload" element={<HostingerUpload />} />
             <Route path="/admin-login" element={<AdminBypass />} />
             <Route path="/admin-access" element={<InstantAdmin />} />
+            <Route path="/data-diagnostic" element={<DataDiagnostic />} />
             <Route path="/data-persistence" element={<DataPersistence />} />
             <Route path="/reviews-sync" element={<ReviewsSync />} />
             <Route

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AdminLogin } from "./AdminLogin";
+import SecureAdminAuth from "./SecureAdminAuth";
 
 interface ProtectedAdminProps {
   children: React.ReactNode;
@@ -37,7 +37,7 @@ export function ProtectedAdmin({ children }: ProtectedAdminProps) {
   }
 
   if (!isAuthenticated) {
-    return <AdminLogin onLogin={handleLogin} />;
+    return <SecureAdminAuth onAuthenticated={handleLogin} />;
   }
 
   return (
@@ -45,9 +45,7 @@ export function ProtectedAdmin({ children }: ProtectedAdminProps) {
       {/* Admin Header with logout */}
       <div className="bg-blue-600 text-white p-3 shadow-sm">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="font-semibold">
-            Dubai Business Directory - Admin Panel
-          </h1>
+          <h1 className="font-semibold">Report Visa Scam - Admin Panel</h1>
           <button
             onClick={handleLogout}
             className="bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded text-sm"
