@@ -34,7 +34,10 @@ export async function uploadAllGoogleImagesToHostinger(
     );
 
     const hostingerService = createHostingerService(HOSTINGER_CONFIG);
-    const googleFetcher = createGoogleImageFetcher(apiKey, hostingerService);
+    const googleFetcher = createSimpleGoogleImageFetcher(
+      apiKey,
+      hostingerService,
+    );
 
     const results = await googleFetcher.processAllBusinesses();
 
