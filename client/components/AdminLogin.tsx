@@ -110,10 +110,10 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
             </h4>
             <div className="text-sm text-blue-700 space-y-1">
               <p>
-                <strong>Admin ID:</strong> crossborder_admin
+                <strong>Admin ID:</strong> admin
               </p>
               <p>
-                <strong>Password:</strong> Dubai@2024!Upload
+                <strong>Password:</strong> admin123
               </p>
             </div>
           </div>
