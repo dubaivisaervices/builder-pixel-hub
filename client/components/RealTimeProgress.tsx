@@ -102,9 +102,22 @@ export function RealTimeProgress({
     };
   }, [isActive, onComplete]);
 
-  if (!isActive || !progressData) {
+  if (!isActive || !progressData || !progressData.batchNumber) {
     return null;
   }
+
+  // Ensure all required properties exist with defaults
+  const safeProgressData = {
+    batchNumber: progressData.batchNumber || 1,
+    totalBusinesses: progressData.totalBusinesses || 0,
+    currentBusiness: progressData.currentBusiness || 0,
+    businessName: progressData.businessName || "",
+    status: progressData.status || "processing",
+    logos: progressData.logos || 0,
+    photos: progressData.photos || 0,
+    errors: progressData.errors || [],
+    currentStep: progressData.currentStep || "",
+  };
 
   const progressPercentage =
     progressData.totalBusinesses > 0
