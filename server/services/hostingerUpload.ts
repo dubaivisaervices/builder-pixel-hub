@@ -14,6 +14,8 @@ interface HostingerConfig {
 
 export class HostingerUploadService {
   private config: HostingerConfig;
+  private ftpClient: ftp.Client | null = null;
+  private connectionPromise: Promise<void> | null = null;
 
   constructor(config: HostingerConfig) {
     this.config = config;
