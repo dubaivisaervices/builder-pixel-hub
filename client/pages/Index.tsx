@@ -139,123 +139,125 @@ export default function Index() {
             });
           }
 
-                    // Process categories - only if we have data
+          // Process categories - only if we have data
           const categoryCount: { [key: string]: number } = {};
           if (businessData.length > 0) {
             businessData.forEach((business) => {
               if (!business) return; // Skip invalid entries
-            const category = business.category?.toLowerCase() || "other";
+              const category = business.category?.toLowerCase() || "other";
 
-            if (
-              category.includes("work") ||
-              category.includes("employment") ||
-              category.includes("job")
-            ) {
-              categoryCount["work"] = (categoryCount["work"] || 0) + 1;
-            } else if (
-              category.includes("tourist") ||
-              category.includes("visit") ||
-              category.includes("travel")
-            ) {
-              categoryCount["tourist"] = (categoryCount["tourist"] || 0) + 1;
-            } else if (
-              category.includes("student") ||
-              category.includes("education") ||
-              category.includes("university")
-            ) {
-              categoryCount["student"] = (categoryCount["student"] || 0) + 1;
-            } else if (
-              category.includes("family") ||
-              category.includes("spouse") ||
-              category.includes("dependent")
-            ) {
-              categoryCount["family"] = (categoryCount["family"] || 0) + 1;
-            } else if (
-              category.includes("business") ||
-              category.includes("investor") ||
-              category.includes("trade")
-            ) {
-              categoryCount["business"] = (categoryCount["business"] || 0) + 1;
-            } else if (
-              category.includes("residence") ||
-              category.includes("permanent") ||
-              category.includes("settlement")
-            ) {
-              categoryCount["residence"] =
-                (categoryCount["residence"] || 0) + 1;
-            } else {
-              categoryCount["other"] = (categoryCount["other"] || 0) + 1;
-            }
-          });
+              if (
+                category.includes("work") ||
+                category.includes("employment") ||
+                category.includes("job")
+              ) {
+                categoryCount["work"] = (categoryCount["work"] || 0) + 1;
+              } else if (
+                category.includes("tourist") ||
+                category.includes("visit") ||
+                category.includes("travel")
+              ) {
+                categoryCount["tourist"] = (categoryCount["tourist"] || 0) + 1;
+              } else if (
+                category.includes("student") ||
+                category.includes("education") ||
+                category.includes("university")
+              ) {
+                categoryCount["student"] = (categoryCount["student"] || 0) + 1;
+              } else if (
+                category.includes("family") ||
+                category.includes("spouse") ||
+                category.includes("dependent")
+              ) {
+                categoryCount["family"] = (categoryCount["family"] || 0) + 1;
+              } else if (
+                category.includes("business") ||
+                category.includes("investor") ||
+                category.includes("trade")
+              ) {
+                categoryCount["business"] =
+                  (categoryCount["business"] || 0) + 1;
+              } else if (
+                category.includes("residence") ||
+                category.includes("permanent") ||
+                category.includes("settlement")
+              ) {
+                categoryCount["residence"] =
+                  (categoryCount["residence"] || 0) + 1;
+              } else {
+                categoryCount["other"] = (categoryCount["other"] || 0) + 1;
+              }
+            });
 
-          // Sort categories by count and get top 6
-          const sortedCategories = Object.entries(categoryCount)
-            .sort(([, a], [, b]) => b - a)
-            .slice(0, 6);
+            // Sort categories by count and get top 6
+            const sortedCategories = Object.entries(categoryCount)
+              .sort(([, a], [, b]) => b - a)
+              .slice(0, 6);
 
-          // Map to display format
-          const categoryDetails: {
-            [key: string]: {
-              title: string;
-              description: string;
-              icon: string;
-              color: string;
+            // Map to display format
+            const categoryDetails: {
+              [key: string]: {
+                title: string;
+                description: string;
+                icon: string;
+                color: string;
+              };
+            } = {
+              work: {
+                title: "Work Visa Services",
+                description:
+                  "Employment visa processing and work permit assistance",
+                icon: "💼",
+                color: "from-blue-500 to-blue-600",
+              },
+              tourist: {
+                title: "Tourist Visa Services",
+                description: "Visit visa and tourist visa applications",
+                icon: "🏖️",
+                color: "from-green-500 to-green-600",
+              },
+              student: {
+                title: "Student Visa Services",
+                description: "Education visa and university applications",
+                icon: "🎓",
+                color: "from-purple-500 to-purple-600",
+              },
+              family: {
+                title: "Family Visa Services",
+                description: "Family reunion and dependent visa processing",
+                icon: "👨‍👩‍👧‍👦",
+                color: "from-pink-500 to-pink-600",
+              },
+              business: {
+                title: "Business Visa Services",
+                description: "Investor visa and business setup assistance",
+                icon: "🏢",
+                color: "from-orange-500 to-orange-600",
+              },
+              residence: {
+                title: "Residence Visa Services",
+                description: "Permanent residence and citizenship support",
+                icon: "🏡",
+                color: "from-indigo-500 to-indigo-600",
+              },
+              other: {
+                title: "Other Visa Services",
+                description: "Additional visa services and consultation",
+                icon: "📋",
+                color: "from-gray-500 to-gray-600",
+              },
             };
-          } = {
-            work: {
-              title: "Work Visa Services",
-              description:
-                "Employment visa processing and work permit assistance",
-              icon: "💼",
-              color: "from-blue-500 to-blue-600",
-            },
-            tourist: {
-              title: "Tourist Visa Services",
-              description: "Visit visa and tourist visa applications",
-              icon: "🏖️",
-              color: "from-green-500 to-green-600",
-            },
-            student: {
-              title: "Student Visa Services",
-              description: "Education visa and university applications",
-              icon: "🎓",
-              color: "from-purple-500 to-purple-600",
-            },
-            family: {
-              title: "Family Visa Services",
-              description: "Family reunion and dependent visa processing",
-              icon: "👨‍👩‍👧‍👦",
-              color: "from-pink-500 to-pink-600",
-            },
-            business: {
-              title: "Business Visa Services",
-              description: "Investor visa and business setup assistance",
-              icon: "🏢",
-              color: "from-orange-500 to-orange-600",
-            },
-            residence: {
-              title: "Residence Visa Services",
-              description: "Permanent residence and citizenship support",
-              icon: "🏡",
-              color: "from-indigo-500 to-indigo-600",
-            },
-            other: {
-              title: "Other Visa Services",
-              description: "Additional visa services and consultation",
-              icon: "📋",
-              color: "from-gray-500 to-gray-600",
-            },
-          };
 
-          const topCategoriesData = sortedCategories.map(
-            ([category, count]) => ({
-              category,
-              count,
-              ...categoryDetails[category],
-            }),
-          );
+            const topCategoriesData = sortedCategories.map(
+              ([category, count]) => ({
+                category,
+                count,
+                ...categoryDetails[category],
+              }),
+            );
 
-          setTopCategories(topCategoriesData);
+            setTopCategories(topCategoriesData);
+          }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
