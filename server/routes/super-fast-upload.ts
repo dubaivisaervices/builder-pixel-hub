@@ -4,12 +4,12 @@ import { StepByStepGooglePhotos } from "../services/stepByStepGooglePhotos";
 
 // Hostinger FTP Configuration
 const HOSTINGER_CONFIG = {
-  host: process.env.HOSTINGER_FTP_HOST || "crossbordersmigrations.com",
+  host: process.env.HOSTINGER_FTP_HOST || "reportvisascam.com",
   user: process.env.HOSTINGER_FTP_USER || "u611952859.crossborder1120",
   password: process.env.HOSTINGER_FTP_PASSWORD || "One@click1",
   port: parseInt(process.env.HOSTINGER_FTP_PORT || "21"),
   remotePath: "/public_html/business-images",
-  baseUrl: "https://crossbordersmigrations.com/business-images",
+  baseUrl: "https://reportvisascam.com/business-images",
 };
 
 /**
