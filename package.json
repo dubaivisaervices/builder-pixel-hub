@@ -19,6 +19,7 @@
     "deploy": "node deploy-automatic.js",
     "deploy-auto": "node deploy-automatic.js --auto",
     "deploy-fix": "node deploy-database-fix.js",
+    "deploy-now": "node deploy-fixed.js",
     "deploy-db": "node deploy-database.js",
     "verify": "node verify-database.js",
     "inspect-ftp": "node inspect-ftp.js",
