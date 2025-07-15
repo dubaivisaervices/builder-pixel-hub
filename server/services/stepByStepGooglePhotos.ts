@@ -37,7 +37,7 @@ export class StepByStepGooglePhotos {
 
       const response = await axios.get(url, { params });
 
-      console.log(`📋 Find Place Response Status: ${response.data.status}`);
+      console.log(`���� Find Place Response Status: ${response.data.status}`);
       console.log(
         `📋 Find Place Response:`,
         JSON.stringify(response.data, null, 2),
@@ -267,28 +267,42 @@ export class StepByStepGooglePhotos {
         };
       }
 
-      // Step 3: Download First Photo
-      const fileName = `${businessName.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${Date.now()}.jpg`;
-      const filePath = await this.downloadPhoto(photoReferences[0], fileName);
+      // Step 3: Download Logo + Business Photos (up to 6 total)
+      const downloadResult = await this.downloadMultiplePhotos(
+        photoReferences,
+        businessName,
+      );
 
-      details.downloadAttempts.push({
-        photoReference: photoReferences[0],
-        fileName,
-        success: !!filePath,
-      });
+      details.downloadAttempts = downloadResult.errors;
 
-      if (!filePath) {
+      if (
+        !downloadResult.logoPath &&
+        downloadResult.businessPhotos.length === 0
+      ) {
         return {
           success: false,
-          error: "Failed to download photo in Step 3",
+          error: "Failed to download any photos in Step 3",
           details,
         };
       }
 
       console.log(`🎉 Complete workflow successful for: ${businessName}`);
+      console.log(
+        `📊 Downloaded: ${downloadResult.logoPath ? "Logo" : "No logo"} + ${downloadResult.businessPhotos.length} business photos`,
+      );
+
       return {
         success: true,
-        filePath,
+        logoPath: downloadResult.logoPath,
+        businessPhotos: downloadResult.businessPhotos,
+        downloadSummary: {
+          hasLogo: !!downloadResult.logoPath,
+          businessPhotoCount: downloadResult.businessPhotos.length,
+          totalDownloaded:
+            (downloadResult.logoPath ? 1 : 0) +
+            downloadResult.businessPhotos.length,
+          errors: downloadResult.errors,
+        },
         details,
       };
     } catch (error) {
