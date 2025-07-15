@@ -48,7 +48,7 @@ export async function uploadAllRealGooglePhotosToHostinger(
 
     // Get all businesses without logos
     const businesses = await database.all(
-      "SELECT id, name, address, place_id FROM businesses WHERE logo_s3_url IS NULL OR logo_s3_url = '' LIMIT 100",
+      "SELECT id, name, address FROM businesses WHERE logo_s3_url IS NULL OR logo_s3_url = '' LIMIT 100",
     );
 
     console.log(`📊 Found ${businesses.length} businesses to process`);
