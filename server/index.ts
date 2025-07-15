@@ -555,6 +555,14 @@ export function createServer() {
       return uploadAllImprovedGoogleImagesToHostinger(req, res);
     },
   );
+
+  // HYBRID: Google API + Smart Fallback (ALWAYS WORKS)
+  app.post("/api/admin/upload-all-hybrid-to-hostinger", async (req, res) => {
+    const { uploadAllHybridImagesToHostinger } = await import(
+      "./routes/hostinger-upload"
+    );
+    return uploadAllHybridImagesToHostinger(req, res);
+  });
   app.post(
     "/api/admin/upload-business-google-to-hostinger/:businessId",
     async (req, res) => {
