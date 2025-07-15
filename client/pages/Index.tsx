@@ -85,43 +85,34 @@ export default function Index() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Try to fetch ALL business data from database
+        // Try to fetch business data (static first, then API)
         let businesses = [];
 
-        // Try different API endpoints to get all businesses
+        // Try static data first (for production)
         try {
-          console.log(
-            "🔍 Attempting to fetch all 840 businesses from database...",
-          );
-          const response = await fetch(
-            "/api/dubai-visa-services?limit=1000&includeAll=true",
-          );
-          const data = await response.json();
-          businesses = data.businesses || [];
-
-          if (businesses.length < 500) {
-            // If we get limited results, try the admin endpoint for all businesses
+          console.log("🔍 Loading business data from static file...");
+          const response = await fetch("/data/businesses.json");
+          if (response.ok) {
+            const data = await response.json();
+            businesses = data.businesses || [];
             console.log(
-              `⚠️ Only got ${businesses.length} businesses, trying admin endpoint...`,
+              `✅ Loaded ${businesses.length} businesses from static data`,
             );
-            const adminResponse = await fetch(
-              "/api/admin/businesses-by-category",
-            );
-            const adminData = await adminResponse.json();
-
-            if (adminData.success && adminData.data) {
-              // Flatten category-based data into single array
-              businesses = Object.values(adminData.data).flat();
-              console.log(
-                `✅ Admin endpoint returned ${businesses.length} businesses`,
-              );
-            }
           }
         } catch (error) {
-          console.log("📡 Using fallback API call...");
-          const response = await fetch("/api/businesses");
-          const data = await response.json();
-          businesses = data.businesses || [];
+          console.log("📡 Static data not found, trying API...");
+        }
+
+        // Fallback to API if static data not available
+        if (businesses.length === 0) {
+          try {
+            const response = await fetch("/api/dubai-visa-services?limit=1000");
+            const data = await response.json();
+            businesses = data.businesses || [];
+            console.log(`✅ Loaded ${businesses.length} businesses from API`);
+          } catch (error) {
+            console.log("❌ API also failed, using fallback data");
+          }
         }
 
         console.log(
