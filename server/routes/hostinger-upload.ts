@@ -38,7 +38,7 @@ export async function uploadAllRealGooglePhotosToHostinger(
     }
 
     console.log(
-      "🚀 Starting REAL Google Places photo processing for ALL businesses...",
+      "🚀 Starting STEP-BY-STEP Google Places API workflow for authentic business photos...",
     );
     console.log(
       `🔑 API Key status: ${apiKey ? `SET (${apiKey.substring(0, 10)}...)` : "NOT SET"}`,
@@ -69,9 +69,7 @@ export async function uploadAllRealGooglePhotosToHostinger(
         console.log(`\n🔍 Processing: ${business.name}`);
         results.processed++;
 
-        // Use step-by-step Google Places API workflow
-        console.log(`\n🔄 Processing business: ${business.name}`);
-
+        // Execute complete step-by-step workflow
         const photoResult = await stepByStepService.getBusinessPhoto(
           business.name,
         );
@@ -89,62 +87,43 @@ export async function uploadAllRealGooglePhotosToHostinger(
           continue;
         }
 
-        const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${business.photo_reference}&key=${apiKey}`;
-
         try {
-          const axios = await import("axios");
-          const path = await import("path");
-          const fs = await import("fs");
-
-          const photoResponse = await axios.default.get(photoUrl, {
-            responseType: "stream",
-            maxRedirects: 5,
-          });
-
-          const tempDir = path.resolve(__dirname, "../temp_images");
-          if (!fs.existsSync(tempDir)) {
-            fs.mkdirSync(tempDir, { recursive: true });
-          }
-
-          const fileName = `${business.name.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_${Date.now()}.jpg`;
-          const filePath = path.resolve(tempDir, fileName);
-          const writer = fs.createWriteStream(filePath);
-
-          photoResponse.data.pipe(writer);
-
-          await new Promise((resolve, reject) => {
-            writer.on("finish", resolve);
-            writer.on("error", reject);
-          });
-
           // Upload to Hostinger
-          const imageBuffer = fs.readFileSync(filePath);
+          const fs = await import("fs");
+          const imageBuffer = fs.readFileSync(photoResult.filePath);
           const logoUrl = await hostingerService.uploadBusinessLogo(
             imageBuffer,
             business.id,
-            filePath,
+            photoResult.filePath,
           );
 
           // Save to database
           await businessService.updateBusinessLogo(business.id, logoUrl);
 
           // Cleanup temp file
-          fs.unlinkSync(filePath);
-        } catch (photoError) {
+          stepByStepService.cleanupFile(photoResult.filePath);
+
+          console.log(
+            `✅ Successfully processed ${business.name} with step-by-step workflow`,
+          );
+          results.successful++;
+        } catch (uploadError) {
           console.error(
-            `❌ Error downloading photo for ${business.name}:`,
-            photoError,
+            `❌ Error uploading to Hostinger for ${business.name}:`,
+            uploadError,
           );
           results.failed++;
-          results.errors.push(`${business.name}: ${photoError.message}`);
+          results.errors.push(
+            `${business.name}: Upload failed - ${uploadError.message}`,
+          );
+
+          // Cleanup temp file even on error
+          stepByStepService.cleanupFile(photoResult.filePath);
           continue;
         }
 
-        console.log(`✅ Successfully uploaded real photo for ${business.name}`);
-        results.successful++;
-
         // Small delay to avoid rate limiting
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       } catch (error) {
         console.error(`❌ Error processing ${business.name}:`, error);
         results.failed++;
@@ -152,15 +131,21 @@ export async function uploadAllRealGooglePhotosToHostinger(
       }
     }
 
-    console.log("✅ REAL Google Places photo processing completed:", results);
+    console.log(
+      "✅ STEP-BY-STEP Google Places photo processing completed:",
+      results,
+    );
 
     res.json({
       success: true,
-      message: "REAL Google Places photos processed successfully",
+      message: "Step-by-step Google Places photos processed successfully",
       results,
     });
   } catch (error) {
-    console.error("❌ REAL Google Places photo processing error:", error);
+    console.error(
+      "❌ Step-by-step Google Places photo processing error:",
+      error,
+    );
     res.status(500).json({
       success: false,
       error: error.message,
