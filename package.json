@@ -32,6 +32,7 @@
     "force-deploy": "node force-hostinger-deployment.js",
     "check-files": "node check-hostinger-files.js",
     "build-deploy-correct": "node build-and-deploy-correct.js",
+    "aggressive-fix": "node aggressive-fix.js",
     "diagnose": "node diagnose-hosting-issue.js",
     "fix-deployment": "node fix-deployment-now.js",
     "create-sqlite": "node create-sqlite-database.js",
