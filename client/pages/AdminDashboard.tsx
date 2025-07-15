@@ -212,65 +212,6 @@ export default function AdminDashboard() {
     navigate(urlMap[tabId as keyof typeof urlMap] || "/admin");
   };
 
-  // Login Screen
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
-        <Card className="w-full max-w-md shadow-2xl border-0 bg-white/10 backdrop-blur-xl">
-          <CardHeader className="text-center">
-            <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-red-500 to-orange-600 rounded-full">
-              <Lock className="h-8 w-8 text-white" />
-            </div>
-            <CardTitle className="text-2xl font-bold text-white">
-              Admin Access
-            </CardTitle>
-            <p className="text-gray-300">Secure authentication required</p>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div>
-                <Input
-                  type="text"
-                  placeholder="Username"
-                  value={loginForm.username}
-                  onChange={(e) =>
-                    setLoginForm({ ...loginForm, username: e.target.value })
-                  }
-                  className="bg-white/10 border-white/20 text-white placeholder-gray-400"
-                  required
-                />
-              </div>
-              <div>
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  value={loginForm.password}
-                  onChange={(e) =>
-                    setLoginForm({ ...loginForm, password: e.target.value })
-                  }
-                  className="bg-white/10 border-white/20 text-white placeholder-gray-400"
-                  required
-                />
-              </div>
-              {loginError && (
-                <div className="text-red-400 text-sm text-center">
-                  {loginError}
-                </div>
-              )}
-              <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700"
-              >
-                <Shield className="h-4 w-4 mr-2" />
-                Secure Login
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
   // Admin Dashboard
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
