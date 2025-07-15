@@ -181,6 +181,12 @@ export function createServer() {
   app.get("/api/businesses", searchDubaiVisaServices);
   app.get("/api/dubai-visa-services", searchDubaiVisaServices);
 
+  // NEW: Test Google API debugging route
+  app.get("/api/admin/test-google-api-debug", async (req, res) => {
+    const { testGoogleAPI } = await import("./routes/test-google-api");
+    return testGoogleAPI(req, res);
+  });
+
   // Business photos endpoint
   app.get("/api/business-photos/:businessId", async (req, res) => {
     try {
