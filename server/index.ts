@@ -563,6 +563,17 @@ export function createServer() {
     );
     return uploadAllHybridImagesToHostinger(req, res);
   });
+
+  // FULL PROCESSING: Upload ALL remaining businesses
+  app.post(
+    "/api/admin/upload-all-remaining-hybrid-to-hostinger",
+    async (req, res) => {
+      const { uploadAllRemainingHybridImagesToHostinger } = await import(
+        "./routes/hostinger-upload"
+      );
+      return uploadAllRemainingHybridImagesToHostinger(req, res);
+    },
+  );
   app.post(
     "/api/admin/upload-business-google-to-hostinger/:businessId",
     async (req, res) => {
