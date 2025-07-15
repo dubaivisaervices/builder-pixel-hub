@@ -1551,6 +1551,12 @@ export function createServer() {
     return debugHostingerConnection(req, res);
   });
 
+  // TEST: Test actual Hostinger upload service
+  app.get("/api/admin/test-upload", async (req, res) => {
+    const { testHostingerUpload } = await import("./routes/test-upload");
+    return testHostingerUpload(req, res);
+  });
+
   // Let Vite handle all development assets and modules
   // Only intercept non-API, non-asset routes for SPA fallback
   app.get(
