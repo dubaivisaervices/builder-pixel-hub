@@ -166,7 +166,7 @@ export default function BusinessDirectory() {
   };
       console.error("❌ Error fetching businesses:", error);
       // Fallback with sample data
-      setBusinesses([
+            setBusinesses([
         {
           id: "sample1",
           name: "Dubai Visa Solutions",
@@ -188,6 +188,16 @@ export default function BusinessDirectory() {
           phone: "+971 4 987 6543",
           website: "emiratesimmigration.ae",
           hasTargetKeyword: true,
+        },
+        {
+          id: "sample3",
+          name: "Al Majid PRO Services",
+          address: "Deira, Dubai, UAE",
+          rating: 4.5,
+          reviewCount: 234,
+          category: "PRO Services",
+          phone: "+971 4 555 0123",
+          hasTargetKeyword: false,
         },
       ]);
     } finally {
