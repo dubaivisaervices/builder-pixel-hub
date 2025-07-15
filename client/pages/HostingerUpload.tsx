@@ -42,6 +42,19 @@ function HostingerUpload() {
   const [currentBatch, setCurrentBatch] = useState(1);
   const [showRealTimeProgress, setShowRealTimeProgress] = useState(false);
 
+  const testProgressTracking = async () => {
+    setShowRealTimeProgress(true);
+    try {
+      const response = await fetch("/api/admin/test-progress", {
+        method: "POST",
+      });
+      const result = await response.json();
+      console.log("Test progress result:", result);
+    } catch (error) {
+      console.error("Test progress error:", error);
+    }
+  };
+
   const testConnection = async () => {
     setTesting(true);
     setTestResult(null);
