@@ -97,12 +97,31 @@ export default function BusinessDirectory() {
 
   const fetchBusinesses = async () => {
     try {
-      console.log("🔄 Fetching businesses for directory...");
+      console.log("🔄 Loading businesses from static data...");
+
+      // Try to load static data first (for production)
+      try {
+        const response = await fetch("/data/businesses.json");
+        if (response.ok) {
+          const data = await response.json();
+          console.log(
+            "✅ Loaded from static data:",
+            data.businesses?.length || 0,
+            "businesses",
+          );
+          setBusinesses(data.businesses || []);
+          return;
+        }
+      } catch (error) {
+        console.log("📡 Static data not found, trying API...");
+      }
+
+      // Fallback to API (for development)
       const response = await fetch("/api/dubai-visa-services?limit=1000");
       if (response.ok) {
         const data = await response.json();
         console.log(
-          "✅ Successfully loaded",
+          "✅ Successfully loaded from API:",
           data.businesses?.length || 0,
           "businesses",
         );
