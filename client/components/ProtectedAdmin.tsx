@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AdminLogin } from "./AdminLogin";
+import SecureAdminAuth from "./SecureAdminAuth";
 
 interface ProtectedAdminProps {
   children: React.ReactNode;
