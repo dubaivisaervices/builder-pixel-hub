@@ -185,7 +185,7 @@ export class StepByStepGooglePhotos {
         params,
         responseType: "stream",
         maxRedirects: 5,
-        timeout: 30000,
+        timeout: 15000,
       });
 
       console.log(`📋 Photo Response Status: ${response.status}`);
