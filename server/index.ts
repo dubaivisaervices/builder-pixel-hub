@@ -633,6 +633,12 @@ export function createServer() {
     });
   });
 
+  // TEST: Test progress tracking system
+  app.post("/api/admin/test-progress", async (req, res) => {
+    const { testProgressTracking } = await import("./routes/test-progress");
+    return testProgressTracking(req, res);
+  });
+
   // FULL PROCESSING: Upload ALL remaining businesses
   app.post(
     "/api/admin/upload-all-remaining-hybrid-to-hostinger",
