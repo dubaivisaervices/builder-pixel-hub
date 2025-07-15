@@ -156,6 +156,43 @@ function HostingerUpload() {
     }
   };
 
+  const uploadAllHybridImages = async () => {
+    setUploading(true);
+    setUploadResults(null);
+
+    try {
+      const response = await fetch(
+        "/api/admin/upload-all-hybrid-to-hostinger",
+        {
+          method: "POST",
+        },
+      );
+      const result = await response.json();
+
+      if (result.success) {
+        setUploadResults(result.results);
+      } else {
+        setUploadResults({
+          processed: 0,
+          successful: 0,
+          totalLogos: 0,
+          totalPhotos: 0,
+          errors: [result.error],
+        });
+      }
+    } catch (error) {
+      setUploadResults({
+        processed: 0,
+        successful: 0,
+        totalLogos: 0,
+        totalPhotos: 0,
+        errors: [error.message],
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const uploadAllBase64ToHostinger = async () => {
     setUploading(true);
     setUploadResults(null);
