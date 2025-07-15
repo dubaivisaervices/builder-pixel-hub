@@ -188,7 +188,7 @@ export function RealTimeProgress({
             <div className="flex items-center justify-center gap-1 mb-1">
               <XCircle className="h-4 w-4 text-red-600" />
               <span className="text-lg font-bold text-red-600">
-                {progressData.errors.length}
+                {progressData.errors?.length || 0}
               </span>
             </div>
             <div className="text-xs text-gray-600">Errors</div>
