@@ -704,6 +704,37 @@ function HostingerUpload() {
               </span>
             </div>
 
+            {/* AUTO PROCESS ALL - Main Feature */}
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg p-4">
+              <div className="text-center space-y-3">
+                <h3 className="text-lg font-bold text-purple-800">
+                  🤖 FULLY AUTOMATIC PROCESSING
+                </h3>
+                <p className="text-sm text-purple-700">
+                  Process ALL businesses automatically. System will handle all
+                  batches sequentially with super fast parallel processing.
+                </p>
+                <Button
+                  onClick={autoProcessAll}
+                  disabled={uploading}
+                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold text-lg"
+                  size="lg"
+                >
+                  {uploading
+                    ? "🤖 AUTO PROCESSING ALL BUSINESSES..."
+                    : "🚀 AUTO PROCESS ALL BUSINESSES"}
+                </Button>
+                <div className="text-xs text-purple-600">
+                  ✅ Super Fast Parallel Processing | ✅ Automatic Batch
+                  Management | ✅ Real-time Progress
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center text-sm text-gray-500">
+              --- Manual Options ---
+            </div>
+
             <div className="flex items-center gap-4">
               <label className="text-sm font-medium">Batch Number:</label>
               <Input
