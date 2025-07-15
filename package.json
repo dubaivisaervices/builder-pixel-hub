@@ -21,7 +21,7 @@
     "verify": "node verify-database.js",
     "inspect-ftp": "node inspect-ftp.js",
     "explore": "node explore-ftp.js",
-    "export-data": "node export-data.mjs",
+    "export-data": "node export-businesses.mjs",
     "inspect-schema": "node inspect-schema.mjs",
     "test": "vitest --run",
     "format.fix": "prettier --write .",
