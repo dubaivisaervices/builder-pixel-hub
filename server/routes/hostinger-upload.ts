@@ -762,6 +762,9 @@ export async function uploadBatch50RealGooglePhotos(
 
     // Initialize progress tracking
     const { progressTracker } = await import("../services/progressTracker");
+    console.log(
+      `🚀 Batch ${batchNumber}: Initializing progress tracking for ${businesses.length} businesses`,
+    );
     progressTracker.startBatch(batchNumber, businesses.length);
 
     // Process businesses one by one
