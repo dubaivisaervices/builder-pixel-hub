@@ -319,7 +319,7 @@ function HostingerUpload() {
 
           {uploadResults && (
             <div className="space-y-3">
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div className="text-center p-3 bg-blue-50 rounded-lg">
                   <div className="text-2xl font-bold text-blue-600">
                     {uploadResults.processed}
@@ -331,6 +331,18 @@ function HostingerUpload() {
                     {uploadResults.successful}
                   </div>
                   <div className="text-sm text-green-800">Successful</div>
+                </div>
+                <div className="text-center p-3 bg-purple-50 rounded-lg">
+                  <div className="text-2xl font-bold text-purple-600">
+                    {uploadResults.totalLogos || 0}
+                  </div>
+                  <div className="text-sm text-purple-800">Logos</div>
+                </div>
+                <div className="text-center p-3 bg-indigo-50 rounded-lg">
+                  <div className="text-2xl font-bold text-indigo-600">
+                    {uploadResults.totalPhotos || 0}
+                  </div>
+                  <div className="text-sm text-indigo-800">Photos</div>
                 </div>
                 <div className="text-center p-3 bg-red-50 rounded-lg">
                   <div className="text-2xl font-bold text-red-600">
