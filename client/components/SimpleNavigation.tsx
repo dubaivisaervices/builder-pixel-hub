@@ -49,7 +49,7 @@ const SimpleNavigation = () => {
               <Building2 className="h-5 w-5 text-white" />
             </div>
             <span className="hidden sm:inline-block font-bold text-xl text-gray-900">
-              Dubai Business Directory
+              Report Visa Scam
             </span>
             <span className="sm:hidden font-bold text-xl text-gray-900">
               DBD
