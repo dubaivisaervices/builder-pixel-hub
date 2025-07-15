@@ -39,6 +39,9 @@ export async function uploadAllRealGooglePhotosToHostinger(
     console.log(
       "🚀 Starting REAL Google Places photo processing for ALL businesses...",
     );
+    console.log(
+      `🔑 API Key status: ${apiKey ? `SET (${apiKey.substring(0, 10)}...)` : "NOT SET"}`,
+    );
 
     const { database } = await import("../database/database");
     const { BusinessService } = await import("../database/businessService");
