@@ -8,6 +8,7 @@ import { createImprovedGoogleImageFetcher } from "../services/improvedGoogleImag
 import { createHybridGoogleImageFetcher } from "../services/hybridGoogleImageFetcher";
 import { createHybridGoogleImageFetcherAll } from "../services/hybridGoogleImageFetcherAll";
 import { RealGoogleBusinessPhotos } from "../services/realGoogleBusinessPhotos";
+import { StepByStepGooglePhotos } from "../services/stepByStepGooglePhotos";
 
 // Hostinger FTP Configuration
 const HOSTINGER_CONFIG = {
