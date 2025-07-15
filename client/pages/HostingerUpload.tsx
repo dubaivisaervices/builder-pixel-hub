@@ -564,8 +564,8 @@ function HostingerUpload() {
             </Button>
 
             <div className="text-center text-sm text-green-600 font-bold">
-              Uses complete Google Places API workflow: Find Place ID → Get
-              Place Details → Download Real Photos
+              🎯 COMPLETE WORKFLOW: Find Place ID → Get Photos → Download LOGO +
+              up to 5 BUSINESS PHOTOS → Upload to Hostinger
             </div>
 
             <div className="text-center text-sm text-gray-500">
