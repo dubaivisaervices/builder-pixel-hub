@@ -69,11 +69,23 @@ export async function uploadAllRealGooglePhotosToHostinger(
         console.log(`\n🔍 Processing: ${business.name}`);
         results.processed++;
 
-        // Use existing photo reference to download real Google photo
-        if (!business.photo_reference) {
-          console.log(`❌ No photo reference for ${business.name}`);
+        // Use step-by-step Google Places API workflow
+        console.log(`\n🔄 Processing business: ${business.name}`);
+
+        const photoResult = await stepByStepService.getBusinessPhoto(
+          business.name,
+        );
+
+        if (!photoResult.success || !photoResult.filePath) {
+          console.log(
+            `❌ Step-by-step workflow failed for ${business.name}: ${photoResult.error}`,
+          );
+          console.log(
+            `📋 Workflow details:`,
+            JSON.stringify(photoResult.details, null, 2),
+          );
           results.failed++;
-          results.errors.push(`${business.name}: No photo reference`);
+          results.errors.push(`${business.name}: ${photoResult.error}`);
           continue;
         }
 
