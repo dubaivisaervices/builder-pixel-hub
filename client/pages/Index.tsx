@@ -519,6 +519,24 @@ export default function Index() {
                       Browse Verified Companies
                     </Button>
                   </div>
+
+                  {/* Emergency Report Button */}
+                  <div className="mt-6 flex justify-center">
+                    <Button
+                      onClick={() => navigate("/complaint")}
+                      size="lg"
+                      className="px-16 py-4 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 hover:from-yellow-600 hover:via-orange-600 hover:to-red-600 text-white font-bold text-lg rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300 animate-pulse"
+                    >
+                      🚨 REPORT SCAM NOW
+                    </Button>
+                  </div>
+
+                  <div className="mt-4 text-center">
+                    <p className="text-sm text-gray-500">
+                      ⚡ Already been scammed? Report it immediately to warn
+                      others
+                    </p>
+                  </div>
                 </div>
 
                 {/* Search Suggestions */}
