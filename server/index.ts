@@ -544,6 +544,17 @@ export function createServer() {
     );
     return uploadAllGoogleImagesToHostinger(req, res);
   });
+
+  // IMPROVED: Google Places with better authentication to Hostinger
+  app.post(
+    "/api/admin/upload-all-improved-google-to-hostinger",
+    async (req, res) => {
+      const { uploadAllImprovedGoogleImagesToHostinger } = await import(
+        "./routes/hostinger-upload"
+      );
+      return uploadAllImprovedGoogleImagesToHostinger(req, res);
+    },
+  );
   app.post(
     "/api/admin/upload-business-google-to-hostinger/:businessId",
     async (req, res) => {
