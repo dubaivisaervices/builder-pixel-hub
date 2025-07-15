@@ -481,12 +481,12 @@ export default function Index() {
                     className="h-16 pl-6 pr-32 text-lg bg-white/90 backdrop-blur-sm border-2 border-gray-200 focus:border-blue-400 rounded-2xl shadow-xl group-hover:shadow-2xl transition-all duration-300"
                   />
                   <Button
-                    onClick={handleSearch}
+                    onClick={() => navigate("/complaint")}
                     size="lg"
-                    className="absolute right-2 top-2 h-12 px-8 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-xl shadow-lg"
+                    className="absolute right-2 top-2 h-12 px-8 bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 rounded-xl shadow-lg"
                   >
-                    <Search className="h-5 w-5 mr-2" />
-                    Search
+                    <AlertTriangle className="h-5 w-5 mr-2" />
+                    Report
                   </Button>
                 </div>
 
