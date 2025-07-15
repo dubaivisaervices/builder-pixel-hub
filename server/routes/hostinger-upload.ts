@@ -19,6 +19,51 @@ const HOSTINGER_CONFIG = {
 };
 
 /**
+ * Upload ALL REMAINING business images using hybrid approach (PROCESSES ALL BUSINESSES)
+ */
+export async function uploadAllRemainingHybridImagesToHostinger(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+
+    if (!apiKey) {
+      return res.status(400).json({
+        success: false,
+        error: "Google Places API key not configured",
+      });
+    }
+
+    console.log(
+      "🚀 Starting FULL HYBRID processing for ALL remaining businesses...",
+    );
+
+    const hostingerService = createHostingerService(HOSTINGER_CONFIG);
+    const hybridFetcher = createHybridGoogleImageFetcherAll(
+      apiKey,
+      hostingerService,
+    );
+
+    const results = await hybridFetcher.processAllBusinesses();
+
+    console.log("✅ FULL Hybrid processing completed:", results);
+
+    res.json({
+      success: true,
+      message: "ALL remaining businesses processed successfully",
+      results,
+    });
+  } catch (error) {
+    console.error("❌ FULL Hybrid processing error:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+}
+
+/**
  * Upload all business images using hybrid Google+Fallback approach (WORKS EVEN WHEN GOOGLE FAILS)
  */
 export async function uploadAllHybridImagesToHostinger(
