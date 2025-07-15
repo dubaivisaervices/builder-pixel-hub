@@ -13,7 +13,49 @@ const HOSTINGER_CONFIG = {
 };
 
 /**
- * Upload all business images from Google API to Hostinger
+ * Upload all business images from Google Places API to Hostinger (NEW METHOD)
+ */
+export async function uploadAllGoogleImagesToHostinger(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+
+    if (!apiKey) {
+      return res.status(400).json({
+        success: false,
+        error: "Google Places API key not configured",
+      });
+    }
+
+    console.log(
+      "🚀 Starting Google Places bulk fetch and upload to Hostinger...",
+    );
+
+    const hostingerService = createHostingerService(HOSTINGER_CONFIG);
+    const googleFetcher = createGoogleImageFetcher(apiKey, hostingerService);
+
+    const results = await googleFetcher.processAllBusinesses();
+
+    console.log("✅ Google Places bulk upload completed:", results);
+
+    res.json({
+      success: true,
+      message: "Google Places bulk upload to Hostinger completed",
+      results,
+    });
+  } catch (error) {
+    console.error("❌ Google Places bulk upload error:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+}
+
+/**
+ * Upload all business images from existing database URLs to Hostinger (OLD METHOD)
  */
 export async function uploadAllImagesToHostinger(req: Request, res: Response) {
   try {
