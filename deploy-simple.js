@@ -46,8 +46,13 @@ async function deploySimple() {
     }
 
     // Create and upload assets directory
-    console.log("\n📁 Creating assets directory...");
-    await client.send("MKD assets");
+    console.log("\n📁 Ensuring assets directory...");
+    try {
+      await client.send("MKD assets");
+      console.log("📂 Assets directory created");
+    } catch (error) {
+      console.log("📂 Assets directory already exists");
+    }
 
     const assetsPath = path.join(spaPath, "assets");
     if (fs.existsSync(assetsPath)) {
