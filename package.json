@@ -17,12 +17,9 @@
     "build:client": "vite build",
     "build:server": "vite build --config vite.config.server.ts",
     "start": "node dist/server/node-build.mjs",
-<<<<<<< HEAD
-    "deploy": "node deploy-website-fixed.js",
-    "deploy-website": "node deploy-website-only.js",
-=======
     "start:sqlite": "node dist/server/sqlite-server.js",
-    "deploy": "node deploy-automatic.js",
+    "deploy": "node deploy-complete.js",
+    "deploy-website": "node deploy-website-only.js",
     "deploy-auto": "node deploy-automatic.js --auto",
     "deploy-fix": "node deploy-database-fix.js",
     "deploy-now": "node deploy-fixed.js",
@@ -42,7 +39,6 @@
     "create-sqlite": "node create-sqlite-database.js",
     "upload-sqlite": "node upload-sqlite-hostinger.js",
     "sqlite-full": "npm run create-sqlite && npm run upload-sqlite",
->>>>>>> 838e10c9c5ebe7b1e404ff4cf27218635bc564b8
     "deploy-db": "node deploy-database.js",
     "verify": "node verify-database.js",
     "inspect-ftp": "node inspect-ftp.js",
