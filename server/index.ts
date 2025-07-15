@@ -583,6 +583,17 @@ export function createServer() {
     },
   );
 
+  // BATCH 50: Upload businesses in batches of 50 using Real Google Places photos
+  app.post(
+    "/api/admin/upload-batch-50-real-google-to-hostinger",
+    async (req, res) => {
+      const { uploadBatch50RealGooglePhotos } = await import(
+        "./routes/hostinger-upload"
+      );
+      return uploadBatch50RealGooglePhotos(req, res);
+    },
+  );
+
   // FULL PROCESSING: Upload ALL remaining businesses
   app.post(
     "/api/admin/upload-all-remaining-hybrid-to-hostinger",
