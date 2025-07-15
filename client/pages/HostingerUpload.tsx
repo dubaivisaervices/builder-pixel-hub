@@ -241,6 +241,7 @@ function HostingerUpload() {
   const uploadBatch50RealGooglePhotos = async (batchNumber: number = 1) => {
     setUploading(true);
     setUploadResults(null);
+    setShowRealTimeProgress(true);
 
     try {
       const response = await fetch(
