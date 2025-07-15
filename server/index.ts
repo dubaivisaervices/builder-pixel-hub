@@ -594,6 +594,45 @@ export function createServer() {
     },
   );
 
+  // PROGRESS: Server-Sent Events for real-time progress tracking
+  app.get("/api/admin/progress-stream", (req, res) => {
+    res.writeHead(200, {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Cache-Control",
+    });
+
+    const { progressTracker } = require("./services/progressTracker");
+
+    // Send current progress if available
+    const currentProgress = progressTracker.getCurrentProgress();
+    if (currentProgress) {
+      res.write(`data: ${JSON.stringify(currentProgress)}\n\n`);
+    }
+
+    // Subscribe to progress updates
+    const unsubscribe = progressTracker.subscribe((update) => {
+      res.write(`data: ${JSON.stringify(update)}\n\n`);
+    });
+
+    // Handle client disconnect
+    req.on("close", () => {
+      unsubscribe();
+    });
+
+    // Keep connection alive
+    const keepAlive = setInterval(() => {
+      res.write(": keepalive\n\n");
+    }, 30000);
+
+    req.on("close", () => {
+      clearInterval(keepAlive);
+      unsubscribe();
+    });
+  });
+
   // FULL PROCESSING: Upload ALL remaining businesses
   app.post(
     "/api/admin/upload-all-remaining-hybrid-to-hostinger",
