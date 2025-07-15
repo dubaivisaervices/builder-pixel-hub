@@ -485,7 +485,7 @@ function HostingerUpload() {
             code/server/routes/hostinger-upload.ts
           </code>
           <div className="mt-3 space-y-1 text-sm">
-            <p>��� Replace HOSTINGER_CONFIG with your actual FTP credentials</p>
+            <p>• Replace HOSTINGER_CONFIG with your actual FTP credentials</p>
             <p>• Set your domain URL for image access</p>
             <p>• Ensure /public_html/business-images directory exists</p>
           </div>
@@ -801,6 +801,22 @@ function HostingerUpload() {
 
           {uploadResults && (
             <div className="space-y-3">
+              {uploadResults.batchNumber && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                  <h4 className="font-medium text-blue-800 mb-1">
+                    Batch {uploadResults.batchNumber} Results
+                  </h4>
+                  <p className="text-sm text-blue-600">
+                    Processed businesses{" "}
+                    {(uploadResults.batchNumber - 1) *
+                      (uploadResults.batchSize || 50) +
+                      1}
+                    -
+                    {uploadResults.batchNumber *
+                      (uploadResults.batchSize || 50)}
+                  </p>
+                </div>
+              )}
               <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
                 <div className="text-center p-3 bg-blue-50 rounded-lg">
                   <div className="text-xl font-bold text-blue-600">
