@@ -807,7 +807,7 @@ export default function Index() {
                       onClick={() => navigate("/dubai-businesses")}
                     >
                       <Building2 className="h-4 w-4 mr-2" />
-                      Dubai Business Directory
+                      Report Visa Scam
                     </Button>
                   </CardContent>
                 </Card>
