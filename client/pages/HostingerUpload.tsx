@@ -366,27 +366,40 @@ function HostingerUpload() {
 
           <div className="space-y-3">
             <Button
+              onClick={uploadAllGooglePhotos}
+              disabled={uploading}
+              className="w-full bg-purple-600 hover:bg-purple-700"
+              size="lg"
+            >
+              {uploading
+                ? "Fetching via Google Photos Proxy..."
+                : "🔥 Google Photos Proxy (FIXED)"}
+            </Button>
+
+            <div className="text-center text-sm text-gray-500">
+              or try alternatives
+            </div>
+
+            <Button
               onClick={uploadAllCachedImages}
               disabled={uploading}
-              className="w-full bg-green-600 hover:bg-green-700"
+              className="w-full bg-gray-600 hover:bg-gray-700"
               size="lg"
             >
               {uploading
                 ? "Uploading Cached Images..."
-                : "✅ Upload from Cached Images (WORKING)"}
+                : "📁 Cached Images (No data available)"}
             </Button>
-
-            <div className="text-center text-sm text-gray-500">or</div>
 
             <Button
               onClick={uploadAllGoogleImages}
               disabled={uploading}
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className="w-full bg-yellow-600 hover:bg-yellow-700"
               size="lg"
             >
               {uploading
                 ? "Fetching from Google Places..."
-                : "🚀 Fetch from Google Places API (May fail)"}
+                : "⚠️ Direct Google API (Known to fail)"}
             </Button>
 
             <Button
@@ -398,7 +411,7 @@ function HostingerUpload() {
             >
               {uploading
                 ? "Uploading All Images..."
-                : "Upload from Database URLs"}
+                : "📂 Database URLs (Old method)"}
             </Button>
           </div>
 
