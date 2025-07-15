@@ -1,5 +1,5 @@
 // Dubai Business Directory Data
-// Generated: 2025-07-15T15:36:05.845Z
+// Generated: 2025-07-15T16:23:54.464Z
 // Total: 841 businesses
 
 export const businessData = {
@@ -22656,7 +22656,7 @@ export const businessData = {
   "stats": {
     "total": 841,
     "categoriesCount": 66,
-    "exportDate": "2025-07-15T15:36:05.832Z",
+    "exportDate": "2025-07-15T16:23:54.454Z",
     "exportNote": "Dubai Business Directory - Static Export"
   },
   "meta": {
@@ -22664,7 +22664,7 @@ export const businessData = {
     "totalBusinesses": 841,
     "hasPhotos": 841,
     "hasLogos": 841,
-    "exportTimestamp": 1752593765832
+    "exportTimestamp": 1752596634454
   }
 };
 
