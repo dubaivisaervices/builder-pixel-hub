@@ -9,9 +9,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const HOSTINGER_CONFIG = {
-  host: process.env.HOSTINGER_FTP_HOST || "crossbordersmigrations.com",
-  user: process.env.HOSTINGER_FTP_USER || "u611952859.crossborder1120",
-  password: process.env.HOSTINGER_FTP_PASSWORD || "One@click1",
+  host: process.env.HOSTINGER_FTP_HOST || "reportvisascam.com",
+  user: process.env.HOSTINGER_FTP_USER,
+  password: process.env.HOSTINGER_FTP_PASSWORD,
   port: parseInt(process.env.HOSTINGER_FTP_PORT || "21"),
 };
 
@@ -75,7 +75,7 @@ async function deployToHostinger() {
     }
 
     console.log("\n🎉 Deployment completed!");
-    console.log("🌐 Website: https://crossbordersmigrations.com");
+    console.log("🌐 Website: https://reportvisascam.com");
     console.log("📝 Files deployed:");
     console.log("   ✅ index.html (React app)");
     console.log("   ✅ index.php (PHP hosting compatibility)");
