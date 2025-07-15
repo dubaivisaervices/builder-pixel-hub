@@ -80,17 +80,34 @@ export default function Index() {
         // Fetch all businesses
         const businessResponse = await fetch("/api/dubai-visa-services");
         if (businessResponse.ok) {
-          const businessData: BusinessData[] = await businessResponse.json();
+          const responseData = await businessResponse.json();
+          console.log("📊 API Response:", responseData);
+
+          // Validate that we received an array
+          let businessData: BusinessData[] = [];
+          if (Array.isArray(responseData)) {
+            businessData = responseData;
+          } else if (responseData && Array.isArray(responseData.businesses)) {
+            businessData = responseData.businesses;
+          } else if (responseData && Array.isArray(responseData.data)) {
+            businessData = responseData.data;
+          } else {
+            console.warn("⚠️ Unexpected API response format:", responseData);
+            businessData = [];
+          }
+
           console.log(`✅ Loaded ${businessData.length} businesses`);
 
           setAllBusinesses(businessData);
 
-          // Set featured businesses (top rated ones)
-          const featured = businessData
-            .filter((business) => business.rating >= 4.0)
-            .sort((a, b) => b.rating - a.rating)
-            .slice(0, 6);
-          setFeaturedBusinesses(featured);
+          // Set featured businesses (top rated ones) - only if we have data
+          if (businessData.length > 0) {
+            const featured = businessData
+              .filter((business) => business && business.rating >= 4.0)
+              .sort((a, b) => b.rating - a.rating)
+              .slice(0, 6);
+            setFeaturedBusinesses(featured);
+          }
 
           // Calculate stats
           const totalReviews = businessData.reduce(
@@ -192,7 +209,7 @@ export default function Index() {
             family: {
               title: "Family Visa Services",
               description: "Family reunion and dependent visa processing",
-              icon: "👨‍👩‍👧‍👦",
+              icon: "👨‍👩��👧‍👦",
               color: "from-pink-500 to-pink-600",
             },
             business: {
