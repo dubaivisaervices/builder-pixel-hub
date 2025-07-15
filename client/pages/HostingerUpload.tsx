@@ -549,7 +549,7 @@ function HostingerUpload() {
       if (result.success) {
         alert(`✅ Successfully uploaded images for ${result.business}`);
       } else {
-        alert(`❌ Upload failed: ${result.error}`);
+        alert(`��� Upload failed: ${result.error}`);
       }
     } catch (error) {
       alert(`❌ Upload failed: ${error.message}`);
@@ -815,16 +815,21 @@ function HostingerUpload() {
         <RealTimeProgress
           isActive={showRealTimeProgress}
           onComplete={(data) => {
-            console.log("Batch completed:", data);
+            console.log("Processing completed:", data);
             setUploadResults({
-              processed: data.totalBusinesses,
-              successful: data.totalBusinesses - data.errors.length,
+              processed: data.currentBusiness || data.totalBusinesses,
+              successful:
+                (data.currentBusiness || data.totalBusinesses) -
+                data.errors.length,
               totalLogos: data.logos,
               totalPhotos: data.photos,
               errors: data.errors,
               batchNumber: data.batchNumber,
               batchSize: 50,
             });
+            setUploading(false);
+            // Keep progress visible longer for auto-processing
+            setTimeout(() => setShowRealTimeProgress(false), 10000);
           }}
         />
       )}
