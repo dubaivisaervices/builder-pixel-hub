@@ -17,6 +17,7 @@
     "build:server": "vite build --config vite.config.server.ts",
     "start": "node dist/server/node-build.mjs",
     "deploy": "node deploy-website-fixed.js",
+    "deploy-db": "node deploy-database.js",
     "verify": "node verify-deployment.js",
     "inspect-ftp": "node inspect-ftp.js",
     "test": "vitest --run",
