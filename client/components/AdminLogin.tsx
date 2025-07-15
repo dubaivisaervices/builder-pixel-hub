@@ -46,8 +46,8 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
             Admin Login
           </CardTitle>
           <CardDescription>
-            Enter your admin credentials to access the Dubai Business Directory
-            admin panel
+            Enter your admin credentials to access the Report Visa Scam admin
+            panel
           </CardDescription>
         </CardHeader>
         <CardContent>
