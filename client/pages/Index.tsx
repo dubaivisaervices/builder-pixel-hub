@@ -109,22 +109,35 @@ export default function Index() {
             setFeaturedBusinesses(featured);
           }
 
-          // Calculate stats
-          const totalReviews = businessData.reduce(
-            (sum, business) => sum + (business.reviewCount || 0),
-            0,
-          );
-          const avgRating =
-            businessData.reduce((sum, business) => sum + business.rating, 0) /
-            businessData.length;
+          // Calculate stats - handle empty data
+          if (businessData.length > 0) {
+            const totalReviews = businessData.reduce(
+              (sum, business) => sum + (business?.reviewCount || 0),
+              0,
+            );
+            const avgRating =
+              businessData.reduce(
+                (sum, business) => sum + (business?.rating || 0),
+                0,
+              ) / businessData.length;
 
-          setStats({
-            totalBusinesses: businessData.length,
-            totalReviews,
-            avgRating: Math.round(avgRating * 10) / 10,
-            locations: 15,
-            scamReports: 145,
-          });
+            setStats({
+              totalBusinesses: businessData.length,
+              totalReviews,
+              avgRating: Math.round(avgRating * 10) / 10,
+              locations: 15,
+              scamReports: 145,
+            });
+          } else {
+            // Fallback stats when no data is available
+            setStats({
+              totalBusinesses: 0,
+              totalReviews: 0,
+              avgRating: 0,
+              locations: 15,
+              scamReports: 145,
+            });
+          }
 
           // Process categories
           const categoryCount: { [key: string]: number } = {};
@@ -209,7 +222,7 @@ export default function Index() {
             family: {
               title: "Family Visa Services",
               description: "Family reunion and dependent visa processing",
-              icon: "👨‍👩��👧‍👦",
+              icon: "👨‍👩‍👧‍👦",
               color: "from-pink-500 to-pink-600",
             },
             business: {
