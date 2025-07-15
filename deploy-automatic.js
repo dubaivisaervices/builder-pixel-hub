@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 // Updated FTP Configuration for Report Visa Scam
 const FTP_CONFIG = {
-  host: "crossbordersmigrations.com",
+  host: "reportvisascam.com",
   user: "u611952859.reportvisascam.com",
   password: "One@click1",
   port: 21,
@@ -108,7 +108,7 @@ async function deployAutomatic() {
     console.log("\n🎉 DEPLOYMENT SUCCESSFUL!");
     console.log("=".repeat(60));
     console.log("✅ Report Visa Scam is now live!");
-    console.log("🌐 Website URL: https://crossbordersmigrations.com");
+    console.log("🌐 Website URL: https://reportvisascam.com");
     console.log("🛡️  Secure admin panel available at /admin");
     console.log("📊 All 841 businesses are now accessible");
     console.log("🚨 Users can now report visa scams and check company reviews");
