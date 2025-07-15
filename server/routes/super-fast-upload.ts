@@ -152,7 +152,7 @@ export async function superFastBatchUpload(req: Request, res: Response) {
       });
     }
 
-    const { batchNumber = 1, concurrency = 10 } = req.body;
+    const { batchNumber = 1, concurrency = 3 } = req.body;
     const batchSize = 50;
     const offset = (batchNumber - 1) * batchSize;
 
@@ -423,7 +423,7 @@ async function processAllBatchesAutomatically(
 async function processSingleBatchInternal(batchNumber: number) {
   // This is a simplified version of the batch processing for internal use
   // We'll reuse the super fast batch logic
-  const mockReq = { body: { batchNumber, concurrency: 10 } } as Request;
+  const mockReq = { body: { batchNumber, concurrency: 3 } } as Request;
   let result: any;
 
   const mockRes = {
