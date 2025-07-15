@@ -114,8 +114,15 @@ export class HostingerUploadService {
    * Upload file buffer to Hostinger via FTP
    */
   private async uploadFile(buffer: Buffer, remotePath: string): Promise<void> {
+    const client = new ftp.Client();
+
     try {
-      const client = await this.ensureConnection();
+      await client.access({
+        host: this.config.host,
+        user: this.config.user,
+        password: this.config.password,
+        port: this.config.port || 21,
+      });
 
       // Ensure directory exists
       const remoteDir = path.dirname(`${this.config.remotePath}${remotePath}`);
@@ -132,10 +139,9 @@ export class HostingerUploadService {
       console.log(`✅ Uploaded to Hostinger: ${remotePath}`);
     } catch (error) {
       console.error("❌ Hostinger upload error:", error);
-      // Reset connection on error
-      this.ftpClient = null;
-      this.connectionPromise = null;
       throw new Error(`Failed to upload to Hostinger: ${error.message}`);
+    } finally {
+      client.close();
     }
   }
 
