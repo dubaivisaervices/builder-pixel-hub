@@ -61,7 +61,36 @@ export async function uploadAllGoogleImagesToHostinger(
 }
 
 /**
- * Upload all business images using Google Photos proxy to Hostinger (FIXED METHOD)
+ * Upload all business images via base64 storage to Hostinger (WORKING METHOD)
+ */
+export async function uploadAllBase64ToHostinger(req: Request, res: Response) {
+  try {
+    console.log("🚀 Starting base64 → Hostinger upload process...");
+
+    const hostingerService = createHostingerService(HOSTINGER_CONFIG);
+    const base64Uploader = createBase64ToHostingerUploader(hostingerService);
+
+    const results =
+      await base64Uploader.processAllBusinessesBase64ToHostinger();
+
+    console.log("✅ Base64 → Hostinger upload completed:", results);
+
+    res.json({
+      success: true,
+      message: "Base64 → Hostinger upload completed successfully",
+      results,
+    });
+  } catch (error) {
+    console.error("❌ Base64 → Hostinger upload error:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+}
+
+/**
+ * Upload all business images using Google Photos proxy to Hostinger (FAILING METHOD)
  */
 export async function uploadAllGooglePhotosToHostinger(
   req: Request,
