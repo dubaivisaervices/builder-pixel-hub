@@ -548,6 +548,16 @@ export function createServer() {
     },
   );
 
+  // Admin authentication endpoints
+  app.post("/api/admin/login", async (req, res) => {
+    const { directAdminLogin } = await import("./routes/admin-auth");
+    return directAdminLogin(req, res);
+  });
+  app.get("/api/admin/status", async (req, res) => {
+    const { getAdminStatus } = await import("./routes/admin-auth");
+    return getAdminStatus(req, res);
+  });
+
   // Google Reviews sync routes
   app.post("/api/admin/sync-google-reviews", syncAllGoogleReviews);
   app.post("/api/admin/sync-business-reviews/:businessId", syncBusinessReviews);
