@@ -88,10 +88,11 @@ export class GoogleImageFetcher {
     try {
       console.log(`🔄 Processing ${business.name} (ID: ${business.id})`);
 
-      // Method 1: Use place_id if available
-      if (business.place_id) {
-        const placeDetails = await this.getPlaceDetails(business.place_id);
+      // Method 1: Use place_id if available (skip since database doesn't have place_id)
+      // Since our database doesn't have place_id, we'll start with photo_reference method
 
+      // Method 2: Use existing photo_reference from database
+      if (business.photo_reference) {
         if (placeDetails?.photos) {
           // Upload logo (first photo as logo)
           if (placeDetails.photos.length > 0) {
