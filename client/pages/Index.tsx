@@ -468,7 +468,7 @@ export default function Index() {
                 <div className="hidden md:block">
                   <Input
                     type="text"
-                    placeholder="Search visa services, company names, or locations..."
+                    placeholder="Search companies to report, business names, or scam types..."
                     value={searchTerm}
                     onChange={(e) => handleSearchChange(e.target.value)}
                     onKeyPress={(e) => e.key === "Enter" && handleSearch()}
@@ -495,7 +495,7 @@ export default function Index() {
                   <div className="relative">
                     <Input
                       type="text"
-                      placeholder="Search visa services..."
+                      placeholder="Search companies to report..."
                       value={searchTerm}
                       onChange={(e) => handleSearchChange(e.target.value)}
                       onKeyPress={(e) => e.key === "Enter" && handleSearch()}
@@ -510,21 +510,21 @@ export default function Index() {
                   </div>
                   <div className="flex flex-col sm:flex-row justify-center gap-4">
                     <Button
-                      onClick={handleSearch}
+                      onClick={() => navigate("/complaint")}
                       size="lg"
-                      className="px-12 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-xl shadow-lg"
+                      className="px-12 py-3 bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 rounded-xl shadow-lg"
                     >
-                      <Search className="h-5 w-5 mr-2" />
-                      Search Services
+                      <AlertTriangle className="h-5 w-5 mr-2" />
+                      Report Scam Now
                     </Button>
                     <Button
-                      onClick={() => navigate("/dubai-businesses")}
+                      onClick={handleSearch}
                       size="lg"
                       variant="outline"
-                      className="border-2 border-blue-500 text-blue-600 hover:bg-blue-50 shadow-lg px-8 py-3 rounded-xl font-semibold"
+                      className="border-2 border-gray-500 text-gray-600 hover:bg-gray-50 shadow-lg px-8 py-3 rounded-xl font-semibold"
                     >
-                      <Building2 className="h-5 w-5 mr-2" />
-                      All Dubai Visa Services Directory
+                      <Search className="h-5 w-5 mr-2" />
+                      Search Companies
                     </Button>
                   </div>
                 </div>
