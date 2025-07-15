@@ -41,8 +41,8 @@ export async function getAdminStatus(req: Request, res: Response) {
     res.json({
       success: true,
       credentials: {
-        adminId: process.env.ADMIN_PANEL_ID || "crossborder_admin",
-        password: process.env.ADMIN_PANEL_PASSWORD || "Dubai@2024!Upload",
+        adminId: process.env.ADMIN_PANEL_ID || "admin",
+        password: process.env.ADMIN_PANEL_PASSWORD || "admin123",
       },
       message: "Admin panel ready",
     });
