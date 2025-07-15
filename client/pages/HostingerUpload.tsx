@@ -230,6 +230,51 @@ function HostingerUpload() {
     }
   };
 
+  const uploadBatch50RealGooglePhotos = async (batchNumber: number = 1) => {
+    setUploading(true);
+    setUploadResults(null);
+
+    try {
+      const response = await fetch(
+        "/api/admin/upload-batch-50-real-google-to-hostinger",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ batchNumber }),
+        },
+      );
+      const result = await response.json();
+
+      if (result.success) {
+        setUploadResults(result.results);
+      } else {
+        setUploadResults({
+          processed: 0,
+          successful: 0,
+          totalLogos: 0,
+          totalPhotos: 0,
+          errors: [result.error],
+          batchNumber,
+          batchSize: 50,
+        });
+      }
+    } catch (error) {
+      setUploadResults({
+        processed: 0,
+        successful: 0,
+        totalLogos: 0,
+        totalPhotos: 0,
+        errors: [error.message],
+        batchNumber,
+        batchSize: 50,
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const uploadAllRemainingHybridImages = async () => {
     setUploading(true);
     setUploadResults(null);
@@ -651,7 +696,7 @@ function HostingerUpload() {
               className="w-full bg-red-600 hover:bg-red-700"
               size="lg"
             >
-              {uploading ? "Failing..." : "❌ Google Photos Proxy (FAILING)"}
+              {uploading ? "Failing..." : "�� Google Photos Proxy (FAILING)"}
             </Button>
 
             <Button
