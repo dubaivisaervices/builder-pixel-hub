@@ -807,6 +807,14 @@ function HostingerUpload() {
               >
                 🧪 Test Progress
               </Button>
+              <Button
+                onClick={() => setShowRealTimeProgress(!showRealTimeProgress)}
+                variant="outline"
+                size="sm"
+                className="bg-blue-50 border-blue-300 text-blue-800"
+              >
+                {showRealTimeProgress ? "Hide" : "Show"} Progress
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -968,7 +976,7 @@ function HostingerUpload() {
             >
               {uploading
                 ? "No data..."
-                : "���� Cached Images (No data available)"}
+                : "📁 Cached Images (No data available)"}
             </Button>
 
             <Button
