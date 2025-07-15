@@ -199,6 +199,12 @@ export default function AdminDashboard() {
   }, [location.pathname]);
 
   const handleTabChange = (tabId: string) => {
+    if (tabId === "upload") {
+      // Navigate to Hostinger upload page
+      window.location.href = "/hostinger-upload";
+      return;
+    }
+
     setActiveTab(tabId);
     // Update URL to match tab
     const urlMap = {
