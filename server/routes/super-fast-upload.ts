@@ -34,7 +34,7 @@ async function processSingleBusinessFast(
     // Get photos with timeout
     const photoPromise = stepByStepService.getBusinessPhoto(business.name);
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Timeout")), 30000),
+      setTimeout(() => reject(new Error("Timeout")), 15000),
     );
 
     const photoResult = await Promise.race([photoPromise, timeoutPromise]);
