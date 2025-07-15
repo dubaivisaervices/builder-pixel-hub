@@ -76,7 +76,7 @@ export async function uploadAllRealGooglePhotosToHostinger(
           continue;
         }
 
-        const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${business.photo_reference}&key=${apiKey}`;
+        const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${business.photo_reference}&key=${apiKey}`;
 
         try {
           const axios = await import("axios");
