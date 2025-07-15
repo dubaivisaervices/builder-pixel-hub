@@ -146,10 +146,10 @@ function AdminBypass() {
           <CardContent>
             <div className="space-y-2 text-sm">
               <p>
-                <strong>Admin ID:</strong> crossborder_admin
+                <strong>Admin ID:</strong> admin
               </p>
               <p>
-                <strong>Password:</strong> Dubai@2024!Upload
+                <strong>Password:</strong> admin123
               </p>
               <p className="text-gray-600 mt-3">
                 These credentials are automatically used for authentication.
