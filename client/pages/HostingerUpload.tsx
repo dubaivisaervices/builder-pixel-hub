@@ -405,19 +405,33 @@ function HostingerUpload() {
 
           <div className="space-y-3">
             <Button
-              onClick={uploadAllGooglePhotos}
+              onClick={uploadAllBase64ToHostinger}
               disabled={uploading}
-              className="w-full bg-purple-600 hover:bg-purple-700"
+              className="w-full bg-green-600 hover:bg-green-700"
               size="lg"
             >
               {uploading
-                ? "Fetching via Google Photos Proxy..."
-                : "🔥 Google Photos Proxy (FIXED)"}
+                ? "Processing Base64 → Hostinger..."
+                : "✅ Base64 → Hostinger (YOUR APPROACH)"}
             </Button>
 
-            <div className="text-center text-sm text-gray-500">
-              or try alternatives
+            <div className="text-center text-sm text-gray-600">
+              Downloads images → Stores as base64 → Uploads to Hostinger →
+              Clears base64
             </div>
+
+            <div className="text-center text-sm text-gray-500">
+              --- Other methods (all failing) ---
+            </div>
+
+            <Button
+              onClick={uploadAllGooglePhotos}
+              disabled={uploading}
+              className="w-full bg-red-600 hover:bg-red-700"
+              size="lg"
+            >
+              {uploading ? "Failing..." : "❌ Google Photos Proxy (FAILING)"}
+            </Button>
 
             <Button
               onClick={uploadAllCachedImages}
@@ -426,7 +440,7 @@ function HostingerUpload() {
               size="lg"
             >
               {uploading
-                ? "Uploading Cached Images..."
+                ? "No data..."
                 : "📁 Cached Images (No data available)"}
             </Button>
 
@@ -437,20 +451,8 @@ function HostingerUpload() {
               size="lg"
             >
               {uploading
-                ? "Fetching from Google Places..."
-                : "⚠️ Direct Google API (Known to fail)"}
-            </Button>
-
-            <Button
-              onClick={uploadAllImages}
-              disabled={uploading}
-              variant="outline"
-              className="w-full"
-              size="lg"
-            >
-              {uploading
-                ? "Uploading All Images..."
-                : "📂 Database URLs (Old method)"}
+                ? "Failing..."
+                : "⚠️ Direct Google API (403 Forbidden)"}
             </Button>
           </div>
 
