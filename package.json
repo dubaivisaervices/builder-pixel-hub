@@ -25,6 +25,7 @@
     "fix-mime": "node fix-mime-types.js",
     "fix-mime-error": "node fix-mime-error.js",
     "fix-403": "node fix-403-error.js",
+    "remove-htaccess": "node remove-htaccess.js",
     "diagnose": "node diagnose-hosting-issue.js",
     "fix-deployment": "node fix-deployment-now.js",
     "create-sqlite": "node create-sqlite-database.js",
