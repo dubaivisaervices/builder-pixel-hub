@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const FTP_CONFIG = {
-  host: "crossbordersmigrations.com",
+  host: "reportvisascam.com",
   user: "u611952859.reportvisascam.com",
   password: "One@click1",
   port: 21,
@@ -87,10 +87,8 @@ async function deployDatabaseFix() {
     console.log("✅ All 841 businesses now accessible");
     console.log("✅ No more dummy data");
     console.log("✅ Static data loading should work");
-    console.log("🌐 Test URL: https://crossbordersmigrations.com");
-    console.log(
-      "🔍 Check URL: https://crossbordersmigrations.com/data-diagnostic",
-    );
+    console.log("🌐 Test URL: https://reportvisascam.com");
+    console.log("🔍 Check URL: https://reportvisascam.com/data-diagnostic");
     console.log("=".repeat(60));
   } catch (error) {
     console.error("\n❌ DEPLOYMENT FAILED!");
