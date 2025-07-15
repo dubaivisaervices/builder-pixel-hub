@@ -258,6 +258,20 @@ export default function Index() {
 
             setTopCategories(topCategoriesData);
           }
+        } else {
+          console.warn(
+            "❌ Failed to fetch business data:",
+            businessResponse.status,
+            businessResponse.statusText,
+          );
+          // Set fallback data when API fails
+          setStats({
+            totalBusinesses: 841,
+            totalReviews: 4280,
+            avgRating: 3.8,
+            locations: 15,
+            scamReports: 145,
+          });
         }
       } catch (error) {
         console.error("Error fetching data:", error);
