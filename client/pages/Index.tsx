@@ -139,9 +139,11 @@ export default function Index() {
             });
           }
 
-          // Process categories
+                    // Process categories - only if we have data
           const categoryCount: { [key: string]: number } = {};
-          businessData.forEach((business) => {
+          if (businessData.length > 0) {
+            businessData.forEach((business) => {
+              if (!business) return; // Skip invalid entries
             const category = business.category?.toLowerCase() || "other";
 
             if (
