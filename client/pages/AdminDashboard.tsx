@@ -228,14 +228,7 @@ export default function AdminDashboard() {
                 <p className="text-gray-300">Dubai Visa Services Management</p>
               </div>
             </div>
-            <Button
-              onClick={handleLogout}
-              variant="outline"
-              className="border-white/20 text-white hover:bg-white/10"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
+            <div className="text-sm text-gray-300">Direct Admin Access</div>
           </div>
         </div>
       </div>
