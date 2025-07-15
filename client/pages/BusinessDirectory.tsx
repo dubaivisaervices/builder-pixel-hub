@@ -95,40 +95,37 @@ export default function BusinessDirectory() {
     setFilteredBusinesses(filtered);
   }, [searchTerm, businesses, selectedCategory]);
 
-  const fetchBusinesses = async () => {
+    const fetchBusinesses = async () => {
     try {
-      console.log("🔄 Loading businesses from static data...");
+      console.log("🔄 Loading businesses using enhanced data loader...");
 
-      // Try to load static data first (for production)
-      try {
-        const response = await fetch("/data/businesses.json");
-        if (response.ok) {
-          const data = await response.json();
-          console.log(
-            "✅ Loaded from static data:",
-            data.businesses?.length || 0,
-            "businesses",
-          );
-          setBusinesses(data.businesses || []);
-          return;
-        }
-      } catch (error) {
-        console.log("📡 Static data not found, trying API...");
+      // Import and use the enhanced data loader
+      const { dataLoader } = await import("../utils/dataLoader");
+      const data = await dataLoader.loadBusinessData();
+
+      console.log(
+        "✅ Successfully loaded businesses:",
+        data.businesses.length,
+        "from source:",
+        data.meta.source
+      );
+
+      setBusinesses(data.businesses || []);
+
+      // Log additional info for debugging
+      if (data.businesses.length > 100) {
+        console.log("🎉 Full dataset loaded - all 841 businesses available!");
+      } else if (data.businesses.length === 3) {
+        console.log("⚠️ Fallback data detected - connection issue");
+      } else {
+        console.log("📊 Partial dataset loaded:", data.businesses.length, "businesses");
       }
 
-      // Fallback to API (for development)
-      const response = await fetch("/api/dubai-visa-services?limit=1000");
-      if (response.ok) {
-        const data = await response.json();
-        console.log(
-          "✅ Successfully loaded from API:",
-          data.businesses?.length || 0,
-          "businesses",
-        );
-        setBusinesses(data.businesses || []);
-      } else {
-        console.error("❌ Failed to fetch businesses:", response.status);
-        // Fallback with sample data
+      return;
+    } catch (error) {
+      console.error("❌ Enhanced data loader failed:", error);
+
+      // Final fallback with sample data
         setBusinesses([
           {
             id: "sample1",
