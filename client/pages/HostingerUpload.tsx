@@ -749,19 +749,34 @@ function HostingerUpload() {
               </span>
             </div>
 
-            <Button
-              onClick={() => uploadBatch50RealGooglePhotos(currentBatch)}
-              disabled={uploading}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold"
-              size="lg"
-            >
-              {uploading
-                ? `Processing Batch ${currentBatch}...`
-                : `🚀 PROCESS BATCH ${currentBatch} (50 businesses)`}
-            </Button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <Button
+                onClick={() => superFastBatchUpload(currentBatch)}
+                disabled={uploading}
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold"
+                size="lg"
+              >
+                {uploading
+                  ? `⚡ Processing Batch ${currentBatch}...`
+                  : `⚡ SUPER FAST BATCH ${currentBatch}`}
+              </Button>
 
-            <div className="text-center text-sm text-blue-600 font-bold">
-              ✅ Uses Real Google Places API for authentic business photos
+              <Button
+                onClick={() => uploadBatch50RealGooglePhotos(currentBatch)}
+                disabled={uploading}
+                variant="outline"
+                className="w-full"
+                size="lg"
+              >
+                {uploading
+                  ? `🐌 Processing Batch ${currentBatch}...`
+                  : `🐌 Normal Speed Batch ${currentBatch}`}
+              </Button>
+            </div>
+
+            <div className="text-center text-sm text-green-600 font-bold">
+              ⚡ Super Fast = Parallel Processing | 🐌 Normal = Sequential
+              Processing
             </div>
 
             <div className="flex gap-2">
