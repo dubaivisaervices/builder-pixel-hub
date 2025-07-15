@@ -36,6 +36,7 @@ import { DatabaseMigration } from "../components/DatabaseMigration";
 import { SimpleS3Status } from "../components/SimpleS3Status";
 import { ApiDebug } from "../components/ApiDebug";
 import { QuickUploadAccess } from "../components/QuickUploadAccess";
+import { UploadAlert } from "../components/UploadAlert";
 
 interface CompanyRequest {
   id: number;
