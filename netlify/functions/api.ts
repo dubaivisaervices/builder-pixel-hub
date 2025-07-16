@@ -179,8 +179,8 @@ function createBusinessServer() {
         businesses: paginatedBusinesses,
         total: allBusinesses.length,
         categories: categories,
-        message: `Loaded ${paginatedBusinesses.length} of ${allBusinesses.length} Dubai visa services (REAL DATABASE)`,
-        source: "real_database",
+        message: `Loaded ${paginatedBusinesses.length} of ${allBusinesses.length} Dubai visa services (EMBEDDED REAL BUSINESSES)`,
+        source: "embedded_real_businesses",
         pagination: {
           page: page,
           limit: limit,
@@ -191,23 +191,23 @@ function createBusinessServer() {
         success: true,
         timestamp: new Date().toISOString(),
         debug: {
-          dataFromFile: true,
+          dataEmbedded: true,
           realBusinessesCount: allBusinesses.length,
           generatedBusinesses: 0,
         },
       };
 
-      logDebug("Real business response prepared", {
+      logDebug("Embedded real business response prepared", {
         count: paginatedBusinesses.length,
         total: allBusinesses.length,
-        source: "real_database",
+        source: "embedded_real_businesses",
       });
 
       res.json(response);
     } catch (error) {
-      logDebug("Error in real business endpoint:", error.message);
+      logDebug("Error in embedded real business endpoint:", error.message);
       res.status(500).json({
-        error: "Failed to load real business data",
+        error: "Failed to load embedded real business data",
         message: error.message,
         businesses: [],
         total: 0,
@@ -223,37 +223,30 @@ function createBusinessServer() {
   });
 
   // Debug endpoint
-  app.get("/api/debug", async (req: any, res: any) => {
-    try {
-      const businessData = await getBusinessData();
-      res.json({
-        availableEndpoints: [
-          "GET /api/ping",
-          "GET /api/health",
-          "GET /api/dubai-visa-services",
-          "GET /api/businesses",
-          "GET /api/debug",
-        ],
-        businessDataStatus: {
-          count: businessData.length,
-          source: "real_database",
-          sampleBusiness: businessData[0] || null,
-          fileSystemUsed: true,
-        },
-        systemInfo: {
-          realBusinessesFromDB: businessData.length,
-          generatedBusinesses: 0,
-          totalBusinesses: businessData.length,
-          usingRealDatabase: true,
-        },
-        timestamp: new Date().toISOString(),
-      });
-    } catch (error) {
-      res.status(500).json({
-        error: "Debug endpoint error",
-        message: error.message,
-      });
-    }
+  app.get("/api/debug", (req: any, res: any) => {
+    const businessData = getBusinessData();
+    res.json({
+      availableEndpoints: [
+        "GET /api/ping",
+        "GET /api/health",
+        "GET /api/dubai-visa-services",
+        "GET /api/businesses",
+        "GET /api/debug",
+      ],
+      businessDataStatus: {
+        count: businessData.length,
+        source: "embedded_real_businesses",
+        sampleBusiness: businessData[0] || null,
+        fileSystemUsed: false,
+      },
+      systemInfo: {
+        embeddedRealBusinesses: businessData.length,
+        generatedBusinesses: 0,
+        totalBusinesses: businessData.length,
+        usingEmbeddedRealData: true,
+      },
+      timestamp: new Date().toISOString(),
+    });
   });
 
   // 404 handler
