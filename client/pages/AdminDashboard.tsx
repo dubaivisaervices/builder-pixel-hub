@@ -400,6 +400,31 @@ export default function AdminDashboard() {
             {/* Hostinger Upload Access */}
             <QuickUploadAccess />
 
+            {/* Business Entry Portal Access */}
+            <Card className="shadow-xl border-0 bg-gradient-to-r from-green-50 to-blue-50 backdrop-blur-xl">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                      <Building2 className="h-5 w-5 mr-2 text-green-600" />
+                      Business Entry Portal
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Secure portal to manually add new business listings with
+                      photos and reviews
+                    </p>
+                  </div>
+                  <Button
+                    onClick={() => window.open("/add-business", "_blank")}
+                    className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Business
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Recent Activity */}
             <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
               <CardHeader>
