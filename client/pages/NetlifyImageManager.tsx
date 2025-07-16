@@ -265,6 +265,111 @@ const NetlifyImageManager: React.FC = () => {
     }
   };
 
+  // Super Fast Upload Functions
+  const startSuperFastUpload = async () => {
+    try {
+      setSuperFastUploading(true);
+      setUploadResult(null);
+
+      const response = await fetch("/api/netlify/super-fast-upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setUploadResult({
+          success: true,
+          message: `Super fast upload started for ${result.stats.total} businesses!`,
+        });
+
+        // Start polling for progress
+        startProgressPolling();
+      } else {
+        setUploadResult({
+          success: false,
+          error: result.error || "Failed to start super fast upload",
+        });
+        setSuperFastUploading(false);
+      }
+    } catch (error) {
+      setUploadResult({
+        success: false,
+        error: "Failed to start super fast upload: " + error.message,
+      });
+      setSuperFastUploading(false);
+    }
+  };
+
+  const startProgressPolling = () => {
+    const pollInterval = setInterval(async () => {
+      try {
+        const response = await fetch("/api/netlify/upload-progress");
+        const data = await response.json();
+
+        if (data.success) {
+          setSuperFastProgress(data);
+          setSuperFastStats(data.stats);
+
+          // Stop polling if upload is complete
+          if (!data.isUploading) {
+            clearInterval(pollInterval);
+            setSuperFastUploading(false);
+            loadStats(); // Refresh main stats
+          }
+        }
+      } catch (error) {
+        console.error("Error polling progress:", error);
+      }
+    }, 2000); // Poll every 2 seconds
+
+    // Auto-stop polling after 30 minutes
+    setTimeout(
+      () => {
+        clearInterval(pollInterval);
+        setSuperFastUploading(false);
+      },
+      30 * 60 * 1000,
+    );
+  };
+
+  const stopSuperFastUpload = async () => {
+    try {
+      const response = await fetch("/api/netlify/stop-upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSuperFastUploading(false);
+        setUploadResult({
+          success: true,
+          message: "Super fast upload stopped successfully",
+        });
+      }
+    } catch (error) {
+      console.error("Error stopping upload:", error);
+    }
+  };
+
+  const clearProgressData = async () => {
+    try {
+      await fetch("/api/netlify/clear-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      setSuperFastProgress(null);
+      setSuperFastStats(null);
+    } catch (error) {
+      console.error("Error clearing data:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
