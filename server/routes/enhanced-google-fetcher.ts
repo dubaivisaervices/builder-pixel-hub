@@ -49,15 +49,30 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
     }
 
     const {
-      query = "visa services Dubai",
+      searchQuery = "visa services Dubai",
       maxResults = 60,
+      radius = 50,
+      minRating = 0,
       downloadImages = true,
       saveToDatabase = true,
+      getReviews = true,
+      skipExisting = true,
+      filters = {},
     } = req.body;
 
-    console.log(`🔍 Starting enhanced business fetch for: "${query}"`);
+    // Extract advanced search filters
+    const { companyName, category, city } = filters;
+
+    console.log(`🔍 Starting enhanced business fetch with advanced filters:`);
+    console.log(`   Search Query: "${searchQuery}"`);
+    console.log(`   Company Name: ${companyName || "Any"}`);
+    console.log(`   Category: ${category || "Any"}`);
+    console.log(`   City: ${city || "Any"}`);
     console.log(
-      `📊 Settings: maxResults=${maxResults}, downloadImages=${downloadImages}, saveToDatabase=${saveToDatabase}`,
+      `   Settings: maxResults=${maxResults}, radius=${radius}km, minRating=${minRating}`,
+    );
+    console.log(
+      `   Options: downloadImages=${downloadImages}, saveToDatabase=${saveToDatabase}, getReviews=${getReviews}, skipExisting=${skipExisting}`,
     );
 
     const allBusinesses: any[] = [];
