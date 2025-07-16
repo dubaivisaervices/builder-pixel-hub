@@ -1,7 +1,4 @@
 import serverless from "serverless-http";
-const {
-  getBusinessData: loadBusinessDataFromModule,
-} = require("./businessData.js");
 
 // Enhanced debugging function
 function logDebug(message: string, data?: any) {
@@ -12,96 +9,152 @@ function logDebug(message: string, data?: any) {
   );
 }
 
-// Load real business data using direct import
-function loadRealBusinessData() {
-  try {
-    logDebug("🔍 Loading business data from module...");
-    const businesses = loadBusinessDataFromModule();
+// Direct business data embedding - we'll load this from our JSON file
+const fs = require("fs");
+const path = require("path");
 
-    if (businesses && Array.isArray(businesses) && businesses.length > 0) {
+let realBusinessData: any[] | null = null;
+
+function loadRealBusinessData() {
+  if (realBusinessData) {
+    return realBusinessData;
+  }
+
+  try {
+    // Try to load the business data from the copied file
+    const dataPath = path.join(__dirname, "client", "data", "businesses.json");
+    logDebug(`Attempting to load business data from: ${dataPath}`);
+
+    const rawData = fs.readFileSync(dataPath, "utf-8");
+    const parsed = JSON.parse(rawData);
+
+    if (parsed && parsed.businesses && Array.isArray(parsed.businesses)) {
+      realBusinessData = parsed.businesses;
       logDebug(
-        `✅ Successfully loaded ${businesses.length} businesses from module`,
+        `✅ Successfully loaded ${realBusinessData.length} real businesses`,
       );
-      return businesses;
+      return realBusinessData;
     } else {
-      logDebug("❌ No business data returned from module");
+      logDebug("❌ Invalid business data structure");
       return null;
     }
   } catch (error) {
-    logDebug("❌ Error loading business data from module:", error.message);
+    logDebug(`❌ Failed to load business data: ${error.message}`);
     return null;
   }
 }
 
-// Extended fallback sample data (based on real data structure)
-function getFallbackSampleData() {
-  // Generate more sample data to simulate real response while we debug the loading
-  const samples = [];
-  for (let i = 1; i <= 50; i++) {
-    samples.push({
-      id: `fallback-${i}`,
-      name: `Dubai Visa Service Provider ${i}`,
-      address: `Office ${i}, Business District, Dubai, UAE`,
+// Comprehensive fallback data (50+ businesses)
+function getExtendedFallbackData() {
+  const fallbackBusinesses = [];
+
+  // Add sample businesses with realistic Dubai visa service data
+  const sampleNames = [
+    "Dubai Visa Express",
+    "Emirates Immigration Hub",
+    "Al Barsha PRO Services",
+    "Business Bay Visa Center",
+    "DIFC Immigration Consultants",
+    "Jumeirah Visa Solutions",
+    "Deira Document Clearing",
+    "Marina Visa Services",
+    "Downtown Dubai Immigration",
+    "Al Karama Visa Center",
+    "Bur Dubai PRO Services",
+    "Al Garhoud Immigration",
+    "Dubai Mall Visa Center",
+    "Ibn Battuta Visa Hub",
+    "City Walk Immigration",
+    "Dubai Festival City Visa",
+    "Al Rigga PRO Services",
+    "Satwa Immigration Center",
+    "Al Wasl Visa Solutions",
+    "Oud Metha Document Services",
+    "Al Qusais Visa Center",
+    "Dubai Silicon Oasis Immigration",
+    "Al Warqa Visa Services",
+    "Mirdif PRO Center",
+    "Al Mizhar Immigration Hub",
+    "Dubai Investment Park Visa",
+    "Al Sufouh PRO Services",
+    "Knowledge Village Immigration",
+    "Academic City Visa Center",
+    "Healthcare City PRO",
+    "Dubai Sports City Immigration",
+    "Motor City Visa Hub",
+    "Arabian Ranches PRO",
+    "Dubai Hills Visa Center",
+    "Dubai Creek Immigration",
+    "Al Seef PRO Services",
+    "Dubai Design District Visa",
+    "La Mer Immigration Center",
+    "City Centre Visa Hub",
+    "Mall of Emirates PRO",
+    "Ibn Battuta Immigration",
+    "Global Village Visa Center",
+    "Dubai Outlet Mall PRO",
+    "Al Ghurair City Immigration",
+    "Wafi Mall Visa Services",
+    "BurJuman Centre PRO",
+    "Dubai Festival Centre Immigration",
+    "Times Square Visa Hub",
+    "Al Wahda Mall PRO Services",
+    "Dubai Land Immigration",
+    "International City Visa",
+  ];
+
+  sampleNames.forEach((name, index) => {
+    fallbackBusinesses.push({
+      id: `fallback-${index + 1}`,
+      name: name,
+      address: `Office ${index + 100}, Dubai, UAE`,
       category:
-        i % 3 === 0
+        index % 4 === 0
           ? "visa services"
-          : i % 3 === 1
+          : index % 4 === 1
             ? "immigration services"
-            : "document clearing",
-      rating: 3.5 + Math.random() * 1.5,
-      reviewCount: Math.floor(Math.random() * 200) + 50,
+            : index % 4 === 2
+              ? "pro services"
+              : "document clearing",
+      rating: Number((3.5 + Math.random() * 1.5).toFixed(1)),
+      reviewCount: Math.floor(Math.random() * 300) + 50,
       businessStatus: "OPERATIONAL",
-      logoUrl: "https://reportvisascam.com/placeholder-logo.jpg",
       phone: `04 ${Math.floor(Math.random() * 900) + 100} ${Math.floor(Math.random() * 9000) + 1000}`,
-      website: `https://visa-service-${i}.ae`,
+      website: `https://${name.toLowerCase().replace(/\s+/g, "")}.ae`,
+      logoUrl: "https://reportvisascam.com/placeholder-logo.jpg",
+      hasTargetKeyword: Math.random() > 0.3,
+      latitude: 25.2048 + (Math.random() - 0.5) * 0.2,
+      longitude: 55.2708 + (Math.random() - 0.5) * 0.2,
     });
-  }
-  return samples;
+  });
+
+  return fallbackBusinesses;
 }
 
-// Cache for loaded business data
-let cachedBusinessData: any[] | null = null;
-
+// Get business data with prioritized loading
 function getBusinessData() {
-  if (cachedBusinessData) {
-    logDebug(
-      `♻️ Using cached business data: ${cachedBusinessData.length} businesses`,
-    );
-    return cachedBusinessData;
-  }
-
-  logDebug("🔄 Starting fresh business data load...");
-
-  // Try to load real business data
+  // Try real data first
   const realData = loadRealBusinessData();
-
   if (realData && realData.length > 0) {
-    cachedBusinessData = realData;
-    logDebug(
-      `✅ SUCCESS: Using real business data: ${realData.length} businesses`,
-    );
-    logDebug(`✅ Sample business: ${realData[0]?.name || "No name"}`);
-    return cachedBusinessData;
+    logDebug(`✅ Using real business data: ${realData.length} businesses`);
+    return realData;
   }
 
-  // Fallback to sample data
-  const fallbackData = getFallbackSampleData();
-  logDebug(`⚠️ FALLBACK: Using sample data: ${fallbackData.length} businesses`);
-  logDebug(`⚠️ This means real data loading failed - check server logs`);
+  // Fall back to extended sample data
+  const fallbackData = getExtendedFallbackData();
+  logDebug(`⚠️ Using fallback data: ${fallbackData.length} businesses`);
   return fallbackData;
 }
 
-// Database-free server for Netlify with real business data
+// Create Express server without Google API dependencies
 function createBusinessServer() {
   const express = require("express");
   const app = express();
 
-  logDebug("Creating business server for Netlify Functions");
+  logDebug("Creating business server (NO Google API dependencies)");
 
-  // Enhanced CORS middleware
+  // CORS middleware
   app.use((req: any, res: any, next: any) => {
-    logDebug(`Incoming request: ${req.method} ${req.url}`);
-
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
       "Access-Control-Allow-Methods",
@@ -114,7 +167,6 @@ function createBusinessServer() {
     res.header("Access-Control-Max-Age", "86400");
 
     if (req.method === "OPTIONS") {
-      logDebug("Handling OPTIONS preflight request");
       res.sendStatus(200);
       return;
     }
@@ -125,52 +177,41 @@ function createBusinessServer() {
 
   // Health check
   app.get("/api/ping", (req: any, res: any) => {
-    logDebug("Ping endpoint called");
-    const response = {
-      message: "API is working! (Real business data version)",
+    const businessCount = getBusinessData().length;
+    res.json({
+      message: "API is working! (Direct business data - NO Google API)",
       timestamp: new Date().toISOString(),
-      environment: "netlify-functions",
-      database: "static JSON file",
-      businessCount: getBusinessData().length,
-    };
-
-    logDebug("Ping response", response);
-    res.json(response);
+      businessCount: businessCount,
+      source: "direct_data_loading",
+    });
   });
 
   app.get("/api/health", (req: any, res: any) => {
-    logDebug("Health endpoint called");
     const businessData = getBusinessData();
-    const healthData = {
+    res.json({
       status: "healthy",
       timestamp: new Date().toISOString(),
-      version: "real-business-data-v1",
       businessCount: businessData.length,
-      dataSource: cachedBusinessData ? "real_data" : "fallback_data",
-      memory: process.memoryUsage(),
-      uptime: process.uptime(),
-    };
-
-    logDebug("Health response", healthData);
-    res.json(healthData);
+      dataSource: realBusinessData ? "real_json_data" : "fallback_data",
+      version: "no-google-api-v1",
+    });
   });
 
-  // Real business data endpoint
+  // Main business endpoint - NO Google API
   app.get("/api/dubai-visa-services", (req: any, res: any) => {
-    logDebug("Business data endpoint called", { query: req.query });
+    logDebug("Business endpoint called", { query: req.query });
 
     try {
       const allBusinesses = getBusinessData();
 
-      // Get pagination parameters
+      // Pagination
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 50;
       const offset = (page - 1) * limit;
 
-      // Apply pagination
       const paginatedBusinesses = allBusinesses.slice(offset, offset + limit);
 
-      // Get unique categories
+      // Categories
       const categories = [
         ...new Set(allBusinesses.map((b: any) => b.category).filter(Boolean)),
       ];
@@ -179,9 +220,8 @@ function createBusinessServer() {
         businesses: paginatedBusinesses,
         total: allBusinesses.length,
         categories: categories,
-        processingTime: 0.05,
-        message: `Loaded ${paginatedBusinesses.length} of ${allBusinesses.length} Dubai visa service providers`,
-        source: cachedBusinessData ? "real_business_data" : "fallback_data",
+        message: `Loaded ${paginatedBusinesses.length} of ${allBusinesses.length} Dubai visa services (NO Google API)`,
+        source: realBusinessData ? "real_business_data" : "fallback_data",
         pagination: {
           page: page,
           limit: limit,
@@ -190,32 +230,21 @@ function createBusinessServer() {
           hasMore: offset + limit < allBusinesses.length,
         },
         success: true,
-        debug: {
-          timestamp: new Date().toISOString(),
-          requestInfo: {
-            method: req.method,
-            url: req.url,
-            query: req.query,
-          },
-        },
+        timestamp: new Date().toISOString(),
       };
 
-      logDebug("Business data response", {
-        businessCount: paginatedBusinesses.length,
-        totalBusinesses: allBusinesses.length,
-        categories: categories.length,
-        dataSource: response.source,
+      logDebug("Returning business data", {
+        count: paginatedBusinesses.length,
+        total: allBusinesses.length,
+        source: response.source,
       });
 
       res.json(response);
     } catch (error) {
-      logDebug("Error in business data endpoint:", error.message);
-
-      // Return error response
+      logDebug("Error in business endpoint:", error.message);
       res.status(500).json({
         error: "Failed to load business data",
         message: error.message,
-        timestamp: new Date().toISOString(),
         businesses: [],
         total: 0,
         success: false,
@@ -223,11 +252,9 @@ function createBusinessServer() {
     }
   });
 
-  // Alternative business endpoint
+  // Alternative endpoint
   app.get("/api/businesses", (req: any, res: any) => {
-    logDebug(
-      "Alternative business endpoint called, redirecting to main endpoint",
-    );
+    // Redirect to main endpoint
     req.url = "/api/dubai-visa-services";
     app._router.handle(req, res);
   });
@@ -235,72 +262,26 @@ function createBusinessServer() {
   // Debug endpoint
   app.get("/api/debug", (req: any, res: any) => {
     const businessData = getBusinessData();
-    const debugInfo = {
+    res.json({
       availableEndpoints: [
         "GET /api/ping",
         "GET /api/health",
         "GET /api/dubai-visa-services",
         "GET /api/businesses",
         "GET /api/debug",
-        "GET /api/test-data-loading",
       ],
       businessDataStatus: {
-        loaded: !!cachedBusinessData,
         count: businessData.length,
-        source: cachedBusinessData ? "real_data" : "fallback_data",
+        source: realBusinessData ? "real_data" : "fallback_data",
         sampleBusiness: businessData[0] || null,
       },
-      environment: process.env.NODE_ENV || "production",
+      googleAPIRemoved: true,
       timestamp: new Date().toISOString(),
-      memory: process.memoryUsage(),
-      uptime: process.uptime(),
-    };
-
-    logDebug("Debug info requested", debugInfo);
-    res.json(debugInfo);
+    });
   });
 
-  // Test business data loading endpoint
-  app.get("/api/test-data-loading", (req: any, res: any) => {
-    logDebug("🧪 Testing business data loading...");
-
-    // Clear cache to force reload
-    cachedBusinessData = null;
-
-    // Try to load data
-    const testData = loadRealBusinessData();
-
-    const testResult = {
-      success: !!(testData && testData.length > 0),
-      dataLoaded: testData ? testData.length : 0,
-      expectedCount: 1114,
-      sampleRecord: testData && testData.length > 0 ? testData[0] : null,
-      moduleTest: null,
-      timestamp: new Date().toISOString(),
-    };
-
-    // Test the module loading directly
-    try {
-      const moduleData = loadBusinessDataFromModule();
-      testResult.moduleTest = {
-        success: !!(moduleData && moduleData.length > 0),
-        count: moduleData ? moduleData.length : 0,
-        sample: moduleData && moduleData.length > 0 ? moduleData[0] : null,
-      };
-    } catch (error) {
-      testResult.moduleTest = {
-        error: error.message,
-        success: false,
-      };
-    }
-
-    logDebug("🧪 Test results", testResult);
-    res.json(testResult);
-  });
-
-  // Enhanced error handling
+  // 404 handler
   app.use((req: any, res: any) => {
-    logDebug(`404 - Route not found: ${req.method} ${req.url}`);
     res.status(404).json({
       error: "Endpoint not found",
       available: [
@@ -310,43 +291,23 @@ function createBusinessServer() {
         "/api/businesses",
         "/api/debug",
       ],
-      request: {
-        method: req.method,
-        url: req.url,
-        timestamp: new Date().toISOString(),
-      },
     });
   });
 
-  // Global error handler
+  // Error handler
   app.use((err: any, req: any, res: any, next: any) => {
-    logDebug(`Server error: ${err.message}`, { stack: err.stack });
+    logDebug("Server error:", err.message);
     res.status(500).json({
       error: "Internal server error",
       message: err.message,
-      timestamp: new Date().toISOString(),
     });
   });
 
-  logDebug("Business server created successfully");
   return app;
 }
 
-// Create the app
-let app: any;
-
-try {
-  logDebug("Initializing Netlify Function with real business data");
-  app = createBusinessServer();
-  logDebug("Server created successfully");
-} catch (error) {
-  logDebug("Failed to create server", { error: error.message });
-  throw error;
-}
-
-// Configure for serverless environment
-const handler = serverless(app, {
-  binary: ["image/*", "application/pdf", "application/octet-stream"],
-});
+// Create and export the serverless handler
+const app = createBusinessServer();
+const handler = serverless(app);
 
 export { handler };
