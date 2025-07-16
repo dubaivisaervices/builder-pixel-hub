@@ -110,9 +110,9 @@ export default function BusinessDirectory() {
         data.meta.source
       );
 
-      setBusinesses(data.businesses || []);
+            setBusinesses(data.businesses || []);
 
-            // Log additional info for debugging
+      // Log additional info for debugging
       if (data.businesses.length > 100) {
         console.log(`🎉 Full dataset loaded - all ${data.total || data.businesses.length} businesses available!`);
       } else if (data.businesses.length === 3) {
