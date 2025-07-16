@@ -473,8 +473,9 @@ const NetlifyImageManager: React.FC = () => {
         )}
 
         {/* Tabs for different upload methods */}
-        <Tabs defaultValue="single" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+        <Tabs defaultValue="superfast" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="superfast">🚀 Super Fast Upload</TabsTrigger>
             <TabsTrigger value="single">Single Upload</TabsTrigger>
             <TabsTrigger value="download">Download from URL</TabsTrigger>
             <TabsTrigger value="batch">Batch Operations</TabsTrigger>
