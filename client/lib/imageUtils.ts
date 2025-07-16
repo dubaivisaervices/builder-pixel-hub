@@ -21,11 +21,11 @@ export interface BusinessImageData {
  */
 export function getBestImageUrl(imageData: ImageData): string | null {
   if (imageData.s3Url) {
-    return imageData.s3Url;
+    return fixImageDomain(imageData.s3Url);
   }
 
   if (imageData.url) {
-    return imageData.url;
+    return fixImageDomain(imageData.url);
   }
 
   if (imageData.base64) {
