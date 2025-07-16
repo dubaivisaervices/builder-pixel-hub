@@ -17,9 +17,12 @@ async function getBusinessData() {
 
   // Try multiple possible paths for businesses.json
   const possiblePaths = [
+    path.join(__dirname, "businesses.json"),
+    path.join(process.cwd(), "businesses.json"),
     "/opt/build/repo/code/client/data/businesses.json",
     "/opt/build/repo/client/data/businesses.json",
     "/opt/build/repo/data/businesses.json",
+    "./businesses.json",
     "./data/businesses.json",
     "../data/businesses.json",
     "../../client/data/businesses.json",
