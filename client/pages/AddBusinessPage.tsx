@@ -116,6 +116,115 @@ export default function AddBusinessPage() {
     "business setup services",
   ];
 
+  // File validation functions
+  const validateFile = (file: File): string | null => {
+    // Check file type
+    if (!file.type.startsWith("image/")) {
+      return "Please upload only image files (JPG, PNG, GIF, WebP)";
+    }
+
+    // Check file size (2MB limit)
+    const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+    if (file.size > maxSize) {
+      return "File size must be less than 2MB";
+    }
+
+    return null;
+  };
+
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const error = validateFile(file);
+    if (error) {
+      setUploadErrors([error]);
+      return;
+    }
+
+    setLogoFile(file);
+    setUploadErrors([]);
+
+    // Create preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setLogoPreview(e.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const errors: string[] = [];
+    const validFiles: File[] = [];
+
+    files.forEach((file, index) => {
+      const error = validateFile(file);
+      if (error) {
+        errors.push(`Photo ${index + 1}: ${error}`);
+      } else {
+        validFiles.push(file);
+      }
+    });
+
+    if (errors.length > 0) {
+      setUploadErrors(errors);
+      return;
+    }
+
+    setPhotoFiles((prev) => [...prev, ...validFiles]);
+    setUploadErrors([]);
+  };
+
+  const removePhotoFile = (index: number) => {
+    setPhotoFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const uploadFilesToServer = async (): Promise<{
+    logoUrl?: string;
+    photoUrls: string[];
+  }> => {
+    setIsUploading(true);
+    const formData = new FormData();
+
+    try {
+      // Upload logo
+      let logoUrl = businessForm.logoUrl;
+      if (logoFile) {
+        formData.append("logo", logoFile);
+      }
+
+      // Upload photos
+      photoFiles.forEach((file, index) => {
+        formData.append(`photo_${index}`, file);
+      });
+
+      // Add business ID for file naming
+      const businessId = `manual-${Date.now()}`;
+      formData.append("businessId", businessId);
+
+      const response = await fetch("/api/admin/upload-business-images", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload images");
+      }
+
+      const result = await response.json();
+      return {
+        logoUrl: result.logoUrl || logoUrl,
+        photoUrls: result.photoUrls || [],
+      };
+    } catch (error) {
+      console.error("Upload error:", error);
+      throw error;
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
