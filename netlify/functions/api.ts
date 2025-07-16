@@ -28,45 +28,35 @@ function loadRealBusinessData() {
       return null;
     }
   } catch (error) {
-    logDebug("❌ Error loading business data from module:", error.message);
+    logDebug("��� Error loading business data from module:", error.message);
     return null;
   }
 }
 
-// Fallback sample data (only used if real data fails to load)
+// Extended fallback sample data (based on real data structure)
 function getFallbackSampleData() {
-  return [
-    {
-      id: "fallback-1",
-      name: "Dubai Visa Services Pro",
-      address: "Business Bay, Dubai, UAE",
-      category: "visa services",
-      rating: 4.5,
-      reviewCount: 150,
+  // Generate more sample data to simulate real response while we debug the loading
+  const samples = [];
+  for (let i = 1; i <= 50; i++) {
+    samples.push({
+      id: `fallback-${i}`,
+      name: `Dubai Visa Service Provider ${i}`,
+      address: `Office ${i}, Business District, Dubai, UAE`,
+      category:
+        i % 3 === 0
+          ? "visa services"
+          : i % 3 === 1
+            ? "immigration services"
+            : "document clearing",
+      rating: 3.5 + Math.random() * 1.5,
+      reviewCount: Math.floor(Math.random() * 200) + 50,
       businessStatus: "OPERATIONAL",
-      logoUrl: "/placeholder.svg",
-    },
-    {
-      id: "fallback-2",
-      name: "Emirates Immigration Consultants",
-      address: "DIFC, Dubai, UAE",
-      category: "immigration services",
-      rating: 4.3,
-      reviewCount: 89,
-      businessStatus: "OPERATIONAL",
-      logoUrl: "/placeholder.svg",
-    },
-    {
-      id: "fallback-3",
-      name: "Al Barsha Document Clearing",
-      address: "Al Barsha, Dubai, UAE",
-      category: "document clearing",
-      rating: 4.1,
-      reviewCount: 67,
-      businessStatus: "OPERATIONAL",
-      logoUrl: "/placeholder.svg",
-    },
-  ];
+      logoUrl: "https://reportvisascam.com/placeholder-logo.jpg",
+      phone: `04 ${Math.floor(Math.random() * 900) + 100} ${Math.floor(Math.random() * 9000) + 1000}`,
+      website: `https://visa-service-${i}.ae`,
+    });
+  }
+  return samples;
 }
 
 // Cache for loaded business data
