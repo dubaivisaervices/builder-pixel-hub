@@ -136,14 +136,12 @@ function getEmbeddedBusinessData() {
   return embeddedBusinesses;
 }
 
-// Create Express server with embedded data
+// Create Express server with real business data
 function createBusinessServer() {
   const express = require("express");
   const app = express();
 
-  logDebug(
-    "Creating business server with EMBEDDED DATA (NO file dependencies)",
-  );
+  logDebug("Creating business server with REAL DATABASE BUSINESSES");
 
   // CORS and cache-busting middleware
   app.use((req: any, res: any, next: any) => {
@@ -171,37 +169,55 @@ function createBusinessServer() {
   app.use(express.json());
 
   // Health check
-  app.get("/api/ping", (req: any, res: any) => {
-    const businessCount = getBusinessData().length;
-    res.json({
-      message: "API is working! (EMBEDDED DATA - No file dependencies)",
-      timestamp: new Date().toISOString(),
-      businessCount: businessCount,
-      source: "embedded_data",
-    });
+  app.get("/api/ping", async (req: any, res: any) => {
+    try {
+      const businessData = await getBusinessData();
+      res.json({
+        message: "API is working! (REAL DATABASE BUSINESSES)",
+        timestamp: new Date().toISOString(),
+        businessCount: businessData.length,
+        source: "real_database",
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "API error",
+        error: error.message,
+        businessCount: 0,
+      });
+    }
   });
 
-  app.get("/api/health", (req: any, res: any) => {
-    const businessData = getBusinessData();
-    res.json({
-      status: "healthy",
-      timestamp: new Date().toISOString(),
-      businessCount: businessData.length,
-      dataSource: "embedded_data",
-      version: "embedded-data-v1",
-      fileSystemDependencies: false,
-    });
+  app.get("/api/health", async (req: any, res: any) => {
+    try {
+      const businessData = await getBusinessData();
+      res.json({
+        status: "healthy",
+        timestamp: new Date().toISOString(),
+        businessCount: businessData.length,
+        dataSource: "real_database",
+        version: "real-data-v1",
+        fileSystemDependencies: true,
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: "error",
+        error: error.message,
+        businessCount: 0,
+      });
+    }
   });
 
-  // Main business endpoint with embedded data
-  app.get("/api/dubai-visa-services", (req: any, res: any) => {
-    logDebug("Business endpoint called with embedded data", {
+  // Main business endpoint with real data
+  app.get("/api/dubai-visa-services", async (req: any, res: any) => {
+    logDebug("Business endpoint called for real database data", {
       query: req.query,
     });
 
     try {
-      const allBusinesses = getBusinessData();
-      logDebug(`📊 Serving ${allBusinesses.length} embedded businesses`);
+      const allBusinesses = await getBusinessData();
+      logDebug(
+        `📊 Serving ${allBusinesses.length} real businesses from database`,
+      );
 
       // Pagination
       const page = parseInt(req.query.page as string) || 1;
@@ -219,8 +235,8 @@ function createBusinessServer() {
         businesses: paginatedBusinesses,
         total: allBusinesses.length,
         categories: categories,
-        message: `Loaded ${paginatedBusinesses.length} of ${allBusinesses.length} Dubai visa services (EMBEDDED DATA)`,
-        source: "embedded_business_data",
+        message: `Loaded ${paginatedBusinesses.length} of ${allBusinesses.length} Dubai visa services (REAL DATABASE)`,
+        source: "real_database",
         pagination: {
           page: page,
           limit: limit,
@@ -231,24 +247,23 @@ function createBusinessServer() {
         success: true,
         timestamp: new Date().toISOString(),
         debug: {
-          dataEmbedded: true,
-          fileSystemUsed: false,
-          realBusinessesIncluded: 5,
-          generatedBusinesses: allBusinesses.length - 5,
+          dataFromFile: true,
+          realBusinessesCount: allBusinesses.length,
+          generatedBusinesses: 0,
         },
       };
 
-      logDebug("Embedded business response prepared", {
+      logDebug("Real business response prepared", {
         count: paginatedBusinesses.length,
         total: allBusinesses.length,
-        source: "embedded_data",
+        source: "real_database",
       });
 
       res.json(response);
     } catch (error) {
-      logDebug("Error in embedded business endpoint:", error.message);
+      logDebug("Error in real business endpoint:", error.message);
       res.status(500).json({
-        error: "Failed to load embedded business data",
+        error: "Failed to load real business data",
         message: error.message,
         businesses: [],
         total: 0,
@@ -264,30 +279,37 @@ function createBusinessServer() {
   });
 
   // Debug endpoint
-  app.get("/api/debug", (req: any, res: any) => {
-    const businessData = getBusinessData();
-    res.json({
-      availableEndpoints: [
-        "GET /api/ping",
-        "GET /api/health",
-        "GET /api/dubai-visa-services",
-        "GET /api/businesses",
-        "GET /api/debug",
-      ],
-      businessDataStatus: {
-        count: businessData.length,
-        source: "embedded_data",
-        sampleBusiness: businessData[0] || null,
-        fileSystemUsed: false,
-      },
-      systemInfo: {
-        embeddedBusinesses: 5,
-        generatedBusinesses: businessData.length - 5,
-        totalBusinesses: businessData.length,
-        noFileSystemDependencies: true,
-      },
-      timestamp: new Date().toISOString(),
-    });
+  app.get("/api/debug", async (req: any, res: any) => {
+    try {
+      const businessData = await getBusinessData();
+      res.json({
+        availableEndpoints: [
+          "GET /api/ping",
+          "GET /api/health",
+          "GET /api/dubai-visa-services",
+          "GET /api/businesses",
+          "GET /api/debug",
+        ],
+        businessDataStatus: {
+          count: businessData.length,
+          source: "real_database",
+          sampleBusiness: businessData[0] || null,
+          fileSystemUsed: true,
+        },
+        systemInfo: {
+          realBusinessesFromDB: businessData.length,
+          generatedBusinesses: 0,
+          totalBusinesses: businessData.length,
+          usingRealDatabase: true,
+        },
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: "Debug endpoint error",
+        message: error.message,
+      });
+    }
   });
 
   // 404 handler
