@@ -308,14 +308,38 @@ export default function AddBusinessPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsUploading(true);
 
     try {
+      // Validate required fields
+      if (
+        !businessForm.name ||
+        !businessForm.address ||
+        !businessForm.category
+      ) {
+        alert("Please fill in all required fields (Name, Address, Category)");
+        setIsUploading(false);
+        return;
+      }
+
+      // Upload files first if any
+      let logoUrl = businessForm.logoUrl;
+      let photoUrls = [...businessForm.photos];
+
+      if (logoFile || photoFiles.length > 0) {
+        const uploadResult = await uploadFilesToServer();
+        logoUrl = uploadResult.logoUrl || logoUrl;
+        photoUrls = [...photoUrls, ...uploadResult.photoUrls];
+      }
+
       // Generate unique ID
       const businessId = `manual-${Date.now()}`;
 
       const businessData = {
         ...businessForm,
         id: businessId,
+        logoUrl: logoUrl,
+        photos: photoUrls,
         hasTargetKeyword: businessForm.category.toLowerCase().includes("visa"),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -323,7 +347,6 @@ export default function AddBusinessPage() {
 
       console.log("Adding business:", businessData);
 
-      // Here you would typically send to your API
       const response = await fetch("/api/admin/add-business", {
         method: "POST",
         headers: {
@@ -352,12 +375,22 @@ export default function AddBusinessPage() {
           reviews: [],
           description: "",
         });
+        // Reset file uploads
+        setLogoFile(null);
+        setLogoPreview("");
+        setPhotoFiles([]);
+        setUploadErrors([]);
       } else {
-        alert("Failed to add business. Please try again.");
+        const errorData = await response.json();
+        alert(
+          `Failed to add business: ${errorData.error || "Please try again."}`,
+        );
       }
     } catch (error) {
       console.error("Error adding business:", error);
-      alert("Error adding business. Please try again.");
+      alert(`Error adding business: ${error.message || "Please try again."}`);
+    } finally {
+      setIsUploading(false);
     }
   };
 
