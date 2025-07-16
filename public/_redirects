@@ -1,5 +1,30 @@
-# API routes to Netlify Functions
-/api/*  /.netlify/functions/api/:splat  200
+# BULLETPROOF REDIRECTS - FINAL FIX
+# API routes with highest priority and force
+/api/ping  /.netlify/functions/api/ping  200!
+/api/health  /.netlify/functions/api/health  200!
+/api/dubai-visa-services  /.netlify/functions/api/dubai-visa-services  200!
+/api/businesses  /.netlify/functions/api/businesses  200!
+/api/*  /.netlify/functions/api/:splat  200!
 
-# SPA fallback
+# Static files with force
+/assets/*  /assets/:splat  200!
+/favicon.ico  /favicon.ico  200!
+/robots.txt  /robots.txt  200!
+
+# Emergency pages with force
+/working.html  /working.html  200!
+/emergency.html  /emergency.html  200!
+/fallback.html  /fallback.html  200!
+
+# React routes with force
+/dubai-businesses  /index.html  200!
+/dubai-businesses/*  /index.html  200!
+/business-directory  /index.html  200!
+/business-directory/*  /index.html  200!
+/report  /index.html  200!
+/report/*  /index.html  200!
+/admin  /index.html  200!
+/admin/*  /index.html  200!
+
+# Catch-all SPA fallback
 /*  /index.html  200
