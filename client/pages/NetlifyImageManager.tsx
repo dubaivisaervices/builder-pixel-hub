@@ -855,6 +855,14 @@ const NetlifyImageManager: React.FC = () => {
                   >
                     🧪 Test Random Business URLs
                   </Button>
+                  <Button
+                    onClick={verifyBusinessPhotos}
+                    disabled={debugLoading}
+                    variant="outline"
+                    className="border-green-300 text-green-700 hover:bg-green-50"
+                  >
+                    📸 Verify Business Photos
+                  </Button>
                 </div>
 
                 {/* Debug Results */}
