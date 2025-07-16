@@ -613,10 +613,176 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Business Search Tab */}
-        {activeTab === "search" && (
-          <div>
-            <BusinessSearchManager />
+        {/* Google API Fetch Tab */}
+        {activeTab === "google" && (
+          <div className="space-y-6">
+            <Card className="shadow-xl border-0 bg-white/70 backdrop-blur-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Search className="h-6 w-6" />
+                  <span>Google API Business Fetcher</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {/* API Status */}
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h4 className="font-medium text-blue-900 mb-3">
+                      Google Places API Status
+                    </h4>
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div className="bg-white rounded p-3 text-center">
+                        <div className="text-lg font-bold text-green-600">
+                          Ready
+                        </div>
+                        <div className="text-sm text-gray-600">API Status</div>
+                      </div>
+                      <div className="bg-white rounded p-3 text-center">
+                        <div className="text-lg font-bold text-blue-600">
+                          841
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          Current Businesses
+                        </div>
+                      </div>
+                      <div className="bg-white rounded p-3 text-center">
+                        <div className="text-lg font-bold text-purple-600">
+                          0
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          API Calls Today
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Search Categories */}
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h4 className="font-medium text-green-900 mb-3">
+                      Available Search Categories
+                    </h4>
+                    <div className="grid md:grid-cols-3 gap-2">
+                      {[
+                        "visa services Dubai",
+                        "immigration services Dubai",
+                        "document clearance Dubai",
+                        "PRO services Dubai",
+                        "attestation services Dubai",
+                        "work permit services Dubai",
+                        "business visa Dubai",
+                        "tourist visa Dubai",
+                        "family visa Dubai",
+                        "golden visa services Dubai",
+                        "residence visa Dubai",
+                        "employment visa Dubai",
+                        "education visa Dubai",
+                        "travel agency Dubai",
+                        "embassy services Dubai",
+                      ].map((category, index) => (
+                        <Badge
+                          key={index}
+                          className="justify-start bg-green-100 text-green-800 hover:bg-green-200 cursor-pointer"
+                        >
+                          {category}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Fetch Controls */}
+                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                    <h4 className="font-medium text-orange-900 mb-3">
+                      Fetch New Businesses
+                    </h4>
+                    <div className="space-y-4">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="searchQuery">Search Query</Label>
+                          <Input
+                            id="searchQuery"
+                            placeholder="e.g., visa services Dubai"
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="maxResults">Max Results</Label>
+                          <Input
+                            id="maxResults"
+                            type="number"
+                            placeholder="60"
+                            min="10"
+                            max="200"
+                            className="mt-1"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex items-center space-x-4">
+                        <label className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            className="rounded"
+                            defaultChecked
+                          />
+                          <span className="text-sm">
+                            Download logos & photos
+                          </span>
+                        </label>
+                        <label className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            className="rounded"
+                            defaultChecked
+                          />
+                          <span className="text-sm">Save to database</span>
+                        </label>
+                      </div>
+
+                      <Button className="bg-gradient-to-r from-blue-500 to-green-600 hover:from-blue-600 hover:to-green-700">
+                        <Search className="h-4 w-4 mr-2" />
+                        Fetch Businesses with Images
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Cost Estimation */}
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <h4 className="font-medium text-yellow-900 mb-3">
+                      ⚠️ API Cost Estimation
+                    </h4>
+                    <div className="text-sm text-yellow-700 space-y-2">
+                      <p>
+                        • <strong>Search API:</strong> ~$0.017 per request (~3
+                        requests for 60 businesses)
+                      </p>
+                      <p>
+                        • <strong>Details API:</strong> ~$0.017 per business (60
+                        businesses)
+                      </p>
+                      <p>
+                        • <strong>Photos API:</strong> ~$0.007 per photo (~300
+                        photos for 60 businesses)
+                      </p>
+                      <p className="font-semibold">
+                        • <strong>Total estimated cost:</strong> ~$4.20 for 60
+                        businesses with photos
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Recent Fetches */}
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-900 mb-3">
+                      Recent Fetch Results
+                    </h4>
+                    <div className="text-sm text-gray-600">
+                      No recent fetches. Start by searching for businesses
+                      above.
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         )}
 
