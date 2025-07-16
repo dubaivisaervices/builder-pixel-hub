@@ -321,9 +321,6 @@ export default function AdminDashboard() {
               { id: "search", label: "Add Businesses", icon: Search },
               { id: "categories", label: "Categories", icon: Tags },
               { id: "upload", label: "🚀 Upload to Hostinger", icon: Camera },
-              { id: "sync", label: "Data Sync", icon: RotateCw },
-              { id: "database", label: "Database", icon: Database },
-              { id: "s3", label: "S3 Storage", icon: Plus },
             ].map((tab) => (
               <button
                 key={tab.id}
