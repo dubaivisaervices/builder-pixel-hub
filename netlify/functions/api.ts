@@ -1,6 +1,7 @@
 import serverless from "serverless-http";
-import { readFileSync } from "fs";
-import { join } from "path";
+const {
+  getBusinessData: loadBusinessDataFromModule,
+} = require("./businessData.js");
 
 // Enhanced debugging function
 function logDebug(message: string, data?: any) {
