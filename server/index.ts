@@ -1619,6 +1619,12 @@ export function createServer() {
   // Serve uploaded business images
   app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
+  // Serve Netlify business images from public directory
+  app.use(
+    "/business-images",
+    express.static(path.join(process.cwd(), "public", "business-images")),
+  );
+
   // Let Vite handle all development assets and modules
   // Only intercept non-API, non-asset routes for SPA fallback
   app.get(
