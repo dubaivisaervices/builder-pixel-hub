@@ -454,6 +454,41 @@ const NetlifyImageManager: React.FC = () => {
     }
   };
 
+  const verifyBusinessPhotos = async () => {
+    setDebugLoading(true);
+    try {
+      setUploadResult({
+        success: true,
+        message: "Verifying business photos...",
+      });
+
+      const response = await fetch("/api/debug/verify-photos");
+      const data = await response.json();
+
+      if (data.success) {
+        setPhotoVerification(data);
+        setUploadResult({
+          success: true,
+          message: `Photo verification complete!\n\n📸 ${data.percentages.businessesWithPhotos}% of businesses have photos\n✅ ${data.percentages.accessiblePhotos}% of photos are accessible\n📁 ${data.percentages.netlifyPhotos}% are on Netlify\n\nDetails in the verification results below.`,
+        });
+        console.log("Photo verification results:", data);
+      } else {
+        setUploadResult({
+          success: false,
+          error: `Photo verification failed: ${data.error}`,
+        });
+      }
+    } catch (error) {
+      console.error("Error verifying photos:", error);
+      setUploadResult({
+        success: false,
+        error: `Error verifying photos: ${error.message}`,
+      });
+    } finally {
+      setDebugLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
