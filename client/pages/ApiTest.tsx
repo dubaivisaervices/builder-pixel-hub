@@ -16,18 +16,18 @@ export default function ApiTest() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const testGoogleAPI = async () => {
+  const testBusinessAPI = async () => {
     setLoading(true);
     setError(null);
     setTestResult(null);
 
     try {
-      const response = await fetch("/api/test-google-api");
+      const response = await fetch("/api/dubai-visa-services?limit=5");
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
-      const data: ApiTestResult = await response.json();
+      const data = await response.json();
       setTestResult(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
