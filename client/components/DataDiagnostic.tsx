@@ -329,7 +329,7 @@ const DataDiagnostic: React.FC = () => {
                 <h3 className="text-lg font-semibold">
                   ✅ Data Connection Working
                 </h3>
-                <p>All 841 businesses should be visible on the website</p>
+                <p>All 1,114+ businesses should be visible on the website</p>
               </div>
             ) : (
               <div className="text-red-700">
