@@ -16,6 +16,8 @@ function loadRealBusinessData() {
   try {
     // Try multiple possible paths for the business data
     const possiblePaths = [
+      join(__dirname, "client/data/businesses.json"),
+      join(__dirname, "./client/data/businesses.json"),
       join(process.cwd(), "client/data/businesses.json"),
       join(__dirname, "../../client/data/businesses.json"),
       "./client/data/businesses.json",
