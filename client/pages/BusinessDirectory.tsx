@@ -112,9 +112,9 @@ export default function BusinessDirectory() {
 
       setBusinesses(data.businesses || []);
 
-      // Log additional info for debugging
+            // Log additional info for debugging
       if (data.businesses.length > 100) {
-        console.log("🎉 Full dataset loaded - all 841 businesses available!");
+        console.log(`🎉 Full dataset loaded - all ${data.total || data.businesses.length} businesses available!`);
       } else if (data.businesses.length === 3) {
         console.log("⚠️ Fallback data detected - connection issue");
       } else {
