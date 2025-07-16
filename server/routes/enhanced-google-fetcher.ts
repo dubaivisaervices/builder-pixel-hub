@@ -228,23 +228,30 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
 
           if (shouldSkip) continue;
 
-          // Determine business category
+          // Determine business category (use filter category if specified)
           const businessTypes = details.types || [];
-          let category = "visa services";
+          let businessCategory = category || "visa services"; // Use filtered category if provided
 
-          if (businessTypes.includes("travel_agency"))
-            category = "travel agency";
-          else if (businessTypes.includes("lawyer"))
-            category = "immigration lawyer";
-          else if (businessTypes.includes("government_office"))
-            category = "government visa office";
-          else if (businessTypes.includes("embassy"))
-            category = "embassy visa services";
-          else if (
-            businessTypes.includes("school") ||
-            businessTypes.includes("university")
-          )
-            category = "education visa";
+          // If no specific category filter, determine from business types
+          if (!category) {
+            if (businessTypes.includes("travel_agency"))
+              businessCategory = "travel agency";
+            else if (businessTypes.includes("lawyer"))
+              businessCategory = "immigration lawyer";
+            else if (businessTypes.includes("government_office"))
+              businessCategory = "government visa office";
+            else if (businessTypes.includes("embassy"))
+              businessCategory = "embassy visa services";
+            else if (
+              businessTypes.includes("school") ||
+              businessTypes.includes("university")
+            )
+              businessCategory = "education visa";
+            else if (businessTypes.includes("insurance_agency"))
+              businessCategory = "immigration services";
+            else if (businessTypes.includes("local_government_office"))
+              businessCategory = "document clearance";
+          }
 
           // Download logo and photos if enabled
           let logoUrl = "";
