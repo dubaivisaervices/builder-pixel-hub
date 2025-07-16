@@ -8,7 +8,6 @@ import {
   getBusinessDetails,
   getBusinessPhoto,
   getBusinessById,
-  testGoogleAPI,
   debugImageData,
 } from "./routes/google-business";
 import {
