@@ -26,6 +26,7 @@ import {
   Activity,
   Search,
   Plus,
+  Tags,
 } from "lucide-react";
 import BusinessSearchManager from "./BusinessSearchManager";
 import S3Configuration from "../components/S3Configuration";
