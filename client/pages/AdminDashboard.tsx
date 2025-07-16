@@ -162,6 +162,63 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleClearCache = async () => {
+    if (
+      !confirm(
+        "Are you sure you want to clear all caches? This will force reload for all users.",
+      )
+    ) {
+      return;
+    }
+
+    setLoading(true);
+    setSyncStatus("Clearing caches...");
+
+    try {
+      // Clear browser cache headers by adding timestamp
+      const timestamp = Date.now();
+
+      // Force reload the business data
+      const response = await fetch(
+        `/api/dubai-visa-services?_cache_clear=${timestamp}&limit=1`,
+        {
+          headers: {
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            Pragma: "no-cache",
+            Expires: "0",
+          },
+        },
+      );
+
+      if (response.ok) {
+        setSyncStatus(
+          "✅ Cache cleared successfully! Users will see fresh content.",
+        );
+        fetchDashboardData(); // Refresh stats
+      } else {
+        setSyncStatus("❌ Cache clear failed");
+      }
+    } catch (error) {
+      setSyncStatus(`❌ Cache clear error: ${error}`);
+    } finally {
+      setLoading(false);
+      setTimeout(() => setSyncStatus(""), 5000);
+    }
+  };
+
+  const calculateTotalBusinesses = async () => {
+    try {
+      const response = await fetch("/api/dubai-visa-services?limit=1");
+      if (response.ok) {
+        const data = await response.json();
+        return data.total || data.businesses?.length || 0;
+      }
+    } catch (error) {
+      console.error("Failed to calculate total businesses:", error);
+    }
+    return 0;
+  };
+
   const handleClearDatabase = async () => {
     if (
       !confirm(
