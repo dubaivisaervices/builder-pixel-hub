@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dubai Visa Services - Working Version</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem 0;
+        text-align: center;
+      }
+      .nav {
+        background: #f8f9fa;
+        padding: 1rem 0;
+        border-bottom: 1px solid #ddd;
+      }
+      .nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .nav li {
+        margin: 0 1rem;
+      }
+      .nav a {
+        text-decoration: none;
+        color: #007bff;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
+      .nav a:hover {
+        background-color: #e9ecef;
+      }
+      .main {
+        padding: 3rem 0;
+      }
+      .hero {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+      .hero h2 {
+        color: #495057;
+        margin-bottom: 1rem;
+      }
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+      }
+      .feature {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      .feature h3 {
+        color: #007bff;
+        margin-bottom: 1rem;
+      }
+      .status {
+        background: #d4edda;
+        color: #155724;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 2rem 0;
+        text-align: center;
+      }
+      .btn {
+        display: inline-block;
+        background: #007bff;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        text-decoration: none;
+        border-radius: 4px;
+        margin: 0.5rem;
+        transition: background-color 0.3s;
+      }
+      .btn:hover {
+        background: #0056b3;
+      }
+      .footer {
+        background: #343a40;
+        color: white;
+        text-align: center;
+        padding: 2rem 0;
+        margin-top: 3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <h1>🇦🇪 Dubai Visa Services Directory</h1>
+        <p>
+          Your trusted platform for finding legitimate visa services in Dubai
+        </p>
+      </div>
+    </header>
+
+    <nav class="nav">
+      <div class="container">
+        <ul>
+          <li><a href="/">🏠 Home</a></li>
+          <li><a href="/working.html">✅ Working Page</a></li>
+          <li><a href="/emergency.html">🚨 Emergency</a></li>
+          <li><a href="/fallback.html">🔄 Fallback</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="main">
+      <div class="container">
+        <div class="status">
+          <h2>✅ SITE IS WORKING!</h2>
+          <p>
+            This page proves your Netlify deployment is successful. If you can
+            see this, the hosting is working correctly.
+          </p>
+        </div>
+
+        <div class="hero">
+          <h2>Find Trusted Dubai Visa Services</h2>
+          <p>
+            We help you connect with legitimate, verified visa and immigration
+            services in Dubai and the UAE.
+          </p>
+          <a href="/" class="btn">🚀 Launch Main App</a>
+          <a href="/emergency.html" class="btn">🔗 Emergency Access</a>
+        </div>
+
+        <div class="features">
+          <div class="feature">
+            <h3>🏢 Business Directory</h3>
+            <p>
+              Browse our comprehensive directory of verified visa service
+              providers in Dubai.
+            </p>
+            <a href="/dubai-businesses" class="btn">View Businesses</a>
+          </div>
+
+          <div class="feature">
+            <h3>⭐ Reviews & Ratings</h3>
+            <p>
+              Read authentic reviews and ratings from real customers to make
+              informed decisions.
+            </p>
+            <a href="/reviews" class="btn">Read Reviews</a>
+          </div>
+
+          <div class="feature">
+            <h3>🛡️ Scam Protection</h3>
+            <p>
+              Report suspicious activities and help protect the community from
+              visa scams.
+            </p>
+            <a href="/report" class="btn">Report Scam</a>
+          </div>
+        </div>
+
+        <div class="status">
+          <h3>🔍 Troubleshooting:</h3>
+          <p>If you're experiencing issues with the main app:</p>
+          <ul style="text-align: left; max-width: 600px; margin: 1rem auto">
+            <li>✅ This page works (hosting is functional)</li>
+            <li>🔄 Try refreshing the browser</li>
+            <li>🔒 Clear browser cache</li>
+            <li>🕶️ Try incognito/private mode</li>
+            <li>📱 Test on different device/browser</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          &copy; 2024 Dubai Visa Services. Helping you navigate visa services
+          safely.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Test if main app is accessible
+      function testMainApp() {
+        fetch("/")
+          .then((response) => {
+            if (response.ok) {
+              console.log("✅ Main app is accessible");
+              document.getElementById("status").innerHTML +=
+                "<br>✅ Main app is responding";
+            } else {
+              console.log("❌ Main app issue:", response.status);
+            }
+          })
+          .catch((error) => {
+            console.log("❌ Main app error:", error);
+          });
+      }
+
+      // Test on page load
+      testMainApp();
+
+      // Add click handlers to test links
+      document.querySelectorAll('a[href="/"]').forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (
+            confirm(
+              "Attempting to access main app. Continue?\n\nIf it fails, come back to /working.html",
+            )
+          ) {
+            window.location.href = "/";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
