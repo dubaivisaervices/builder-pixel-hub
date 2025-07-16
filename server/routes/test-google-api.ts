@@ -1,137 +1,77 @@
-import { Request, Response } from "express";
+import { RequestHandler } from "express";
 
-export async function testGoogleAPI(req: Request, res: Response) {
+export const testGoogleAPI: RequestHandler = async (req, res) => {
   try {
-    const { database } = await import("../database/database");
-
-    // Get sample businesses with photo references
-    const businesses = await database.all(`
-      SELECT id, name, photo_reference, lat, lng, address 
-      FROM businesses 
-      WHERE photo_reference IS NOT NULL 
-      LIMIT 5
-    `);
-
+    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+    console.log("🔍 Testing Google Places API...");
     console.log(
-      "🔍 Found businesses with photo references:",
-      businesses.length,
+      "🗝️ API Key:",
+      apiKey ? `${apiKey.substring(0, 10)}...` : "NOT SET",
     );
 
-    const testResults = {
-      businessesWithPhotos: businesses.length,
-      tests: [],
-      apiKey: process.env.GOOGLE_PLACES_API_KEY ? "Configured" : "Missing",
-    };
+    if (!apiKey) {
+      return res.json({
+        success: false,
+        error: "Google Places API key not configured",
+      });
+    }
 
-    if (businesses.length > 0 && process.env.GOOGLE_PLACES_API_KEY) {
-      const testBusiness = businesses[0];
-      const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+    // Test with a known place_id
+    const testPlaceId = "ChIJ10c9E2ZDXz4Ru2NyjBi7aiE"; // From business data
+    const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${testPlaceId}&fields=name,photos,formatted_address&key=${apiKey}`;
 
-      // Test 1: Direct photo URL with existing photo reference
-      const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${testBusiness.photo_reference}&key=${apiKey}`;
+    console.log("🌐 Testing URL:", detailsUrl);
 
-      console.log("🧪 Testing existing photo reference...");
-      try {
-        const response = await fetch(photoUrl);
-        testResults.tests.push({
-          test: "Existing Photo Reference",
-          business: testBusiness.name,
-          photoReference: testBusiness.photo_reference.substring(0, 50) + "...",
-          status: response.status,
-          statusText: response.statusText,
-          success: response.ok,
-          url: photoUrl,
-        });
-      } catch (error) {
-        testResults.tests.push({
-          test: "Existing Photo Reference",
-          business: testBusiness.name,
-          error: error.message,
-          success: false,
-        });
-      }
+    const response = await fetch(detailsUrl);
+    const data = await response.json();
 
-      // Test 2: Search for the business and get new photos
-      console.log("🔍 Testing Places search...");
-      const searchQuery = encodeURIComponent(
-        `${testBusiness.name} ${testBusiness.address || "Dubai"}`,
-      );
-      const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${searchQuery}&key=${apiKey}`;
+    console.log("📊 Response status:", response.status);
+    console.log("📄 API Response:", JSON.stringify(data, null, 2));
+
+    // Test a simple photo fetch if photos exist
+    let photoTest = null;
+    if (data.status === "OK" && data.result?.photos?.length > 0) {
+      const photoRef = data.result.photos[0].photo_reference;
+      const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photoRef}&maxwidth=400&key=${apiKey}`;
+      console.log("📸 Testing photo URL:", photoUrl);
 
       try {
-        const searchResponse = await fetch(searchUrl);
-        const searchData = await searchResponse.json();
-
-        const searchResult = {
-          test: "Places Search",
-          business: testBusiness.name,
-          query: `${testBusiness.name} ${testBusiness.address || "Dubai"}`,
-          status: searchData.status,
-          resultsCount: searchData.results ? searchData.results.length : 0,
-          success: searchData.status === "OK",
+        const photoResponse = await fetch(photoUrl);
+        photoTest = {
+          status: photoResponse.status,
+          ok: photoResponse.ok,
+          contentType: photoResponse.headers.get("content-type"),
+          size: photoResponse.headers.get("content-length"),
         };
-
-        if (
-          searchData.status === "OK" &&
-          searchData.results &&
-          searchData.results.length > 0
-        ) {
-          const result = searchData.results[0];
-          searchResult.foundName = result.name;
-          searchResult.placeId = result.place_id;
-          searchResult.photosCount = result.photos ? result.photos.length : 0;
-
-          // Test new photo reference if available
-          if (result.photos && result.photos.length > 0) {
-            const newPhotoRef = result.photos[0].photo_reference;
-            const newPhotoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${newPhotoRef}&key=${apiKey}`;
-
-            try {
-              const newPhotoResponse = await fetch(newPhotoUrl);
-              searchResult.newPhotoTest = {
-                photoReference: newPhotoRef.substring(0, 50) + "...",
-                status: newPhotoResponse.status,
-                statusText: newPhotoResponse.statusText,
-                success: newPhotoResponse.ok,
-                url: newPhotoUrl,
-              };
-            } catch (error) {
-              searchResult.newPhotoTest = {
-                error: error.message,
-                success: false,
-              };
-            }
-          }
-        }
-
-        testResults.tests.push(searchResult);
-      } catch (error) {
-        testResults.tests.push({
-          test: "Places Search",
-          business: testBusiness.name,
-          error: error.message,
-          success: false,
-        });
+        console.log("📸 Photo response:", photoTest);
+      } catch (photoError) {
+        photoTest = { error: photoError.message };
       }
     }
 
     res.json({
       success: true,
-      testResults,
-      businesses: businesses.map((b) => ({
-        id: b.id,
-        name: b.name,
-        hasPhotoReference: !!b.photo_reference,
-        photoRefPreview: b.photo_reference
-          ? b.photo_reference.substring(0, 30) + "..."
-          : null,
-      })),
+      apiKey: apiKey ? `${apiKey.substring(0, 10)}...` : "NOT SET",
+      testPlaceId,
+      response: {
+        status: response.status,
+        data: data,
+      },
+      photoTest,
+      analysis: {
+        apiWorking: data.status === "OK",
+        hasPhotos: data.result?.photos?.length > 0,
+        photosCount: data.result?.photos?.length || 0,
+        errorMessage: data.error_message || null,
+        apiStatus: data.status,
+      },
     });
   } catch (error) {
     console.error("❌ Google API test error:", error);
     res.status(500).json({
       success: false,
-      error: error.message,
+      error: "Test failed",
+      details: error instanceof Error ? error.message : "Unknown error",
     });
   }
-}
+};
