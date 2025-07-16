@@ -481,6 +481,197 @@ const NetlifyImageManager: React.FC = () => {
             <TabsTrigger value="batch">Batch Operations</TabsTrigger>
           </TabsList>
 
+          {/* Super Fast Upload Tab */}
+          <TabsContent value="superfast">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <div className="animate-pulse">🚀</div>
+                  <span>Super Fast Upload - All 841 Businesses</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Progress Display */}
+                {superFastProgress && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h4 className="font-medium text-blue-900 mb-3">
+                      📊 Real-time Progress
+                    </h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-blue-600">
+                          {superFastStats?.processed || 0}
+                        </div>
+                        <div className="text-sm text-gray-600">Processed</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-green-600">
+                          {superFastStats?.logosDownloaded || 0}
+                        </div>
+                        <div className="text-sm text-gray-600">Logos</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-purple-600">
+                          {superFastStats?.photosDownloaded || 0}
+                        </div>
+                        <div className="text-sm text-gray-600">Photos</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-orange-600">
+                          {Math.round(
+                            (superFastStats?.totalSize || 0) / (1024 * 1024),
+                          )}
+                          MB
+                        </div>
+                        <div className="text-sm text-gray-600">Downloaded</div>
+                      </div>
+                    </div>
+
+                    {superFastStats && (
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>
+                            Progress: {superFastStats.processed}/
+                            {superFastStats.total}
+                          </span>
+                          <span>
+                            {Math.round(
+                              (superFastStats.processed /
+                                superFastStats.total) *
+                                100,
+                            )}
+                            %
+                          </span>
+                        </div>
+                        <Progress
+                          value={
+                            (superFastStats.processed / superFastStats.total) *
+                            100
+                          }
+                          className="w-full h-3"
+                        />
+                        {superFastStats.estimatedTimeRemaining && (
+                          <div className="text-center text-sm text-gray-600">
+                            Estimated time remaining:{" "}
+                            {Math.ceil(
+                              superFastStats.estimatedTimeRemaining /
+                                (1000 * 60),
+                            )}{" "}
+                            minutes
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Upload Information */}
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-6">
+                  <h4 className="font-bold text-green-900 mb-3">
+                    ⚡ What This Does
+                  </h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <h5 className="font-medium text-green-800 mb-2">
+                        📋 Processing Details
+                      </h5>
+                      <ul className="text-sm text-green-700 space-y-1">
+                        <li>• Downloads ALL 841 business logos</li>
+                        <li>• Downloads up to 5 photos per business</li>
+                        <li>• Saves directly to Netlify public directory</li>
+                        <li>• Updates database with new Netlify URLs</li>
+                        <li>• Processes 20 businesses simultaneously</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h5 className="font-medium text-blue-800 mb-2">
+                        🎯 Expected Results
+                      </h5>
+                      <ul className="text-sm text-blue-700 space-y-1">
+                        <li>• ~841 business logos</li>
+                        <li>• ~4,200 business photos (5 per business)</li>
+                        <li>• ~2-3 GB total download size</li>
+                        <li>• ~10-15 minutes completion time</li>
+                        <li>• Real images shown to users instantly</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-wrap gap-3">
+                  {!superFastUploading ? (
+                    <Button
+                      onClick={startSuperFastUpload}
+                      className="bg-gradient-to-r from-green-500 via-blue-500 to-purple-600 hover:from-green-600 hover:via-blue-600 hover:to-purple-700 text-white font-bold"
+                      size="lg"
+                    >
+                      <div className="animate-pulse mr-2">🚀</div>
+                      Start Super Fast Upload (841 Businesses)
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={stopSuperFastUpload}
+                      variant="destructive"
+                      size="lg"
+                    >
+                      <XCircle className="h-4 w-4 mr-2" />
+                      Stop Upload
+                    </Button>
+                  )}
+
+                  <Button
+                    onClick={loadStats}
+                    variant="outline"
+                    className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                  >
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Refresh Stats
+                  </Button>
+
+                  {superFastProgress && !superFastUploading && (
+                    <Button
+                      onClick={clearProgressData}
+                      variant="outline"
+                      className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Clear Progress
+                    </Button>
+                  )}
+                </div>
+
+                {/* Warning */}
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <h4 className="font-medium text-yellow-900 mb-2">
+                    ⚠️ Important Notes
+                  </h4>
+                  <ul className="text-sm text-yellow-700 space-y-1">
+                    <li>
+                      • This will download images from external sources (Google,
+                      Hostinger)
+                    </li>
+                    <li>
+                      • Large file download (~2-3 GB) - ensure stable internet
+                      connection
+                    </li>
+                    <li>
+                      • Process runs in background - you can close this page
+                      during upload
+                    </li>
+                    <li>
+                      • Images will be immediately available at
+                      /business-images/ URLs
+                    </li>
+                    <li>
+                      • Existing images will be overwritten with fresh downloads
+                    </li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* Single Upload Tab */}
           <TabsContent value="single">
             <div className="grid md:grid-cols-2 gap-6">
