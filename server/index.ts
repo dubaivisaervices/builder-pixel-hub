@@ -328,7 +328,7 @@ export function createServer() {
           }
           if (photo.s3Url && isCorruptedUrl(photo.s3Url)) {
             console.warn(
-              "🚫 SERVER: BLOCKED CORRUPTED photo S3 URL from bad batch:",
+              "���� SERVER: BLOCKED CORRUPTED photo S3 URL from bad batch:",
               photo.s3Url,
             );
             return false;
@@ -338,7 +338,7 @@ export function createServer() {
 
         if (validPhotos.length < business.photos.length) {
           console.warn(
-            `��� 🚫 SERVER: Filtered out ${business.photos.length - validPhotos.length} corrupted regular photos`,
+            `📸 🚫 SERVER: Filtered out ${business.photos.length - validPhotos.length} corrupted regular photos`,
           );
         }
 
@@ -478,6 +478,11 @@ export function createServer() {
   app.get("/api/cached-logo/:businessId", serveCachedLogo);
   app.get("/api/cached-photo/:businessId/:photoIndex", serveCachedPhoto);
   app.get("/api/placeholder-logo/:businessName", generatePlaceholderLogo);
+
+  // Unified image service routes
+  app.get("/api/business-images/:businessId", getBusinessImages);
+  app.get("/api/optimized-image/:businessId", serveOptimizedImage);
+  app.get("/api/image-stats", getImageStats);
 
   // Reports API
   app.post(
