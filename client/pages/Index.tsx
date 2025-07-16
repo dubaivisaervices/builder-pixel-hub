@@ -275,7 +275,67 @@ export default function Index() {
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        // Fallback to sample data
+
+        // Try fallback API endpoint
+        try {
+          console.log("🔄 Trying fallback API...");
+          const fallbackResponse = await fetch("/api/businesses-static");
+          if (fallbackResponse.ok) {
+            const fallbackData = await fallbackResponse.json();
+            if (fallbackData && Array.isArray(fallbackData.businesses)) {
+              setAllBusinesses(fallbackData.businesses);
+              setFeaturedBusinesses(fallbackData.businesses.slice(0, 6));
+
+              setStats({
+                totalBusinesses: fallbackData.businesses.length,
+                totalReviews: fallbackData.businesses.reduce(
+                  (sum: number, b: BusinessData) => sum + (b?.reviewCount || 0),
+                  0,
+                ),
+                avgRating: 4.2,
+                locations: 15,
+                scamReports: 145,
+              });
+
+              console.log("✅ Fallback data loaded successfully");
+              return;
+            }
+          }
+        } catch (fallbackError) {
+          console.error("Fallback API also failed:", fallbackError);
+        }
+
+        // Ultimate fallback: create sample data
+        const sampleBusinesses: BusinessData[] = [
+          {
+            id: "sample-1",
+            name: "Dubai Visa Services Pro",
+            rating: 4.5,
+            reviewCount: 150,
+            address: "Business Bay, Dubai, UAE",
+            category: "visa services",
+          },
+          {
+            id: "sample-2",
+            name: "Emirates Immigration Consultants",
+            rating: 4.3,
+            reviewCount: 89,
+            address: "DIFC, Dubai, UAE",
+            category: "immigration services",
+          },
+          {
+            id: "sample-3",
+            name: "Al Barsha Document Clearing",
+            rating: 4.1,
+            reviewCount: 67,
+            address: "Al Barsha, Dubai, UAE",
+            category: "document clearing",
+          },
+        ];
+
+        setAllBusinesses(sampleBusinesses);
+        setFeaturedBusinesses(sampleBusinesses);
+
         setStats({
           totalBusinesses: 841,
           totalReviews: 4280,
@@ -283,6 +343,8 @@ export default function Index() {
           locations: 15,
           scamReports: 145,
         });
+
+        console.log("📊 Using sample data as ultimate fallback");
       } finally {
         setLoading(false);
         setTimeout(() => setFadeIn(true), 100);
