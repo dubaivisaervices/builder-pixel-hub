@@ -292,7 +292,7 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
             id: place.place_id,
             name: details.name,
             address: details.formatted_address || "",
-            category: category,
+            category: businessCategory,
             phone: details.formatted_phone_number || "",
             website: details.website || "",
             email: "", // Not available from Google API
