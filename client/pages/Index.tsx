@@ -431,10 +431,10 @@ export default function Index() {
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold">
                 <span className="bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 bg-clip-text text-transparent">
-                  Stop Visa Fraudsters
+                  UAE's Trusted Platform
                 </span>
                 <br />
-                <span className="text-gray-900">Before They Strike</span>
+                <span className="text-gray-900">For Visa Safety</span>
               </h1>
               <p className="text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                 🛡️ Expose scammers, protect your money, and save others from
