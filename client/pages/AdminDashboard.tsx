@@ -604,6 +604,129 @@ export default function AdminDashboard() {
           </div>
         )}
 
+        {/* Categories Tab */}
+        {activeTab === "categories" && (
+          <div className="space-y-6">
+            <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Tags className="h-6 w-6" />
+                  <span>Category Management</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {/* Categories List */}
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-900 mb-3">
+                      Available Categories
+                    </h4>
+                    <div className="grid md:grid-cols-3 gap-2">
+                      {[
+                        "registered visa agent Dubai",
+                        "education visa",
+                        "document clearance",
+                        "pro services",
+                        "attestation services",
+                        "work permit services",
+                        "tourist visa",
+                        "business visa",
+                        "family visa",
+                        "golden visa services",
+                        "residence visa",
+                        "employment visa",
+                        "investor visa",
+                        "visa helper",
+                        "immigration services",
+                        "business setup services",
+                      ].map((category, index) => (
+                        <Badge
+                          key={index}
+                          className="justify-start bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer"
+                        >
+                          {category}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Add New Category */}
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h4 className="font-medium text-green-900 mb-3">
+                      Add New Category
+                    </h4>
+                    <div className="flex space-x-2">
+                      <Input
+                        placeholder="Enter new category name..."
+                        className="flex-1"
+                      />
+                      <Button className="bg-green-600 hover:bg-green-700">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Category
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Category Statistics */}
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h4 className="font-medium text-blue-900 mb-3">
+                      Category Statistics
+                    </h4>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="bg-white rounded p-3">
+                        <div className="text-2xl font-bold text-blue-600">
+                          16
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          Total Categories
+                        </div>
+                      </div>
+                      <div className="bg-white rounded p-3">
+                        <div className="text-2xl font-bold text-green-600">
+                          841
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          Businesses with Categories
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bulk Operations */}
+                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                    <h4 className="font-medium text-orange-900 mb-3">
+                      Bulk Operations
+                    </h4>
+                    <div className="flex space-x-2">
+                      <Button
+                        variant="outline"
+                        className="border-orange-300 text-orange-700"
+                      >
+                        <RotateCw className="h-4 w-4 mr-2" />
+                        Refresh Categories
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="border-orange-300 text-orange-700"
+                      >
+                        <Settings className="h-4 w-4 mr-2" />
+                        Merge Categories
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="border-orange-300 text-orange-700"
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Clean Unused
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
         {/* Data Sync Tab */}
         {activeTab === "sync" && (
           <div className="space-y-6">
