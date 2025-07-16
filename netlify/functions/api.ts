@@ -242,6 +242,7 @@ function createBusinessServer() {
         "GET /api/dubai-visa-services",
         "GET /api/businesses",
         "GET /api/debug",
+        "GET /api/test-data-loading",
       ],
       businessDataStatus: {
         loaded: !!cachedBusinessData,
@@ -257,6 +258,44 @@ function createBusinessServer() {
 
     logDebug("Debug info requested", debugInfo);
     res.json(debugInfo);
+  });
+
+  // Test business data loading endpoint
+  app.get("/api/test-data-loading", (req: any, res: any) => {
+    logDebug("🧪 Testing business data loading...");
+
+    // Clear cache to force reload
+    cachedBusinessData = null;
+
+    // Try to load data
+    const testData = loadRealBusinessData();
+
+    const testResult = {
+      success: !!(testData && testData.length > 0),
+      dataLoaded: testData ? testData.length : 0,
+      expectedCount: 1114,
+      sampleRecord: testData && testData.length > 0 ? testData[0] : null,
+      moduleTest: null,
+      timestamp: new Date().toISOString(),
+    };
+
+    // Test the module loading directly
+    try {
+      const moduleData = loadBusinessDataFromModule();
+      testResult.moduleTest = {
+        success: !!(moduleData && moduleData.length > 0),
+        count: moduleData ? moduleData.length : 0,
+        sample: moduleData && moduleData.length > 0 ? moduleData[0] : null,
+      };
+    } catch (error) {
+      testResult.moduleTest = {
+        error: error.message,
+        success: false,
+      };
+    }
+
+    logDebug("🧪 Test results", testResult);
+    res.json(testResult);
   });
 
   // Enhanced error handling
