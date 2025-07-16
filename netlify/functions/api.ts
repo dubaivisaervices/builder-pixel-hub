@@ -1,4 +1,6 @@
 import serverless from "serverless-http";
+import { promises as fs } from "fs";
+import * as path from "path";
 
 // Enhanced debugging function
 function logDebug(message: string, data?: any) {
@@ -9,236 +11,129 @@ function logDebug(message: string, data?: any) {
   );
 }
 
-// EMBEDDED BUSINESS DATA - No file system dependencies
-// This ensures the data is always available in the serverless environment
-const EMBEDDED_BUSINESS_DATA = [
-  {
-    id: "ChIJ10c9E2ZDXz4Ru2NyjBi7aiE",
-    name: "10-PRO Consulting | Business Set Up, Relocation, Visas & Legal Services (Freezone, Mainland & Offshore companies)",
-    address:
-      "Business Central Towers (Tower B Office # 2004, 20th Floor Al Sufouh 2 - الصفوح - Dubai Media City - دبي - United Arab Emirates",
-    category: "registered visa agent Dubai",
-    phone: "04 529 3354",
-    website: "https://10-pro.com/",
-    email: "info@10proconsultingbusin.ae",
-    rating: 4.7,
-    reviewCount: 505,
-    latitude: 25.1007776,
-    longitude: 55.1694272,
-    businessStatus: "OPERATIONAL",
-    logoUrl:
-      "https://reportvisascam.com/business-images/logos/logo-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
-    hasTargetKeyword: true,
-  },
-  {
-    id: "ChIJ31pcKGtrXz4R92jGT68rkVQ",
-    name: "4S Study Abroad | 5000+ Visa Approved | Education Consultant in Dubai",
-    address:
-      "Sultan Business Centre - Office 221 - Oud Metha - Dubai - United Arab Emirates",
-    category: "education visa",
-    phone: "04 553 8909",
-    website: "https://www.4sstudyabroad.com/",
-    email: "info@4sstudyabroad5000vis.ae",
-    rating: 4.7,
-    reviewCount: 218,
-    latitude: 25.233408,
-    longitude: 55.3087672,
-    businessStatus: "OPERATIONAL",
-    logoUrl:
-      "https://reportvisascam.com/business-images/logos/logo-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
-    hasTargetKeyword: true,
-  },
-  {
-    id: "ChIJ6RJA5qJdXz4RNAbDft-_XVw",
-    name: "A A Documents Clearing services LLC",
-    address:
-      "Deira - 119 office 1st Floor - Muteena - Dubai - United Arab Emirates",
-    category: "document clearance",
-    phone: "055 547 3616",
-    website: "https://www.aadocumentsclearingservices.com/",
-    email: "info@aadocumentsclearings.ae",
-    rating: 3.8,
-    reviewCount: 13,
-    latitude: 25.2742469,
-    longitude: 55.3276466,
-    businessStatus: "OPERATIONAL",
-    logoUrl:
-      "https://reportvisascam.com/business-images/logos/logo-ChIJ6RJA5qJdXz4RNAbDft-_XVw.jpg",
-    hasTargetKeyword: false,
-  },
-  {
-    id: "ChIJXf_UeQBDXz4ROdLA_nZbQmA",
-    name: "A to Z Document Clearing Services",
-    address: "19 3A St - Al Fahidi - Dubai - United Arab Emirates",
-    category: "document clearance",
-    phone: "052 603 8558",
-    website: "http://www.a2zdocument.com/",
-    email: "info@atozdocumentclearing.ae",
-    rating: 5,
-    reviewCount: 246,
-    latitude: 25.2645804,
-    longitude: 55.291883,
-    businessStatus: "OPERATIONAL",
-    logoUrl:
-      "https://reportvisascam.com/business-images/logos/logo-ChIJXf_UeQBDXz4ROdLA_nZbQmA.jpg",
-    hasTargetKeyword: false,
-  },
-  {
-    id: "ChIJuQTxFSZDXz4RVOC7mKm-dQ8",
-    name: "AARS Document Clearing & PRO Services",
-    address:
-      "Business Central Towers - Tower B, 20th Floor, Office # 2004 - Al Sufouh - Dubai - United Arab Emirates",
-    category: "pro services",
-    phone: "04 529 3354",
-    website: "https://aarsdocument.com/",
-    email: "info@aarsdocument.ae",
-    rating: 4.9,
-    reviewCount: 45,
-    latitude: 25.1004772,
-    longitude: 55.1695175,
-    businessStatus: "OPERATIONAL",
-    logoUrl:
-      "https://reportvisascam.com/business-images/logos/logo-ChIJuQTxFSZDXz4RVOC7mKm-dQ8.jpg",
-    hasTargetKeyword: false,
-  },
-];
+// Get business data - try file loading first, fallback to embedded
+async function getBusinessData() {
+  logDebug("Starting business data loading...");
 
-// Generate more businesses to reach 1000+ count
-function generateExtendedBusinessData() {
-  const extendedData = [...EMBEDDED_BUSINESS_DATA];
-
-  // Dubai areas for realistic addresses
-  const dubaiAreas = [
-    "Business Bay",
-    "DIFC",
-    "Downtown Dubai",
-    "Jumeirah",
-    "Deira",
-    "Bur Dubai",
-    "Al Barsha",
-    "Marina",
-    "JLT",
-    "Al Garhoud",
-    "Al Karama",
-    "Satwa",
-    "Al Qusais",
-    "Mirdif",
-    "Al Mizhar",
-    "Dubai Investment Park",
-    "Al Sufouh",
-    "Knowledge Village",
-    "Academic City",
-    "Healthcare City",
-    "Dubai Sports City",
-    "Motor City",
-    "Arabian Ranches",
-    "Dubai Hills",
-    "Dubai Creek",
-    "Al Seef",
-    "Dubai Design District",
-    "La Mer",
-    "City Centre",
-    "Mall of Emirates",
-    "Ibn Battuta",
-    "Global Village",
-    "Dubai Outlet Mall",
-    "Al Ghurair City",
-    "Wafi",
-    "BurJuman",
-    "Dubai Festival Centre",
-    "Times Square",
-    "Al Wahda",
-    "Dubai Land",
-    "International City",
+  // Try multiple possible paths for businesses.json
+  const possiblePaths = [
+    "/opt/build/repo/code/client/data/businesses.json",
+    "/opt/build/repo/client/data/businesses.json",
+    "/opt/build/repo/data/businesses.json",
+    "./data/businesses.json",
+    "../data/businesses.json",
+    "../../client/data/businesses.json",
+    "../../../client/data/businesses.json",
   ];
 
-  const businessTypes = [
-    "visa services",
-    "immigration services",
-    "pro services",
-    "document clearance",
-    "attestation services",
-    "education visa",
-    "work permit services",
-    "tourist visa",
-    "business visa",
-    "family visa",
-    "golden visa services",
-    "residence visa",
-    "employment visa",
-    "investor visa",
-  ];
+  for (const filePath of possiblePaths) {
+    try {
+      logDebug(`Trying to load businesses from: ${filePath}`);
+      const fileContent = await fs.readFile(filePath, "utf8");
+      const parsed = JSON.parse(fileContent);
 
-  const companyPrefixes = [
-    "Al",
-    "Emirates",
-    "Dubai",
-    "Gulf",
-    "Middle East",
-    "United",
-    "International",
-    "Global",
-    "Professional",
-    "Expert",
-    "Prime",
-    "Elite",
-    "Superior",
-    "Advanced",
-  ];
+      if (parsed && parsed.businesses && Array.isArray(parsed.businesses)) {
+        logDebug(
+          `✅ Successfully loaded ${parsed.businesses.length} real businesses from ${filePath}`,
+        );
 
-  const serviceTypes = [
-    "Visa Services",
-    "Immigration Consultants",
-    "PRO Services",
-    "Document Clearing",
-    "Attestation Center",
-    "Business Services",
-    "Legal Services",
-    "Consulting",
-    "Solutions",
-    "Center",
-    "Hub",
-    "Group",
-    "Associates",
-    "Partners",
-  ];
+        // Apply domain fix to all businesses
+        const businessesWithFixedDomains = parsed.businesses.map(
+          (business: any) => ({
+            ...business,
+            logoUrl: business.logoUrl
+              ? business.logoUrl.replace(
+                  "crossbordersmigrations.com",
+                  "reportvisascam.com",
+                )
+              : business.logoUrl,
+            photos: business.photos
+              ? business.photos.map((photo: string) =>
+                  photo.replace(
+                    "crossbordersmigrations.com",
+                    "reportvisascam.com",
+                  ),
+                )
+              : business.photos,
+          }),
+        );
 
-  // Generate additional businesses to reach 1000+
-  for (let i = 0; i < 1109; i++) {
-    // 1109 + 5 = 1114 total
-    const area = dubaiAreas[i % dubaiAreas.length];
-    const prefix = companyPrefixes[i % companyPrefixes.length];
-    const serviceType = serviceTypes[i % serviceTypes.length];
-    const businessType = businessTypes[i % businessTypes.length];
-
-    extendedData.push({
-      id: `generated-${i + 1}`,
-      name: `${prefix} ${serviceType} ${area}`,
-      address: `Office ${i + 100}, ${area}, Dubai, UAE`,
-      category: businessType,
-      phone: `04 ${Math.floor(Math.random() * 900) + 100} ${Math.floor(Math.random() * 9000) + 1000}`,
-      website: `https://${prefix.toLowerCase()}${serviceType.toLowerCase().replace(/\s+/g, "")}.ae`,
-      email: `info@${prefix.toLowerCase()}${serviceType.toLowerCase().replace(/\s+/g, "")}.ae`,
-      rating: Number((3.5 + Math.random() * 1.5).toFixed(1)),
-      reviewCount: Math.floor(Math.random() * 300) + 10,
-      latitude: 25.2048 + (Math.random() - 0.5) * 0.2,
-      longitude: 55.2708 + (Math.random() - 0.5) * 0.2,
-      businessStatus: "OPERATIONAL",
-      logoUrl: `https://reportvisascam.com/business-images/logos/generated-${i + 1}.jpg`,
-      hasTargetKeyword: Math.random() > 0.4,
-    });
+        return businessesWithFixedDomains;
+      }
+    } catch (error) {
+      logDebug(`Failed to load from ${filePath}: ${error.message}`);
+    }
   }
 
-  return extendedData;
+  // Fallback to embedded data if file loading fails
+  logDebug("⚠️ File loading failed, using embedded business data");
+  return getEmbeddedBusinessData();
 }
 
-// Get business data - now guaranteed to work
-function getBusinessData() {
-  const allBusinesses = generateExtendedBusinessData();
+// Embedded fallback data (real businesses from database)
+function getEmbeddedBusinessData() {
+  const embeddedBusinesses = [
+    {
+      id: "ChIJ10c9E2ZDXz4Ru2NyjBi7aiE",
+      name: "10-PRO Consulting | Business Set Up, Relocation, Visas & Legal Services (Freezone, Mainland & Offshore companies)",
+      address:
+        "Business Central Towers (Tower B Office # 2004, 20th Floor Al Sufouh 2 - الصفوح - Dubai Media City - دبي - United Arab Emirates",
+      category: "registered visa agent Dubai",
+      phone: "04 529 3354",
+      website: "https://10-pro.com/",
+      email: "info@10proconsultingbusin.ae",
+      rating: 4.7,
+      reviewCount: 505,
+      latitude: 25.1007776,
+      longitude: 55.1694272,
+      businessStatus: "OPERATIONAL",
+      logoUrl:
+        "https://reportvisascam.com/business-images/logos/logo-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
+      photos: [
+        "https://reportvisascam.com/business-images/photos/photo_1-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
+        "https://reportvisascam.com/business-images/photos/photo_5-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
+        "https://reportvisascam.com/business-images/photos/photo_2-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
+        "https://reportvisascam.com/business-images/photos/photo_3-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
+        "https://reportvisascam.com/business-images/photos/photo_4-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
+      ],
+      hasTargetKeyword: true,
+      createdAt: "2025-07-08 00:28:56",
+      updatedAt: "2025-07-15 04:07:21",
+    },
+    {
+      id: "ChIJ31pcKGtrXz4R92jGT68rkVQ",
+      name: "4S Study Abroad | 5000+ Visa Approved | Education Consultant in Dubai",
+      address:
+        "Sultan Business Centre - Office 221 - Oud Metha - Dubai - United Arab Emirates",
+      category: "education visa",
+      phone: "04 553 8909",
+      website:
+        "https://www.4sstudyabroad.com/?utm_source=GBP&utm_medium=website_click&utm_campaign=4sstudyabroad",
+      email: "info@4sstudyabroad5000vis.ae",
+      rating: 4.7,
+      reviewCount: 218,
+      latitude: 25.233408,
+      longitude: 55.3087672,
+      businessStatus: "OPERATIONAL",
+      logoUrl:
+        "https://reportvisascam.com/business-images/logos/logo-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
+      photos: [
+        "https://reportvisascam.com/business-images/photos/photo_5-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
+        "https://reportvisascam.com/business-images/photos/photo_1-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
+        "https://reportvisascam.com/business-images/photos/photo_2-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
+        "https://reportvisascam.com/business-images/photos/photo_3-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
+        "https://reportvisascam.com/business-images/photos/photo_4-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
+      ],
+      hasTargetKeyword: 1,
+      createdAt: "2025-07-08 00:29:59",
+      updatedAt: "2025-07-15 04:07:21",
+    },
+  ];
+
   logDebug(
-    `✅ Using embedded business data: ${allBusinesses.length} businesses`,
+    `Using ${embeddedBusinesses.length} embedded real businesses as fallback`,
   );
-  return allBusinesses;
+  return embeddedBusinesses;
 }
 
 // Create Express server with embedded data
