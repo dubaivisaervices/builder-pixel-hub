@@ -25,6 +25,10 @@
 /report/*  /index.html  200!
 /admin  /index.html  200!
 /admin/*  /index.html  200!
+/company/*  /index.html  200!
+/modern-profile/*  /index.html  200!
+/complaint  /index.html  200!
+/complaint/*  /index.html  200!
 
 # Catch-all SPA fallback
 /*  /index.html  200
