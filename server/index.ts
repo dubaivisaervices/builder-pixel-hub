@@ -400,6 +400,12 @@ export function createServer() {
   // Admin routes for business and category management
   app.get("/api/admin/businesses-by-category", getBusinessesByCategory);
   app.post("/api/admin/add-business", addBusiness);
+  app.post(
+    "/api/admin/upload-business-images",
+    uploadBusinessImages,
+    handleBusinessImageUpload,
+    handleUploadError,
+  );
   app.put("/api/admin/business/:id", updateBusiness);
   app.delete("/api/admin/business/:id", deleteBusiness);
   app.get("/api/admin/categories", getAllCategories);
