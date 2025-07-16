@@ -81,6 +81,17 @@ export default function AdminDashboard() {
   const [syncStatus, setSyncStatus] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
+  // Google API Fetch states
+  const [googleApiStatus, setGoogleApiStatus] = useState<any>(null);
+  const [fetchForm, setFetchForm] = useState({
+    searchQuery: "visa services Dubai",
+    maxResults: 60,
+    downloadImages: true,
+    saveToDatabase: true,
+  });
+  const [isFetching, setIsFetching] = useState(false);
+  const [fetchResults, setFetchResults] = useState<any>(null);
+
   const fetchDashboardData = async () => {
     try {
       // Fetch company requests
