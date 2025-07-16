@@ -236,6 +236,58 @@ export default function AdminDashboard() {
     return 0;
   };
 
+  // Google API functions
+  const checkGoogleApiStatus = async () => {
+    try {
+      const response = await fetch("/api/admin/google-api-status");
+      if (response.ok) {
+        const data = await response.json();
+        setGoogleApiStatus(data);
+      }
+    } catch (error) {
+      console.error("Failed to check Google API status:", error);
+    }
+  };
+
+  const handleGoogleFetch = async () => {
+    if (!fetchForm.searchQuery.trim()) {
+      alert("Please enter a search query");
+      return;
+    }
+
+    setIsFetching(true);
+    setSyncStatus("Starting Google API fetch...");
+
+    try {
+      const response = await fetch("/api/admin/fetch-google-businesses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(fetchForm),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setFetchResults(data);
+        setSyncStatus(
+          `✅ Successfully fetched ${data.summary.totalBusinesses} businesses with ${data.summary.imagesDownloaded} images!`,
+        );
+
+        // Refresh dashboard stats
+        fetchDashboardData();
+      } else {
+        const errorData = await response.json();
+        setSyncStatus(`❌ Fetch failed: ${errorData.error}`);
+      }
+    } catch (error) {
+      setSyncStatus(`❌ Fetch error: ${error.message}`);
+    } finally {
+      setIsFetching(false);
+      setTimeout(() => setSyncStatus(""), 10000);
+    }
+  };
+
   const handleClearDatabase = async () => {
     if (
       !confirm(
