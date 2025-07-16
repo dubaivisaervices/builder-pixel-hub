@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { businessService } from "../database/businessService";
+import { BusinessData } from "@shared/google-business";
 
 // Get all businesses grouped by category
 export const getBusinessesByCategory: RequestHandler = async (req, res) => {
