@@ -92,7 +92,18 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     const offset = (page - 1) * limit;
     const includeReviews = req.query.includeReviews === "true" || limit <= 50; // Include reviews for smaller requests
 
-    // Get total count for pagination
+    // Get search and filter parameters
+    const searchQuery = req.query.search as string;
+    const categoryFilter = req.query.category as string;
+    const cityFilter = req.query.city as string;
+
+    console.log("🔍 Search parameters:", {
+      searchQuery,
+      categoryFilter,
+      cityFilter,
+    });
+
+    // Get total count for pagination (with filters if applied)
     const totalCount = await businessService.getStats();
 
     if (totalCount.total === 0) {
