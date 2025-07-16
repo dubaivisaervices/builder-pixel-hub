@@ -9,37 +9,37 @@
   external_node_modules = ["serverless-http"]
   node_bundler = "esbuild"
   
-# Most specific redirects first
-[[redirects]]
-  from = "/api/ping"
-  to = "/.netlify/functions/api/ping"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/health"
-  to = "/.netlify/functions/api/health"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/dubai-visa-services"
-  to = "/.netlify/functions/api/dubai-visa-services"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/businesses"
-  to = "/.netlify/functions/api/businesses"
-  status = 200
-  force = true
-
-# Catch-all API
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
-  status = 200
-  force = true
+# API redirects disabled - using local database server instead
+# [[redirects]]
+#   from = "/api/ping"
+#   to = "/.netlify/functions/api/ping"
+#   status = 200
+#   force = true
+#
+# [[redirects]]
+#   from = "/api/health"
+#   to = "/.netlify/functions/api/health"
+#   status = 200
+#   force = true
+#
+# [[redirects]]
+#   from = "/api/dubai-visa-services"
+#   to = "/.netlify/functions/api/dubai-visa-services"
+#   status = 200
+#   force = true
+#
+# [[redirects]]
+#   from = "/api/businesses"
+#   to = "/.netlify/functions/api/businesses"
+#   status = 200
+#   force = true
+#
+# # Catch-all API
+# [[redirects]]
+#   from = "/api/*"
+#   to = "/.netlify/functions/api/:splat"
+#   status = 200
+#   force = true
 
 # Static files with force
 [[redirects]]
