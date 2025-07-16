@@ -271,7 +271,7 @@ async function processSingleBusiness(
             // Check if it's already a Netlify URL
             if (photoUrl.includes("/business-images/")) {
               console.log(
-                `📁 Photo ${index + 1} already on Netlify for ${business.name}: ${photoUrl}`,
+                `✅ Photo ${index + 1} already on Netlify for ${business.name}: ${photoUrl}`,
               );
               progress.photoUrls.push(photoUrl);
               if (currentBatchStats) currentBatchStats.photosDownloaded++;
