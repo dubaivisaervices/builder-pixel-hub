@@ -427,6 +427,72 @@ export default function AdminDashboard() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Cache Management Section */}
+            <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <RefreshCw className="h-6 w-6" />
+                  <span>Cache Management</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h4 className="font-medium text-blue-900 mb-2">
+                      Clear Website Cache
+                    </h4>
+                    <p className="text-sm text-blue-700 mb-3">
+                      Force all users to reload fresh content. Use this if users
+                      report seeing outdated data.
+                    </p>
+                    <Button
+                      onClick={handleClearCache}
+                      disabled={loading}
+                      className="bg-blue-600 hover:bg-blue-700"
+                    >
+                      {loading ? (
+                        <RotateCw className="h-4 w-4 mr-2 animate-spin" />
+                      ) : (
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                      )}
+                      Clear All Caches
+                    </Button>
+                  </div>
+
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h4 className="font-medium text-green-900 mb-2">
+                      Total Business Listings
+                    </h4>
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-green-700">
+                        Currently showing {stats.businesses || 0} business
+                        listings in the directory
+                      </p>
+                      <Button
+                        onClick={fetchDashboardData}
+                        variant="outline"
+                        size="sm"
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <RotateCw className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <RefreshCw className="h-4 w-4" />
+                        )}
+                        Refresh Count
+                      </Button>
+                    </div>
+                  </div>
+
+                  {syncStatus && (
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                      <p className="text-sm text-yellow-800">{syncStatus}</p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         )}
 
