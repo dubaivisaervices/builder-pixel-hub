@@ -43,6 +43,11 @@ const NetlifyImageManager: React.FC = () => {
   const [batchProgress, setBatchProgress] = useState(0);
   const [batchStatus, setBatchStatus] = useState("");
 
+  // Super Fast Upload States
+  const [superFastUploading, setSuperFastUploading] = useState(false);
+  const [superFastProgress, setSuperFastProgress] = useState<any>(null);
+  const [superFastStats, setSuperFastStats] = useState<any>(null);
+
   // Form states
   const [businessId, setBusinessId] = useState("");
   const [logoFile, setLogoFile] = useState<File | null>(null);
