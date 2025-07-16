@@ -395,22 +395,61 @@ const NetlifyImageManager: React.FC = () => {
   };
 
   const testRandomBusinessUrls = async () => {
-    if (businesses.length === 0) return;
+    console.log("Testing random business URLs...", {
+      businessesLength: businesses.length,
+    });
+
+    if (businesses.length === 0) {
+      setUploadResult({
+        success: false,
+        error:
+          "No businesses loaded. Please wait for data to load or refresh the page.",
+      });
+      return;
+    }
 
     // Test a random business
     const randomBusiness =
       businesses[Math.floor(Math.random() * businesses.length)];
 
+    console.log("Selected random business:", randomBusiness);
+
     try {
+      setUploadResult({
+        success: true,
+        message: `Testing URLs for "${randomBusiness.name}"...`,
+      });
+
       const response = await fetch(`/api/debug/test-urls/${randomBusiness.id}`);
       const data = await response.json();
 
       console.log("URL test results for", randomBusiness.name, ":", data);
-      alert(
-        `URL Test Results for ${randomBusiness.name}:\n\nLogo: ${data.summary.logoAccessible ? "✅ Accessible" : "❌ Not accessible"}\nPhotos: ${data.summary.photosAccessible}/${data.summary.totalPhotos} accessible`,
-      );
+
+      if (data.success) {
+        const logoStatus = data.summary.logoAccessible
+          ? "✅ Accessible"
+          : "❌ Not accessible";
+        const photoStatus = `${data.summary.photosAccessible}/${data.summary.totalPhotos} accessible`;
+
+        setUploadResult({
+          success: true,
+          message: `URL Test Complete for "${randomBusiness.name}"\n\n🖼️ Logo: ${logoStatus}\n📸 Photos: ${photoStatus}\n\nDetails logged to console.`,
+        });
+
+        // Log detailed results to console
+        console.table(data.urlTests.photoTests);
+      } else {
+        setUploadResult({
+          success: false,
+          error: `Failed to test URLs for ${randomBusiness.name}: ${data.error}`,
+        });
+      }
     } catch (error) {
       console.error("Error testing URLs:", error);
+      setUploadResult({
+        success: false,
+        error: `Error testing URLs: ${error.message}`,
+      });
     }
   };
 
