@@ -205,22 +205,7 @@ export function createServer() {
   // Robust fallback endpoint
   app.get("/api/businesses-static", robustBusinessesAPI);
 
-  // Google Business API routes
-  app.get("/api/test-google-api", testGoogleAPI);
-
-  // NEW: Test Google API debugging route
-  app.get("/api/admin/test-google-api-debug", async (req, res) => {
-    const { testGoogleAPI } = await import("./routes/test-google-api");
-    return testGoogleAPI(req, res);
-  });
-
-  // NEW: Test Google API access permissions
-  app.get("/api/admin/test-google-api-access", async (req, res) => {
-    const { testGoogleAPIAccess } = await import(
-      "./routes/test-google-api-access"
-    );
-    return testGoogleAPIAccess(req, res);
-  });
+  // Google API routes removed - using direct business data instead
 
   // Business photos endpoint
   app.get("/api/business-photos/:businessId", async (req, res) => {
