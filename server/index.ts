@@ -136,6 +136,7 @@ import {
   voteOnReport,
   getReportsStats,
 } from "./routes/company-reports";
+import { robustBusinessesAPI, pingAPI } from "./routes/netlify-api-fallback";
 
 export function createServer() {
   const app = express();
