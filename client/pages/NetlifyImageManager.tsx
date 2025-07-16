@@ -716,6 +716,243 @@ const NetlifyImageManager: React.FC = () => {
             </Card>
           </TabsContent>
 
+          {/* Debug Data Tab */}
+          <TabsContent value="debug">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <div>🔍</div>
+                  <span>Debug Business Data Quality</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Debug Controls */}
+                <div className="flex flex-wrap gap-3">
+                  <Button
+                    onClick={checkDataQuality}
+                    disabled={debugLoading}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    {debugLoading ? "Analyzing..." : "🔍 Check Data Quality"}
+                  </Button>
+                  <Button
+                    onClick={testRandomBusinessUrls}
+                    disabled={businesses.length === 0}
+                    variant="outline"
+                    className="border-purple-300 text-purple-700 hover:bg-purple-50"
+                  >
+                    🧪 Test Random Business URLs
+                  </Button>
+                </div>
+
+                {/* Debug Results */}
+                {debugData && (
+                  <div className="space-y-4">
+                    {/* Summary Stats */}
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                      <h4 className="font-medium text-gray-900 mb-3">
+                        📊 Data Quality Summary
+                      </h4>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-blue-600">
+                            {debugData.analysis.totalBusinesses}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            Total Businesses
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-green-600">
+                            {debugData.percentages.logos.withLogo}%
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            Have Logos
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-purple-600">
+                            {debugData.percentages.photos.withPhotos}%
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            Have Photos
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-orange-600">
+                            {
+                              debugData.percentages.photos
+                                .averagePhotosPerBusiness
+                            }
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            Avg Photos
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Logo Analysis */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <h4 className="font-medium text-blue-900 mb-3">
+                        🖼️ Logo Analysis
+                      </h4>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div className="bg-white rounded p-3 text-center">
+                          <div className="text-lg font-bold text-green-600">
+                            {debugData.percentages.logos.hostinger}%
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            Hostinger URLs
+                          </div>
+                        </div>
+                        <div className="bg-white rounded p-3 text-center">
+                          <div className="text-lg font-bold text-blue-600">
+                            {debugData.percentages.logos.google}%
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            Google URLs
+                          </div>
+                        </div>
+                        <div className="bg-white rounded p-3 text-center">
+                          <div className="text-lg font-bold text-purple-600">
+                            {debugData.percentages.logos.netlify}%
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            Netlify URLs
+                          </div>
+                        </div>
+                        <div className="bg-white rounded p-3 text-center">
+                          <div className="text-lg font-bold text-orange-600">
+                            {debugData.percentages.logos.placeholder}%
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            Placeholders
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Photo Analysis */}
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                      <h4 className="font-medium text-green-900 mb-3">
+                        📸 Photo Analysis
+                      </h4>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <div className="bg-white rounded p-3 text-center">
+                          <div className="text-lg font-bold text-green-600">
+                            {debugData.percentages.photos.hostingerPhotos}%
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            Hostinger Photos
+                          </div>
+                        </div>
+                        <div className="bg-white rounded p-3 text-center">
+                          <div className="text-lg font-bold text-blue-600">
+                            {debugData.percentages.photos.googlePhotos}%
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            Google Photos
+                          </div>
+                        </div>
+                        <div className="bg-white rounded p-3 text-center">
+                          <div className="text-lg font-bold text-purple-600">
+                            {debugData.percentages.photos.netlifyPhotos}%
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            Netlify Photos
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Sample Businesses */}
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                      <h4 className="font-medium text-yellow-900 mb-3">
+                        📋 Sample Business Data
+                      </h4>
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        {debugData.analysis.sampleBusinesses
+                          .slice(0, 10)
+                          .map((business: any, index: number) => (
+                            <div
+                              key={index}
+                              className="bg-white rounded p-3 text-sm"
+                            >
+                              <div className="font-medium">{business.name}</div>
+                              <div className="text-gray-600">
+                                Logo:{" "}
+                                <span
+                                  className={`font-medium ${business.logoType === "hostinger" ? "text-green-600" : business.logoType === "google" ? "text-blue-600" : business.logoType === "none" ? "text-red-600" : "text-gray-600"}`}
+                                >
+                                  {business.logoType}
+                                </span>{" "}
+                                | Photos:{" "}
+                                <span className="font-medium text-purple-600">
+                                  {business.photoCount}
+                                </span>{" "}
+                                | Types:{" "}
+                                <span className="font-medium text-orange-600">
+                                  {business.photoTypes.join(", ") || "none"}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+
+                    {/* Recommendations */}
+                    <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                      <h4 className="font-medium text-orange-900 mb-3">
+                        💡 Recommendations
+                      </h4>
+                      <ul className="space-y-2">
+                        {debugData.recommendations.map(
+                          (rec: string, index: number) => (
+                            <li
+                              key={index}
+                              className="text-sm text-orange-700 flex items-start"
+                            >
+                              <span className="mr-2">•</span>
+                              <span>{rec}</span>
+                            </li>
+                          ),
+                        )}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+
+                {/* Instructions */}
+                {!debugData && (
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-900 mb-2">
+                      ℹ️ How to Use Debug Mode
+                    </h4>
+                    <ul className="text-sm text-gray-600 space-y-1">
+                      <li>
+                        • Click "Check Data Quality" to analyze business logo
+                        and photo URLs
+                      </li>
+                      <li>
+                        • Click "Test Random Business URLs" to verify if URLs
+                        are accessible
+                      </li>
+                      <li>
+                        • Review the analysis to understand what type of images
+                        you have
+                      </li>
+                      <li>
+                        • Use recommendations to determine next steps for image
+                        upload
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* Single Upload Tab */}
           <TabsContent value="single">
             <div className="grid md:grid-cols-2 gap-6">
@@ -756,7 +993,7 @@ const NetlifyImageManager: React.FC = () => {
               {/* Photos Upload */}
               <Card>
                 <CardHeader>
-                  <CardTitle>🖼️ Upload Photos</CardTitle>
+                  <CardTitle>���️ Upload Photos</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
