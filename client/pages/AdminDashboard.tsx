@@ -893,7 +893,9 @@ export default function AdminDashboard() {
                       <div className="text-center">
                         <Settings className="h-8 w-8 mx-auto mb-2" />
                         <div className="font-medium">Manage Data</div>
-                        <div className="text-xs opacity-80">Edit & update</div>
+                        <div className="text-xs opacity-80">
+                          Business & Categories
+                        </div>
                       </div>
                     </Button>
 
