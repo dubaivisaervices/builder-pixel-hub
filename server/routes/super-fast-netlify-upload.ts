@@ -161,7 +161,7 @@ async function processBatchUploadAsync(businesses: any[]) {
         currentBatchStats.estimatedTimeRemaining = Math.ceil(remaining / rate);
 
         console.log(
-          `���� Batch progress: ${currentBatchStats.processed}/${currentBatchStats.total} (${Math.round((currentBatchStats.processed / currentBatchStats.total) * 100)}%)`,
+          `📊 Batch progress: ${currentBatchStats.processed}/${currentBatchStats.total} (${Math.round((currentBatchStats.processed / currentBatchStats.total) * 100)}%)`,
         );
       }
 
@@ -195,10 +195,11 @@ async function processSingleBusiness(
       // Check if it's already a Netlify URL
       if (business.logoUrl.includes("/business-images/")) {
         console.log(
-          `📁 Logo already on Netlify for ${business.name}: ${business.logoUrl}`,
+          `✅ Logo already on Netlify for ${business.name}: ${business.logoUrl}`,
         );
         progress.logoUrl = business.logoUrl;
         progress.logoStatus = "success";
+        progress.errors.push("Logo already on Netlify (skipped download)");
         if (currentBatchStats) currentBatchStats.logosDownloaded++;
       } else {
         try {
