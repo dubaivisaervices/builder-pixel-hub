@@ -177,17 +177,36 @@ export function createServer() {
     next();
   });
 
-  // Example API routes
-  app.get("/api/ping", (_req, res) => {
-    res.json({ message: "Hello from Express server v2!" });
-  });
+  // Health check endpoints
+  app.get("/api/ping", pingAPI);
+  app.get("/api/health", pingAPI);
 
   app.get("/api/demo", handleDemo);
 
+  // Primary business API routes with fallback
+  app.get("/api/businesses", async (req, res) => {
+    try {
+      await searchDubaiVisaServices(req, res);
+    } catch (error) {
+      console.log("❌ Database API failed, using fallback...");
+      await robustBusinessesAPI(req, res);
+    }
+  });
+
+  app.get("/api/dubai-visa-services", async (req, res) => {
+    try {
+      await searchDubaiVisaServices(req, res);
+    } catch (error) {
+      console.log("❌ Database API failed, using fallback...");
+      await robustBusinessesAPI(req, res);
+    }
+  });
+
+  // Robust fallback endpoint
+  app.get("/api/businesses-static", robustBusinessesAPI);
+
   // Google Business API routes
   app.get("/api/test-google-api", testGoogleAPI);
-  app.get("/api/businesses", searchDubaiVisaServices);
-  app.get("/api/dubai-visa-services", searchDubaiVisaServices);
 
   // NEW: Test Google API debugging route
   app.get("/api/admin/test-google-api-debug", async (req, res) => {
