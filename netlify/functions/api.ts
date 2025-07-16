@@ -12,46 +12,23 @@ function logDebug(message: string, data?: any) {
   );
 }
 
-// Load real business data from JSON file
+// Load real business data using direct import
 function loadRealBusinessData() {
   try {
-    // Try multiple possible paths for the business data
-    const possiblePaths = [
-      join(__dirname, "client/data/businesses.json"),
-      join(__dirname, "./client/data/businesses.json"),
-      join(process.cwd(), "client/data/businesses.json"),
-      join(__dirname, "../../client/data/businesses.json"),
-      "./client/data/businesses.json",
-      "../client/data/businesses.json",
-      "../../client/data/businesses.json",
-    ];
+    logDebug("🔍 Loading business data from module...");
+    const businesses = loadBusinessDataFromModule();
 
-    for (const path of possiblePaths) {
-      try {
-        logDebug(`Trying to load business data from: ${path}`);
-        const fileContent = readFileSync(path, "utf-8");
-        const businessData = JSON.parse(fileContent);
-
-        if (
-          businessData &&
-          businessData.businesses &&
-          Array.isArray(businessData.businesses)
-        ) {
-          logDebug(
-            `✅ Successfully loaded ${businessData.businesses.length} businesses from: ${path}`,
-          );
-          return businessData.businesses;
-        }
-      } catch (err) {
-        logDebug(`❌ Failed to load from: ${path} - ${err.message}`);
-      }
+    if (businesses && Array.isArray(businesses) && businesses.length > 0) {
+      logDebug(
+        `✅ Successfully loaded ${businesses.length} businesses from module`,
+      );
+      return businesses;
+    } else {
+      logDebug("❌ No business data returned from module");
+      return null;
     }
-
-    // If all paths fail, return null
-    logDebug("❌ Could not load business data from any path");
-    return null;
   } catch (error) {
-    logDebug("❌ Error in loadRealBusinessData:", error.message);
+    logDebug("❌ Error loading business data from module:", error.message);
     return null;
   }
 }
