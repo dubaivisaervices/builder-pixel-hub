@@ -153,7 +153,7 @@ function createBusinessServer() {
 
   logDebug("Creating business server (NO Google API dependencies)");
 
-  // CORS middleware
+  // CORS and cache-busting middleware
   app.use((req: any, res: any, next: any) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
@@ -165,6 +165,11 @@ function createBusinessServer() {
       "Content-Type, Authorization, X-Requested-With, Accept",
     );
     res.header("Access-Control-Max-Age", "86400");
+
+    // Add cache-busting headers for API responses
+    res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.header("Pragma", "no-cache");
+    res.header("Expires", "0");
 
     if (req.method === "OPTIONS") {
       res.sendStatus(200);
