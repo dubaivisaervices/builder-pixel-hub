@@ -110,6 +110,12 @@ import {
 import { getSampleBusinessData } from "./routes/sample-business-data";
 import { verifyPhotos, getBusinessPhotos } from "./routes/photo-verification";
 import {
+  refreshAllBusinessImages,
+  getImageRefreshProgress,
+  stopImageRefresh,
+  getImageRefreshResults,
+} from "./routes/google-image-refresh";
+import {
   submitReport,
   getCompanyReports,
   getAllReports,
