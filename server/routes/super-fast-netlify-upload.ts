@@ -161,7 +161,7 @@ async function processBatchUploadAsync(businesses: any[]) {
         currentBatchStats.estimatedTimeRemaining = Math.ceil(remaining / rate);
 
         console.log(
-          `📊 Batch progress: ${currentBatchStats.processed}/${currentBatchStats.total} (${Math.round((currentBatchStats.processed / currentBatchStats.total) * 100)}%)`,
+          `���� Batch progress: ${currentBatchStats.processed}/${currentBatchStats.total} (${Math.round((currentBatchStats.processed / currentBatchStats.total) * 100)}%)`,
         );
       }
 
@@ -267,24 +267,34 @@ async function processSingleBusiness(
               return null;
             }
 
-            console.log(
-              `📸 Downloading photo ${index + 1} for ${business.name}: ${photoUrl}`,
-            );
-
-            const netlifyUrl = await downloadImageToNetlify(
-              photoUrl,
-              `photos/photo_${index + 1}-${business.id}.jpg`,
-              maxRetries,
-            );
-            if (netlifyUrl) {
-              progress.photoUrls.push(netlifyUrl);
-              if (currentBatchStats) currentBatchStats.photosDownloaded++;
+            // Check if it's already a Netlify URL
+            if (photoUrl.includes("/business-images/")) {
               console.log(
-                `✅ Successfully downloaded photo ${index + 1} for ${business.name}`,
+                `📁 Photo ${index + 1} already on Netlify for ${business.name}: ${photoUrl}`,
               );
-              return netlifyUrl;
+              progress.photoUrls.push(photoUrl);
+              if (currentBatchStats) currentBatchStats.photosDownloaded++;
+              return photoUrl;
+            } else {
+              console.log(
+                `📸 Downloading photo ${index + 1} for ${business.name}: ${photoUrl}`,
+              );
+
+              const netlifyUrl = await downloadImageToNetlify(
+                photoUrl,
+                `photos/photo_${index + 1}-${business.id}.jpg`,
+                maxRetries,
+              );
+              if (netlifyUrl) {
+                progress.photoUrls.push(netlifyUrl);
+                if (currentBatchStats) currentBatchStats.photosDownloaded++;
+                console.log(
+                  `✅ Successfully downloaded photo ${index + 1} for ${business.name}`,
+                );
+                return netlifyUrl;
+              }
+              return null;
             }
-            return null;
           } catch (error) {
             console.error(
               `❌ Photo ${index + 1} error for ${business.name}:`,
