@@ -97,6 +97,13 @@ export default function AdminDashboard() {
         const statsData = await statsResponse.json();
         setStats(statsData.stats || {});
       }
+
+      // Calculate real business count from API
+      const totalBusinesses = await calculateTotalBusinesses();
+      setStats((prevStats) => ({
+        ...prevStats,
+        businesses: totalBusinesses,
+      }));
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     }
