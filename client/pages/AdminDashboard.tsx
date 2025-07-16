@@ -348,6 +348,158 @@ export default function AdminDashboard() {
     navigate(urlMap[tabId as keyof typeof urlMap] || "/admin");
   };
 
+  // Google API Search Functions
+  const updateSearchPreview = () => {
+    const companyName =
+      (document.getElementById("companyName") as HTMLInputElement)?.value || "";
+    const category =
+      (document.getElementById("businessCategory") as HTMLSelectElement)
+        ?.value || "";
+    const city =
+      (document.getElementById("cityLocation") as HTMLSelectElement)?.value ||
+      "";
+
+    let searchQuery = "";
+
+    if (companyName.trim()) {
+      searchQuery = companyName.trim();
+    } else {
+      // Build query from category and city
+      const parts = [];
+      if (category) parts.push(category);
+      if (city) parts.push(city);
+      if (parts.length === 0) parts.push("visa services Dubai"); // Default
+      searchQuery = parts.join(" ");
+    }
+
+    const previewElement = document.getElementById("searchQueryPreview");
+    if (previewElement) {
+      previewElement.textContent = searchQuery;
+    }
+  };
+
+  const clearSearchFilters = () => {
+    (document.getElementById("companyName") as HTMLInputElement).value = "";
+    (document.getElementById("businessCategory") as HTMLSelectElement).value =
+      "";
+    (document.getElementById("cityLocation") as HTMLSelectElement).value = "";
+    (document.getElementById("maxResults") as HTMLInputElement).value = "60";
+    (document.getElementById("radius") as HTMLInputElement).value = "50";
+    (document.getElementById("minRating") as HTMLSelectElement).value = "";
+    updateSearchPreview();
+  };
+
+  const handleGoogleApiFetch = async () => {
+    const companyName =
+      (document.getElementById("companyName") as HTMLInputElement)?.value || "";
+    const category =
+      (document.getElementById("businessCategory") as HTMLSelectElement)
+        ?.value || "";
+    const city =
+      (document.getElementById("cityLocation") as HTMLSelectElement)?.value ||
+      "";
+    const maxResults = parseInt(
+      (document.getElementById("maxResults") as HTMLInputElement)?.value ||
+        "60",
+    );
+    const radius = parseInt(
+      (document.getElementById("radius") as HTMLInputElement)?.value || "50",
+    );
+    const minRating = parseFloat(
+      (document.getElementById("minRating") as HTMLSelectElement)?.value || "0",
+    );
+
+    const downloadImages =
+      (document.getElementById("downloadImages") as HTMLInputElement)
+        ?.checked || false;
+    const saveToDatabase =
+      (document.getElementById("saveToDatabase") as HTMLInputElement)
+        ?.checked || false;
+    const getReviews =
+      (document.getElementById("getReviews") as HTMLInputElement)?.checked ||
+      false;
+    const skipExisting =
+      (document.getElementById("skipExisting") as HTMLInputElement)?.checked ||
+      false;
+
+    // Build search query
+    let searchQuery = "";
+    if (companyName.trim()) {
+      searchQuery = companyName.trim();
+      // Add city if specified for company search
+      if (city) searchQuery += ` ${city}`;
+    } else {
+      const parts = [];
+      if (category) parts.push(category);
+      if (city) parts.push(city);
+      if (parts.length === 0) parts.push("visa services Dubai");
+      searchQuery = parts.join(" ");
+    }
+
+    setIsFetching(true);
+    setSyncStatus(`🔍 Searching for: "${searchQuery}"`);
+
+    try {
+      const response = await fetch("/api/admin/fetch-google-businesses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          searchQuery,
+          maxResults,
+          radius,
+          minRating,
+          downloadImages,
+          saveToDatabase,
+          getReviews,
+          skipExisting,
+          filters: {
+            companyName: companyName.trim() || null,
+            category: category || null,
+            city: city || null,
+          },
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSyncStatus(
+          `✅ Successfully fetched ${result.businessesFound || 0} businesses`,
+        );
+        // Refresh dashboard data
+        await fetchDashboardData();
+      } else {
+        setSyncStatus(`❌ Fetch failed: ${result.error || "Unknown error"}`);
+      }
+    } catch (error) {
+      setSyncStatus(`❌ Fetch error: ${error.message}`);
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  // Auto-update search preview when filters change
+  useEffect(() => {
+    const handleInputChange = () => updateSearchPreview();
+
+    const companyNameInput = document.getElementById("companyName");
+    const categorySelect = document.getElementById("businessCategory");
+    const citySelect = document.getElementById("cityLocation");
+
+    companyNameInput?.addEventListener("input", handleInputChange);
+    categorySelect?.addEventListener("change", handleInputChange);
+    citySelect?.addEventListener("change", handleInputChange);
+
+    // Initial preview update
+    updateSearchPreview();
+
+    return () => {
+      companyNameInput?.removeEventListener("input", handleInputChange);
+      categorySelect?.removeEventListener("change", handleInputChange);
+      citySelect?.removeEventListener("change", handleInputChange);
+    };
+  }, [activeTab]);
+
   // Admin Dashboard
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
