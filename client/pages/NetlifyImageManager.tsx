@@ -64,6 +64,7 @@ const NetlifyImageManager: React.FC = () => {
   useEffect(() => {
     loadStats();
     loadBusinesses();
+    checkDataQuality(); // Auto-check data quality on load
   }, []);
 
   const loadStats = async () => {
@@ -940,7 +941,7 @@ const NetlifyImageManager: React.FC = () => {
                     {/* Recommendations */}
                     <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                       <h4 className="font-medium text-orange-900 mb-3">
-                        💡 Recommendations
+                        ��� Recommendations
                       </h4>
                       <ul className="space-y-2">
                         {debugData.recommendations.map(
