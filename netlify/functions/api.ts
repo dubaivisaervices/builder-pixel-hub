@@ -131,55 +131,37 @@ function createBusinessServer() {
   app.use(express.json());
 
   // Health check
-  app.get("/api/ping", async (req: any, res: any) => {
-    try {
-      const businessData = await getBusinessData();
-      res.json({
-        message: "API is working! (REAL DATABASE BUSINESSES)",
-        timestamp: new Date().toISOString(),
-        businessCount: businessData.length,
-        source: "real_database",
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: "API error",
-        error: error.message,
-        businessCount: 0,
-      });
-    }
+  app.get("/api/ping", (req: any, res: any) => {
+    const businessData = getBusinessData();
+    res.json({
+      message: "API is working! (REAL BUSINESSES EMBEDDED)",
+      timestamp: new Date().toISOString(),
+      businessCount: businessData.length,
+      source: "embedded_real_businesses",
+    });
   });
 
-  app.get("/api/health", async (req: any, res: any) => {
-    try {
-      const businessData = await getBusinessData();
-      res.json({
-        status: "healthy",
-        timestamp: new Date().toISOString(),
-        businessCount: businessData.length,
-        dataSource: "real_database",
-        version: "real-data-v1",
-        fileSystemDependencies: true,
-      });
-    } catch (error) {
-      res.status(500).json({
-        status: "error",
-        error: error.message,
-        businessCount: 0,
-      });
-    }
+  app.get("/api/health", (req: any, res: any) => {
+    const businessData = getBusinessData();
+    res.json({
+      status: "healthy",
+      timestamp: new Date().toISOString(),
+      businessCount: businessData.length,
+      dataSource: "embedded_real_businesses",
+      version: "embedded-real-v1",
+      fileSystemDependencies: false,
+    });
   });
 
   // Main business endpoint with real data
-  app.get("/api/dubai-visa-services", async (req: any, res: any) => {
-    logDebug("Business endpoint called for real database data", {
+  app.get("/api/dubai-visa-services", (req: any, res: any) => {
+    logDebug("Business endpoint called for embedded real businesses", {
       query: req.query,
     });
 
     try {
-      const allBusinesses = await getBusinessData();
-      logDebug(
-        `📊 Serving ${allBusinesses.length} real businesses from database`,
-      );
+      const allBusinesses = getBusinessData();
+      logDebug(`📊 Serving ${allBusinesses.length} real businesses (embedded)`);
 
       // Pagination
       const page = parseInt(req.query.page as string) || 1;
