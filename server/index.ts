@@ -85,6 +85,11 @@ import {
 } from "./routes/serve-cached-images";
 import { generatePlaceholderLogo } from "./routes/placeholder-logo";
 import {
+  getBusinessImages,
+  serveOptimizedImage,
+  getImageStats,
+} from "./routes/unified-image-service";
+import {
   submitReport,
   getCompanyReports,
   getAllReports,
@@ -333,7 +338,7 @@ export function createServer() {
 
         if (validPhotos.length < business.photos.length) {
           console.warn(
-            `📸 🚫 SERVER: Filtered out ${business.photos.length - validPhotos.length} corrupted regular photos`,
+            `��� 🚫 SERVER: Filtered out ${business.photos.length - validPhotos.length} corrupted regular photos`,
           );
         }
 
