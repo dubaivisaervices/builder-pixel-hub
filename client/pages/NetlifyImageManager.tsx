@@ -14,6 +14,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RefreshCw, XCircle, Trash2 } from "lucide-react";
 
 interface NetlifyImageStats {
   totalLogos: number;
