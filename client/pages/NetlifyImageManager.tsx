@@ -62,6 +62,11 @@ const NetlifyImageManager: React.FC = () => {
   const [debugLoading, setDebugLoading] = useState(false);
   const [photoVerification, setPhotoVerification] = useState<any>(null);
 
+  // Google API Refresh states
+  const [googleRefreshing, setGoogleRefreshing] = useState(false);
+  const [googleRefreshProgress, setGoogleRefreshProgress] = useState<any>(null);
+  const [googleRefreshStats, setGoogleRefreshStats] = useState<any>(null);
+
   useEffect(() => {
     loadStats();
     loadBusinesses();
