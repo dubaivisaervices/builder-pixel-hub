@@ -53,43 +53,35 @@ function fixImageDomain(url: string): string {
  * Get the best available logo URL for a business
  */
 export function getBestLogoUrl(business: BusinessImageData): string | null {
-  // TEMPORARILY DISABLED - Testing if any S3 images actually work
-  /*
-  // Emergency: Block S3 URLs from corrupted batch (timestamp range 1752379060000-1752379100000)
-  // These were uploaded from expired Google Maps sources and are corrupted
-  if (business?.logoS3Url && business.logoS3Url.includes("/api/s3-image/")) {
-    const timestampMatch = business.logoS3Url.match(/\/(\d{13})-/);
-    if (timestampMatch) {
-      const timestamp = parseInt(timestampMatch[1]);
-      // Block URLs from the corrupted batch upload timeframe
-      if (timestamp >= 1752379060000 && timestamp <= 1752379100000) {
-        console.warn(
-          "🚫 BLOCKED corrupted S3 URL from bad batch:",
-          business.logoS3Url,
-        );
-        business.logoS3Url = undefined; // Clear it
-      }
-    }
-  }
-  */
+  // Skip S3 URLs and logo URLs that are likely to be missing
+  // and go straight to reliable fallbacks
 
-  // Prefer S3 URL (now working!)
-  if (business?.logoS3Url) {
-    return fixImageDomain(business.logoS3Url);
-  }
-
-  // Fall back to base64 if available
+  // Use base64 if available (most reliable)
   if (business?.logo_base64) {
     return `data:image/jpeg;base64,${business.logo_base64}`;
   }
 
-  // Fall back to original logo URL as last resort (but skip expired Google Maps URLs)
-  if (business?.logoUrl && !business.logoUrl.includes("maps.googleapis.com")) {
-    return fixImageDomain(business.logoUrl);
+  // Generate industry-specific placeholder based on business category
+  const category = (business as any)?.category?.toLowerCase() || "";
+
+  if (category.includes("visa") || category.includes("immigration")) {
+    return `https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=200&h=200&fit=crop&crop=center&auto=format&q=80`;
   }
 
-  // Return a reliable placeholder for Dubai businesses
-  return `https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=center&auto=format&q=80`;
+  if (category.includes("document") || category.includes("attestation")) {
+    return `https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=200&h=200&fit=crop&crop=center&auto=format&q=80`;
+  }
+
+  if (category.includes("pro") || category.includes("consulting")) {
+    return `https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=center&auto=format&q=80`;
+  }
+
+  if (category.includes("education") || category.includes("student")) {
+    return `https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=200&h=200&fit=crop&crop=center&auto=format&q=80`;
+  }
+
+  // Default business placeholder
+  return `https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=200&h=200&fit=crop&crop=center&auto=format&q=80`;
 }
 
 /**
