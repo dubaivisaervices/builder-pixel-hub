@@ -1,0 +1,25 @@
+# React SPA - Netlify Deployment
+# This file is backup for non-Netlify deployments
+
+Options -MultiViews
+RewriteEngine On
+
+# Handle Angular and React Routes
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
+
+# API Proxy (if needed)
+RewriteRule ^api/(.*)$ /.netlify/functions/api/$1 [P,L]
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options SAMEORIGIN
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set X-Content-Type-Options nosniff
+</IfModule>
+
+# Gzip compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
