@@ -745,7 +745,7 @@ export default function AdminDashboard() {
                       management interface.
                     </div>
                     <Button
-                      onClick={() => window.open("/admin/manage", "_blank")}
+                      onClick={() => navigate("/admin/manage")}
                       variant="outline"
                       className="border-orange-300 text-orange-700 hover:bg-orange-100"
                     >
