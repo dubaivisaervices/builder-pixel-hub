@@ -90,6 +90,13 @@ export default function AddBusinessPage() {
     date: new Date().toISOString().split("T")[0],
   });
 
+  // File upload states
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState("");
+  const [photoFiles, setPhotoFiles] = useState<File[]>([]);
+  const [uploadErrors, setUploadErrors] = useState<string[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+
   const categories = [
     "registered visa agent Dubai",
     "education visa",
