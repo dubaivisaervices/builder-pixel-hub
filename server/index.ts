@@ -107,6 +107,7 @@ import {
   debugBusinessData,
   testBusinessUrls,
 } from "./routes/debug-business-data";
+import { getSampleBusinessData } from "./routes/sample-business-data";
 import {
   submitReport,
   getCompanyReports,
