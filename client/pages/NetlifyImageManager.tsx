@@ -375,6 +375,44 @@ const NetlifyImageManager: React.FC = () => {
     }
   };
 
+  // Debug Functions
+  const checkDataQuality = async () => {
+    setDebugLoading(true);
+    try {
+      const response = await fetch("/api/debug/business-data");
+      const data = await response.json();
+
+      if (data.success) {
+        setDebugData(data);
+        console.log("Business data quality analysis:", data);
+      }
+    } catch (error) {
+      console.error("Error checking data quality:", error);
+    } finally {
+      setDebugLoading(false);
+    }
+  };
+
+  const testRandomBusinessUrls = async () => {
+    if (businesses.length === 0) return;
+
+    // Test a random business
+    const randomBusiness =
+      businesses[Math.floor(Math.random() * businesses.length)];
+
+    try {
+      const response = await fetch(`/api/debug/test-urls/${randomBusiness.id}`);
+      const data = await response.json();
+
+      console.log("URL test results for", randomBusiness.name, ":", data);
+      alert(
+        `URL Test Results for ${randomBusiness.name}:\n\nLogo: ${data.summary.logoAccessible ? "✅ Accessible" : "❌ Not accessible"}\nPhotos: ${data.summary.photosAccessible}/${data.summary.totalPhotos} accessible`,
+      );
+    } catch (error) {
+      console.error("Error testing URLs:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
