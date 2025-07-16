@@ -191,23 +191,38 @@ async function processSingleBusiness(
     // Download logo
     if (business.logoUrl) {
       progress.logoStatus = "downloading";
-      try {
-        const logoUrl = await downloadImageToNetlify(
-          business.logoUrl,
-          `logos/logo-${business.id}.jpg`,
-          maxRetries,
+
+      // Check if it's already a Netlify URL
+      if (business.logoUrl.includes("/business-images/")) {
+        console.log(
+          `📁 Logo already on Netlify for ${business.name}: ${business.logoUrl}`,
         );
-        if (logoUrl) {
-          progress.logoUrl = logoUrl;
-          progress.logoStatus = "success";
-          if (currentBatchStats) currentBatchStats.logosDownloaded++;
-        } else {
+        progress.logoUrl = business.logoUrl;
+        progress.logoStatus = "success";
+        if (currentBatchStats) currentBatchStats.logosDownloaded++;
+      } else {
+        try {
+          console.log(
+            `📥 Downloading logo for ${business.name}: ${business.logoUrl}`,
+          );
+          const logoUrl = await downloadImageToNetlify(
+            business.logoUrl,
+            `logos/logo-${business.id}.jpg`,
+            maxRetries,
+          );
+          if (logoUrl) {
+            progress.logoUrl = logoUrl;
+            progress.logoStatus = "success";
+            if (currentBatchStats) currentBatchStats.logosDownloaded++;
+            console.log(`✅ Logo downloaded for ${business.name}: ${logoUrl}`);
+          } else {
+            progress.logoStatus = "failed";
+            progress.errors.push("Logo download failed");
+          }
+        } catch (error) {
           progress.logoStatus = "failed";
-          progress.errors.push("Logo download failed");
+          progress.errors.push(`Logo error: ${error.message}`);
         }
-      } catch (error) {
-        progress.logoStatus = "failed";
-        progress.errors.push(`Logo error: ${error.message}`);
       }
     } else {
       progress.logoStatus = "success"; // No logo to download
