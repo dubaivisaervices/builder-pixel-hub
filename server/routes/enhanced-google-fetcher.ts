@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import { businessService } from "../database/businessService";
-import fetch from "node-fetch";
 import fs from "fs";
 import path from "path";
 
