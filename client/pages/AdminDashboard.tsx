@@ -887,7 +887,7 @@ export default function AdminDashboard() {
                     </Button>
 
                     <Button
-                      onClick={() => window.open("/admin/manage", "_blank")}
+                      onClick={() => navigate("/admin/manage")}
                       className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 p-6 h-auto"
                     >
                       <div className="text-center">
