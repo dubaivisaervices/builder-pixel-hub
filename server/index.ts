@@ -43,6 +43,11 @@ import {
   updateCompanyRequestStatus,
 } from "./routes/add-company-request";
 import {
+  uploadBusinessImages,
+  handleBusinessImageUpload,
+  handleUploadError,
+} from "./routes/upload-business-images";
+import {
   saveAllBusinessData,
   saveBusinessImagesToGitHub,
   getDataPersistenceStatus,
