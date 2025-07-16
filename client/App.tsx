@@ -75,6 +75,7 @@ const App = () => (
               path="/:location/review/:companyName"
               element={<CompanyReviews />}
             />
+            <Route path="/company/:companyId" element={<CompanyRedirect />} />
             <Route
               path="/modern-profile/:location/:companyName"
               element={<CompanyProfileModern key={`${Date.now()}`} />}
