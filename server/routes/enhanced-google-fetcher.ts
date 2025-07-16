@@ -107,11 +107,27 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
       }
     };
 
+    // Build enhanced search URL with city-specific coordinates
+    const cityCoordinates = {
+      Dubai: "25.2048,55.2708",
+      "Abu Dhabi": "24.4539,54.3773",
+      Sharjah: "25.3573,55.4033",
+      Ajman: "25.4052,55.5136",
+      Fujairah: "25.1208,56.3264",
+      "Ras Al Khaimah": "25.7889,55.9439",
+      "Umm Al Quwain": "25.5644,55.5555",
+      "Al Ain": "24.2075,55.7464",
+    };
+
+    const location =
+      city && cityCoordinates[city] ? cityCoordinates[city] : "25.2048,55.2708"; // Default to Dubai
+    const searchRadius = radius * 1000; // Convert km to meters
+
     // Fetch businesses from Google Places
     for (let page = 0; page < 3 && allBusinesses.length < maxResults; page++) {
       const searchUrl = nextPageToken
         ? `https://maps.googleapis.com/maps/api/place/textsearch/json?pagetoken=${nextPageToken}&key=${apiKey}`
-        : `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&location=25.2048,55.2708&radius=50000&key=${apiKey}`;
+        : `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(searchQuery)}&location=${location}&radius=${searchRadius}&key=${apiKey}`;
 
       console.log(
         `📱 API Call ${totalApiCalls + 1}: Fetching page ${page + 1}`,
