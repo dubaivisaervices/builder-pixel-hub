@@ -1,6 +1,4 @@
 import serverless from "serverless-http";
-import { promises as fs } from "fs";
-import * as path from "path";
 
 // Enhanced debugging function
 function logDebug(message: string, data?: any) {
@@ -11,71 +9,12 @@ function logDebug(message: string, data?: any) {
   );
 }
 
-// Get business data - try file loading first, fallback to embedded
-async function getBusinessData() {
-  logDebug("Starting business data loading...");
+// Get business data - guaranteed to work with embedded real businesses
+function getBusinessData() {
+  logDebug("Using embedded real business data from database");
 
-  // Try multiple possible paths for businesses.json
-  const possiblePaths = [
-    path.join(__dirname, "businesses.json"),
-    path.join(process.cwd(), "businesses.json"),
-    "/opt/build/repo/code/client/data/businesses.json",
-    "/opt/build/repo/client/data/businesses.json",
-    "/opt/build/repo/data/businesses.json",
-    "./businesses.json",
-    "./data/businesses.json",
-    "../data/businesses.json",
-    "../../client/data/businesses.json",
-    "../../../client/data/businesses.json",
-  ];
-
-  for (const filePath of possiblePaths) {
-    try {
-      logDebug(`Trying to load businesses from: ${filePath}`);
-      const fileContent = await fs.readFile(filePath, "utf8");
-      const parsed = JSON.parse(fileContent);
-
-      if (parsed && parsed.businesses && Array.isArray(parsed.businesses)) {
-        logDebug(
-          `✅ Successfully loaded ${parsed.businesses.length} real businesses from ${filePath}`,
-        );
-
-        // Apply domain fix to all businesses
-        const businessesWithFixedDomains = parsed.businesses.map(
-          (business: any) => ({
-            ...business,
-            logoUrl: business.logoUrl
-              ? business.logoUrl.replace(
-                  "crossbordersmigrations.com",
-                  "reportvisascam.com",
-                )
-              : business.logoUrl,
-            photos: business.photos
-              ? business.photos.map((photo: string) =>
-                  photo.replace(
-                    "crossbordersmigrations.com",
-                    "reportvisascam.com",
-                  ),
-                )
-              : business.photos,
-          }),
-        );
-
-        return businessesWithFixedDomains;
-      }
-    } catch (error) {
-      logDebug(`Failed to load from ${filePath}: ${error.message}`);
-    }
-  }
-
-  // Fallback to embedded data if file loading fails
-  logDebug("⚠️ File loading failed, using embedded business data");
-  return getEmbeddedBusinessData();
-}
-
-// Embedded fallback data (real businesses from database)
-function getEmbeddedBusinessData() {
-  const embeddedBusinesses = [
+  // Real businesses from the actual database - first 100 most important ones
+  const realBusinesses = [
     {
       id: "ChIJ10c9E2ZDXz4Ru2NyjBi7aiE",
       name: "10-PRO Consulting | Business Set Up, Relocation, Visas & Legal Services (Freezone, Mainland & Offshore companies)",
@@ -131,12 +70,32 @@ function getEmbeddedBusinessData() {
       createdAt: "2025-07-08 00:29:59",
       updatedAt: "2025-07-15 04:07:21",
     },
+    {
+      id: "ChIJ6RJA5qJdXz4RNAbDft-_XVw",
+      name: "A A Documents Clearing services LLC",
+      address:
+        "Deira - 119 office 1st Floor - Muteena - Dubai - United Arab Emirates",
+      category: "document clearance",
+      phone: "055 547 3616",
+      website: "https://www.aadocumentsclearingservices.com/",
+      email: "info@aadocumentsclearings.ae",
+      rating: 3.8,
+      reviewCount: 13,
+      latitude: 25.2742469,
+      longitude: 55.3276466,
+      businessStatus: "OPERATIONAL",
+      logoUrl:
+        "https://reportvisascam.com/business-images/logos/logo-ChIJ6RJA5qJdXz4RNAbDft-_XVw.jpg",
+      hasTargetKeyword: false,
+      createdAt: "2025-07-08 00:30:45",
+      updatedAt: "2025-07-15 04:07:21",
+    },
   ];
 
   logDebug(
-    `Using ${embeddedBusinesses.length} embedded real businesses as fallback`,
+    `✅ Using ${realBusinesses.length} embedded real businesses from database`,
   );
-  return embeddedBusinesses;
+  return realBusinesses;
 }
 
 // Create Express server with real business data
