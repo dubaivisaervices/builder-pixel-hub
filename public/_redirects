@@ -29,6 +29,9 @@
 /modern-profile/*  /index.html  200!
 /complaint  /index.html  200!
 /complaint/*  /index.html  200!
+/help-center  /index.html  200!
+/help-center/*  /index.html  200!
+/services/*  /index.html  200!
 
 # Catch-all SPA fallback
 /*  /index.html  200
