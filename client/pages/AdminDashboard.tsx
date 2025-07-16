@@ -853,6 +853,13 @@ export default function AdminDashboard() {
           </div>
         )}
 
+        {/* Netlify Images Tab */}
+        {activeTab === "netlify" && (
+          <div className="space-y-6">
+            <NetlifyImageManager />
+          </div>
+        )}
+
         {/* Categories Tab */}
         {activeTab === "categories" && (
           <div className="space-y-6">
