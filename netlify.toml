@@ -1,6 +1,5 @@
 [build]
-  command = "npm run build:netlify"
-  functions = "netlify/functions"
+  command = "npm run build:client"
   publish = "dist/spa"
 
 [build.environment]
@@ -9,16 +8,104 @@
 [functions]
   external_node_modules = ["serverless-http"]
   node_bundler = "esbuild"
+  
+# Most specific redirects first
+[[redirects]]
+  from = "/api/ping"
+  to = "/.netlify/functions/api/ping"
+  status = 200
+  force = true
 
-# API routes
+[[redirects]]
+  from = "/api/health"
+  to = "/.netlify/functions/api/health"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/dubai-visa-services"
+  to = "/.netlify/functions/api/dubai-visa-services"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/businesses"
+  to = "/.netlify/functions/api/businesses"
+  status = 200
+  force = true
+
+# Catch-all API
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api/:splat"
   status = 200
   force = true
 
-# SPA fallback
+# Static files with force
+[[redirects]]
+  from = "/assets/*"
+  to = "/assets/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/favicon.ico"
+  to = "/favicon.ico"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/robots.txt"
+  to = "/robots.txt"
+  status = 200
+  force = true
+
+# Emergency access pages
+[[redirects]]
+  from = "/working.html"
+  to = "/working.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/emergency.html"
+  to = "/emergency.html"
+  status = 200
+  force = true
+
+# Specific React routes
+[[redirects]]
+  from = "/dubai-businesses"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/business-directory"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/report"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/admin"
+  to = "/index.html"
+  status = 200
+  force = true
+
+# Catch-all for SPA - MUST BE LAST
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Remove problematic headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
