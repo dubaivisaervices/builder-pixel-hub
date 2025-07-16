@@ -1,10 +1,10 @@
 # BULLETPROOF REDIRECTS - FINAL FIX
-# API routes with highest priority and force
-/api/ping  /.netlify/functions/api/ping  200!
-/api/health  /.netlify/functions/api/health  200!
-/api/dubai-visa-services  /.netlify/functions/api/dubai-visa-services  200!
-/api/businesses  /.netlify/functions/api/businesses  200!
-/api/*  /.netlify/functions/api/:splat  200!
+# API routes disabled - using local database server instead
+# /api/ping  /.netlify/functions/api/ping  200!
+# /api/health  /.netlify/functions/api/health  200!
+# /api/dubai-visa-services  /.netlify/functions/api/dubai-visa-services  200!
+# /api/businesses  /.netlify/functions/api/businesses  200!
+# /api/*  /.netlify/functions/api/:splat  200!
 
 # Static files with force
 /assets/*  /assets/:splat  200!
