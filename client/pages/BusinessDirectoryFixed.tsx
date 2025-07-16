@@ -41,6 +41,7 @@ const BusinessDirectory: React.FC = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [dataSource, setDataSource] = useState<string>("unknown");
+  const [totalBusinessCount, setTotalBusinessCount] = useState<number>(0);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,66 +57,60 @@ const BusinessDirectory: React.FC = () => {
     return ["All", ...Array.from(categorySet).sort()];
   }, [businesses]);
 
-  // Filtered businesses based on search and category
-  const filteredBusinesses = useMemo(() => {
-    let filtered = businesses;
+  // Enhanced data loading with comprehensive fallback strategy
+  useEffect(() => {
+    const loadBusinessData = async () => {
+      console.log("🔄 Starting enhanced business data loading...");
 
-    if (selectedCategory !== "All") {
-      filtered = filtered.filter(
-        (business) => business.category === selectedCategory,
-      );
-    }
-
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (business) =>
-          business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          business.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          business.category?.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
-    }
-
-    return filtered;
-  }, [searchTerm, businesses, selectedCategory]);
-
-  const fetchBusinesses = async () => {
-    try {
-      setLoading(true);
-      console.log("🔄 Loading businesses for Report Visa Scam...");
-
-      // Try to load static data first (production)
       try {
-        const response = await fetch("/data/businesses.json");
-        if (response.ok) {
-          const data = await response.json();
-          console.log(
-            "✅ Loaded from static data:",
-            data.businesses?.length || 0,
-            "businesses",
-          );
-          setBusinesses(data.businesses || []);
-          setDataSource("Static Data");
-          return;
-        }
-      } catch (error) {
-        console.log("📡 Static data not found, trying API...");
-      }
+        // Primary: Try to fetch from API with cache busting
+        const timestamp = Date.now();
+        const response = await fetch(
+          `/api/dubai-visa-services?limit=1000&_t=${timestamp}`,
+          {
+            headers: {
+              "Cache-Control": "no-cache",
+              Pragma: "no-cache",
+            },
+          },
+        );
 
-      // Fallback to API (development)
-      const response = await fetch("/api/dubai-visa-services?limit=1000");
-      if (response.ok) {
+        if (!response.ok) {
+          throw new Error(`API responded with status: ${response.status}`);
+        }
+
         const data = await response.json();
         console.log(
           "✅ Successfully loaded from API:",
           data.businesses?.length || 0,
           "businesses",
+          "Total in database:",
+          data.total || "unknown",
         );
+
         setBusinesses(data.businesses || []);
+        setTotalBusinessCount(data.total || data.businesses?.length || 0);
         setDataSource("API");
-      } else {
-        console.error("❌ Failed to fetch businesses:", response.status);
-        // Fallback with sample data
-        setBusinesses([
+
+        // Log data source and quality info
+        if (data.total && data.total >= 1000) {
+          console.log(
+            `🎉 Full dataset loaded - all ${data.total} businesses available!`,
+          );
+        } else if (data.businesses?.length >= 50) {
+          console.log(
+            `📊 Large dataset loaded: ${data.businesses.length} businesses`,
+          );
+        } else if (data.businesses?.length <= 5) {
+          console.log("⚠️ Small dataset - possible fallback data");
+        }
+
+        return;
+      } catch (error) {
+        console.error("❌ API loading failed:", error);
+
+        // Fallback: Use sample data
+        const fallbackBusinesses = [
           {
             id: "sample1",
             name: "Dubai Visa Solutions",
@@ -148,235 +143,167 @@ const BusinessDirectory: React.FC = () => {
             phone: "+971 4 555 0123",
             hasTargetKeyword: false,
           },
-        ]);
-        setDataSource("Fallback");
-      }
-    } catch (error) {
-      console.error("❌ Error fetching businesses:", error);
-      // Fallback with sample data
-      setBusinesses([
-        {
-          id: "sample1",
-          name: "Dubai Visa Solutions",
-          address: "Business Bay, Dubai, UAE",
-          rating: 4.8,
-          reviewCount: 156,
-          category: "Visa Services",
-          phone: "+971 4 123 4567",
-          website: "dubaivisasolutions.com",
-          hasTargetKeyword: true,
-        },
-        {
-          id: "sample2",
-          name: "Emirates Immigration Consultants",
-          address: "DIFC, Dubai, UAE",
-          rating: 4.6,
-          reviewCount: 89,
-          category: "Immigration Services",
-          phone: "+971 4 987 6543",
-          website: "emiratesimmigration.ae",
-          hasTargetKeyword: true,
-        },
-        {
-          id: "sample3",
-          name: "Al Majid PRO Services",
-          address: "Deira, Dubai, UAE",
-          rating: 4.5,
-          reviewCount: 234,
-          category: "PRO Services",
-          phone: "+971 4 555 0123",
-          hasTargetKeyword: false,
-        },
-      ]);
-      setDataSource("Error Fallback");
-    } finally {
-      setLoading(false);
-    }
-  };
+        ];
 
-  useEffect(() => {
-    fetchBusinesses();
+        setBusinesses(fallbackBusinesses);
+        setTotalBusinessCount(fallbackBusinesses.length);
+        setDataSource("Fallback");
+        console.log(
+          "📊 Using fallback data:",
+          fallbackBusinesses.length,
+          "businesses",
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBusinessData();
   }, []);
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
-
-    if (value.length >= 1) {
-      const filtered = businesses
-        .filter(
-          (business) =>
-            business.name.toLowerCase().includes(value.toLowerCase()) ||
-            business.address.toLowerCase().includes(value.toLowerCase()) ||
-            business.category?.toLowerCase().includes(value.toLowerCase()),
-        )
-        .slice(0, 6);
-      setSearchSuggestions(filtered);
+    if (value.length >= 3 && Array.isArray(businesses)) {
+      const filtered = businesses.filter(
+        (business) =>
+          business &&
+          (business.name?.toLowerCase().includes(value.toLowerCase()) ||
+            business.category?.toLowerCase().includes(value.toLowerCase()) ||
+            business.address?.toLowerCase().includes(value.toLowerCase())),
+      );
+      setSearchSuggestions(filtered.slice(0, 8));
       setShowSuggestions(true);
     } else {
       setShowSuggestions(false);
     }
   };
 
-  const handleSuggestionClick = (business: BusinessData) => {
-    navigateToDetails(business);
-    setShowSuggestions(false);
-    setSearchTerm("");
-  };
-
-  const navigateToDetails = (business: BusinessData) => {
-    const locationSlug =
-      business.address
-        ?.split(",")[0]
-        ?.trim()
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, "-") || "dubai";
-    const nameSlug = business.name.toLowerCase().replace(/[^a-z0-9]/g, "-");
-
-    navigate(`/modern-profile/${locationSlug}/${nameSlug}`);
-  };
-
-  const toggleFavorite = (businessId: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    const newFavorites = new Set(favorites);
-    if (newFavorites.has(businessId)) {
-      newFavorites.delete(businessId);
-    } else {
-      newFavorites.add(businessId);
-    }
-    setFavorites(newFavorites);
-  };
-
-  const shareCompany = (business: BusinessData, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (navigator.share) {
-      navigator.share({
-        title: business.name,
-        text: `Check out ${business.name} on Report Visa Scam`,
-        url:
-          window.location.origin +
-          `/modern-profile/${
-            business.address
-              ?.split(",")[0]
-              ?.trim()
-              .toLowerCase()
-              .replace(/[^a-z0-9]/g, "-") || "dubai"
-          }/${business.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`,
-      });
-    } else {
-      navigator.clipboard.writeText(window.location.href);
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      navigate(`/dubai-businesses?search=${encodeURIComponent(searchTerm)}`);
     }
   };
+
+  const filteredBusinesses = useMemo(() => {
+    let filtered = businesses;
+
+    if (selectedCategory !== "All") {
+      filtered = filtered.filter((business) =>
+        business.category
+          ?.toLowerCase()
+          .includes(selectedCategory.toLowerCase()),
+      );
+    }
+
+    if (searchTerm.trim()) {
+      filtered = filtered.filter(
+        (business) =>
+          business.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          business.address?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          business.category?.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+    }
+
+    return filtered;
+  }, [businesses, selectedCategory, searchTerm]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Loading Business Directory
-          </h2>
-          <p className="text-gray-600">Fetching verified companies...</p>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-lg text-gray-600">
+            Loading {totalBusinessCount || "1,114+"} businesses...
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-red-500 to-orange-600 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl lg:text-6xl font-bold mb-4">
-              🛡️ Report Visa Scam Directory
-            </h1>
-            <p className="text-xl lg:text-2xl mb-8 text-red-100">
-              Verify companies before you trust them with your visa application
-            </p>
+      <section className="relative py-16 bg-gradient-to-r from-blue-900 via-blue-800 to-purple-900">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            Dubai Business Directory
+          </h1>
+          <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+            Discover {totalBusinessCount || "1,114+"} verified visa and
+            immigration service providers in Dubai
+          </p>
 
-            {/* Data Source Badge */}
-            <div className="flex justify-center mb-8">
-              <Badge className="bg-white/20 text-white px-4 py-2 text-lg">
-                📊 Data Source: {dataSource} | {businesses.length} Companies
-              </Badge>
-            </div>
-
-            {/* Search Bar */}
-            <div className="max-w-2xl mx-auto relative">
-              <div className="relative">
-                <Input
-                  type="text"
-                  placeholder="Search companies, check reviews, or report scams..."
-                  value={searchTerm}
-                  onChange={(e) => handleSearchChange(e.target.value)}
-                  onFocus={() =>
-                    searchTerm.length >= 1 && setShowSuggestions(true)
-                  }
-                  onBlur={() =>
-                    setTimeout(() => setShowSuggestions(false), 200)
-                  }
-                  className="h-14 pl-6 pr-16 text-lg bg-white/90 backdrop-blur-sm border-0 shadow-xl"
-                />
-                <Button
-                  size="lg"
-                  className="absolute right-2 top-2 h-10 px-6 bg-red-600 hover:bg-red-700"
-                >
-                  <Search className="h-4 w-4" />
-                </Button>
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+              <div className="text-2xl font-bold text-white">
+                {totalBusinessCount || "1,114+"}
               </div>
+              <div className="text-blue-200 text-sm">Total Businesses</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+              <div className="text-2xl font-bold text-white">
+                {categories.length - 1}
+              </div>
+              <div className="text-blue-200 text-sm">Categories</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+              <div className="text-2xl font-bold text-white">
+                {filteredBusinesses.length}
+              </div>
+              <div className="text-blue-200 text-sm">Showing</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+              <div className="text-2xl font-bold text-white">{dataSource}</div>
+              <div className="text-blue-200 text-sm">Data Source</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Search and Filter Section */}
+      <section className="py-8 bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+            {/* Search */}
+            <div className="relative flex-1 max-w-md">
+              <Input
+                type="text"
+                placeholder="Search businesses..."
+                value={searchTerm}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                className="pl-10"
+              />
+              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
 
               {/* Search Suggestions */}
               {showSuggestions && searchSuggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-96 overflow-y-auto">
-                  <div className="p-3 border-b border-gray-100 bg-gray-50 text-sm text-gray-600 font-medium">
-                    {searchSuggestions.length} companies found
-                  </div>
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border z-50 max-h-64 overflow-y-auto">
                   {searchSuggestions.map((business) => (
                     <div
                       key={business.id}
-                      onClick={() => handleSuggestionClick(business)}
-                      className="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                      onClick={() => navigate(`/company/${business.id}`)}
+                      className="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"
                     >
-                      <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                          {business.name.charAt(0)}
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-gray-900">
-                            {business.name}
-                          </h4>
-                          <p className="text-sm text-gray-600 flex items-center">
-                            <MapPin className="h-3 w-3 mr-1" />
-                            {business.address?.split(",")[0]}
-                          </p>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                          <span className="text-sm font-semibold text-gray-700">
-                            {business.rating || "N/A"}
-                          </span>
-                        </div>
+                      <div className="font-medium">{business.name}</div>
+                      <div className="text-sm text-gray-500">
+                        {business.address}
                       </div>
                     </div>
                   ))}
                 </div>
               )}
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Filters and Controls */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
             {/* Category Filter */}
-            <div className="flex items-center space-x-4">
-              <Filter className="h-5 w-5 text-gray-500" />
+            <div className="flex items-center gap-2">
+              <Filter className="h-4 w-4 text-gray-500" />
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="border rounded-lg px-3 py-2 bg-white"
               >
                 {categories.map((category) => (
                   <option key={category} value={category}>
@@ -386,170 +313,142 @@ const BusinessDirectory: React.FC = () => {
               </select>
             </div>
 
-            {/* View Toggle and Results Count */}
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">
-                {filteredBusinesses.length} companies found
-              </span>
-              <div className="flex items-center border border-gray-300 rounded-lg">
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className={`p-2 ${
-                    viewMode === "grid"
-                      ? "bg-red-500 text-white"
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`}
-                >
-                  <Grid3X3 className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => setViewMode("list")}
-                  className={`p-2 ${
-                    viewMode === "list"
-                      ? "bg-red-500 text-white"
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`}
-                >
-                  <List className="h-4 w-4" />
-                </button>
-              </div>
+            {/* View Mode Toggle */}
+            <div className="flex items-center gap-2">
+              <Button
+                variant={viewMode === "grid" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setViewMode("grid")}
+              >
+                <Grid3X3 className="h-4 w-4" />
+              </Button>
+              <Button
+                variant={viewMode === "list" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setViewMode("list")}
+              >
+                <List className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Business Listings */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {filteredBusinesses.length === 0 ? (
-          <div className="text-center py-16">
-            <Building2 className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-2xl font-semibold text-gray-900 mb-2">
-              No businesses found
-            </h3>
-            <p className="text-gray-600">
-              Try adjusting your search or filter criteria
-            </p>
-          </div>
-        ) : (
-          <div
-            className={
-              viewMode === "grid"
-                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                : "space-y-4"
-            }
-          >
-            {filteredBusinesses.map((business) => (
-              <Card
-                key={business.id}
-                className="group hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer border-0 bg-white"
-                onClick={() => navigateToDetails(business)}
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">
-                        {business.name
-                          .split(" ")
-                          .map((word) => word[0])
-                          .join("")
-                          .substring(0, 2)}
-                      </div>
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {filteredBusinesses.length === 0 ? (
+            <div className="text-center py-16">
+              <Building2 className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                No businesses found
+              </h3>
+              <p className="text-gray-500">
+                Try adjusting your search or filter criteria
+              </p>
+            </div>
+          ) : (
+            <div
+              className={
+                viewMode === "grid"
+                  ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  : "space-y-4"
+              }
+            >
+              {filteredBusinesses.map((business) => (
+                <Card
+                  key={business.id}
+                  className="hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => navigate(`/company/${business.id}`)}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
-                        <h3 className="font-bold text-gray-900 group-hover:text-red-600 transition-colors">
+                        <h3 className="font-semibold text-lg mb-2 line-clamp-2">
                           {business.name}
                         </h3>
-                        <p className="text-sm text-gray-600">
-                          {business.category}
-                        </p>
+                        <div className="flex items-center text-sm text-gray-500 mb-2">
+                          <MapPin className="h-4 w-4 mr-1" />
+                          <span className="line-clamp-1">
+                            {business.address}
+                          </span>
+                        </div>
+                        {business.phone && (
+                          <div className="flex items-center text-sm text-gray-500 mb-2">
+                            <Phone className="h-4 w-4 mr-1" />
+                            <span>{business.phone}</span>
+                          </div>
+                        )}
                       </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <button
-                        onClick={(e) => toggleFavorite(business.id, e)}
-                        className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-                      >
-                        <Heart
-                          className={`h-5 w-5 ${
-                            favorites.has(business.id)
-                              ? "text-red-500 fill-current"
-                              : "text-gray-400"
-                          }`}
+                      <div className="ml-4">
+                        <img
+                          src={getBestLogoUrl(business)}
+                          alt={business.name}
+                          className="w-12 h-12 rounded-lg object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src = "/placeholder.svg";
+                          }}
                         />
-                      </button>
-                      <button
-                        onClick={(e) => shareCompany(business, e)}
-                        className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-                      >
-                        <Share2 className="h-5 w-5 text-gray-400" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <MapPin className="h-4 w-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">
-                        {business.address?.split(",")[0]}
-                      </span>
+                      </div>
                     </div>
 
-                    {business.phone && (
-                      <div className="flex items-center space-x-2">
-                        <Phone className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">
-                          {business.phone}
-                        </span>
-                      </div>
-                    )}
-
-                    {business.website && (
-                      <div className="flex items-center space-x-2">
-                        <Globe className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">
-                          {business.website}
-                        </span>
-                      </div>
-                    )}
-
-                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                      <div className="flex items-center space-x-1">
-                        <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                        <span className="font-semibold text-gray-900">
-                          {business.rating || "N/A"}
-                        </span>
-                        <span className="text-sm text-gray-600">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="flex items-center">
+                          <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                          <span className="ml-1 text-sm font-medium">
+                            {business.rating || "N/A"}
+                          </span>
+                        </div>
+                        <span className="text-sm text-gray-500 ml-2">
                           ({business.reviewCount || 0} reviews)
                         </span>
                       </div>
-                      <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-red-600 transition-colors" />
+                      <Badge variant="secondary">
+                        {business.category || "Business"}
+                      </Badge>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-      </div>
 
-      {/* Call to Action */}
-      <div className="bg-gradient-to-r from-red-500 to-orange-600 text-white py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            Spotted a Scammer? Report Them Now!
-          </h2>
-          <p className="text-xl mb-8 text-red-100">
-            Help protect others from visa fraud by reporting suspicious
-            companies
-          </p>
-          <Button
-            onClick={() => navigate("/complaint")}
-            size="lg"
-            className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 text-lg"
-          >
-            🚨 REPORT SCAM
-          </Button>
+                    <div className="mt-4 flex items-center justify-between">
+                      <Button variant="outline" size="sm">
+                        View Details
+                        <ArrowRight className="h-4 w-4 ml-1" />
+                      </Button>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const newFavorites = new Set(favorites);
+                            if (favorites.has(business.id)) {
+                              newFavorites.delete(business.id);
+                            } else {
+                              newFavorites.add(business.id);
+                            }
+                            setFavorites(newFavorites);
+                          }}
+                        >
+                          <Heart
+                            className={`h-4 w-4 ${
+                              favorites.has(business.id)
+                                ? "fill-red-500 text-red-500"
+                                : "text-gray-400"
+                            }`}
+                          />
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          <Share2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
-      </div>
+      </section>
 
       <CommunityProtection />
       <GovernmentSection />
