@@ -152,8 +152,9 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
       );
     }
 
-    // Get unique categories
+    // Get unique categories and UAE cities
     const categories = await businessService.getCategories();
+    const uaeCities = await businessService.getUAECities();
 
     const endTime = Date.now();
     const duration = Math.round((endTime - startTime) / 1000);
@@ -167,10 +168,17 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
     console.log(`   Page: ${page}, Limit: ${limit}, Offset: ${offset}`);
     console.log(`   Returned businesses: ${businesses.length}`);
     console.log(`   Total in database: ${totalCount.total}`);
+    console.log(`   Filtered total: ${filteredTotal}`);
+    console.log(`   Applied filters:`, {
+      searchQuery,
+      categoryFilter,
+      cityFilter,
+    });
     console.log(
       `   Target keyword businesses: ${targetKeywordBusinesses.length}`,
     );
     console.log(`   Categories: ${categories.length}`);
+    console.log(`   UAE Cities: ${uaeCities.length}`);
     console.log(`   Query time: ${duration} seconds`);
 
     // Debug logging for first few businesses' images
