@@ -7,7 +7,7 @@
   NODE_VERSION = "18"
 
 [functions]
-  external_node_modules = ["express", "sqlite3", "multer"]
+  external_node_modules = ["express", "sqlite3", "multer", "serverless-http"]
   node_bundler = "esbuild"
   
 # API redirects
