@@ -693,7 +693,7 @@ const NetlifyImageManager: React.FC = () => {
         )}
 
         {/* Tabs for different upload methods */}
-        <Tabs defaultValue="superfast" className="space-y-6">
+        <Tabs defaultValue="googlerefresh" className="space-y-6">
           <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="googlerefresh">
               🔄 Google API Refresh
