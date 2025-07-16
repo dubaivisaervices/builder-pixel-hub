@@ -649,7 +649,7 @@ export default function AdminDashboard() {
                     </p>
                   </div>
                   <Button
-                    onClick={() => window.open("/admin/manage", "_blank")}
+                    onClick={() => navigate("/admin/manage")}
                     size="lg"
                     className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700"
                   >
