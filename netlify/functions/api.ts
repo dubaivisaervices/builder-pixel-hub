@@ -29,7 +29,35 @@ function loadRealBusinessData() {
     const parsed = JSON.parse(rawData);
 
     if (parsed && parsed.businesses && Array.isArray(parsed.businesses)) {
-      realBusinessData = parsed.businesses;
+      // Fix any domain issues in the business data
+      const correctedBusinesses = parsed.businesses.map((business: any) => {
+        if (
+          business.logoUrl &&
+          business.logoUrl.includes("crossbordersmigrations.com")
+        ) {
+          business.logoUrl = business.logoUrl.replace(
+            "crossbordersmigrations.com",
+            "reportvisascam.com",
+          );
+          logDebug(`🔧 Fixed logoUrl domain for business: ${business.name}`);
+        }
+
+        if (business.photos && Array.isArray(business.photos)) {
+          business.photos = business.photos.map((photo: string) => {
+            if (photo.includes("crossbordersmigrations.com")) {
+              return photo.replace(
+                "crossbordersmigrations.com",
+                "reportvisascam.com",
+              );
+            }
+            return photo;
+          });
+        }
+
+        return business;
+      });
+
+      realBusinessData = correctedBusinesses;
       logDebug(
         `✅ Successfully loaded ${realBusinessData.length} real businesses`,
       );
