@@ -491,6 +491,13 @@ export function createServer() {
   app.get("/api/optimized-image/:businessId", serveOptimizedImage);
   app.get("/api/image-stats", getImageStats);
 
+  // Netlify direct image upload routes
+  app.post("/api/netlify/upload-logo", uploadLogoToNetlify);
+  app.post("/api/netlify/upload-photos", uploadPhotosToNetlify);
+  app.post("/api/netlify/download-image", downloadImageToNetlify);
+  app.post("/api/netlify/batch-download", batchDownloadToNetlify);
+  app.get("/api/netlify/image-stats", getNetlifyImageStats);
+
   // Reports API
   app.post(
     "/api/reports/submit",
