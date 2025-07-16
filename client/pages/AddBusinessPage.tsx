@@ -1092,10 +1092,20 @@ export default function AddBusinessPage() {
                 <Button
                   type="submit"
                   size="lg"
-                  className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700"
+                  disabled={isUploading}
+                  className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 disabled:opacity-50"
                 >
-                  <CheckCircle className="h-5 w-5 mr-2" />
-                  Add Business
+                  {isUploading ? (
+                    <>
+                      <Upload className="h-5 w-5 mr-2 animate-pulse" />
+                      Adding Business...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle className="h-5 w-5 mr-2" />
+                      Add Business
+                    </>
+                  )}
                 </Button>
               </div>
             </CardContent>
