@@ -522,6 +522,8 @@ export function createServer() {
   app.get("/api/debug/business-data", debugBusinessData);
   app.get("/api/debug/test-urls/:businessId", testBusinessUrls);
   app.get("/api/debug/sample-data", getSampleBusinessData);
+  app.get("/api/debug/verify-photos", verifyPhotos);
+  app.get("/api/debug/business-photos/:businessId", getBusinessPhotos);
 
   // Reports API
   app.post(
