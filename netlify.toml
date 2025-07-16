@@ -10,27 +10,81 @@
   external_node_modules = ["express", "sqlite3", "multer", "serverless-http"]
   node_bundler = "esbuild"
 
-# Simple and effective redirects
+# API routes - FORCE redirect
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api/:splat"
   status = 200
   force = true
 
+# Explicit React routes - FORCE to index.html
+[[redirects]]
+  from = "/dubai-businesses"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/dubai-businesses/*"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/business-directory"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/business-directory/*"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/business/*"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/report"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/report/*"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/admin"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/index.html"
+  status = 200
+  force = true
+
+# Catch-all SPA fallback - MUST BE LAST
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# Basic security headers
+# Minimal headers to avoid conflicts
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "SAMEORIGIN"
-    X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
 
-# Cache static assets
 [[headers]]
   for = "/assets/*"
   [headers.values]
