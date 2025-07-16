@@ -609,6 +609,42 @@ const NetlifyImageManager: React.FC = () => {
                   </div>
                 )}
 
+                {/* Status Information */}
+                {debugData && debugData.summary && (
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                    <h4 className="font-medium text-purple-900 mb-3">
+                      📊 Current Image Status
+                    </h4>
+                    <div className="grid md:grid-cols-3 gap-4 text-sm">
+                      <div className="bg-white rounded p-3">
+                        <div className="font-bold text-green-600">
+                          {debugData.summary.logoNetlifyPercentage}%
+                        </div>
+                        <div className="text-gray-600">Logos on Netlify</div>
+                      </div>
+                      <div className="bg-white rounded p-3">
+                        <div className="font-bold text-blue-600">
+                          {debugData.summary.photoNetlifyPercentage}%
+                        </div>
+                        <div className="text-gray-600">Photos on Netlify</div>
+                      </div>
+                      <div className="bg-white rounded p-3">
+                        <div className="font-bold text-purple-600">
+                          {debugData.summary.avgPhotosPerBusiness}
+                        </div>
+                        <div className="text-gray-600">Avg Photos/Business</div>
+                      </div>
+                    </div>
+                    {debugData.summary.logoNetlifyPercentage > 80 && (
+                      <div className="mt-3 text-sm text-purple-700 bg-purple-100 rounded p-2">
+                        ✅ <strong>Good News!</strong> Most images are already
+                        on Netlify. The upload process will skip existing images
+                        and only download new ones.
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Upload Information */}
                 <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-6">
                   <h4 className="font-bold text-green-900 mb-3">
@@ -993,7 +1029,7 @@ const NetlifyImageManager: React.FC = () => {
               {/* Photos Upload */}
               <Card>
                 <CardHeader>
-                  <CardTitle>���️ Upload Photos</CardTitle>
+                  <CardTitle>🖼️ Upload Photos</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
