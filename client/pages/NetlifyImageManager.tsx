@@ -494,6 +494,102 @@ const NetlifyImageManager: React.FC = () => {
     }
   };
 
+  // Google API Refresh Functions
+  const startGoogleImageRefresh = async () => {
+    try {
+      setGoogleRefreshing(true);
+      setUploadResult(null);
+
+      const response = await fetch("/api/google/refresh-all-images", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setUploadResult({
+          success: true,
+          message: `🔄 Google API refresh started for ${result.stats.total} businesses!\n\nFetching fresh logos and photos from Google Places API...`,
+        });
+
+        // Start polling for progress
+        startGoogleRefreshPolling();
+      } else {
+        setUploadResult({
+          success: false,
+          error: result.error || "Failed to start Google API refresh",
+        });
+        setGoogleRefreshing(false);
+      }
+    } catch (error) {
+      setUploadResult({
+        success: false,
+        error: "Failed to start Google API refresh: " + error.message,
+      });
+      setGoogleRefreshing(false);
+    }
+  };
+
+  const startGoogleRefreshPolling = () => {
+    const pollInterval = setInterval(async () => {
+      try {
+        const response = await fetch("/api/google/refresh-progress");
+        const data = await response.json();
+
+        if (data.success) {
+          setGoogleRefreshProgress(data);
+          setGoogleRefreshStats(data.stats);
+
+          // Stop polling if refresh is complete
+          if (!data.isRefreshing) {
+            clearInterval(pollInterval);
+            setGoogleRefreshing(false);
+            loadStats(); // Refresh main stats
+
+            setUploadResult({
+              success: true,
+              message: `🎉 Google API refresh completed!\n\n✅ ${data.summary.successful} businesses refreshed\n❌ ${data.summary.failed} failed\n📸 Fresh images downloaded from Google Places API`,
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error polling Google refresh progress:", error);
+      }
+    }, 3000); // Poll every 3 seconds
+
+    // Auto-stop polling after 45 minutes
+    setTimeout(
+      () => {
+        clearInterval(pollInterval);
+        setGoogleRefreshing(false);
+      },
+      45 * 60 * 1000,
+    );
+  };
+
+  const stopGoogleImageRefresh = async () => {
+    try {
+      const response = await fetch("/api/google/stop-refresh", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setGoogleRefreshing(false);
+        setUploadResult({
+          success: true,
+          message: "Google API refresh stopped successfully",
+        });
+      }
+    } catch (error) {
+      console.error("Error stopping Google refresh:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
