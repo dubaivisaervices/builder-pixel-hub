@@ -319,6 +319,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     fetchDashboardData();
+    checkGoogleApiStatus();
   }, []);
 
   useEffect(() => {
