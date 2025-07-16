@@ -90,6 +90,13 @@ import {
   getImageStats,
 } from "./routes/unified-image-service";
 import {
+  uploadLogoToNetlify,
+  uploadPhotosToNetlify,
+  downloadImageToNetlify,
+  batchDownloadToNetlify,
+  getNetlifyImageStats,
+} from "./routes/netlify-image-upload";
+import {
   submitReport,
   getCompanyReports,
   getAllReports,
@@ -328,7 +335,7 @@ export function createServer() {
           }
           if (photo.s3Url && isCorruptedUrl(photo.s3Url)) {
             console.warn(
-              "���� SERVER: BLOCKED CORRUPTED photo S3 URL from bad batch:",
+              "🚫 SERVER: BLOCKED CORRUPTED photo S3 URL from bad batch:",
               photo.s3Url,
             );
             return false;
