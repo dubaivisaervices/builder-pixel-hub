@@ -75,7 +75,7 @@ export function getBestLogoUrl(business: BusinessImageData): string | null {
 
   // Prefer S3 URL (now working!)
   if (business?.logoS3Url) {
-    return business.logoS3Url;
+    return fixImageDomain(business.logoS3Url);
   }
 
   // Fall back to base64 if available
@@ -85,7 +85,7 @@ export function getBestLogoUrl(business: BusinessImageData): string | null {
 
   // Fall back to original logo URL as last resort (but skip expired Google Maps URLs)
   if (business?.logoUrl && !business.logoUrl.includes("maps.googleapis.com")) {
-    return business.logoUrl;
+    return fixImageDomain(business.logoUrl);
   }
 
   // Return a default business logo for Dubai businesses
