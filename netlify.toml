@@ -9,21 +9,38 @@
 [functions]
   external_node_modules = ["express", "sqlite3", "multer", "serverless-http"]
   node_bundler = "esbuild"
-  
-# API redirects
-[[redirects]]
-  force = true
-  from = "/api/*"
-  status = 200
-  to = "/.netlify/functions/api/:splat"
 
-# SPA fallback - catch all routes and serve index.html
+# Handle API routes first (highest priority)
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+# Handle specific asset routes
+[[redirects]]
+  from = "/assets/*"
+  to = "/assets/:splat"
+  status = 200
+
+# Handle favicon and robots
+[[redirects]]
+  from = "/favicon.ico"
+  to = "/favicon.ico"
+  status = 200
+
+[[redirects]]
+  from = "/robots.txt"
+  to = "/robots.txt"
+  status = 200
+
+# SPA fallback - MUST be last (lowest priority)
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# Headers for security and performance
+# Security headers for all pages
 [[headers]]
   for = "/*"
   [headers.values]
@@ -31,8 +48,27 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    # Add CSP to prevent some 403 issues
+    Content-Security-Policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; font-src 'self' data: https:;"
 
+# Cache optimization for static assets
 [[headers]]
   for = "/assets/*"
   [headers.values]
-    cache-control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Ensure proper MIME types
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Content-Type = "application/javascript"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Content-Type = "text/css"
+
+[[headers]]
+  for = "*.json"
+  [headers.values]
+    Content-Type = "application/json"
