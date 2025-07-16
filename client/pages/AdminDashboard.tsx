@@ -757,21 +757,112 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
-                  {/* Fetch Controls */}
-                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                    <h4 className="font-medium text-orange-900 mb-3">
-                      Fetch New Businesses
+                  {/* Enhanced Fetch Controls */}
+                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
+                    <h4 className="font-medium text-orange-900 mb-4">
+                      🔍 Fetch New Businesses - Advanced Search
                     </h4>
-                    <div className="space-y-4">
-                      <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-6">
+                      {/* Search Filters Grid */}
+                      <div className="grid md:grid-cols-3 gap-4">
                         <div>
-                          <Label htmlFor="searchQuery">Search Query</Label>
+                          <Label htmlFor="companyName">Company Name</Label>
                           <Input
-                            id="searchQuery"
-                            placeholder="e.g., visa services Dubai"
+                            id="companyName"
+                            placeholder="e.g., 10-PRO Consulting"
                             className="mt-1"
                           />
+                          <p className="text-xs text-gray-500 mt-1">
+                            Search for specific company names
+                          </p>
                         </div>
+                        <div>
+                          <Label htmlFor="businessCategory">Category</Label>
+                          <select
+                            id="businessCategory"
+                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                          >
+                            <option value="">All Categories</option>
+                            <option value="visa services">Visa Services</option>
+                            <option value="immigration services">
+                              Immigration Services
+                            </option>
+                            <option value="document clearance">
+                              Document Clearance
+                            </option>
+                            <option value="PRO services">PRO Services</option>
+                            <option value="attestation services">
+                              Attestation Services
+                            </option>
+                            <option value="work permit services">
+                              Work Permit Services
+                            </option>
+                            <option value="business visa">Business Visa</option>
+                            <option value="tourist visa">Tourist Visa</option>
+                            <option value="family visa">Family Visa</option>
+                            <option value="golden visa services">
+                              Golden Visa Services
+                            </option>
+                            <option value="residence visa">
+                              Residence Visa
+                            </option>
+                            <option value="employment visa">
+                              Employment Visa
+                            </option>
+                            <option value="education visa">
+                              Education Visa
+                            </option>
+                            <option value="travel agency">Travel Agency</option>
+                            <option value="embassy services">
+                              Embassy Services
+                            </option>
+                          </select>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Filter by business category
+                          </p>
+                        </div>
+                        <div>
+                          <Label htmlFor="cityLocation">UAE City</Label>
+                          <select
+                            id="cityLocation"
+                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                          >
+                            <option value="">All Cities</option>
+                            <option value="Dubai">Dubai</option>
+                            <option value="Abu Dhabi">Abu Dhabi</option>
+                            <option value="Sharjah">Sharjah</option>
+                            <option value="Ajman">Ajman</option>
+                            <option value="Fujairah">Fujairah</option>
+                            <option value="Ras Al Khaimah">
+                              Ras Al Khaimah
+                            </option>
+                            <option value="Umm Al Quwain">Umm Al Quwain</option>
+                            <option value="Al Ain">Al Ain</option>
+                          </select>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Focus on specific UAE cities
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Combined Search Query Preview */}
+                      <div className="bg-white border border-gray-200 rounded-lg p-4">
+                        <Label className="text-sm font-medium text-gray-700">
+                          📝 Generated Search Query
+                        </Label>
+                        <div
+                          id="searchQueryPreview"
+                          className="mt-2 p-3 bg-gray-50 rounded border text-sm font-mono text-gray-800"
+                        >
+                          visa services Dubai
+                        </div>
+                        <p className="text-xs text-gray-500 mt-2">
+                          This query will be sent to Google Places API
+                        </p>
+                      </div>
+
+                      {/* Additional Parameters */}
+                      <div className="grid md:grid-cols-3 gap-4">
                         <div>
                           <Label htmlFor="maxResults">Max Results</Label>
                           <Input
@@ -781,35 +872,107 @@ export default function AdminDashboard() {
                             min="10"
                             max="200"
                             className="mt-1"
+                            defaultValue="60"
                           />
+                        </div>
+                        <div>
+                          <Label htmlFor="radius">Search Radius (km)</Label>
+                          <Input
+                            id="radius"
+                            type="number"
+                            placeholder="50"
+                            min="1"
+                            max="100"
+                            className="mt-1"
+                            defaultValue="50"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="minRating">Minimum Rating</Label>
+                          <select
+                            id="minRating"
+                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+                          >
+                            <option value="">Any Rating</option>
+                            <option value="3.0">3.0+ Stars</option>
+                            <option value="3.5">3.5+ Stars</option>
+                            <option value="4.0">4.0+ Stars</option>
+                            <option value="4.5">4.5+ Stars</option>
+                          </select>
                         </div>
                       </div>
 
-                      <div className="flex items-center space-x-4">
+                      {/* Options */}
+                      <div className="flex flex-wrap items-center gap-4">
                         <label className="flex items-center space-x-2">
                           <input
                             type="checkbox"
+                            id="downloadImages"
                             className="rounded"
                             defaultChecked
                           />
                           <span className="text-sm">
-                            Download logos & photos
+                            📷 Download logos & photos
                           </span>
                         </label>
                         <label className="flex items-center space-x-2">
                           <input
                             type="checkbox"
+                            id="saveToDatabase"
                             className="rounded"
                             defaultChecked
                           />
-                          <span className="text-sm">Save to database</span>
+                          <span className="text-sm">💾 Save to database</span>
+                        </label>
+                        <label className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            id="getReviews"
+                            className="rounded"
+                            defaultChecked
+                          />
+                          <span className="text-sm">⭐ Fetch reviews</span>
+                        </label>
+                        <label className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            id="skipExisting"
+                            className="rounded"
+                            defaultChecked
+                          />
+                          <span className="text-sm">
+                            🚫 Skip existing businesses
+                          </span>
                         </label>
                       </div>
 
-                      <Button className="bg-gradient-to-r from-blue-500 to-green-600 hover:from-blue-600 hover:to-green-700">
-                        <Search className="h-4 w-4 mr-2" />
-                        Fetch Businesses with Images
-                      </Button>
+                      {/* Action Buttons */}
+                      <div className="flex flex-wrap gap-3">
+                        <Button
+                          onClick={() => handleGoogleApiFetch()}
+                          className="bg-gradient-to-r from-blue-500 to-green-600 hover:from-blue-600 hover:to-green-700"
+                          disabled={isFetching}
+                        >
+                          <Search className="h-4 w-4 mr-2" />
+                          {isFetching ? "Fetching..." : "🚀 Fetch Businesses"}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => updateSearchPreview()}
+                          className="border-orange-300 text-orange-700 hover:bg-orange-50"
+                        >
+                          <Eye className="h-4 w-4 mr-2" />
+                          Preview Query
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => clearSearchFilters()}
+                          className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                        >
+                          <XCircle className="h-4 w-4 mr-2" />
+                          Clear Filters
+                        </Button>
+                      </div>
                     </div>
                   </div>
 
