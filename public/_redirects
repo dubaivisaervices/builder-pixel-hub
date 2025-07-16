@@ -1,15 +1,29 @@
-# API routes to Netlify Functions - highest priority
+# Emergency 403 Fix - Explicit Route Handling
+# API routes to Netlify Functions - HIGHEST PRIORITY
 /api/*  /.netlify/functions/api/:splat  200!
 
-# Static files - serve directly
-/assets/*  /assets/:splat  200
-/favicon.ico  /favicon.ico  200
-/robots.txt  /robots.txt  200
-/placeholder.svg  /placeholder.svg  200
+# Static files - serve directly with force
+/assets/*  /assets/:splat  200!
+/favicon.ico  /favicon.ico  200!
+/robots.txt  /robots.txt  200!
+/placeholder.svg  /placeholder.svg  200!
 
 # Health check endpoints
 /health  /.netlify/functions/api/health  200
 /ping  /.netlify/functions/api/ping  200
 
-# SPA fallback - all other routes serve index.html
+# EXPLICIT REACT ROUTES - Force all to index.html
+/dubai-businesses  /index.html  200!
+/dubai-businesses/*  /index.html  200!
+/business-directory  /index.html  200!
+/business-directory/*  /index.html  200!
+/business/*  /index.html  200!
+/report  /index.html  200!
+/report/*  /index.html  200!
+/admin  /index.html  200!
+/admin/*  /index.html  200!
+/scam-report  /index.html  200!
+/scam-report/*  /index.html  200!
+
+# SPA fallback - MUST BE LAST
 /*  /index.html  200
