@@ -345,16 +345,33 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
     // Response with summary
     const response = {
       success: true,
-      message: `Successfully fetched ${allBusinesses.length} businesses`,
+      message: `Successfully fetched ${allBusinesses.length} businesses with advanced filters`,
+      businessesFound: allBusinesses.length,
+      searchFilters: {
+        searchQuery,
+        companyName: companyName || null,
+        category: category || null,
+        city: city || null,
+        minRating: minRating || null,
+        radius: radius,
+        maxResults,
+      },
+      options: {
+        downloadImages,
+        saveToDatabase,
+        getReviews,
+        skipExisting,
+      },
       summary: {
         totalBusinesses: allBusinesses.length,
         apiCallsUsed: totalApiCalls,
         imagesDownloaded: downloadedImages,
         estimatedCost: (totalApiCalls * 0.017).toFixed(2), // Rough Google API cost
         savedToDatabase: saveToDatabase,
+        location: location,
+        searchRadius: `${radius}km`,
       },
       businesses: allBusinesses.slice(0, 10), // Return first 10 for preview
-      query: query,
       timestamp: new Date().toISOString(),
     };
 
