@@ -26,6 +26,7 @@ import {
   updateCategory,
   deleteCategory,
   debugPhotoData,
+  addBusiness,
 } from "./routes/admin";
 import { getDatabaseStats } from "./routes/admin-sync";
 import {
