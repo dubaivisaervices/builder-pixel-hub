@@ -88,12 +88,8 @@ export function getBestLogoUrl(business: BusinessImageData): string | null {
     return fixImageDomain(business.logoUrl);
   }
 
-  // Return a default business logo for Dubai businesses
-  if (business?.name) {
-    return `https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=center`;
-  }
-
-  return null;
+  // Return a reliable placeholder for Dubai businesses
+  return `https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=center&auto=format&q=80`;
 }
 
 /**
