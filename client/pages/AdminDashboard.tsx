@@ -319,6 +319,7 @@ export default function AdminDashboard() {
               { id: "dashboard", label: "Dashboard", icon: BarChart3 },
               { id: "requests", label: "Company Requests", icon: Building2 },
               { id: "search", label: "Add Businesses", icon: Search },
+              { id: "categories", label: "Categories", icon: Tags },
               { id: "upload", label: "🚀 Upload to Hostinger", icon: Camera },
               { id: "sync", label: "Data Sync", icon: RotateCw },
               { id: "database", label: "Database", icon: Database },
