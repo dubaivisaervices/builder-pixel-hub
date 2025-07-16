@@ -60,6 +60,7 @@ const NetlifyImageManager: React.FC = () => {
   // Debug states
   const [debugData, setDebugData] = useState<any>(null);
   const [debugLoading, setDebugLoading] = useState(false);
+  const [photoVerification, setPhotoVerification] = useState<any>(null);
 
   useEffect(() => {
     loadStats();
