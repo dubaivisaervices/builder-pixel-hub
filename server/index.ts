@@ -115,6 +115,7 @@ import {
   stopImageRefresh,
   getImageRefreshResults,
 } from "./routes/google-image-refresh";
+import { testGoogleAPI } from "./routes/test-google-api";
 import {
   submitReport,
   getCompanyReports,
