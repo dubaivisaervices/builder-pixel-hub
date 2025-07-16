@@ -169,6 +169,65 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
 
           const details = detailsData.result;
 
+          // Apply advanced filters
+          let shouldSkip = false;
+
+          // Filter by minimum rating
+          if (
+            minRating > 0 &&
+            (!details.rating || details.rating < minRating)
+          ) {
+            console.log(
+              `⏭️ Skipping ${details.name}: rating ${details.rating || 0} below minimum ${minRating}`,
+            );
+            shouldSkip = true;
+          }
+
+          // Filter by company name (if specified)
+          if (companyName && companyName.trim()) {
+            const nameMatch = details.name
+              .toLowerCase()
+              .includes(companyName.toLowerCase());
+            if (!nameMatch) {
+              console.log(
+                `⏭️ Skipping ${details.name}: doesn't match company name filter "${companyName}"`,
+              );
+              shouldSkip = true;
+            }
+          }
+
+          // Filter by city (if specified and not already in search query)
+          if (
+            city &&
+            city.trim() &&
+            !searchQuery.toLowerCase().includes(city.toLowerCase())
+          ) {
+            const addressMatch = details.formatted_address
+              .toLowerCase()
+              .includes(city.toLowerCase());
+            if (!addressMatch) {
+              console.log(
+                `⏭️ Skipping ${details.name}: not in specified city "${city}"`,
+              );
+              shouldSkip = true;
+            }
+          }
+
+          // Skip existing businesses if enabled
+          if (skipExisting) {
+            const existingBusiness = await businessService.getBusinessById(
+              details.place_id,
+            );
+            if (existingBusiness) {
+              console.log(
+                `⏭️ Skipping ${details.name}: already exists in database`,
+              );
+              shouldSkip = true;
+            }
+          }
+
+          if (shouldSkip) continue;
+
           // Determine business category
           const businessTypes = details.types || [];
           let category = "visa services";
