@@ -505,6 +505,13 @@ export function createServer() {
   app.post("/api/netlify/batch-download", batchDownloadToNetlify);
   app.get("/api/netlify/image-stats", getNetlifyImageStats);
 
+  // Super Fast Netlify Upload System
+  app.post("/api/netlify/super-fast-upload", superFastNetlifyUpload);
+  app.get("/api/netlify/upload-progress", getNetlifyUploadProgress);
+  app.post("/api/netlify/stop-upload", stopNetlifyUpload);
+  app.get("/api/netlify/upload-results", getNetlifyUploadResults);
+  app.post("/api/netlify/clear-data", clearNetlifyUploadData);
+
   // Reports API
   app.post(
     "/api/reports/submit",
