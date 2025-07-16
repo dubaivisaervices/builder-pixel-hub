@@ -634,6 +634,149 @@ export class BusinessService {
       );
     }
   }
+
+  // Enhanced search with multiple filters including city (UAE cities)
+  async searchBusinessesWithFilters(
+    searchQuery?: string,
+    category?: string,
+    city?: string,
+    limit: number = 25,
+    offset: number = 0,
+    includeReviews: boolean = false,
+  ): Promise<BusinessData[]> {
+    let sql = `
+      SELECT * FROM businesses
+      WHERE 1=1
+    `;
+    const params: any[] = [];
+
+    // Business name search
+    if (searchQuery && searchQuery.trim()) {
+      sql += ` AND (name LIKE ? OR address LIKE ? OR category LIKE ?)`;
+      const searchPattern = `%${searchQuery.trim()}%`;
+      params.push(searchPattern, searchPattern, searchPattern);
+    }
+
+    // Category filter
+    if (category && category !== "all" && category.trim()) {
+      sql += ` AND category = ?`;
+      params.push(category.trim());
+    }
+
+    // City filter for UAE cities
+    if (city && city !== "all" && city.trim()) {
+      const cityPattern = `%${city.trim()}%`;
+      sql += ` AND (address LIKE ? OR address LIKE ? OR address LIKE ?)`;
+      // Check for common UAE city name variations
+      params.push(
+        cityPattern,
+        `%${city.trim().replace(/\s+/g, "")}%`,
+        `%${city.trim().toLowerCase()}%`,
+      );
+    }
+
+    sql += ` ORDER BY has_target_keyword DESC, rating DESC, review_count DESC LIMIT ? OFFSET ?`;
+    params.push(limit, offset);
+
+    console.log("🔍 Enhanced search SQL:", sql);
+    console.log("🔍 Search parameters:", params);
+
+    const businesses = await database.all(sql, params);
+
+    if (includeReviews) {
+      return Promise.all(
+        businesses.map(async (business) => {
+          const reviews = await this.getBusinessReviews(business.id);
+          return this.mapToBusinessData(business, reviews);
+        }),
+      );
+    } else {
+      return businesses.map((business) => {
+        return this.mapToBusinessData(business, []);
+      });
+    }
+  }
+
+  // Get count of filtered results for pagination
+  async getFilteredCount(
+    searchQuery?: string,
+    category?: string,
+    city?: string,
+  ): Promise<number> {
+    let sql = `
+      SELECT COUNT(*) as count FROM businesses
+      WHERE 1=1
+    `;
+    const params: any[] = [];
+
+    // Business name search
+    if (searchQuery && searchQuery.trim()) {
+      sql += ` AND (name LIKE ? OR address LIKE ? OR category LIKE ?)`;
+      const searchPattern = `%${searchQuery.trim()}%`;
+      params.push(searchPattern, searchPattern, searchPattern);
+    }
+
+    // Category filter
+    if (category && category !== "all" && category.trim()) {
+      sql += ` AND category = ?`;
+      params.push(category.trim());
+    }
+
+    // City filter for UAE cities
+    if (city && city !== "all" && city.trim()) {
+      const cityPattern = `%${city.trim()}%`;
+      sql += ` AND (address LIKE ? OR address LIKE ? OR address LIKE ?)`;
+      params.push(
+        cityPattern,
+        `%${city.trim().replace(/\s+/g, "")}%`,
+        `%${city.trim().toLowerCase()}%`,
+      );
+    }
+
+    console.log("📊 Filtered count SQL:", sql);
+    console.log("📊 Count parameters:", params);
+
+    const result = await database.get(sql, params);
+    return result.count || 0;
+  }
+
+  // Get all unique cities from business addresses (UAE cities)
+  async getUAECities(): Promise<string[]> {
+    const businesses = await database.all(`
+      SELECT DISTINCT address FROM businesses
+      WHERE address IS NOT NULL AND address != ''
+    `);
+
+    const cities = new Set<string>();
+    const uaeCityPatterns = [
+      /Dubai/i,
+      /Abu Dhabi/i,
+      /Sharjah/i,
+      /Ajman/i,
+      /Fujairah/i,
+      /Ras Al Khaimah/i,
+      /Umm Al Quwain/i,
+      /Al Ain/i,
+      /Khor Fakkan/i,
+      /Kalba/i,
+      /Dibba/i,
+      /Madinat Zayed/i,
+      /Ruwais/i,
+      /Liwa/i,
+    ];
+
+    businesses.forEach((business) => {
+      const address = business.address;
+      uaeCityPatterns.forEach((pattern) => {
+        const match = address.match(pattern);
+        if (match) {
+          cities.add(match[0]);
+        }
+      });
+    });
+
+    return Array.from(cities).sort();
+  }
 }
 
 export const businessService = new BusinessService();
