@@ -72,6 +72,7 @@ const App = () => (
             <Route path="/data-diagnostic" element={<DataDiagnostic />} />
             <Route path="/data-persistence" element={<DataPersistence />} />
             <Route path="/reviews-sync" element={<ReviewsSync />} />
+            <Route path="/image-test" element={<ImageTest />} />
             <Route
               path="/:location/review/:companyName"
               element={<CompanyReviews />}
