@@ -17,146 +17,137 @@ let realBusinessData: any[] | null = null;
 
 function loadRealBusinessData() {
   if (realBusinessData) {
+    logDebug(
+      `♻️ Using cached business data: ${realBusinessData.length} businesses`,
+    );
     return realBusinessData;
   }
 
-  try {
-    // Try to load the business data from the copied file
-    const dataPath = path.join(__dirname, "client", "data", "businesses.json");
-    logDebug(`Attempting to load business data from: ${dataPath}`);
+  // Try multiple approaches to load the business data
+  const possiblePaths = [
+    path.join(__dirname, "client", "data", "businesses.json"),
+    path.join(__dirname, "./client/data/businesses.json"),
+    path.join(__dirname, "../client/data/businesses.json"),
+    path.join(__dirname, "../../client/data/businesses.json"),
+    "./client/data/businesses.json",
+    "../client/data/businesses.json",
+    "../../client/data/businesses.json",
+  ];
 
-    const rawData = fs.readFileSync(dataPath, "utf-8");
-    const parsed = JSON.parse(rawData);
+  logDebug(
+    `🔍 Attempting to load business data from ${possiblePaths.length} possible paths...`,
+  );
+  logDebug(`📁 Current working directory: ${process.cwd()}`);
+  logDebug(`📁 __dirname: ${__dirname}`);
 
-    if (parsed && parsed.businesses && Array.isArray(parsed.businesses)) {
-      // Fix any domain issues in the business data
-      const correctedBusinesses = parsed.businesses.map((business: any) => {
-        if (
-          business.logoUrl &&
-          business.logoUrl.includes("crossbordersmigrations.com")
-        ) {
-          business.logoUrl = business.logoUrl.replace(
-            "crossbordersmigrations.com",
-            "reportvisascam.com",
-          );
-          logDebug(`🔧 Fixed logoUrl domain for business: ${business.name}`);
-        }
+  // Try each path
+  for (let i = 0; i < possiblePaths.length; i++) {
+    const dataPath = possiblePaths[i];
+    try {
+      logDebug(`🔄 Trying path ${i + 1}/${possiblePaths.length}: ${dataPath}`);
 
-        if (business.photos && Array.isArray(business.photos)) {
-          business.photos = business.photos.map((photo: string) => {
-            if (photo.includes("crossbordersmigrations.com")) {
-              return photo.replace(
+      // Check if file exists
+      if (fs.existsSync(dataPath)) {
+        logDebug(`✅ File exists at: ${dataPath}`);
+
+        const rawData = fs.readFileSync(dataPath, "utf-8");
+        logDebug(`📊 Raw data size: ${rawData.length} characters`);
+
+        const parsed = JSON.parse(rawData);
+        logDebug(
+          `🔍 Parsed data structure: ${typeof parsed}, has businesses: ${!!parsed.businesses}`,
+        );
+
+        if (parsed && parsed.businesses && Array.isArray(parsed.businesses)) {
+          logDebug(`📈 Found ${parsed.businesses.length} businesses in data`);
+
+          // Fix any domain issues in the business data
+          const correctedBusinesses = parsed.businesses.map((business: any) => {
+            if (
+              business.logoUrl &&
+              business.logoUrl.includes("crossbordersmigrations.com")
+            ) {
+              business.logoUrl = business.logoUrl.replace(
                 "crossbordersmigrations.com",
                 "reportvisascam.com",
               );
+              logDebug(
+                `🔧 Fixed logoUrl domain for business: ${business.name}`,
+              );
             }
-            return photo;
+
+            if (business.photos && Array.isArray(business.photos)) {
+              business.photos = business.photos.map((photo: string) => {
+                if (photo.includes("crossbordersmigrations.com")) {
+                  return photo.replace(
+                    "crossbordersmigrations.com",
+                    "reportvisascam.com",
+                  );
+                }
+                return photo;
+              });
+            }
+
+            return business;
           });
+
+          realBusinessData = correctedBusinesses;
+          logDebug(
+            `✅ SUCCESS: Loaded ${realBusinessData.length} real businesses from: ${dataPath}`,
+          );
+          return realBusinessData;
+        } else {
+          logDebug(`❌ Invalid data structure at: ${dataPath}`);
         }
-
-        return business;
-      });
-
-      realBusinessData = correctedBusinesses;
-      logDebug(
-        `✅ Successfully loaded ${realBusinessData.length} real businesses`,
-      );
-      return realBusinessData;
-    } else {
-      logDebug("❌ Invalid business data structure");
-      return null;
+      } else {
+        logDebug(`❌ File not found at: ${dataPath}`);
+      }
+    } catch (error) {
+      logDebug(`❌ Error loading from ${dataPath}: ${error.message}`);
     }
-  } catch (error) {
-    logDebug(`❌ Failed to load business data: ${error.message}`);
-    return null;
   }
+
+  logDebug("❌ FAILED to load business data from any path - will use fallback");
+  return null;
 }
 
-// Comprehensive fallback data (50+ businesses)
-function getExtendedFallbackData() {
-  const fallbackBusinesses = [];
-
-  // Add sample businesses with realistic Dubai visa service data
-  const sampleNames = [
-    "Dubai Visa Express",
-    "Emirates Immigration Hub",
-    "Al Barsha PRO Services",
-    "Business Bay Visa Center",
-    "DIFC Immigration Consultants",
-    "Jumeirah Visa Solutions",
-    "Deira Document Clearing",
-    "Marina Visa Services",
-    "Downtown Dubai Immigration",
-    "Al Karama Visa Center",
-    "Bur Dubai PRO Services",
-    "Al Garhoud Immigration",
-    "Dubai Mall Visa Center",
-    "Ibn Battuta Visa Hub",
-    "City Walk Immigration",
-    "Dubai Festival City Visa",
-    "Al Rigga PRO Services",
-    "Satwa Immigration Center",
-    "Al Wasl Visa Solutions",
-    "Oud Metha Document Services",
-    "Al Qusais Visa Center",
-    "Dubai Silicon Oasis Immigration",
-    "Al Warqa Visa Services",
-    "Mirdif PRO Center",
-    "Al Mizhar Immigration Hub",
-    "Dubai Investment Park Visa",
-    "Al Sufouh PRO Services",
-    "Knowledge Village Immigration",
-    "Academic City Visa Center",
-    "Healthcare City PRO",
-    "Dubai Sports City Immigration",
-    "Motor City Visa Hub",
-    "Arabian Ranches PRO",
-    "Dubai Hills Visa Center",
-    "Dubai Creek Immigration",
-    "Al Seef PRO Services",
-    "Dubai Design District Visa",
-    "La Mer Immigration Center",
-    "City Centre Visa Hub",
-    "Mall of Emirates PRO",
-    "Ibn Battuta Immigration",
-    "Global Village Visa Center",
-    "Dubai Outlet Mall PRO",
-    "Al Ghurair City Immigration",
-    "Wafi Mall Visa Services",
-    "BurJuman Centre PRO",
-    "Dubai Festival Centre Immigration",
-    "Times Square Visa Hub",
-    "Al Wahda Mall PRO Services",
-    "Dubai Land Immigration",
-    "International City Visa",
-  ];
-
-  sampleNames.forEach((name, index) => {
-    fallbackBusinesses.push({
-      id: `fallback-${index + 1}`,
-      name: name,
-      address: `Office ${index + 100}, Dubai, UAE`,
-      category:
-        index % 4 === 0
-          ? "visa services"
-          : index % 4 === 1
-            ? "immigration services"
-            : index % 4 === 2
-              ? "pro services"
-              : "document clearing",
-      rating: Number((3.5 + Math.random() * 1.5).toFixed(1)),
-      reviewCount: Math.floor(Math.random() * 300) + 50,
+// Simple fallback data (only if real data completely fails)
+function getSimpleFallbackData() {
+  return [
+    {
+      id: "fallback-1",
+      name: "Dubai Visa Services Center",
+      address: "Business Bay, Dubai, UAE",
+      category: "visa services",
+      rating: 4.5,
+      reviewCount: 150,
       businessStatus: "OPERATIONAL",
-      phone: `04 ${Math.floor(Math.random() * 900) + 100} ${Math.floor(Math.random() * 9000) + 1000}`,
-      website: `https://${name.toLowerCase().replace(/\s+/g, "")}.ae`,
-      logoUrl: "https://reportvisascam.com/placeholder-logo.jpg",
-      hasTargetKeyword: Math.random() > 0.3,
-      latitude: 25.2048 + (Math.random() - 0.5) * 0.2,
-      longitude: 55.2708 + (Math.random() - 0.5) * 0.2,
-    });
-  });
-
-  return fallbackBusinesses;
+      phone: "04 123 4567",
+      website: "https://example.ae",
+    },
+    {
+      id: "fallback-2",
+      name: "Emirates Immigration Hub",
+      address: "DIFC, Dubai, UAE",
+      category: "immigration services",
+      rating: 4.3,
+      reviewCount: 89,
+      businessStatus: "OPERATIONAL",
+      phone: "04 987 6543",
+      website: "https://example2.ae",
+    },
+    {
+      id: "fallback-3",
+      name: "Document Clearing Services",
+      address: "Deira, Dubai, UAE",
+      category: "document clearing",
+      rating: 4.1,
+      reviewCount: 67,
+      businessStatus: "OPERATIONAL",
+      phone: "04 555 0123",
+      website: "https://example3.ae",
+    },
+  ];
 }
 
 // Get business data with prioritized loading
@@ -168,9 +159,10 @@ function getBusinessData() {
     return realData;
   }
 
-  // Fall back to extended sample data
-  const fallbackData = getExtendedFallbackData();
+  // Fall back to simple sample data
+  const fallbackData = getSimpleFallbackData();
   logDebug(`⚠️ Using fallback data: ${fallbackData.length} businesses`);
+  logDebug("🚨 CRITICAL: Real business data loading failed - check logs above");
   return fallbackData;
 }
 
@@ -226,7 +218,7 @@ function createBusinessServer() {
       timestamp: new Date().toISOString(),
       businessCount: businessData.length,
       dataSource: realBusinessData ? "real_json_data" : "fallback_data",
-      version: "no-google-api-v1",
+      version: "enhanced-loading-v1",
     });
   });
 
@@ -236,6 +228,7 @@ function createBusinessServer() {
 
     try {
       const allBusinesses = getBusinessData();
+      logDebug(`📊 Serving ${allBusinesses.length} businesses`);
 
       // Pagination
       const page = parseInt(req.query.page as string) || 1;
@@ -249,12 +242,16 @@ function createBusinessServer() {
         ...new Set(allBusinesses.map((b: any) => b.category).filter(Boolean)),
       ];
 
+      const dataSource = realBusinessData
+        ? "real_business_data"
+        : "fallback_data";
+
       const response = {
         businesses: paginatedBusinesses,
         total: allBusinesses.length,
         categories: categories,
-        message: `Loaded ${paginatedBusinesses.length} of ${allBusinesses.length} Dubai visa services (NO Google API)`,
-        source: realBusinessData ? "real_business_data" : "fallback_data",
+        message: `Loaded ${paginatedBusinesses.length} of ${allBusinesses.length} Dubai visa services (Enhanced Loading)`,
+        source: dataSource,
         pagination: {
           page: page,
           limit: limit,
@@ -264,12 +261,17 @@ function createBusinessServer() {
         },
         success: true,
         timestamp: new Date().toISOString(),
+        debug: {
+          loadingAttempted: true,
+          realDataAvailable: !!realBusinessData,
+          fallbackUsed: !realBusinessData,
+        },
       };
 
-      logDebug("Returning business data", {
+      logDebug("Business response prepared", {
         count: paginatedBusinesses.length,
         total: allBusinesses.length,
-        source: response.source,
+        source: dataSource,
       });
 
       res.json(response);
@@ -307,8 +309,13 @@ function createBusinessServer() {
         count: businessData.length,
         source: realBusinessData ? "real_data" : "fallback_data",
         sampleBusiness: businessData[0] || null,
+        realDataCached: !!realBusinessData,
       },
-      googleAPIRemoved: true,
+      loadingInfo: {
+        attemptedPaths: 7,
+        currentWorkingDir: process.cwd(),
+        functionDir: __dirname,
+      },
       timestamp: new Date().toISOString(),
     });
   });
