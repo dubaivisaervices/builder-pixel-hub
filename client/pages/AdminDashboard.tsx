@@ -632,19 +632,48 @@ export default function AdminDashboard() {
         {/* Categories Tab */}
         {activeTab === "categories" && (
           <div className="space-y-6">
+            {/* Redirect to Full Category Management */}
+            <Card className="shadow-xl border-0 bg-gradient-to-r from-purple-50 to-blue-50 backdrop-blur-xl">
+              <CardContent className="p-8">
+                <div className="text-center space-y-4">
+                  <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center">
+                    <Tags className="h-8 w-8 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                      Advanced Category Management
+                    </h2>
+                    <p className="text-gray-600 mb-6">
+                      Access the comprehensive business and category management
+                      system with advanced editing tools.
+                    </p>
+                  </div>
+                  <Button
+                    onClick={() => window.open("/admin/manage", "_blank")}
+                    size="lg"
+                    className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700"
+                  >
+                    <Building2 className="h-5 w-5 mr-2" />
+                    Open Category Management
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Quick Category Overview */}
             <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <Tags className="h-6 w-6" />
-                  <span>Category Management</span>
+                  <span>Quick Category Overview</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {/* Categories List */}
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                     <h4 className="font-medium text-gray-900 mb-3">
-                      Available Categories
+                      Available Categories ({16})
                     </h4>
                     <div className="grid md:grid-cols-3 gap-2">
                       {[
@@ -675,30 +704,13 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
-                  {/* Add New Category */}
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                    <h4 className="font-medium text-green-900 mb-3">
-                      Add New Category
-                    </h4>
-                    <div className="flex space-x-2">
-                      <Input
-                        placeholder="Enter new category name..."
-                        className="flex-1"
-                      />
-                      <Button className="bg-green-600 hover:bg-green-700">
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add Category
-                      </Button>
-                    </div>
-                  </div>
-
                   {/* Category Statistics */}
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                     <h4 className="font-medium text-blue-900 mb-3">
                       Category Statistics
                     </h4>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div className="bg-white rounded p-3">
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div className="bg-white rounded p-3 text-center">
                         <div className="text-2xl font-bold text-blue-600">
                           16
                         </div>
@@ -706,45 +718,40 @@ export default function AdminDashboard() {
                           Total Categories
                         </div>
                       </div>
-                      <div className="bg-white rounded p-3">
+                      <div className="bg-white rounded p-3 text-center">
                         <div className="text-2xl font-bold text-green-600">
                           841
                         </div>
+                        <div className="text-sm text-gray-600">Businesses</div>
+                      </div>
+                      <div className="bg-white rounded p-3 text-center">
+                        <div className="text-2xl font-bold text-purple-600">
+                          52.6
+                        </div>
                         <div className="text-sm text-gray-600">
-                          Businesses with Categories
+                          Avg per Category
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Bulk Operations */}
+                  {/* Quick Actions */}
                   <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                     <h4 className="font-medium text-orange-900 mb-3">
-                      Bulk Operations
+                      For Advanced Management
                     </h4>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="outline"
-                        className="border-orange-300 text-orange-700"
-                      >
-                        <RotateCw className="h-4 w-4 mr-2" />
-                        Refresh Categories
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="border-orange-300 text-orange-700"
-                      >
-                        <Settings className="h-4 w-4 mr-2" />
-                        Merge Categories
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="border-orange-300 text-orange-700"
-                      >
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Clean Unused
-                      </Button>
+                    <div className="text-sm text-orange-700 mb-3">
+                      To add, edit, merge, or delete categories, use the full
+                      management interface.
                     </div>
+                    <Button
+                      onClick={() => window.open("/admin/manage", "_blank")}
+                      variant="outline"
+                      className="border-orange-300 text-orange-700 hover:bg-orange-100"
+                    >
+                      <Settings className="h-4 w-4 mr-2" />
+                      Open Full Management
+                    </Button>
                   </div>
                 </div>
               </CardContent>
