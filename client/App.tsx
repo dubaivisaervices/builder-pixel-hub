@@ -68,6 +68,7 @@ const App = () => (
             <Route path="/admin/*" element={<AdminDashboard />} />
             <Route path="/admin-images" element={<AdminImageManager />} />
             <Route path="/hostinger-upload" element={<HostingerUpload />} />
+            <Route path="/add-business" element={<AddBusinessPage />} />
             <Route path="/admin-login" element={<AdminBypass />} />
             <Route path="/admin-access" element={<InstantAdmin />} />
             <Route path="/data-diagnostic" element={<DataDiagnostic />} />
