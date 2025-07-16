@@ -732,61 +732,219 @@ export default function AddBusinessPage() {
                 <span>Images</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <Label htmlFor="logoUrl">Logo URL</Label>
-                <Input
-                  id="logoUrl"
-                  value={businessForm.logoUrl}
-                  onChange={(e) =>
-                    setBusinessForm((prev) => ({
-                      ...prev,
-                      logoUrl: e.target.value,
-                    }))
-                  }
-                  placeholder="https://example.com/logo.jpg"
-                />
-              </div>
-
-              <div>
-                <Label>Business Photos</Label>
-                <div className="flex space-x-2 mt-2">
-                  <Input
-                    value={newPhoto}
-                    onChange={(e) => setNewPhoto(e.target.value)}
-                    placeholder="Enter photo URL"
-                    className="flex-1"
-                  />
-                  <Button
-                    type="button"
-                    onClick={addPhoto}
-                    className="bg-green-600 hover:bg-green-700"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                {businessForm.photos.length > 0 && (
-                  <div className="mt-4 space-y-2">
-                    {businessForm.photos.map((photo, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between bg-gray-50 p-2 rounded"
-                      >
-                        <span className="text-sm truncate flex-1">{photo}</span>
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => removePhoto(index)}
-                        >
-                          <X className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    ))}
+            <CardContent className="space-y-6">
+              {/* Upload Errors */}
+              {uploadErrors.length > 0 && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                  <div className="flex items-start space-x-2">
+                    <AlertTriangle className="h-4 w-4 text-red-600 mt-0.5" />
+                    <div>
+                      <h4 className="text-sm font-medium text-red-800 mb-1">
+                        Upload Errors:
+                      </h4>
+                      {uploadErrors.map((error, index) => (
+                        <p key={index} className="text-xs text-red-700">
+                          {error}
+                        </p>
+                      ))}
+                    </div>
                   </div>
-                )}
+                </div>
+              )}
+
+              {/* Logo Upload */}
+              <div>
+                <Label htmlFor="logoUpload" className="text-base font-medium">
+                  Business Logo
+                </Label>
+                <div className="mt-2 space-y-3">
+                  {/* Logo File Upload */}
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition-colors">
+                    <div className="text-center">
+                      <FileImage className="mx-auto h-8 w-8 text-gray-400" />
+                      <div className="mt-2">
+                        <label htmlFor="logoUpload" className="cursor-pointer">
+                          <span className="text-sm font-medium text-blue-600 hover:text-blue-500">
+                            Upload logo file
+                          </span>
+                          <input
+                            id="logoUpload"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleLogoUpload}
+                            className="hidden"
+                          />
+                        </label>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        PNG, JPG, GIF up to 2MB
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Logo Preview */}
+                  {logoPreview && (
+                    <div className="relative inline-block">
+                      <img
+                        src={logoPreview}
+                        alt="Logo preview"
+                        className="h-20 w-20 object-cover rounded-lg border"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                        onClick={() => {
+                          setLogoFile(null);
+                          setLogoPreview("");
+                        }}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Logo URL Alternative */}
+                  <div className="text-center text-sm text-gray-500">or</div>
+                  <div>
+                    <Label htmlFor="logoUrl">Logo URL</Label>
+                    <Input
+                      id="logoUrl"
+                      value={businessForm.logoUrl}
+                      onChange={(e) =>
+                        setBusinessForm((prev) => ({
+                          ...prev,
+                          logoUrl: e.target.value,
+                        }))
+                      }
+                      placeholder="https://example.com/logo.jpg"
+                    />
+                  </div>
+                </div>
               </div>
+
+              {/* Business Photos Upload */}
+              <div>
+                <Label htmlFor="photosUpload" className="text-base font-medium">
+                  Business Photos
+                </Label>
+                <div className="mt-2 space-y-3">
+                  {/* Photos File Upload */}
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-green-400 transition-colors">
+                    <div className="text-center">
+                      <ImageIcon className="mx-auto h-8 w-8 text-gray-400" />
+                      <div className="mt-2">
+                        <label
+                          htmlFor="photosUpload"
+                          className="cursor-pointer"
+                        >
+                          <span className="text-sm font-medium text-green-600 hover:text-green-500">
+                            Upload photo files
+                          </span>
+                          <input
+                            id="photosUpload"
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handlePhotoUpload}
+                            className="hidden"
+                          />
+                        </label>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Multiple PNG, JPG, GIF up to 2MB each
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Photo Previews */}
+                  {photoFiles.length > 0 && (
+                    <div className="grid grid-cols-4 gap-3">
+                      {photoFiles.map((file, index) => (
+                        <div key={index} className="relative">
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt={`Photo ${index + 1}`}
+                            className="h-20 w-20 object-cover rounded-lg border"
+                          />
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="sm"
+                            className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                            onClick={() => removePhotoFile(index)}
+                          >
+                            <X className="h-3 w-3" />
+                          </Button>
+                          <p className="text-xs text-gray-600 mt-1 truncate">
+                            {file.name}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Photo URL Alternative */}
+                  <div className="text-center text-sm text-gray-500">
+                    or add via URL
+                  </div>
+                  <div className="flex space-x-2">
+                    <Input
+                      value={newPhoto}
+                      onChange={(e) => setNewPhoto(e.target.value)}
+                      placeholder="Enter photo URL"
+                      className="flex-1"
+                    />
+                    <Button
+                      type="button"
+                      onClick={addPhoto}
+                      className="bg-green-600 hover:bg-green-700"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+
+                  {/* URL Photos List */}
+                  {businessForm.photos.length > 0 && (
+                    <div className="mt-4 space-y-2">
+                      <h4 className="text-sm font-medium text-gray-700">
+                        Photos from URLs:
+                      </h4>
+                      {businessForm.photos.map((photo, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between bg-gray-50 p-2 rounded"
+                        >
+                          <span className="text-sm truncate flex-1">
+                            {photo}
+                          </span>
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => removePhoto(index)}
+                          >
+                            <X className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Upload Status */}
+              {isUploading && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                  <div className="flex items-center space-x-2">
+                    <Upload className="h-4 w-4 text-blue-600 animate-pulse" />
+                    <span className="text-sm text-blue-700">
+                      Uploading images...
+                    </span>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
 
