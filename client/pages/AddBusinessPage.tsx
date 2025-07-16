@@ -27,6 +27,9 @@ import {
   CheckCircle,
   LogOut,
   UserCheck,
+  AlertTriangle,
+  FileImage,
+  ImageIcon,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
