@@ -57,6 +57,10 @@ const NetlifyImageManager: React.FC = () => {
   const [downloadType, setDownloadType] = useState("logo");
   const [businesses, setBusinesses] = useState<any[]>([]);
 
+  // Debug states
+  const [debugData, setDebugData] = useState<any>(null);
+  const [debugLoading, setDebugLoading] = useState(false);
+
   useEffect(() => {
     loadStats();
     loadBusinesses();
