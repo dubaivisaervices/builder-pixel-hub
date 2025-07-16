@@ -231,7 +231,7 @@ export function createServer() {
     try {
       await searchDubaiVisaServices(req, res);
     } catch (error) {
-      console.log("❌ Database API failed, using fallback...");
+      console.log("��� Database API failed, using fallback...");
       await robustBusinessesAPI(req, res);
     }
   });
@@ -533,6 +533,7 @@ export function createServer() {
   app.get("/api/debug/business-photos/:businessId", getBusinessPhotos);
 
   // Google API Image Refresh System
+  app.get("/api/google/test", testGoogleAPI);
   app.post("/api/google/refresh-all-images", refreshAllBusinessImages);
   app.get("/api/google/refresh-progress", getImageRefreshProgress);
   app.post("/api/google/stop-refresh", stopImageRefresh);
