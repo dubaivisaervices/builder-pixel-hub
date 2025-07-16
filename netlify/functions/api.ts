@@ -28,7 +28,7 @@ function loadRealBusinessData() {
       return null;
     }
   } catch (error) {
-    logDebug("��� Error loading business data from module:", error.message);
+    logDebug("❌ Error loading business data from module:", error.message);
     return null;
   }
 }
@@ -64,21 +64,30 @@ let cachedBusinessData: any[] | null = null;
 
 function getBusinessData() {
   if (cachedBusinessData) {
+    logDebug(
+      `♻️ Using cached business data: ${cachedBusinessData.length} businesses`,
+    );
     return cachedBusinessData;
   }
+
+  logDebug("🔄 Starting fresh business data load...");
 
   // Try to load real business data
   const realData = loadRealBusinessData();
 
   if (realData && realData.length > 0) {
     cachedBusinessData = realData;
-    logDebug(`✅ Using real business data: ${realData.length} businesses`);
+    logDebug(
+      `✅ SUCCESS: Using real business data: ${realData.length} businesses`,
+    );
+    logDebug(`✅ Sample business: ${realData[0]?.name || "No name"}`);
     return cachedBusinessData;
   }
 
   // Fallback to sample data
   const fallbackData = getFallbackSampleData();
-  logDebug(`⚠️ Using fallback sample data: ${fallbackData.length} businesses`);
+  logDebug(`⚠️ FALLBACK: Using sample data: ${fallbackData.length} businesses`);
+  logDebug(`⚠️ This means real data loading failed - check server logs`);
   return fallbackData;
 }
 
