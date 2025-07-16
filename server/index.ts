@@ -49,6 +49,11 @@ import {
   handleUploadError,
 } from "./routes/upload-business-images";
 import {
+  fetchBusinessesWithImages,
+  getSearchCategories,
+  checkGoogleApiStatus,
+} from "./routes/enhanced-google-fetcher";
+import {
   saveAllBusinessData,
   saveBusinessImagesToGitHub,
   getDataPersistenceStatus,
