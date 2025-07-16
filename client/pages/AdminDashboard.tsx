@@ -275,7 +275,7 @@ export default function AdminDashboard() {
     const urlMap = {
       dashboard: "/admin",
       requests: "/admin/requests",
-      search: "/admin/search",
+      google: "/admin/google",
       categories: "/admin/categories",
     };
     navigate(urlMap[tabId as keyof typeof urlMap] || "/admin");
