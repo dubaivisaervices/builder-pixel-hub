@@ -519,7 +519,9 @@ export default function AddBusinessPage() {
             <CardContent className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="name">Business Name *</Label>
+                  <Label htmlFor="name" className="text-red-600">
+                    Business Name *
+                  </Label>
                   <Input
                     id="name"
                     value={businessForm.name}
@@ -531,17 +533,27 @@ export default function AddBusinessPage() {
                     }
                     required
                     placeholder="Enter business name"
+                    className={!businessForm.name ? "border-red-300" : ""}
                   />
+                  {!businessForm.name && (
+                    <p className="text-xs text-red-600 mt-1">
+                      Business name is required
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <Label htmlFor="category">Category *</Label>
+                  <Label htmlFor="category" className="text-red-600">
+                    Category *
+                  </Label>
                   <Select
                     value={businessForm.category}
                     onValueChange={(value) =>
                       setBusinessForm((prev) => ({ ...prev, category: value }))
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger
+                      className={!businessForm.category ? "border-red-300" : ""}
+                    >
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -552,11 +564,18 @@ export default function AddBusinessPage() {
                       ))}
                     </SelectContent>
                   </Select>
+                  {!businessForm.category && (
+                    <p className="text-xs text-red-600 mt-1">
+                      Category is required
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="address">Address *</Label>
+                <Label htmlFor="address" className="text-red-600">
+                  Address *
+                </Label>
                 <Textarea
                   id="address"
                   value={businessForm.address}
@@ -569,7 +588,13 @@ export default function AddBusinessPage() {
                   required
                   placeholder="Enter full business address"
                   rows={2}
+                  className={!businessForm.address ? "border-red-300" : ""}
                 />
+                {!businessForm.address && (
+                  <p className="text-xs text-red-600 mt-1">
+                    Address is required
+                  </p>
+                )}
               </div>
 
               <div>
