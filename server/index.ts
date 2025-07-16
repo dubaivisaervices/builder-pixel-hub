@@ -419,6 +419,11 @@ export function createServer() {
   app.delete("/api/admin/category/:category", deleteCategory);
   app.get("/api/admin/debug-photos", debugPhotoData);
 
+  // Enhanced Google Business Fetcher
+  app.post("/api/admin/fetch-google-businesses", fetchBusinessesWithImages);
+  app.get("/api/admin/google-search-categories", getSearchCategories);
+  app.get("/api/admin/google-api-status", checkGoogleApiStatus);
+
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
 
