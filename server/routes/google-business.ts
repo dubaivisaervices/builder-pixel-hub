@@ -121,13 +121,36 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
       });
     }
 
-    // Get paginated businesses (only include reviews for smaller requests for performance)
+    // Get paginated businesses with search and filter support
     const includeReviewsForListing = limit <= 50; // Only include reviews for small requests
-    const businesses = await businessService.getBusinessesPaginated(
-      limit,
-      offset,
-      includeReviewsForListing, // Only include reviews for smaller requests
-    );
+
+    let businesses;
+    let filteredTotal = totalCount.total;
+
+    if (searchQuery || categoryFilter || cityFilter) {
+      // Use enhanced search with filters
+      businesses = await businessService.searchBusinessesWithFilters(
+        searchQuery,
+        categoryFilter,
+        cityFilter,
+        limit,
+        offset,
+        includeReviewsForListing,
+      );
+      // Get filtered count for accurate pagination
+      filteredTotal = await businessService.getFilteredCount(
+        searchQuery,
+        categoryFilter,
+        cityFilter,
+      );
+    } else {
+      // Use regular pagination
+      businesses = await businessService.getBusinessesPaginated(
+        limit,
+        offset,
+        includeReviewsForListing,
+      );
+    }
 
     // Get unique categories
     const categories = await businessService.getCategories();
