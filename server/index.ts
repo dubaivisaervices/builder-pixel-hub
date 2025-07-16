@@ -516,6 +516,10 @@ export function createServer() {
   app.get("/api/netlify/upload-results", getNetlifyUploadResults);
   app.post("/api/netlify/clear-data", clearNetlifyUploadData);
 
+  // Debug business data quality
+  app.get("/api/debug/business-data", debugBusinessData);
+  app.get("/api/debug/test-urls/:businessId", testBusinessUrls);
+
   // Reports API
   app.post(
     "/api/reports/submit",
