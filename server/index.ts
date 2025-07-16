@@ -520,6 +520,7 @@ export function createServer() {
   // Debug business data quality
   app.get("/api/debug/business-data", debugBusinessData);
   app.get("/api/debug/test-urls/:businessId", testBusinessUrls);
+  app.get("/api/debug/sample-data", getSampleBusinessData);
 
   // Reports API
   app.post(
