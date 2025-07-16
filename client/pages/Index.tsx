@@ -337,7 +337,7 @@ export default function Index() {
         setFeaturedBusinesses(sampleBusinesses);
 
         setStats({
-          totalBusinesses: businessData.length, // Use real count from API
+          totalBusinesses: sampleBusinesses.length, // Use sample count as fallback
           totalReviews: 4280,
           avgRating: 3.8,
           locations: 15,
