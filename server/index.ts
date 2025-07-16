@@ -1581,10 +1581,13 @@ export function createServer() {
     return testHostingerUpload(req, res);
   });
 
+  // Serve uploaded business images
+  app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
   // Let Vite handle all development assets and modules
   // Only intercept non-API, non-asset routes for SPA fallback
   app.get(
-    /^(?!\/api|\/client|\/node_modules|\/@|\/assets|\..*$).*/,
+    /^(?!\/api|\/client|\/node_modules|\/@|\/assets|\/uploads|\..*$).*/,
     (_req, res) => {
       res.sendFile("index.html", { root: "." });
     },
