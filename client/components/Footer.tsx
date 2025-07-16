@@ -15,11 +15,11 @@ export default function Footer() {
                 <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
               </div>
               <span className="text-lg sm:text-xl font-bold">
-                Dubai Visa Services
+                Reviews Visa Scam
               </span>
             </div>
             <p className="text-gray-400 text-sm sm:text-base">
-              Dubai's trusted platform for finding verified visa services and
+              UAE's trusted platform for finding verified visa services and
               protecting against immigration scams.
             </p>
           </div>
@@ -111,7 +111,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 flex-shrink-0" />
-                <span>support@dubaivisaservices.ae</span>
+                <span>support@reviewsvisascam.com</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4 flex-shrink-0" />
@@ -165,7 +165,7 @@ export default function Footer() {
 
           <div className="text-center text-gray-400 text-xs sm:text-sm">
             <p>
-              © 2024 Dubai Visa Services. All rights reserved. |
+              © 2024 Reviews Visa Scam. All rights reserved. |
               <span className="ml-1">Licensed by Dubai Economy & Tourism</span>
             </p>
           </div>
