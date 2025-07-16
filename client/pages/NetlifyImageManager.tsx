@@ -878,6 +878,15 @@ const NetlifyImageManager: React.FC = () => {
 
                 {/* Action Buttons */}
                 <div className="flex flex-wrap gap-3">
+                  <Button
+                    onClick={testGoogleAPI}
+                    variant="outline"
+                    className="border-red-300 text-red-700 hover:bg-red-50"
+                    disabled={debugLoading}
+                  >
+                    🔍 Test Google API
+                  </Button>
+
                   {!googleRefreshing ? (
                     <Button
                       onClick={startGoogleImageRefresh}
