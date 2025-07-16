@@ -97,6 +97,13 @@ import {
   getNetlifyImageStats,
 } from "./routes/netlify-image-upload";
 import {
+  superFastNetlifyUpload,
+  getNetlifyUploadProgress,
+  stopNetlifyUpload,
+  getNetlifyUploadResults,
+  clearNetlifyUploadData,
+} from "./routes/super-fast-netlify-upload";
+import {
   submitReport,
   getCompanyReports,
   getAllReports,
