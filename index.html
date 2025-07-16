@@ -4,9 +4,64 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Report Visa Scam - UAE's Scam Protection Platform</title>
+    <meta
+      name="description"
+      content="Dubai's premier platform for reporting visa scams and finding trusted immigration services"
+    />
+    <meta name="robots" content="index, follow" />
+    <style>
+      /* Loading spinner for development */
+      .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+      }
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 2s linear infinite;
+        margin-right: 10px;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="loading">
+        <div class="spinner"></div>
+        <div>Loading Dubai Visa Services...</div>
+      </div>
+    </div>
     <script type="module" src="/client/main.tsx"></script>
+
+    <script>
+      // Simple error handling for production
+      window.addEventListener("error", function (e) {
+        console.error("App error:", e.error);
+        // Could add error reporting here
+      });
+
+      // Timeout fallback
+      setTimeout(() => {
+        const root = document.getElementById("root");
+        if (root && root.innerHTML.includes("Loading")) {
+          console.warn("App taking too long to load, showing fallback");
+          root.innerHTML =
+            '<div style="padding: 2rem; text-align: center; font-family: Arial;"><h1>Dubai Visa Services</h1><p>Loading...</p><p><a href="/fallback.html">Click here if page doesn\'t load</a></p></div>';
+        }
+      }, 10000);
+    </script>
   </body>
 </html>
