@@ -705,6 +705,238 @@ const NetlifyImageManager: React.FC = () => {
             <TabsTrigger value="batch">Batch Operations</TabsTrigger>
           </TabsList>
 
+          {/* Google API Refresh Tab */}
+          <TabsContent value="googlerefresh">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <div className="animate-spin">🔄</div>
+                  <span>Google API Image Refresh - Fix Broken Images</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Problem Description */}
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <h4 className="font-medium text-red-900 mb-3">
+                    ⚠️ Problem Detected
+                  </h4>
+                  <div className="text-sm text-red-700 space-y-2">
+                    <p>
+                      • Current business images are not accessible (URLs broken)
+                    </p>
+                    <p>• Logos showing "❌ Not accessible"</p>
+                    <p>• Photos showing "0/X accessible"</p>
+                    <p>• Need fresh images from Google Places API</p>
+                  </div>
+                </div>
+
+                {/* Progress Display */}
+                {googleRefreshProgress && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h4 className="font-medium text-blue-900 mb-3">
+                      📊 Google API Refresh Progress
+                    </h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-blue-600">
+                          {googleRefreshStats?.processed || 0}
+                        </div>
+                        <div className="text-sm text-gray-600">Processed</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-green-600">
+                          {googleRefreshStats?.logosRefreshed || 0}
+                        </div>
+                        <div className="text-sm text-gray-600">Logos</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-purple-600">
+                          {googleRefreshStats?.totalPhotosDownloaded || 0}
+                        </div>
+                        <div className="text-sm text-gray-600">Photos</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-orange-600">
+                          {googleRefreshStats?.apiCallsUsed || 0}
+                        </div>
+                        <div className="text-sm text-gray-600">API Calls</div>
+                      </div>
+                    </div>
+
+                    {googleRefreshStats && (
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>
+                            Progress: {googleRefreshStats.processed}/
+                            {googleRefreshStats.total}
+                          </span>
+                          <span>
+                            {Math.round(
+                              (googleRefreshStats.processed /
+                                googleRefreshStats.total) *
+                                100,
+                            )}
+                            %
+                          </span>
+                        </div>
+                        <Progress
+                          value={
+                            (googleRefreshStats.processed /
+                              googleRefreshStats.total) *
+                            100
+                          }
+                          className="w-full h-3"
+                        />
+                        {googleRefreshStats.estimatedTimeRemaining && (
+                          <div className="text-center text-sm text-gray-600">
+                            Estimated time remaining:{" "}
+                            {Math.ceil(
+                              googleRefreshStats.estimatedTimeRemaining /
+                                (1000 * 60),
+                            )}{" "}
+                            minutes
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* What This Will Do */}
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-6">
+                  <h4 className="font-bold text-green-900 mb-3">
+                    🔄 What Google API Refresh Does
+                  </h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <h5 className="font-medium text-green-800 mb-2">
+                        📋 Process Details
+                      </h5>
+                      <ul className="text-sm text-green-700 space-y-1">
+                        <li>
+                          • Uses business place_id to fetch fresh Google data
+                        </li>
+                        <li>• Downloads new logos (first photo from Google)</li>
+                        <li>
+                          • Downloads up to 5 business photos per business
+                        </li>
+                        <li>• Saves directly to Netlify public directory</li>
+                        <li>• Updates database with new working URLs</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h5 className="font-medium text-blue-800 mb-2">
+                        🎯 Expected Results
+                      </h5>
+                      <ul className="text-sm text-blue-700 space-y-1">
+                        <li>
+                          • Fresh, working image URLs for all 841 businesses
+                        </li>
+                        <li>• High-quality logos and photos from Google</li>
+                        <li>• Immediate accessibility on Netlify</li>
+                        <li>• Fixed "❌ Not accessible" issues</li>
+                        <li>• Real business images for your audience</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-wrap gap-3">
+                  {!googleRefreshing ? (
+                    <Button
+                      onClick={startGoogleImageRefresh}
+                      className="bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 hover:from-red-600 hover:via-orange-600 hover:to-yellow-600 text-white font-bold"
+                      size="lg"
+                    >
+                      <div className="animate-pulse mr-2">🔄</div>
+                      Fix All Images - Google API Refresh
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={stopGoogleImageRefresh}
+                      variant="destructive"
+                      size="lg"
+                    >
+                      <XCircle className="h-4 w-4 mr-2" />
+                      Stop Refresh
+                    </Button>
+                  )}
+
+                  <Button
+                    onClick={verifyBusinessPhotos}
+                    variant="outline"
+                    className="border-purple-300 text-purple-700 hover:bg-purple-50"
+                  >
+                    📸 Verify Current Images
+                  </Button>
+
+                  <Button
+                    onClick={testRandomBusinessUrls}
+                    variant="outline"
+                    className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                  >
+                    🧪 Test Random Business
+                  </Button>
+                </div>
+
+                {/* API Cost Information */}
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <h4 className="font-medium text-yellow-900 mb-3">
+                    💰 Google API Cost Estimate
+                  </h4>
+                  <div className="text-sm text-yellow-700 space-y-2">
+                    <p>
+                      • <strong>Details API:</strong> ~$0.017 per business (841
+                      businesses = ~$14.30)
+                    </p>
+                    <p>
+                      • <strong>Photo API:</strong> ~$0.007 per photo (up to 5
+                      photos per business = ~$29.44)
+                    </p>
+                    <p>
+                      • <strong>Total Estimated Cost:</strong> ~$43.74 to
+                      refresh all images
+                    </p>
+                    <p>
+                      • <strong>Processing Time:</strong> ~25-30 minutes (API
+                      rate limits)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Important Notes */}
+                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                  <h4 className="font-medium text-orange-900 mb-2">
+                    ⚠️ Important Notes
+                  </h4>
+                  <ul className="text-sm text-orange-700 space-y-1">
+                    <li>
+                      • This will replace all current business images with fresh
+                      ones from Google
+                    </li>
+                    <li>
+                      • Process respects Google API rate limits (5 businesses
+                      per batch)
+                    </li>
+                    <li>
+                      • Images will be immediately available at
+                      /business-images/ URLs
+                    </li>
+                    <li>
+                      • Process runs in background - you can monitor progress
+                      here
+                    </li>
+                    <li>
+                      • Existing broken images will be replaced with working
+                      ones
+                    </li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* Super Fast Upload Tab */}
           <TabsContent value="superfast">
             <Card>
