@@ -30,6 +30,7 @@ import AdminBypass from "./pages/AdminBypass";
 import InstantAdmin from "./pages/InstantAdmin";
 import NotFound from "./pages/NotFound";
 import DataDiagnostic from "./components/DataDiagnostic";
+import CompanyRedirect from "./pages/CompanyRedirect";
 
 const queryClient = new QueryClient();
 
