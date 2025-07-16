@@ -593,7 +593,10 @@ const NetlifyImageManager: React.FC = () => {
 
         {/* Tabs for different upload methods */}
         <Tabs defaultValue="superfast" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
+            <TabsTrigger value="googlerefresh">
+              🔄 Google API Refresh
+            </TabsTrigger>
             <TabsTrigger value="superfast">🚀 Super Fast Upload</TabsTrigger>
             <TabsTrigger value="debug">🔍 Debug Data</TabsTrigger>
             <TabsTrigger value="single">Single Upload</TabsTrigger>
