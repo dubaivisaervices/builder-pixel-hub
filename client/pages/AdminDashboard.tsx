@@ -341,6 +341,7 @@ export default function AdminDashboard() {
       dashboard: "/admin",
       requests: "/admin/requests",
       google: "/admin/google",
+      netlify: "/admin/netlify",
       categories: "/admin/categories",
     };
     navigate(urlMap[tabId as keyof typeof urlMap] || "/admin");
