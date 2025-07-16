@@ -36,6 +36,20 @@ export function getBestImageUrl(imageData: ImageData): string | null {
 }
 
 /**
+ * Fix domain issues in image URLs
+ */
+function fixImageDomain(url: string): string {
+  if (!url) return url;
+
+  // Fix common domain issues
+  if (url.includes("crossbordersmigrations.com")) {
+    return url.replace("crossbordersmigrations.com", "reportvisascam.com");
+  }
+
+  return url;
+}
+
+/**
  * Get the best available logo URL for a business
  */
 export function getBestLogoUrl(business: BusinessImageData): string | null {
