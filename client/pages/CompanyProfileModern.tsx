@@ -1254,6 +1254,20 @@ export default function CompanyProfileModern() {
     loadBusiness();
   }, [locationParam, companyName, location.state]);
 
+  // Set document title with company name
+  useEffect(() => {
+    if (businessData?.name) {
+      document.title = `Report Visa Scam - ${businessData.name}`;
+    } else {
+      document.title = "Report Visa Scam - Company Details";
+    }
+
+    // Cleanup: restore original title when component unmounts
+    return () => {
+      document.title = "Reviews Visa Scam - UAE's Scam Protection Platform";
+    };
+  }, [businessData?.name]);
+
   const handleShare = (platform: string) => {
     const url = window.location.href;
     const text = `Check out ${businessData?.name} - ${businessData?.category} services in Dubai`;
