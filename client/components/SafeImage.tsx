@@ -35,8 +35,19 @@ export default function SafeImage({
       onError(errorMessage);
     }
 
+    // If the URL contains business-images path, likely these images don't exist
+    // Skip retries and go straight to fallback
+    if (currentSrc.includes("/business-images/")) {
+      console.log(
+        `❌ Business image not found, using fallback immediately: ${fallbackSrc}`,
+      );
+      setHasError(true);
+      setCurrentSrc(fallbackSrc);
+      return;
+    }
+
     if (retryCount < maxRetries && !hasError) {
-      // Try with cache-busting parameter
+      // Try with cache-busting parameter for other types of images
       const separator = currentSrc.includes("?") ? "&" : "?";
       const retrySrc = `${currentSrc}${separator}retry=${Date.now()}`;
 
