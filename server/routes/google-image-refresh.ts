@@ -216,8 +216,17 @@ async function refreshSingleBusinessImages(
 
     const detailsData = await detailsResponse.json();
 
+    console.log(`🔍 API Response for ${business.name}:`, {
+      status: detailsData.status,
+      error_message: detailsData.error_message,
+      place_id: business.id,
+    });
+
     if (detailsData.status !== "OK" || !detailsData.result) {
-      throw new Error(`Google API response: ${detailsData.status}`);
+      const errorMsg = `Google API response: ${detailsData.status}${
+        detailsData.error_message ? ` - ${detailsData.error_message}` : ""
+      }`;
+      throw new Error(errorMsg);
     }
 
     const details = detailsData.result;
