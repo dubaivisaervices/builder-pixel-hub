@@ -2,6 +2,38 @@ import { RequestHandler } from "express";
 import { businessService } from "../database/businessService";
 import { BusinessData } from "@shared/google-business";
 
+// Add a new business manually
+export const addBusiness: RequestHandler = async (req, res) => {
+  try {
+    const businessData: BusinessData = req.body;
+
+    // Validate required fields
+    if (!businessData.name || !businessData.address || !businessData.category) {
+      return res.status(400).json({
+        error:
+          "Missing required fields: name, address, and category are required",
+        success: false,
+      });
+    }
+
+    // Create business with all provided data
+    const business = await businessService.createBusiness(businessData);
+
+    res.json({
+      success: true,
+      message: "Business added successfully",
+      business: business,
+    });
+  } catch (error) {
+    console.error("Error adding business:", error);
+    res.status(500).json({
+      error: "Failed to add business",
+      details: error instanceof Error ? error.message : "Unknown error",
+      success: false,
+    });
+  }
+};
+
 // Get all businesses grouped by category
 export const getBusinessesByCategory: RequestHandler = async (req, res) => {
   try {
