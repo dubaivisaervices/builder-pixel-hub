@@ -9,139 +9,141 @@ function logDebug(message: string, data?: any) {
   );
 }
 
-// Get business data - guaranteed to work with embedded real businesses
+// Get business data - load all 841 businesses from JSON file
 function getBusinessData() {
-  logDebug("Using embedded real business data from database");
+  try {
+    logDebug("Loading all businesses from JSON file");
 
-  // Real businesses from the actual database - first 50 most important ones with proper image URLs
-  const realBusinesses = [
-    {
-      id: "ChIJ10c9E2ZDXz4Ru2NyjBi7aiE",
-      name: "10-PRO Consulting | Business Set Up, Relocation, Visas & Legal Services (Freezone, Mainland & Offshore companies)",
-      address:
-        "Business Central Towers (Tower B Office # 2004, 20th Floor Al Sufouh 2 - الصفوح - Dubai Media City - دبي - United Arab Emirates",
-      category: "registered visa agent Dubai",
-      phone: "04 529 3354",
-      website: "https://10-pro.com/",
-      email: "info@10proconsultingbusin.ae",
-      rating: 4.7,
-      reviewCount: 505,
-      latitude: 25.1007776,
-      longitude: 55.1694272,
-      businessStatus: "OPERATIONAL",
+    // Load the complete business data from JSON file
+    const businessData = require("./businesses.json");
+    const realBusinesses = businessData.businesses || [];
+
+    logDebug(
+      `✅ Loaded ${realBusinesses.length} real businesses from JSON file`,
+    );
+
+    // Ensure all businesses have proper image URLs pointing to Netlify
+    const businessesWithNetlifyImages = realBusinesses.map((business: any) => ({
+      ...business,
       logoUrl:
-        "https://reportvisascam.com/business-images/logos/logo-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
-      photos: [
-        "https://reportvisascam.com/business-images/photos/photo_1-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
-        "https://reportvisascam.com/business-images/photos/photo_5-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
-        "https://reportvisascam.com/business-images/photos/photo_2-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
-        "https://reportvisascam.com/business-images/photos/photo_3-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
-        "https://reportvisascam.com/business-images/photos/photo_4-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
-      ],
-      hasTargetKeyword: true,
-      createdAt: "2025-07-08 00:28:56",
-      updatedAt: "2025-07-15 04:07:21",
-    },
-    {
-      id: "ChIJ31pcKGtrXz4R92jGT68rkVQ",
-      name: "4S Study Abroad | 5000+ Visa Approved | Education Consultant in Dubai",
-      address:
-        "Sultan Business Centre - Office 221 - Oud Metha - Dubai - United Arab Emirates",
-      category: "education visa",
-      phone: "04 553 8909",
-      website:
-        "https://www.4sstudyabroad.com/?utm_source=GBP&utm_medium=website_click&utm_campaign=4sstudyabroad",
-      email: "info@4sstudyabroad5000vis.ae",
-      rating: 4.7,
-      reviewCount: 218,
-      latitude: 25.233408,
-      longitude: 55.3087672,
-      businessStatus: "OPERATIONAL",
-      logoUrl:
-        "https://reportvisascam.com/business-images/logos/logo-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
-      photos: [
-        "https://reportvisascam.com/business-images/photos/photo_5-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
-        "https://reportvisascam.com/business-images/photos/photo_1-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
-        "https://reportvisascam.com/business-images/photos/photo_2-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
-        "https://reportvisascam.com/business-images/photos/photo_3-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
-        "https://reportvisascam.com/business-images/photos/photo_4-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
-      ],
-      hasTargetKeyword: 1,
-      createdAt: "2025-07-08 00:29:59",
-      updatedAt: "2025-07-15 04:07:21",
-    },
-    {
-      id: "ChIJ6RJA5qJdXz4RNAbDft-_XVw",
-      name: "A A Documents Clearing services LLC",
-      address:
-        "Deira - 119 office 1st Floor - Muteena - Dubai - United Arab Emirates",
-      category: "document clearance",
-      phone: "055 547 3616",
-      website: "https://www.aadocumentsclearingservices.com/",
-      email: "info@aadocumentsclearings.ae",
-      rating: 3.8,
-      reviewCount: 13,
-      latitude: 25.2742469,
-      longitude: 55.3276466,
-      businessStatus: "OPERATIONAL",
-      logoUrl:
-        "https://reportvisascam.com/business-images/logos/logo-ChIJ6RJA5qJdXz4RNAbDft-_XVw.jpg",
-      hasTargetKeyword: false,
-      createdAt: "2025-07-08 00:30:45",
-      updatedAt: "2025-07-15 04:07:21",
-    },
-    {
-      id: "ChIJ5QJzVgJmXz4RAa5pFnqJnFM",
-      name: "A to Z PRO Services | Business Setup | Visa Services in Dubai",
-      address:
-        "Sheikh Zayed Road - Al Barsha - Al Barsha 1 - Dubai - United Arab Emirates",
-      category: "registered visa agent Dubai",
-      phone: "055 123 4567",
-      website: "https://atozproservices.ae/",
-      email: "info@atozproservices.ae",
-      rating: 4.5,
-      reviewCount: 87,
-      latitude: 25.1167,
-      longitude: 55.2067,
-      businessStatus: "OPERATIONAL",
-      logoUrl:
-        "https://reportvisascam.com/business-images/logos/logo-ChIJ5QJzVgJmXz4RAa5pFnqJnFM.jpg",
-      photos: [
-        "https://reportvisascam.com/business-images/photos/photo_1-ChIJ5QJzVgJmXz4RAa5pFnqJnFM.jpg",
-        "https://reportvisascam.com/business-images/photos/photo_2-ChIJ5QJzVgJmXz4RAa5pFnqJnFM.jpg",
-      ],
-      hasTargetKeyword: true,
-      createdAt: "2025-07-08 00:31:00",
-      updatedAt: "2025-07-15 04:07:21",
-    },
-    {
-      id: "ChIJ7XYzBgJmXz4RAe7pGnrKoGN",
-      name: "Business Bay Business Services | Dubai Mainland Company Formation",
-      address: "Business Bay - Dubai - United Arab Emirates",
-      category: "business setup Dubai",
-      phone: "04 321 9876",
-      website: "https://businessbayservices.com/",
-      email: "info@businessbayservices.com",
-      rating: 4.3,
-      reviewCount: 156,
-      latitude: 25.1885,
-      longitude: 55.2733,
-      businessStatus: "OPERATIONAL",
-      logoUrl:
-        "https://reportvisascam.com/business-images/logos/logo-ChIJ7XYzBgJmXz4RAe7pGnrKoGN.jpg",
-      photos: [
-        "https://reportvisascam.com/business-images/photos/photo_1-ChIJ7XYzBgJmXz4RAe7pGnrKoGN.jpg",
-      ],
-      hasTargetKeyword: true,
-      createdAt: "2025-07-08 00:31:15",
-      updatedAt: "2025-07-15 04:07:21",
-    },
+        business.logoUrl ||
+        `https://reportvisascam.com/business-images/logos/logo-${business.id}.jpg`,
+      photos: business.photos || [],
+    }));
+
+    return businessesWithNetlifyImages;
+  } catch (error) {
+    logDebug(
+      "Error loading businesses.json, falling back to sample data",
+      error,
+    );
+
+    // Fallback to a few sample businesses if JSON loading fails
+    return [
+      {
+        id: "ChIJ10c9E2ZDXz4Ru2NyjBi7aiE",
+        name: "10-PRO Consulting | Business Set Up, Relocation, Visas & Legal Services",
+        address: "Business Central Towers, Dubai Media City, Dubai, UAE",
+        category: "registered visa agent Dubai",
+        phone: "04 529 3354",
+        website: "https://10-pro.com/",
+        email: "info@10proconsultingbusin.ae",
+        rating: 4.7,
+        reviewCount: 505,
+        latitude: 25.1007776,
+        longitude: 55.1694272,
+        businessStatus: "OPERATIONAL",
+        logoUrl:
+          "https://reportvisascam.com/business-images/logos/logo-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
+        photos: [
+          "https://reportvisascam.com/business-images/photos/photo_1-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
+        ],
+        hasTargetKeyword: true,
+        createdAt: "2025-07-08 00:28:56",
+        updatedAt: "2025-07-15 04:07:21",
+      },
+    ];
+  }
+}
+
+// Enhanced search function with filters
+function searchBusinesses(
+  businesses: any[],
+  searchQuery?: string,
+  category?: string,
+  city?: string,
+) {
+  let filteredBusinesses = [...businesses];
+
+  // Apply search filter
+  if (searchQuery && searchQuery.trim()) {
+    const searchTerm = searchQuery.toLowerCase().trim();
+    filteredBusinesses = filteredBusinesses.filter(
+      (business) =>
+        business.name.toLowerCase().includes(searchTerm) ||
+        business.address.toLowerCase().includes(searchTerm) ||
+        business.category.toLowerCase().includes(searchTerm),
+    );
+  }
+
+  // Apply category filter
+  if (category && category !== "all" && category.trim()) {
+    filteredBusinesses = filteredBusinesses.filter(
+      (business) => business.category === category.trim(),
+    );
+  }
+
+  // Apply city filter (UAE cities)
+  if (city && city !== "all" && city.trim()) {
+    const cityTerm = city.toLowerCase().trim();
+    filteredBusinesses = filteredBusinesses.filter((business) =>
+      business.address.toLowerCase().includes(cityTerm),
+    );
+  }
+
+  return filteredBusinesses;
+}
+
+// Get unique categories from businesses
+function getCategories(businesses: any[]) {
+  const categories = [
+    ...new Set(businesses.map((b) => b.category).filter(Boolean)),
+  ];
+  return categories.sort();
+}
+
+// Get unique UAE cities from addresses
+function getUAECities(businesses: any[]) {
+  const cities = new Set<string>();
+  const uaeCityPatterns = [
+    /Dubai/i,
+    /Abu Dhabi/i,
+    /Sharjah/i,
+    /Ajman/i,
+    /Fujairah/i,
+    /Ras Al Khaimah/i,
+    /Umm Al Quwain/i,
+    /Al Ain/i,
+    /Khor Fakkan/i,
+    /Kalba/i,
+    /Dibba/i,
+    /Madinat Zayed/i,
+    /Ruwais/i,
+    /Liwa/i,
   ];
 
-  logDebug(
-    `✅ Using ${realBusinesses.length} embedded real businesses from database`,
-  );
-  return realBusinesses;
+  businesses.forEach((business) => {
+    if (business.address) {
+      uaeCityPatterns.forEach((pattern) => {
+        const match = business.address.match(pattern);
+        if (match) {
+          cities.add(match[0]);
+        }
+      });
+    }
+  });
+
+  return Array.from(cities).sort();
 }
 
 // Create Express server with real business data
@@ -149,7 +151,7 @@ function createBusinessServer() {
   const express = require("express");
   const app = express();
 
-  logDebug("Creating business server with REAL DATABASE BUSINESSES");
+  logDebug("Creating business server with ALL 841+ REAL BUSINESSES FROM JSON");
 
   // CORS and cache-busting middleware
   app.use((req: any, res: any, next: any) => {
@@ -180,10 +182,10 @@ function createBusinessServer() {
   app.get("/api/ping", (req: any, res: any) => {
     const businessData = getBusinessData();
     res.json({
-      message: "API is working! (REAL BUSINESSES EMBEDDED)",
+      message: "API is working! (ALL 841+ REAL BUSINESSES FROM JSON)",
       timestamp: new Date().toISOString(),
       businessCount: businessData.length,
-      source: "embedded_real_businesses",
+      source: "businesses.json",
     });
   });
 
@@ -193,67 +195,99 @@ function createBusinessServer() {
       status: "healthy",
       timestamp: new Date().toISOString(),
       businessCount: businessData.length,
-      dataSource: "embedded_real_businesses",
-      version: "embedded-real-v1",
+      dataSource: "businesses.json",
+      version: "json-full-dataset-v1",
       fileSystemDependencies: false,
     });
   });
 
-  // Main business endpoint with real data
+  // Main business endpoint with search and filter support
   app.get("/api/dubai-visa-services", (req: any, res: any) => {
-    logDebug("Business endpoint called for embedded real businesses", {
+    logDebug("Business endpoint called for all real businesses", {
       query: req.query,
     });
 
     try {
       const allBusinesses = getBusinessData();
-      logDebug(`📊 Serving ${allBusinesses.length} real businesses (embedded)`);
+      logDebug(`📊 Loaded ${allBusinesses.length} real businesses from JSON`);
+
+      // Extract search and filter parameters
+      const searchQuery = req.query.search as string;
+      const categoryFilter = req.query.category as string;
+      const cityFilter = req.query.city as string;
+
+      // Apply filters
+      const filteredBusinesses = searchBusinesses(
+        allBusinesses,
+        searchQuery,
+        categoryFilter,
+        cityFilter,
+      );
 
       // Pagination
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 50;
       const offset = (page - 1) * limit;
 
-      const paginatedBusinesses = allBusinesses.slice(offset, offset + limit);
+      const paginatedBusinesses = filteredBusinesses.slice(
+        offset,
+        offset + limit,
+      );
 
-      // Categories
-      const categories = [
-        ...new Set(allBusinesses.map((b: any) => b.category).filter(Boolean)),
-      ];
+      // Get categories and cities for filter options
+      const categories = getCategories(allBusinesses);
+      const cities = getUAECities(allBusinesses);
+
+      const hasActiveFilters = !!(searchQuery || categoryFilter || cityFilter);
 
       const response = {
         businesses: paginatedBusinesses,
-        total: allBusinesses.length,
+        total: filteredBusinesses.length,
+        totalUnfiltered: allBusinesses.length,
         categories: categories,
-        message: `Loaded ${paginatedBusinesses.length} of ${allBusinesses.length} Dubai visa services (EMBEDDED REAL BUSINESSES)`,
-        source: "embedded_real_businesses",
+        cities: cities,
+        message: hasActiveFilters
+          ? `Found ${paginatedBusinesses.length} of ${filteredBusinesses.length} filtered businesses (${allBusinesses.length} total) from JSON dataset`
+          : `Loaded ${paginatedBusinesses.length} of ${allBusinesses.length} Dubai visa services from JSON dataset`,
+        source: "businesses.json",
+        filters: {
+          search: searchQuery || null,
+          category: categoryFilter || null,
+          city: cityFilter || null,
+          hasActiveFilters: hasActiveFilters,
+        },
         pagination: {
           page: page,
           limit: limit,
-          total: allBusinesses.length,
-          totalPages: Math.ceil(allBusinesses.length / limit),
-          hasMore: offset + limit < allBusinesses.length,
+          total: filteredBusinesses.length,
+          totalPages: Math.ceil(filteredBusinesses.length / limit),
+          hasMore: offset + limit < filteredBusinesses.length,
         },
         success: true,
         timestamp: new Date().toISOString(),
         debug: {
-          dataEmbedded: true,
+          dataLoadedFromJSON: true,
           realBusinessesCount: allBusinesses.length,
-          generatedBusinesses: 0,
+          filteredCount: filteredBusinesses.length,
+          searchApplied: !!searchQuery,
+          categoryApplied: !!categoryFilter,
+          cityApplied: !!cityFilter,
         },
       };
 
-      logDebug("Embedded real business response prepared", {
-        count: paginatedBusinesses.length,
+      logDebug("Real business response prepared", {
         total: allBusinesses.length,
-        source: "embedded_real_businesses",
+        filtered: filteredBusinesses.length,
+        returned: paginatedBusinesses.length,
+        source: "businesses.json",
+        hasFilters: hasActiveFilters,
       });
 
       res.json(response);
     } catch (error) {
-      logDebug("Error in embedded real business endpoint:", error.message);
+      logDebug("Error in real business endpoint:", error.message);
       res.status(500).json({
-        error: "Failed to load embedded real business data",
+        error: "Failed to load real business data from JSON",
         message: error.message,
         businesses: [],
         total: 0,
@@ -271,25 +305,33 @@ function createBusinessServer() {
   // Debug endpoint
   app.get("/api/debug", (req: any, res: any) => {
     const businessData = getBusinessData();
+    const categories = getCategories(businessData);
+    const cities = getUAECities(businessData);
+
     res.json({
       availableEndpoints: [
         "GET /api/ping",
         "GET /api/health",
-        "GET /api/dubai-visa-services",
-        "GET /api/businesses",
+        "GET /api/dubai-visa-services?search=<query>&category=<cat>&city=<city>",
+        "GET /api/businesses?search=<query>&category=<cat>&city=<city>",
         "GET /api/debug",
       ],
       businessDataStatus: {
         count: businessData.length,
-        source: "embedded_real_businesses",
+        source: "businesses.json",
         sampleBusiness: businessData[0] || null,
-        fileSystemUsed: false,
+        fileSystemUsed: true,
+      },
+      filters: {
+        availableCategories: categories.length,
+        availableCities: cities.length,
+        searchSupported: true,
       },
       systemInfo: {
-        embeddedRealBusinesses: businessData.length,
+        realBusinessesFromJSON: businessData.length,
         generatedBusinesses: 0,
         totalBusinesses: businessData.length,
-        usingEmbeddedRealData: true,
+        usingJSONDataset: true,
       },
       timestamp: new Date().toISOString(),
     });
