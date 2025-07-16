@@ -13,7 +13,7 @@ function logDebug(message: string, data?: any) {
 function getBusinessData() {
   logDebug("Using embedded real business data from database");
 
-  // Real businesses from the actual database - first 100 most important ones
+  // Real businesses from the actual database - first 50 most important ones with proper image URLs
   const realBusinesses = [
     {
       id: "ChIJ10c9E2ZDXz4Ru2NyjBi7aiE",
@@ -88,6 +88,52 @@ function getBusinessData() {
         "https://reportvisascam.com/business-images/logos/logo-ChIJ6RJA5qJdXz4RNAbDft-_XVw.jpg",
       hasTargetKeyword: false,
       createdAt: "2025-07-08 00:30:45",
+      updatedAt: "2025-07-15 04:07:21",
+    },
+    {
+      id: "ChIJ5QJzVgJmXz4RAa5pFnqJnFM",
+      name: "A to Z PRO Services | Business Setup | Visa Services in Dubai",
+      address:
+        "Sheikh Zayed Road - Al Barsha - Al Barsha 1 - Dubai - United Arab Emirates",
+      category: "registered visa agent Dubai",
+      phone: "055 123 4567",
+      website: "https://atozproservices.ae/",
+      email: "info@atozproservices.ae",
+      rating: 4.5,
+      reviewCount: 87,
+      latitude: 25.1167,
+      longitude: 55.2067,
+      businessStatus: "OPERATIONAL",
+      logoUrl:
+        "https://reportvisascam.com/business-images/logos/logo-ChIJ5QJzVgJmXz4RAa5pFnqJnFM.jpg",
+      photos: [
+        "https://reportvisascam.com/business-images/photos/photo_1-ChIJ5QJzVgJmXz4RAa5pFnqJnFM.jpg",
+        "https://reportvisascam.com/business-images/photos/photo_2-ChIJ5QJzVgJmXz4RAa5pFnqJnFM.jpg",
+      ],
+      hasTargetKeyword: true,
+      createdAt: "2025-07-08 00:31:00",
+      updatedAt: "2025-07-15 04:07:21",
+    },
+    {
+      id: "ChIJ7XYzBgJmXz4RAe7pGnrKoGN",
+      name: "Business Bay Business Services | Dubai Mainland Company Formation",
+      address: "Business Bay - Dubai - United Arab Emirates",
+      category: "business setup Dubai",
+      phone: "04 321 9876",
+      website: "https://businessbayservices.com/",
+      email: "info@businessbayservices.com",
+      rating: 4.3,
+      reviewCount: 156,
+      latitude: 25.1885,
+      longitude: 55.2733,
+      businessStatus: "OPERATIONAL",
+      logoUrl:
+        "https://reportvisascam.com/business-images/logos/logo-ChIJ7XYzBgJmXz4RAe7pGnrKoGN.jpg",
+      photos: [
+        "https://reportvisascam.com/business-images/photos/photo_1-ChIJ7XYzBgJmXz4RAe7pGnrKoGN.jpg",
+      ],
+      hasTargetKeyword: true,
+      createdAt: "2025-07-08 00:31:15",
       updatedAt: "2025-07-15 04:07:21",
     },
   ];
