@@ -494,6 +494,41 @@ const NetlifyImageManager: React.FC = () => {
     }
   };
 
+  // Google API Test Function
+  const testGoogleAPI = async () => {
+    setDebugLoading(true);
+    try {
+      setUploadResult({
+        success: true,
+        message: "Testing Google Places API...",
+      });
+
+      const response = await fetch("/api/google/test");
+      const data = await response.json();
+
+      if (data.success) {
+        setUploadResult({
+          success: data.analysis.apiWorking,
+          message: `Google API Test Results:\n\n🔑 API Key: ${data.apiKey}\n📊 Status: ${data.analysis.apiStatus}\n📸 Photos Available: ${data.analysis.photosCount}\n✅ API Working: ${data.analysis.apiWorking ? "YES" : "NO"}\n\n${data.analysis.errorMessage ? `❌ Error: ${data.analysis.errorMessage}` : ""}`,
+        });
+        console.log("Google API test results:", data);
+      } else {
+        setUploadResult({
+          success: false,
+          error: `Google API test failed: ${data.error}`,
+        });
+      }
+    } catch (error) {
+      console.error("Error testing Google API:", error);
+      setUploadResult({
+        success: false,
+        error: `Error testing Google API: ${error.message}`,
+      });
+    } finally {
+      setDebugLoading(false);
+    }
+  };
+
   // Google API Refresh Functions
   const startGoogleImageRefresh = async () => {
     try {
@@ -834,7 +869,7 @@ const NetlifyImageManager: React.FC = () => {
                         </li>
                         <li>• High-quality logos and photos from Google</li>
                         <li>• Immediate accessibility on Netlify</li>
-                        <li>• Fixed "❌ Not accessible" issues</li>
+                        <li>�� Fixed "❌ Not accessible" issues</li>
                         <li>• Real business images for your audience</li>
                       </ul>
                     </div>
