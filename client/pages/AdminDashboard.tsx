@@ -279,6 +279,7 @@ export default function AdminDashboard() {
       dashboard: "/admin",
       requests: "/admin/requests",
       search: "/admin/search",
+      categories: "/admin/categories",
       sync: "/admin/sync",
       database: "/admin/database",
       s3: "/admin/s3",
