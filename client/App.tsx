@@ -32,6 +32,7 @@ import NotFound from "./pages/NotFound";
 import DataDiagnostic from "./components/DataDiagnostic";
 import CompanyRedirect from "./pages/CompanyRedirect";
 import ImageTest from "./pages/ImageTest";
+import AddBusinessPage from "./pages/AddBusinessPage";
 
 const queryClient = new QueryClient();
 
