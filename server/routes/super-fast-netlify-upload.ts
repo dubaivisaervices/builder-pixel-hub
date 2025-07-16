@@ -285,11 +285,19 @@ async function processSingleBusiness(
         .filter((result) => result.status === "fulfilled" && result.value)
         .map((result) => (result as any).value);
 
+      console.log(
+        `📊 Photo processing complete for ${business.name}: ${successfulPhotos.length}/${business.photos.length} successful`,
+      );
+
       if (successfulPhotos.length > 0) {
         progress.photosStatus = "success";
+        console.log(
+          `✅ Photos successful for ${business.name}: ${successfulPhotos.length} photos downloaded`,
+        );
       } else {
         progress.photosStatus = "failed";
         progress.errors.push("All photo downloads failed");
+        console.error(`❌ All photo downloads failed for ${business.name}`);
       }
     } else {
       progress.photosStatus = "success"; // No photos to download
