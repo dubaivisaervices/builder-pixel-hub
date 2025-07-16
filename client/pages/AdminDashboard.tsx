@@ -280,9 +280,6 @@ export default function AdminDashboard() {
       requests: "/admin/requests",
       search: "/admin/search",
       categories: "/admin/categories",
-      sync: "/admin/sync",
-      database: "/admin/database",
-      s3: "/admin/s3",
     };
     navigate(urlMap[tabId as keyof typeof urlMap] || "/admin");
   };
