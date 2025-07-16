@@ -195,20 +195,33 @@ export const searchDubaiVisaServices: RequestHandler = async (req, res) => {
       });
     }
 
+    const hasActiveFilters = !!(searchQuery || categoryFilter || cityFilter);
+    const effectiveTotal = hasActiveFilters ? filteredTotal : totalCount.total;
+
     res.json({
       businesses: businesses,
-      total: totalCount.total,
+      total: effectiveTotal,
+      totalUnfiltered: totalCount.total,
       categories: categories,
+      cities: uaeCities,
       processingTime: duration,
-      message: `Loaded ${businesses.length} of ${totalCount.total} Dubai visa service providers from database in ${duration} seconds`,
+      message: hasActiveFilters
+        ? `Found ${businesses.length} of ${effectiveTotal} filtered businesses (${totalCount.total} total) in ${duration} seconds`
+        : `Loaded ${businesses.length} of ${totalCount.total} Dubai visa service providers from database in ${duration} seconds`,
       source: "database",
       targetKeywordCount: targetKeywordBusinesses.length,
+      filters: {
+        search: searchQuery || null,
+        category: categoryFilter || null,
+        city: cityFilter || null,
+        hasActiveFilters: hasActiveFilters,
+      },
       pagination: {
         page: page,
         limit: limit,
-        total: totalCount.total,
-        totalPages: Math.ceil(totalCount.total / limit),
-        hasMore: offset + limit < totalCount.total,
+        total: effectiveTotal,
+        totalPages: Math.ceil(effectiveTotal / limit),
+        hasMore: offset + limit < effectiveTotal,
       },
     });
   } catch (error) {
