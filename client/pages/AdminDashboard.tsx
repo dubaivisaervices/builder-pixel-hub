@@ -378,6 +378,7 @@ export default function AdminDashboard() {
               { id: "dashboard", label: "Dashboard", icon: BarChart3 },
               { id: "requests", label: "Company Requests", icon: Building2 },
               { id: "google", label: "Google API Fetch", icon: Search },
+              { id: "netlify", label: "📁 Netlify Images", icon: Camera },
               { id: "categories", label: "Categories", icon: Tags },
               { id: "upload", label: "🚀 Upload to Hostinger", icon: Camera },
             ].map((tab) => (
