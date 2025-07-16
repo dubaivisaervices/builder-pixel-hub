@@ -214,12 +214,48 @@ async function processSingleBusiness(
     }
 
     // Download photos (up to 5)
+    console.log(`📸 Checking photos for ${business.name}:`, {
+      hasPhotos: !!business.photos,
+      photosLength: business.photos?.length || 0,
+      photosType: typeof business.photos,
+      firstPhotoSample: business.photos?.[0],
+    });
+
     if (business.photos && business.photos.length > 0) {
       progress.photosStatus = "downloading";
+      console.log(
+        `📥 Starting download of ${business.photos.length} photos for ${business.name}`,
+      );
+
       const photoPromises = business.photos
         .slice(0, 5)
-        .map(async (photoUrl: string, index: number) => {
+        .map(async (photo: any, index: number) => {
           try {
+            // Handle different photo formats - sometimes it's a string, sometimes an object
+            let photoUrl: string;
+            if (typeof photo === "string") {
+              photoUrl = photo;
+            } else if (photo && typeof photo === "object") {
+              photoUrl = photo.url || photo.src || photo.photoUrl || "";
+            } else {
+              console.warn(
+                `⚠️ Invalid photo format for ${business.name} photo ${index + 1}:`,
+                photo,
+              );
+              return null;
+            }
+
+            if (!photoUrl) {
+              console.warn(
+                `⚠️ No photo URL found for ${business.name} photo ${index + 1}`,
+              );
+              return null;
+            }
+
+            console.log(
+              `📸 Downloading photo ${index + 1} for ${business.name}: ${photoUrl}`,
+            );
+
             const netlifyUrl = await downloadImageToNetlify(
               photoUrl,
               `photos/photo_${index + 1}-${business.id}.jpg`,
@@ -228,10 +264,17 @@ async function processSingleBusiness(
             if (netlifyUrl) {
               progress.photoUrls.push(netlifyUrl);
               if (currentBatchStats) currentBatchStats.photosDownloaded++;
+              console.log(
+                `✅ Successfully downloaded photo ${index + 1} for ${business.name}`,
+              );
               return netlifyUrl;
             }
             return null;
           } catch (error) {
+            console.error(
+              `❌ Photo ${index + 1} error for ${business.name}:`,
+              error,
+            );
             progress.errors.push(`Photo ${index + 1} error: ${error.message}`);
             return null;
           }
