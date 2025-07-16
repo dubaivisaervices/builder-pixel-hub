@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dubai Business Directory - Emergency Access</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+        line-height: 1.6;
+      }
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      .nav {
+        background: #f5f5f5;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+      }
+      .nav a {
+        display: inline-block;
+        margin: 0.5rem 1rem 0.5rem 0;
+        padding: 0.5rem 1rem;
+        background: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+      }
+      .nav a:hover {
+        background: #0056b3;
+      }
+      .status {
+        background: #d4edda;
+        color: #155724;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Dubai Business Directory</h1>
+      <p>Emergency Access Page</p>
+    </div>
+
+    <div class="status">
+      <h3>✅ Site is Working!</h3>
+      <p>
+        If you're seeing this page, it means the site is deployed and
+        accessible. The main app should work via the links below.
+      </p>
+    </div>
+
+    <div class="nav">
+      <h3>Quick Navigation:</h3>
+      <a href="/">🏠 Home</a>
+      <a href="/dubai-businesses">🏢 Business Directory</a>
+      <a href="/business-directory">📋 All Businesses</a>
+      <a href="/report">📝 Report Scam</a>
+      <a href="/api/ping">🔌 API Test</a>
+    </div>
+
+    <div>
+      <h3>How to Access Main App:</h3>
+      <ol>
+        <li>Click any link above to access the main application</li>
+        <li>If you get a 403 error, try refreshing the page</li>
+        <li>
+          For immediate access to business listings:
+          <a href="/dubai-businesses">Dubai Businesses</a>
+        </li>
+      </ol>
+
+      <h3>API Status:</h3>
+      <p>
+        <a href="/api/ping" target="_blank">Test API Connection</a> |
+        <a href="/api/dubai-visa-services" target="_blank"
+          >Test Business Data</a
+        >
+      </p>
+
+      <h3>Troubleshooting:</h3>
+      <ul>
+        <li>Clear browser cache and try again</li>
+        <li>Try incognito/private browsing mode</li>
+        <li>Check if JavaScript is enabled</li>
+        <li>Contact support if issues persist</li>
+      </ul>
+    </div>
+
+    <script>
+      // Auto-redirect to main app after 5 seconds
+      setTimeout(() => {
+        if (confirm("Auto-redirect to main app?")) {
+          window.location.href = "/";
+        }
+      }, 5000);
+
+      // Test API connectivity
+      fetch("/api/ping")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("✅ API is working:", data);
+        })
+        .catch((err) => {
+          console.error("❌ API issue:", err);
+        });
+    </script>
+  </body>
+</html>
