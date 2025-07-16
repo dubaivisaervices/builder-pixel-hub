@@ -108,6 +108,7 @@ import {
   testBusinessUrls,
 } from "./routes/debug-business-data";
 import { getSampleBusinessData } from "./routes/sample-business-data";
+import { verifyPhotos, getBusinessPhotos } from "./routes/photo-verification";
 import {
   submitReport,
   getCompanyReports,
