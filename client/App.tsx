@@ -31,6 +31,7 @@ import InstantAdmin from "./pages/InstantAdmin";
 import NotFound from "./pages/NotFound";
 import DataDiagnostic from "./components/DataDiagnostic";
 import CompanyRedirect from "./pages/CompanyRedirect";
+import ImageTest from "./pages/ImageTest";
 
 const queryClient = new QueryClient();
 
