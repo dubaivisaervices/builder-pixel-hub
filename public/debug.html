@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>403 Debugging Tool</title>
+    <style>
+      body {
+        font-family: monospace;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem;
+        background: #f5f5f5;
+      }
+      .test-section {
+        background: white;
+        margin: 1rem 0;
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 4px solid #007bff;
+      }
+      .success {
+        border-left-color: #28a745;
+        background: #d4edda;
+      }
+      .error {
+        border-left-color: #dc3545;
+        background: #f8d7da;
+      }
+      .warning {
+        border-left-color: #ffc107;
+        background: #fff3cd;
+      }
+      .test-result {
+        margin: 0.5rem 0;
+        padding: 0.5rem;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 0.25rem;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      .logs {
+        background: #000;
+        color: #0f0;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        height: 300px;
+        overflow-y: auto;
+        font-family: "Courier New", monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔍 403 Error Debugging Tool</h1>
+    <p>
+      <strong>Purpose:</strong> This page tests all endpoints to identify the
+      exact source of 403 errors.
+    </p>
+
+    <div class="test-section">
+      <h2>🏥 Basic Health Checks</h2>
+      <button onclick="testBasicAccess()">Test Basic Access</button>
+      <button onclick="testStaticFiles()">Test Static Files</button>
+      <div id="basic-results"></div>
+    </div>
+
+    <div class="test-section">
+      <h2>🔌 API Endpoint Tests</h2>
+      <button onclick="testAllAPIs()">Test All APIs</button>
+      <button onclick="testSpecificAPI()">Test Business Data API</button>
+      <div id="api-results"></div>
+    </div>
+
+    <div class="test-section">
+      <h2>🛣️ Route Testing</h2>
+      <button onclick="testReactRoutes()">Test React Routes</button>
+      <button onclick="testDirectAccess()">Test Direct Access</button>
+      <div id="route-results"></div>
+    </div>
+
+    <div class="test-section">
+      <h2>📋 Real-Time Logs</h2>
+      <button onclick="clearLogs()">Clear Logs</button>
+      <div id="logs" class="logs"></div>
+    </div>
+
+    <div class="test-section">
+      <h2>🚀 Quick Actions</h2>
+      <button onclick="window.location.href='/'">Go to Main App</button>
+      <button onclick="window.location.href='/working.html'">
+        Go to Working Page
+      </button>
+      <button onclick="window.location.href='/emergency.html'">
+        Emergency Access
+      </button>
+    </div>
+
+    <script>
+      const log = (message, type = "info") => {
+        const logs = document.getElementById("logs");
+        const timestamp = new Date().toISOString().substr(11, 8);
+        const color = {
+          info: "#0f0",
+          error: "#f00",
+          warning: "#ff0",
+          success: "#0f0",
+        }[type];
+        logs.innerHTML += `<div style="color: ${color}">[${timestamp}] ${message}</div>`;
+        logs.scrollTop = logs.scrollHeight;
+      };
+
+      const showResult = (containerId, message, type) => {
+        const container = document.getElementById(containerId);
+        const div = document.createElement("div");
+        div.className = `test-result ${type}`;
+        div.innerHTML = message;
+        container.appendChild(div);
+      };
+
+      const clearResults = (containerId) => {
+        document.getElementById(containerId).innerHTML = "";
+      };
+
+      const clearLogs = () => {
+        document.getElementById("logs").innerHTML = "";
+      };
+
+      async function testURL(url, description) {
+        log(`Testing ${description}: ${url}`);
+        try {
+          const response = await fetch(url);
+          const statusText = `${response.status} ${response.statusText}`;
+
+          if (response.ok) {
+            log(`✅ ${description}: ${statusText}`, "success");
+            return { success: true, status: response.status, url, description };
+          } else {
+            log(`❌ ${description}: ${statusText}`, "error");
+            return {
+              success: false,
+              status: response.status,
+              url,
+              description,
+            };
+          }
+        } catch (error) {
+          log(`❌ ${description}: ${error.message}`, "error");
+          return { success: false, error: error.message, url, description };
+        }
+      }
+
+      async function testBasicAccess() {
+        clearResults("basic-results");
+        log("🏥 Starting basic access tests...");
+
+        const tests = [
+          ["/", "Homepage"],
+          ["/index.html", "Index.html direct"],
+          ["/favicon.ico", "Favicon"],
+          ["/robots.txt", "Robots.txt"],
+        ];
+
+        for (const [url, desc] of tests) {
+          const result = await testURL(url, desc);
+          showResult(
+            "basic-results",
+            `${desc}: ${result.success ? "✅ SUCCESS" : "❌ FAILED"} (${result.status || result.error})`,
+            result.success ? "success" : "error",
+          );
+        }
+      }
+
+      async function testStaticFiles() {
+        clearResults("basic-results");
+        log("📁 Testing static file access...");
+
+        const tests = [
+          ["/working.html", "Working page"],
+          ["/emergency.html", "Emergency page"],
+          ["/fallback.html", "Fallback page"],
+          ["/debug.html", "This debug page"],
+        ];
+
+        for (const [url, desc] of tests) {
+          const result = await testURL(url, desc);
+          showResult(
+            "basic-results",
+            `${desc}: ${result.success ? "✅ SUCCESS" : "❌ FAILED"} (${result.status || result.error})`,
+            result.success ? "success" : "error",
+          );
+        }
+      }
+
+      async function testAllAPIs() {
+        clearResults("api-results");
+        log("🔌 Testing all API endpoints...");
+
+        const tests = [
+          ["/api/ping", "Ping endpoint"],
+          ["/api/health", "Health check"],
+          ["/api/dubai-visa-services", "Business data"],
+          ["/api/businesses", "Alternative business endpoint"],
+        ];
+
+        for (const [url, desc] of tests) {
+          const result = await testURL(url, desc);
+          showResult(
+            "api-results",
+            `${desc}: ${result.success ? "✅ SUCCESS" : "❌ FAILED"} (${result.status || result.error})`,
+            result.success ? "success" : "error",
+          );
+        }
+      }
+
+      async function testSpecificAPI() {
+        clearResults("api-results");
+        log("📊 Testing business data API in detail...");
+
+        try {
+          const response = await fetch("/api/dubai-visa-services");
+          log(`Response status: ${response.status} ${response.statusText}`);
+
+          if (response.ok) {
+            const data = await response.json();
+            log(`Data received: ${JSON.stringify(data, null, 2)}`);
+            showResult(
+              "api-results",
+              `✅ Business API working! Got ${data.businesses?.length || 0} businesses`,
+              "success",
+            );
+          } else {
+            const errorText = await response.text();
+            log(`Error response: ${errorText}`, "error");
+            showResult(
+              "api-results",
+              `❌ Business API failed: ${response.status} - ${errorText}`,
+              "error",
+            );
+          }
+        } catch (error) {
+          log(`Exception: ${error.message}`, "error");
+          showResult(
+            "api-results",
+            `❌ Business API exception: ${error.message}`,
+            "error",
+          );
+        }
+      }
+
+      async function testReactRoutes() {
+        clearResults("route-results");
+        log("🛣️ Testing React routes...");
+
+        const routes = [
+          "/dubai-businesses",
+          "/business-directory",
+          "/report",
+          "/admin",
+        ];
+
+        for (const route of routes) {
+          const result = await testURL(route, `React route: ${route}`);
+          showResult(
+            "route-results",
+            `${route}: ${result.success ? "✅ SUCCESS" : "❌ FAILED"} (${result.status || result.error})`,
+            result.success ? "success" : "error",
+          );
+        }
+      }
+
+      async function testDirectAccess() {
+        clearResults("route-results");
+        log("🎯 Testing direct access methods...");
+
+        // Test if we can access the main app
+        try {
+          const mainResponse = await fetch("/");
+          if (mainResponse.ok) {
+            const html = await mainResponse.text();
+            if (html.includes('id="root"')) {
+              log("✅ Main app HTML structure detected", "success");
+              showResult(
+                "route-results",
+                "✅ Main app accessible and contains React root",
+                "success",
+              );
+            } else {
+              log("⚠️ Main app accessible but missing React root", "warning");
+              showResult(
+                "route-results",
+                "⚠️ Main app accessible but unexpected content",
+                "warning",
+              );
+            }
+          }
+        } catch (error) {
+          log(`❌ Main app test failed: ${error.message}`, "error");
+          showResult(
+            "route-results",
+            `❌ Main app access failed: ${error.message}`,
+            "error",
+          );
+        }
+      }
+
+      // Auto-run basic tests on page load
+      window.addEventListener("load", () => {
+        log("🔍 Debug page loaded - starting basic tests...");
+        setTimeout(testBasicAccess, 1000);
+      });
+    </script>
+  </body>
+</html>
