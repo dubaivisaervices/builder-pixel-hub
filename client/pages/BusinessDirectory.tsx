@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { getBestLogoUrl } from "../lib/imageUtils";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import CommunityProtection from "@/components/CommunityProtection";
 import GovernmentSection from "@/components/GovernmentSection";
 import Footer from "@/components/Footer";
+import { BusinessData } from "@shared/google-business";
 import {
   Search,
   Star,
@@ -30,20 +32,6 @@ import {
   Eye,
   MessageCircle,
 } from "lucide-react";
-
-interface BusinessData {
-  id: string;
-  name: string;
-  address: string;
-  rating: number;
-  reviewCount: number;
-  category: string;
-  phone?: string;
-  website?: string;
-  logoUrl?: string;
-  hasTargetKeyword?: boolean;
-  photos?: any[];
-}
 
 export default function BusinessDirectory() {
   const [businesses, setBusinesses] = useState<BusinessData[]>([]);
@@ -107,59 +95,37 @@ export default function BusinessDirectory() {
     setFilteredBusinesses(filtered);
   }, [searchTerm, businesses, selectedCategory]);
 
-  const fetchBusinesses = async () => {
+      const fetchBusinesses = async () => {
     try {
-      console.log("🔄 Fetching businesses for directory...");
-      const response = await fetch("/api/dubai-visa-services?limit=1000");
-      if (response.ok) {
-        const data = await response.json();
-        console.log(
-          "✅ Successfully loaded",
-          data.businesses?.length || 0,
-          "businesses",
-        );
-        setBusinesses(data.businesses || []);
+      console.log("🔄 Loading businesses using enhanced data loader...");
+
+      // Import and use the enhanced data loader
+      const { dataLoader } = await import("../utils/dataLoader");
+      const data = await dataLoader.loadBusinessData();
+
+      console.log(
+        "✅ Successfully loaded businesses:",
+        data.businesses.length,
+        "from source:",
+        data.meta.source
+      );
+
+      setBusinesses(data.businesses || []);
+
+      // Log additional info for debugging
+      if (data.businesses.length > 100) {
+        console.log("🎉 Full dataset loaded - all 841 businesses available!");
+      } else if (data.businesses.length === 3) {
+        console.log("⚠️ Fallback data detected - connection issue");
       } else {
-        console.error("❌ Failed to fetch businesses:", response.status);
-        // Fallback with sample data
-        setBusinesses([
-          {
-            id: "sample1",
-            name: "Dubai Visa Solutions",
-            address: "Business Bay, Dubai, UAE",
-            rating: 4.8,
-            reviewCount: 156,
-            category: "Visa Services",
-            phone: "+971 4 123 4567",
-            website: "dubaivisasolutions.com",
-            hasTargetKeyword: true,
-          },
-          {
-            id: "sample2",
-            name: "Emirates Immigration Consultants",
-            address: "DIFC, Dubai, UAE",
-            rating: 4.6,
-            reviewCount: 89,
-            category: "Immigration Services",
-            phone: "+971 4 987 6543",
-            website: "emiratesimmigration.ae",
-            hasTargetKeyword: true,
-          },
-          {
-            id: "sample3",
-            name: "Al Majid PRO Services",
-            address: "Deira, Dubai, UAE",
-            rating: 4.5,
-            reviewCount: 234,
-            category: "PRO Services",
-            phone: "+971 4 555 0123",
-            hasTargetKeyword: false,
-          },
-        ]);
+        console.log("📊 Partial dataset loaded:", data.businesses.length, "businesses");
       }
+
+      return;
     } catch (error) {
-      console.error("❌ Error fetching businesses:", error);
-      // Fallback with sample data
+      console.error("❌ Enhanced data loader failed:", error);
+
+      // Final fallback with sample data
       setBusinesses([
         {
           id: "sample1",
@@ -183,10 +149,59 @@ export default function BusinessDirectory() {
           website: "emiratesimmigration.ae",
           hasTargetKeyword: true,
         },
+        {
+          id: "sample3",
+          name: "Al Majid PRO Services",
+          address: "Deira, Dubai, UAE",
+          rating: 4.5,
+          reviewCount: 234,
+          category: "PRO Services",
+          phone: "+971 4 555 0123",
+          hasTargetKeyword: false,
+        },
       ]);
     } finally {
       setLoading(false);
     }
+  };
+      console.error("❌ Error fetching businesses:", error);
+      // Fallback with sample data
+            setBusinesses([
+        {
+          id: "sample1",
+          name: "Dubai Visa Solutions",
+          address: "Business Bay, Dubai, UAE",
+          rating: 4.8,
+          reviewCount: 156,
+          category: "Visa Services",
+          phone: "+971 4 123 4567",
+          website: "dubaivisasolutions.com",
+          hasTargetKeyword: true,
+        },
+        {
+          id: "sample2",
+          name: "Emirates Immigration Consultants",
+          address: "DIFC, Dubai, UAE",
+          rating: 4.6,
+          reviewCount: 89,
+          category: "Immigration Services",
+          phone: "+971 4 987 6543",
+          website: "emiratesimmigration.ae",
+          hasTargetKeyword: true,
+        },
+        {
+          id: "sample3",
+          name: "Al Majid PRO Services",
+          address: "Deira, Dubai, UAE",
+          rating: 4.5,
+          reviewCount: 234,
+          category: "PRO Services",
+          phone: "+971 4 555 0123",
+                    hasTargetKeyword: false,
+        },
+      ]);
+    }
+    setLoading(false);
   };
 
   const handleSearchChange = (value: string) => {
@@ -223,9 +238,7 @@ export default function BusinessDirectory() {
         .replace(/[^a-z0-9]/g, "-") || "dubai";
     const nameSlug = business.name.toLowerCase().replace(/[^a-z0-9]/g, "-");
 
-    navigate(`/modern-profile/${locationSlug}/${nameSlug}`, {
-      state: { businessData: business },
-    });
+    navigate(`/modern-profile/${locationSlug}/${nameSlug}`);
   };
 
   const toggleFavorite = (businessId: string, e: React.MouseEvent) => {
@@ -340,8 +353,40 @@ export default function BusinessDirectory() {
             <div className="absolute inset-0 bg-black/20"></div>
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="relative h-12 w-12 sm:h-16 sm:w-16">
-                {/* Always show company initials - no photos */}
-                <div className="h-full w-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl border-2 border-white shadow-lg flex items-center justify-center text-white font-bold text-sm sm:text-lg">
+                {getBestLogoUrl(business) ? (
+                  <img
+                    src={getBestLogoUrl(business)!}
+                    alt={`${business.name} logo`}
+                    className="h-full w-full object-cover rounded-xl border-2 border-white shadow-lg"
+                    onError={(e) => {
+                      console.error(
+                        "Business card logo failed to load:",
+                        getBestLogoUrl(business),
+                        "for business:",
+                        business.name,
+                      );
+
+                      // Emergency: Block any S3 URLs that are still failing
+                      if (e.currentTarget.src.includes("/api/s3-image/")) {
+                        console.warn(
+                          "🚫 BLOCKED corrupted S3 URL for:",
+                          business.name,
+                        );
+                      }
+
+                      e.currentTarget.style.display = "none";
+                      e.currentTarget.nextElementSibling!.style.display =
+                        "flex";
+                    }}
+                  />
+                ) : null}
+                {/* Fallback to company initials */}
+                <div
+                  className="h-full w-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl border-2 border-white shadow-lg flex items-center justify-center text-white font-bold text-sm sm:text-lg"
+                  style={{
+                    display: getBestLogoUrl(business) ? "none" : "flex",
+                  }}
+                >
                   {generatePlaceholderLogo(business.name)}
                 </div>
               </div>
@@ -582,8 +627,34 @@ export default function BusinessDirectory() {
                     >
                       <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
                         <div className="relative w-full h-full">
-                          {/* Always show company initials */}
-                          <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                          {getBestLogoUrl(business) ? (
+                            <img
+                              src={getBestLogoUrl(business)!}
+                              alt={`${business.name} logo`}
+                              className="w-full h-full object-cover rounded-lg"
+                              onError={(e) => {
+                                if (
+                                  e.currentTarget.src.includes("/api/s3-image/")
+                                ) {
+                                  console.warn(
+                                    "🚫 BLOCKED corrupted S3 URL in suggestions",
+                                  );
+                                }
+                                e.currentTarget.style.display = "none";
+                                e.currentTarget.nextElementSibling!.style.display =
+                                  "flex";
+                              }}
+                            />
+                          ) : null}
+                          {/* Fallback to company initials */}
+                          <div
+                            className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm"
+                            style={{
+                              display: getBestLogoUrl(business)
+                                ? "none"
+                                : "flex",
+                            }}
+                          >
                             {generatePlaceholderLogo(business.name)}
                           </div>
                         </div>
@@ -763,8 +834,36 @@ export default function BusinessDirectory() {
                           <div className="flex items-center space-x-4">
                             <div className="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
                               <div className="relative w-full h-full">
-                                {/* Always show company initials */}
-                                <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                                {getBestLogoUrl(business) ? (
+                                  <img
+                                    src={getBestLogoUrl(business)!}
+                                    alt={`${business.name} logo`}
+                                    className="w-full h-full object-cover rounded-xl"
+                                    onError={(e) => {
+                                      if (
+                                        e.currentTarget.src.includes(
+                                          "/api/s3-image/",
+                                        )
+                                      ) {
+                                        console.warn(
+                                          "🚫 BLOCKED corrupted S3 URL in featured businesses",
+                                        );
+                                      }
+                                      e.currentTarget.style.display = "none";
+                                      e.currentTarget.nextElementSibling!.style.display =
+                                        "flex";
+                                    }}
+                                  />
+                                ) : null}
+                                {/* Fallback to company initials */}
+                                <div
+                                  className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg"
+                                  style={{
+                                    display: getBestLogoUrl(business)
+                                      ? "none"
+                                      : "flex",
+                                  }}
+                                >
                                   {generatePlaceholderLogo(business.name)}
                                 </div>
                               </div>

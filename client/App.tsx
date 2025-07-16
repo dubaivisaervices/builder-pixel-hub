@@ -11,7 +11,7 @@ import Index from "./pages/Index";
 import ComplaintForm from "./pages/ComplaintForm";
 import CompanyReviews from "./pages/CompanyReviewsWorking";
 import CompanyProfileModern from "./pages/CompanyProfileModern";
-import BusinessDirectory from "./pages/BusinessDirectory";
+import BusinessDirectory from "./pages/BusinessDirectoryFixed";
 import BusinessListing from "./pages/BusinessListing";
 import HelpCenter from "./pages/HelpCenter";
 import ApiTest from "./pages/ApiTest";
@@ -24,7 +24,12 @@ import ReviewsSync from "./pages/ReviewsSync";
 import DatabaseStatus from "./pages/DatabaseStatus";
 import ImageDownloadDashboard from "./pages/ImageDownloadDashboard";
 import BusinessSearchManager from "./pages/BusinessSearchManager";
+import AdminImageManager from "./pages/AdminImageManager";
+import HostingerUpload from "./pages/HostingerUpload";
+import AdminBypass from "./pages/AdminBypass";
+import InstantAdmin from "./pages/InstantAdmin";
 import NotFound from "./pages/NotFound";
+import DataDiagnostic from "./components/DataDiagnostic";
 
 const queryClient = new QueryClient();
 
@@ -57,12 +62,12 @@ const App = () => (
             <Route path="/help-center" element={<HelpCenter />} />
             <Route path="/api-test" element={<ApiTest />} />
             <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/sync" element={<AdminSync />} />
-            <Route path="/admin/manage" element={<AdminManage />} />
-            <Route path="/admin/status" element={<DatabaseStatus />} />
-            <Route path="/admin/images" element={<ImageDownloadDashboard />} />
-            <Route path="/admin/search" element={<BusinessSearchManager />} />
+            <Route path="/admin/*" element={<AdminDashboard />} />
+            <Route path="/admin-images" element={<AdminImageManager />} />
+            <Route path="/hostinger-upload" element={<HostingerUpload />} />
+            <Route path="/admin-login" element={<AdminBypass />} />
+            <Route path="/admin-access" element={<InstantAdmin />} />
+            <Route path="/data-diagnostic" element={<DataDiagnostic />} />
             <Route path="/data-persistence" element={<DataPersistence />} />
             <Route path="/reviews-sync" element={<ReviewsSync />} />
             <Route
@@ -71,7 +76,7 @@ const App = () => (
             />
             <Route
               path="/modern-profile/:location/:companyName"
-              element={<CompanyProfileModern />}
+              element={<CompanyProfileModern key={`${Date.now()}`} />}
             />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

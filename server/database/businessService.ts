@@ -16,7 +16,7 @@ export class BusinessService {
       // Update existing business
       await database.run(
         `
-        UPDATE businesses SET
+                        UPDATE businesses SET
           name = ?, address = ?, phone = ?, website = ?, email = ?,
           lat = ?, lng = ?, rating = ?, review_count = ?, category = ?,
           business_status = ?, photo_reference = ?, logo_url = ?, logo_base64 = ?,
@@ -53,7 +53,7 @@ export class BusinessService {
       // Insert new business
       await database.run(
         `
-        INSERT INTO businesses (
+                        INSERT INTO businesses (
           id, name, address, phone, website, email, lat, lng, rating,
           review_count, category, business_status, photo_reference, logo_url, logo_base64,
           is_open, price_level, has_target_keyword, hours_json, photos_json, photos_local_json
@@ -166,7 +166,13 @@ export class BusinessService {
   ): Promise<BusinessData[]> {
     const businesses = await database.all(
       `
-      SELECT * FROM businesses
+                        SELECT
+        id, name, address, phone, website, email, lat, lng,
+        rating, review_count, category, business_status, photo_reference,
+        logo_url, logo_base64, logo_s3_url, photos_s3_urls,
+        is_open, price_level, has_target_keyword,
+        hours_json, photos_json, photos_local_json, created_at, updated_at
+      FROM businesses
       ORDER BY has_target_keyword DESC, rating DESC, review_count DESC
       LIMIT ? OFFSET ?
     `,
@@ -413,7 +419,13 @@ export class BusinessService {
   // Get business by ID
   async getBusinessById(id: string): Promise<BusinessData | null> {
     const business = await database.get(
-      "SELECT * FROM businesses WHERE id = ?",
+      `SELECT
+        id, name, address, phone, website, email, lat, lng,
+        rating, review_count, category, business_status, photo_reference,
+        logo_url, logo_base64, logo_s3_url, photos_s3_urls,
+        is_open, price_level, has_target_keyword,
+        hours_json, photos_json, photos_local_json, created_at, updated_at
+       FROM businesses WHERE id = ?`,
       [id],
     );
 
@@ -468,11 +480,32 @@ export class BusinessService {
     }
   }
 
+  // Helper method to check if URL is from corrupted batch
+  private isCorruptedUrl(url: string): boolean {
+    const timestampMatch = url.match(/\/(\d{13})-/);
+    if (timestampMatch) {
+      const timestamp = parseInt(timestampMatch[1]);
+      // Block corrupted batch uploads from timestamp range 1752379060000-1752379100000
+      // Note: ALL S3 logos in database are from this corrupted batch - none are valid
+      if (timestamp >= 1752379060000 && timestamp <= 1752379100000) {
+        // console.warn("🚫 SERVER: BLOCKED CORRUPTED URL from bad batch:", url);
+        return true;
+      }
+    }
+    return false;
+  }
+
   // Helper method to map database row to BusinessData
   private mapToBusinessData(
     business: any,
     reviews: BusinessReview[],
   ): BusinessData {
+    // Filter out corrupted S3 URLs for logos
+    const validLogoS3Url =
+      business.logo_s3_url && !this.isCorruptedUrl(business.logo_s3_url)
+        ? business.logo_s3_url
+        : undefined;
+
     return {
       id: business.id,
       name: business.name,
@@ -489,10 +522,17 @@ export class BusinessService {
       category: business.category,
       businessStatus: business.business_status,
       photoReference: business.photo_reference,
-      logoUrl: business.logo_base64
-        ? `data:image/jpeg;base64,${business.logo_base64}`
-        : business.logo_url, // Use cached base64 first, avoid API calls
+      logoUrl:
+        validLogoS3Url || business.logo_base64
+          ? validLogoS3Url || `data:image/jpeg;base64,${business.logo_base64}`
+          : undefined, // Skip Google Maps URLs and corrupted S3 URLs - let frontend handle default logo
       logoBase64: business.logo_base64, // Keep base64 data for caching
+      logoS3Url: validLogoS3Url, // Only set if not corrupted
+      photosS3Urls: business.photos_s3_urls
+        ? JSON.parse(business.photos_s3_urls).filter(
+            (url: string) => !this.isCorruptedUrl(url),
+          )
+        : undefined, // Array of S3 URLs (filtered for corrupted URLs)
       isOpen: business.is_open,
       priceLevel: business.price_level,
       hasTargetKeyword: business.has_target_keyword,
@@ -500,14 +540,99 @@ export class BusinessService {
       photos: business.photos_local_json
         ? JSON.parse(business.photos_local_json) // Always use cached photos first (no API cost)
         : business.photos_json
-          ? JSON.parse(business.photos_json).map((photo: any) => ({
-              ...photo,
-              needsDownload: !photo.base64, // Flag photos that need downloading
-              source: photo.base64 ? "cache" : "api",
-            }))
-          : undefined, // Mark uncached photos
+          ? JSON.parse(business.photos_json)
+              .filter((photo: any) => {
+                // Filter out photos with corrupted URLs
+                if (photo.url && this.isCorruptedUrl(photo.url)) return false;
+                if (photo.s3Url && this.isCorruptedUrl(photo.s3Url))
+                  return false;
+                return true;
+              })
+              .map((photo: any) => ({
+                ...photo,
+                url: photo.s3Url || photo.url, // Use S3 URL if available, otherwise original
+                needsDownload: !photo.s3Url && !photo.base64, // Flag photos that need downloading
+                source: photo.s3Url ? "s3" : photo.base64 ? "cache" : "api",
+              }))
+          : undefined, // Mark uncached photos (filtered for corrupted URLs)
       reviews: reviews,
     };
+  }
+  // Get total business count
+  async getBusinessCount(): Promise<number> {
+    const result = await database.get(
+      "SELECT COUNT(*) as count FROM businesses",
+    );
+    return result?.count || 0;
+  }
+
+  // Get businesses with images that need S3 upload
+  async getBusinessesNeedingS3Upload(): Promise<BusinessData[]> {
+    const businesses = await database.all(
+      `
+                        SELECT
+        id, name, address, phone, website, email, lat, lng,
+        rating, review_count, category, business_status, photo_reference,
+        logo_url, logo_base64, logo_s3_url, photos_s3_urls,
+        is_open, price_level, has_target_keyword,
+        hours_json, photos_json, photos_local_json, created_at, updated_at
+      FROM businesses
+      WHERE (logo_url IS NOT NULL AND logo_url != '')
+         OR (photos_json IS NOT NULL AND photos_json != '[]' AND photos_json != '')
+      ORDER BY has_target_keyword DESC, rating DESC
+      `,
+    );
+
+    return businesses.map((business) => this.mapToBusinessData(business));
+  }
+
+  // Update business logo S3 URL
+  async updateBusinessLogo(id: string, logoS3Url: string): Promise<void> {
+    await database.run(
+      "UPDATE businesses SET logo_s3_url = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+      [logoS3Url, id],
+    );
+  }
+
+  // Update business photos S3 URLs
+  async updateBusinessPhotos(
+    id: string,
+    photosS3Urls: string[],
+  ): Promise<void> {
+    await database.run(
+      "UPDATE businesses SET photos_s3_urls = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+      [JSON.stringify(photosS3Urls), id],
+    );
+  }
+
+  // Update business with S3 URLs
+  async updateBusinessS3Urls(
+    id: string,
+    logoS3Url?: string,
+    photosWithS3?: any[],
+  ): Promise<void> {
+    const updateFields = [];
+    const updateValues = [];
+
+    if (logoS3Url) {
+      updateFields.push("logo_s3_url = ?");
+      updateValues.push(logoS3Url);
+    }
+
+    if (photosWithS3) {
+      updateFields.push("photos_json = ?");
+      updateValues.push(JSON.stringify(photosWithS3));
+    }
+
+    if (updateFields.length > 0) {
+      updateFields.push("updated_at = CURRENT_TIMESTAMP");
+      updateValues.push(id);
+
+      await database.run(
+        `UPDATE businesses SET ${updateFields.join(", ")} WHERE id = ?`,
+        updateValues,
+      );
+    }
   }
 }
 

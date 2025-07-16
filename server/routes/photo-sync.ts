@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { businessService } from "../database/businessService";
 import fetch from "node-fetch";
+import { getS3Service, isS3Configured } from "../utils/s3Service";
 
 // Track if download is in progress to prevent multiple simultaneous downloads
 let downloadInProgress = false;
@@ -11,6 +12,8 @@ interface PhotoDownloadResult {
   photosProcessed: number;
   photosDownloaded: number;
   photosSaved: number;
+  s3UploadsSuccessful: number;
+  s3UploadsFailed: number;
   errors: string[];
 }
 
@@ -61,6 +64,8 @@ export const downloadAllPhotos: RequestHandler = async (req, res) => {
         photosProcessed: 0,
         photosDownloaded: 0,
         photosSaved: 0,
+        s3UploadsSuccessful: 0,
+        s3UploadsFailed: 0,
         errors: [],
       };
 
@@ -111,11 +116,41 @@ export const downloadAllPhotos: RequestHandler = async (req, res) => {
           const base64 = buffer.toString("base64");
 
           // Update photo with base64 data
-          const updatedPhoto = {
+          let updatedPhoto = {
             ...photo,
             base64: base64,
             downloadedAt: new Date().toISOString(),
           };
+
+          // Also upload to S3 if configured
+          if (isS3Configured()) {
+            try {
+              const s3Service = getS3Service();
+              const s3Url = await s3Service.uploadBusinessPhoto(
+                business.id,
+                photo.url,
+                business.name,
+                photo.caption,
+              );
+
+              updatedPhoto = {
+                ...updatedPhoto,
+                s3Url: s3Url,
+                s3UploadedAt: new Date().toISOString(),
+              };
+
+              result.s3UploadsSuccessful++;
+              console.log(`☁️ Uploaded to S3: ${s3Url}`);
+            } catch (s3Error) {
+              result.s3UploadsFailed++;
+              result.errors.push(
+                `S3 upload failed: ${s3Error instanceof Error ? s3Error.message : "Unknown S3 error"}`,
+              );
+              console.error(
+                `❌ S3 upload failed: ${s3Error instanceof Error ? s3Error.message : "Unknown S3 error"}`,
+              );
+            }
+          }
 
           updatedPhotos.push(updatedPhoto);
           result.photosDownloaded++;

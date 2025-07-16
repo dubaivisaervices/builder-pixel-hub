@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,6 +28,15 @@ import {
   Plus,
 } from "lucide-react";
 import BusinessSearchManager from "./BusinessSearchManager";
+import S3Configuration from "../components/S3Configuration";
+import UltraFastS3Sync from "../components/UltraFastS3Sync";
+import RealTimeSmartSync from "../components/RealTimeSmartSync";
+import UltraFastS3SyncNew from "../components/UltraFastS3Sync";
+import { DatabaseMigration } from "../components/DatabaseMigration";
+import { SimpleS3Status } from "../components/SimpleS3Status";
+import { ApiDebug } from "../components/ApiDebug";
+import { QuickUploadAccess } from "../components/QuickUploadAccess";
+import { UploadAlert } from "../components/UploadAlert";
 
 interface CompanyRequest {
   id: number;
@@ -46,10 +56,22 @@ interface DatabaseStats {
 }
 
 export default function AdminDashboard() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loginForm, setLoginForm] = useState({ username: "", password: "" });
-  const [loginError, setLoginError] = useState("");
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Get active tab from URL
+  const getActiveTabFromUrl = () => {
+    const path = location.pathname;
+    if (path === "/admin" || path === "/admin/") return "dashboard";
+    if (path.includes("/admin/sync")) return "sync";
+    if (path.includes("/admin/search")) return "search";
+    if (path.includes("/admin/requests")) return "requests";
+    if (path.includes("/admin/database")) return "database";
+    if (path.includes("/admin/s3")) return "s3";
+    return "dashboard";
+  };
+
+  const [activeTab, setActiveTab] = useState(getActiveTabFromUrl());
   const [companyRequests, setCompanyRequests] = useState<CompanyRequest[]>([]);
   const [stats, setStats] = useState<DatabaseStats>({
     totalBusinesses: 0,
@@ -59,36 +81,6 @@ export default function AdminDashboard() {
   });
   const [syncStatus, setSyncStatus] = useState<string>("");
   const [loading, setLoading] = useState(false);
-
-  // Secure credentials (in production, this should be backend-validated)
-  const ADMIN_CREDENTIALS = {
-    username: "dubaiadmin2024",
-    password: "SecureVisa!@#2024",
-  };
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoginError("");
-
-    if (
-      loginForm.username === ADMIN_CREDENTIALS.username &&
-      loginForm.password === ADMIN_CREDENTIALS.password
-    ) {
-      setIsAuthenticated(true);
-      localStorage.setItem("admin_session", "authenticated");
-      fetchDashboardData();
-    } else {
-      setLoginError("Invalid credentials. Access denied.");
-      // Add delay to prevent brute force attacks
-      setTimeout(() => setLoginError(""), 3000);
-    }
-  };
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem("admin_session");
-    setLoginForm({ username: "", password: "" });
-  };
 
   const fetchDashboardData = async () => {
     try {
@@ -200,72 +192,33 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    // Check if already authenticated
-    const session = localStorage.getItem("admin_session");
-    if (session === "authenticated") {
-      setIsAuthenticated(true);
-      fetchDashboardData();
-    }
+    fetchDashboardData();
   }, []);
 
-  // Login Screen
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
-        <Card className="w-full max-w-md shadow-2xl border-0 bg-white/10 backdrop-blur-xl">
-          <CardHeader className="text-center">
-            <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-red-500 to-orange-600 rounded-full">
-              <Lock className="h-8 w-8 text-white" />
-            </div>
-            <CardTitle className="text-2xl font-bold text-white">
-              Admin Access
-            </CardTitle>
-            <p className="text-gray-300">Secure authentication required</p>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div>
-                <Input
-                  type="text"
-                  placeholder="Username"
-                  value={loginForm.username}
-                  onChange={(e) =>
-                    setLoginForm({ ...loginForm, username: e.target.value })
-                  }
-                  className="bg-white/10 border-white/20 text-white placeholder-gray-400"
-                  required
-                />
-              </div>
-              <div>
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  value={loginForm.password}
-                  onChange={(e) =>
-                    setLoginForm({ ...loginForm, password: e.target.value })
-                  }
-                  className="bg-white/10 border-white/20 text-white placeholder-gray-400"
-                  required
-                />
-              </div>
-              {loginError && (
-                <div className="text-red-400 text-sm text-center">
-                  {loginError}
-                </div>
-              )}
-              <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700"
-              >
-                <Shield className="h-4 w-4 mr-2" />
-                Secure Login
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  useEffect(() => {
+    // Update active tab when URL changes
+    setActiveTab(getActiveTabFromUrl());
+  }, [location.pathname]);
+
+  const handleTabChange = (tabId: string) => {
+    if (tabId === "upload") {
+      // Navigate to Hostinger upload page
+      window.location.href = "/hostinger-upload";
+      return;
+    }
+
+    setActiveTab(tabId);
+    // Update URL to match tab
+    const urlMap = {
+      dashboard: "/admin",
+      requests: "/admin/requests",
+      search: "/admin/search",
+      sync: "/admin/sync",
+      database: "/admin/database",
+      s3: "/admin/s3",
+    };
+    navigate(urlMap[tabId as keyof typeof urlMap] || "/admin");
+  };
 
   // Admin Dashboard
   return (
@@ -283,19 +236,15 @@ export default function AdminDashboard() {
                 <p className="text-gray-300">Dubai Visa Services Management</p>
               </div>
             </div>
-            <Button
-              onClick={handleLogout}
-              variant="outline"
-              className="border-white/20 text-white hover:bg-white/10"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
+            <div className="text-sm text-gray-300">Direct Admin Access</div>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Upload Alert */}
+        <UploadAlert />
+
         {/* Navigation Tabs */}
         <div className="mb-8">
           <div className="flex space-x-1 bg-white/60 backdrop-blur-xl rounded-xl p-1 shadow-lg">
@@ -303,12 +252,14 @@ export default function AdminDashboard() {
               { id: "dashboard", label: "Dashboard", icon: BarChart3 },
               { id: "requests", label: "Company Requests", icon: Building2 },
               { id: "search", label: "Add Businesses", icon: Search },
+              { id: "upload", label: "🚀 Upload to Hostinger", icon: Camera },
               { id: "sync", label: "Data Sync", icon: RotateCw },
               { id: "database", label: "Database", icon: Database },
+              { id: "s3", label: "S3 Storage", icon: Plus },
             ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => handleTabChange(tab.id)}
                 className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-lg transition-all ${
                   activeTab === tab.id
                     ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg"
@@ -377,6 +328,9 @@ export default function AdminDashboard() {
                 </Card>
               ))}
             </div>
+
+            {/* Hostinger Upload Access */}
+            <QuickUploadAccess />
 
             {/* Recent Activity */}
             <Card className="shadow-xl border-0 bg-white/60 backdrop-blur-xl">
@@ -602,6 +556,18 @@ export default function AdminDashboard() {
                 )}
               </CardContent>
             </Card>
+          </div>
+        )}
+
+        {/* S3 Storage Tab */}
+        {activeTab === "s3" && (
+          <div className="space-y-8">
+            <ApiDebug />
+            <SimpleS3Status />
+            <DatabaseMigration />
+            <UltraFastS3SyncNew />
+            <RealTimeSmartSync />
+            <S3Configuration />
           </div>
         )}
 

@@ -10,6 +10,7 @@ import {
   Users,
   Menu,
   X,
+  AlertTriangle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -26,9 +27,9 @@ const SimpleNavigation = () => {
 
   const navItems = [
     { path: "/", label: "Home", icon: Home },
-    { path: "/dubai-businesses", label: "Businesses", icon: Building2 },
+    { path: "/complaint", label: "Report Scam", icon: AlertTriangle },
+    { path: "/dubai-businesses", label: "Directory", icon: Building2 },
     { path: "/help-center", label: "Help", icon: HelpCircle },
-    { path: "/complaint", label: "Report Scam", icon: Shield },
   ];
 
   const handleNavigation = (path: string) => {
@@ -45,14 +46,14 @@ const SimpleNavigation = () => {
             to="/"
             className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
           >
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-              <Building2 className="h-5 w-5 text-white" />
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-red-600 to-orange-600 flex items-center justify-center">
+              <Shield className="h-5 w-5 text-white" />
             </div>
             <span className="hidden sm:inline-block font-bold text-xl text-gray-900">
-              Dubai Business Directory
+              Report Visa Scam
             </span>
             <span className="sm:hidden font-bold text-xl text-gray-900">
-              DBD
+              RVS
             </span>
           </Link>
 

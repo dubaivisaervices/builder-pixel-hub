@@ -9,6 +9,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 
 import GoogleReviewsWidget from "@/components/GoogleReviewsWidget";
+import BusinessPhotoGallery from "@/components/BusinessPhotoGallery";
+import { getBestLogoUrl } from "@/lib/imageUtils";
 import {
   ArrowLeft,
   AlertTriangle,
@@ -1132,27 +1134,35 @@ export default function CompanyProfileModern() {
         setLoading(true);
         setError(null);
 
-        // Check navigation state first
-        if (location.state?.businessData) {
-          console.log("✅ Using navigation state data");
-          const business = location.state.businessData;
-          setBusinessData(business);
-          setLoading(false);
-          return;
-        }
+        // Skip cached navigation state to ensure fresh data
+        // (cached data may contain stale S3 URLs)
+        console.log(
+          "🔄 Skipping cached navigation state, fetching fresh data...",
+        );
 
-        // Fetch from API
+        // Fetch from API with cache busting
         console.log("🔍 Fetching from API...");
-        const response = await fetch("/api/businesses");
+        const response = await fetch(`/api/businesses?_t=${Date.now()}`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch businesses");
         }
 
         const data = await response.json();
+        console.log(
+          "📦 Raw API Response data:",
+          JSON.stringify(data).substring(0, 500) + "...",
+        );
 
         if (data.businesses && data.businesses.length > 0) {
           let business = data.businesses[0]; // Default fallback
+          console.log("🔍 Default business data:", {
+            id: business.id,
+            name: business.name,
+            logoUrl: business.logoUrl,
+            logoS3Url: business.logoS3Url,
+            logo_base64: business.logo_base64 ? "present" : "missing",
+          });
 
           // Try to find matching business by name
           if (companyName) {
@@ -1165,6 +1175,13 @@ export default function CompanyProfileModern() {
             if (found) {
               business = found;
               console.log(`✅ Found matching business: ${business.name}`);
+              console.log("🔍 Matched business data:", {
+                id: business.id,
+                name: business.name,
+                logoUrl: business.logoUrl,
+                logoS3Url: business.logoS3Url,
+                logo_base64: business.logo_base64 ? "present" : "missing",
+              });
             } else {
               console.log(
                 `⚠️ No exact match found for "${companyName}", using first business: ${business.name}`,
@@ -1173,11 +1190,26 @@ export default function CompanyProfileModern() {
           }
 
           // Enhance business data with additional info
+          console.log("🔧 Creating enhanced business data...");
+          console.log("🔧 Original business before enhancement:", {
+            id: business.id,
+            name: business.name,
+            logoUrl: business.logoUrl,
+            logoS3Url: business.logoS3Url,
+            logo_base64: business.logo_base64 ? "present" : "missing",
+          });
+
+          const bestLogoUrl = getBestLogoUrl(business);
+          console.log("🔧 getBestLogoUrl returned:", bestLogoUrl);
+
+          // Ensure we always have a logo - use professional business logo as default
+          const finalLogoUrl =
+            bestLogoUrl ||
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=center";
+
           const enhancedBusiness = {
             ...business,
-            logoUrl: business.logo_base64
-              ? `data:image/jpeg;base64,${business.logo_base64}`
-              : `/api/placeholder-logo/${encodeURIComponent(business.name.replace(/\s+/g, "-"))}`, // Use placeholder instead of broken external URL
+            logoUrl: finalLogoUrl,
             photos: business.photos_local_json
               ? JSON.parse(business.photos_local_json)
               : business.photos_json
@@ -1264,7 +1296,7 @@ export default function CompanyProfileModern() {
       case "operational":
         return (
           <Badge className="bg-green-100 text-green-800 border-green-200">
-            ✅ Verified & Active
+            �� Verified & Active
           </Badge>
         );
       case "temporarily_closed":
@@ -1360,12 +1392,66 @@ export default function CompanyProfileModern() {
                       src={businessData.logoUrl}
                       alt={`${businessData.name} logo`}
                       className="w-full h-full object-contain"
-                      onError={(e) => {
+                      crossOrigin="anonymous"
+                      onLoad={(e) => {
                         console.log(
-                          "Logo failed to load:",
+                          "Logo loaded successfully:",
                           businessData.logoUrl,
                         );
-                        e.currentTarget.style.display = "none";
+                      }}
+                      onError={(e) => {
+                        console.error(
+                          "Logo failed to load:",
+                          businessData.logoUrl,
+                          "Error:",
+                          e.currentTarget.src,
+                          "Natural dimensions:",
+                          e.currentTarget.naturalWidth,
+                          "x",
+                          e.currentTarget.naturalHeight,
+                        );
+
+                        // Emergency: Block corrupted S3 URLs from bad batch upload
+                        if (e.currentTarget.src.includes("/api/s3-image/")) {
+                          const timestampMatch =
+                            e.currentTarget.src.match(/\/(\d{13})-/);
+                          if (timestampMatch) {
+                            const timestamp = parseInt(timestampMatch[1]);
+                            if (
+                              timestamp >= 1752379060000 &&
+                              timestamp <= 1752379100000
+                            ) {
+                              console.error(
+                                "🚫 BLOCKED CORRUPTED URL from bad batch - Forcing fallback immediately",
+                              );
+                              const img = e.currentTarget;
+                              img.style.display = "none";
+                              const fallback =
+                                img.nextElementSibling as HTMLElement;
+                              if (fallback) fallback.style.display = "flex";
+                              return;
+                            }
+                          }
+                        }
+
+                        // Try reloading once after a delay
+                        const img = e.currentTarget;
+                        if (!img.dataset.retried) {
+                          img.dataset.retried = "true";
+                          setTimeout(() => {
+                            console.log(
+                              "Retrying image load:",
+                              businessData.logoUrl,
+                            );
+                            img.src = img.src + "?retry=" + Date.now();
+                          }, 1000);
+                        } else {
+                          console.error("Image retry failed, giving up");
+                          img.style.display = "none";
+                          const fallback =
+                            img.nextElementSibling as HTMLElement;
+                          if (fallback) fallback.style.display = "flex";
+                        }
                       }}
                     />
                   ) : (
@@ -1527,12 +1613,18 @@ export default function CompanyProfileModern() {
               onValueChange={setActiveTab}
               className="w-full"
             >
-              <TabsList className="grid w-full grid-cols-3 sm:grid-cols-5 bg-white shadow-sm border rounded-lg">
+              <TabsList className="grid w-full grid-cols-4 sm:grid-cols-6 bg-white shadow-sm border rounded-lg">
                 <TabsTrigger
                   value="overview"
                   className="text-xs sm:text-sm px-1 sm:px-2 py-2"
                 >
                   Overview
+                </TabsTrigger>
+                <TabsTrigger
+                  value="photos"
+                  className="text-xs sm:text-sm px-1 sm:px-2 py-2"
+                >
+                  Photos
                 </TabsTrigger>
                 <TabsTrigger
                   value="reviews"
@@ -1648,6 +1740,15 @@ export default function CompanyProfileModern() {
                   businessName={businessData?.name}
                 />
 
+                {/* Business Photo Gallery */}
+                <BusinessPhotoGallery
+                  businessId={businessData.id}
+                  businessName={businessData.name}
+                  photos={businessData.photos}
+                  photosS3Urls={businessData.photosS3Urls}
+                  className="shadow-lg"
+                />
+
                 {/* Government Authorization Section */}
                 <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
                   <CardHeader>
@@ -1733,6 +1834,16 @@ export default function CompanyProfileModern() {
                     />
                   </CardContent>
                 </Card>
+              </TabsContent>
+
+              {/* Photos Tab */}
+              <TabsContent value="photos" className="space-y-4 sm:space-y-6">
+                <BusinessPhotoGallery
+                  businessId={businessData.id}
+                  businessName={businessData.name}
+                  photos={businessData.photos}
+                  photosS3Urls={businessData.photosS3Urls}
+                />
               </TabsContent>
 
               {/* Reviews Tab */}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { getBestLogoUrl } from "@/lib/imageUtils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -186,9 +187,7 @@ export default function BusinessListing() {
           .replace(/[^a-z0-9]/g, "-") || "dubai";
       const nameSlug = business.name.toLowerCase().replace(/[^a-z0-9]/g, "-");
 
-      navigate(`/modern-profile/${locationSlug}/${nameSlug}`, {
-        state: { businessData: business },
-      });
+      navigate(`/modern-profile/${locationSlug}/${nameSlug}`);
     } catch (error) {
       console.error("Navigation error:", error);
     }
@@ -268,9 +267,9 @@ export default function BusinessListing() {
                   {/* Business Header */}
                   <div className="flex items-start space-x-3 mb-4">
                     <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                      {business.logoUrl ? (
+                      {getBestLogoUrl(business) ? (
                         <img
-                          src={business.logoUrl}
+                          src={getBestLogoUrl(business)!}
                           alt={`${business.name} logo`}
                           className="w-full h-full object-cover rounded-xl"
                         />

@@ -1,5 +1,6 @@
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { getBestLogoUrl } from "@/lib/imageUtils";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -985,10 +986,10 @@ export default function CompanyReviews() {
                 {/* Enhanced Logo */}
                 <div className="relative flex-shrink-0">
                   <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-white shadow-lg border-2 border-blue-100 flex items-center justify-center overflow-hidden group hover:shadow-xl transition-all duration-300">
-                    {businessData?.logoUrl ? (
+                    {getBestLogoUrl(businessData) ? (
                       <>
                         <img
-                          src={businessData.logoUrl}
+                          src={getBestLogoUrl(businessData)!}
                           alt={`${businessData.name} logo`}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                           onError={(e) => {

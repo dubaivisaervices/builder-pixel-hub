@@ -1,0 +1,11 @@
+{
+  "name": "dubai-visa-scam-report/webapp",
+  "description": "Dubai Visa Scam Report - React Application",
+  "type": "project",
+  "require": {
+    "php": ">=7.4"
+  },
+  "extra": {
+    "note": "This is a React application deployed on PHP hosting. The composer.json is for hosting compatibility only."
+  }
+}
