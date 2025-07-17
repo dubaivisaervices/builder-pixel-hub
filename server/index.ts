@@ -539,6 +539,19 @@ export function createServer() {
   app.post("/api/google/stop-refresh", stopImageRefresh);
   app.get("/api/google/refresh-results", getImageRefreshResults);
 
+  // Netlify-compatible static API routes
+  import {
+    netlifyBusinessesAPI,
+    netlifyStatsAPI,
+    netlifyCategoriesAPI,
+    netlifyFeaturedAPI,
+  } from "./routes/netlify-api";
+
+  app.get("/api/businesses-netlify", netlifyBusinessesAPI);
+  app.get("/api/stats-netlify", netlifyStatsAPI);
+  app.get("/api/categories-netlify", netlifyCategoriesAPI);
+  app.get("/api/featured-netlify", netlifyFeaturedAPI);
+
   // Reports API
   app.post(
     "/api/reports/submit",
