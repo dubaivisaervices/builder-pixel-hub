@@ -68,7 +68,7 @@ async function exportForBuild() {
         created_at,
         updated_at
       FROM businesses 
-      ORDER BY rating DESC, user_ratings_total DESC
+            ORDER BY rating DESC, review_count DESC
     `,
       )
       .all();
