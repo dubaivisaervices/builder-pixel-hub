@@ -41,7 +41,7 @@ export default function SimpleBusinessDirectory() {
         try {
           console.log("🔄 Connecting to database...");
           const dbResponse = await fetch(
-            "/.netlify/functions/database-businesses?all=true",
+            `/.netlify/functions/database-businesses?all=true&t=${Date.now()}`,
           );
           console.log("📡 Database response status:", dbResponse.status);
 
