@@ -30,11 +30,8 @@ export default function SimpleBusinessDirectory() {
         setLoading(true);
         setError(null);
 
-        // Try multiple sources for businesses data
-        const sources = [
-          `/api/complete-businesses.json?v=${Date.now()}`,
-          `/api/dubai-visa-services.json?v=${Date.now()}`,
-        ];
+        // Use smaller, reliable data source first
+        const sources = [`/api/dubai-visa-services.json?v=${Date.now()}`];
 
         let businessData = null;
 
