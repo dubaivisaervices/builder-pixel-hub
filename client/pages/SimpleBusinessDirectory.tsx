@@ -199,18 +199,32 @@ export default function SimpleBusinessDirectory() {
         }
 
         // Transform data to ensure consistent format
-        const processedBusinesses = businessData.map((business) => ({
-          id: business.id || business.place_id,
-          name: business.name,
-          address: business.address || business.formatted_address || "",
-          category: business.category || business.type || "Business Services",
-          phone: business.phone || business.formatted_phone_number || "",
-          website: business.website || "",
-          rating: business.rating || business.google_rating || 4.0,
-          reviewCount: business.reviewCount || business.user_ratings_total || 0,
-          logoUrl: getBestLogoUrl(business),
-          photos: business.photos || [],
-        }));
+        const processedBusinesses = businessData.map((business) => {
+          // Clean up corrupted logoUrl that points to problematic local files
+          let cleanLogoUrl = business.logoUrl;
+          if (
+            cleanLogoUrl &&
+            cleanLogoUrl.includes("/business-images/logos/")
+          ) {
+            cleanLogoUrl = null; // Remove corrupted local logo URLs
+          }
+
+          return {
+            id: business.id || business.place_id,
+            name: business.name,
+            address: business.address || business.formatted_address || "",
+            category: business.category || business.type || "Business Services",
+            phone: business.phone || business.formatted_phone_number || "",
+            website: business.website || "",
+            rating: business.rating || business.google_rating || 4.0,
+            reviewCount:
+              business.reviewCount || business.user_ratings_total || 0,
+            logoUrl:
+              cleanLogoUrl ||
+              getBestLogoUrl({ ...business, logoUrl: cleanLogoUrl }),
+            photos: business.photos || [],
+          };
+        });
 
         setBusinesses(processedBusinesses);
         setFilteredBusinesses(processedBusinesses);
