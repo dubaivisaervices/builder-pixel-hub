@@ -101,6 +101,8 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
     console.log(`   Company Name: ${companyName || "Any"}`);
     console.log(`   Category: ${category || "Any"}`);
     console.log(`   City: ${city || "Any"}`);
+    console.log(`   Location Coordinates: ${location}`);
+    console.log(`   Search Radius: ${searchRadius}m (${radius}km)`);
     console.log(
       `   Settings: maxResults=${maxResults}, radius=${radius}km, minRating=${minRating}`,
     );
