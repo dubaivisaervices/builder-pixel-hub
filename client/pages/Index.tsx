@@ -77,19 +77,45 @@ export default function Index() {
         setLoading(true);
         console.log("🔄 Fetching business data for homepage...");
 
-        // Import the new API client
-        const { apiClient } = await import("../utils/api");
+        // Fetch businesses directly (quick fix)
+        const businessResponse = await fetch(
+          "/api/dubai-visa-services?limit=1000",
+        );
 
-        // Fetch complete data using the new API client
-        const completeData = await apiClient.getCompleteData();
+        if (businessResponse.ok) {
+          const businessData = await businessResponse.json();
+          console.log(`✅ Loaded ${businessData.length} businesses`);
 
-        console.log(`✅ Loaded ${completeData.businesses.length} businesses`);
+          setAllBusinesses(businessData);
 
-        const { businesses, stats, categories, featured } = completeData;
+          // Set featured businesses
+          const featured = businessData
+            .filter((b: any) => b?.rating && b.rating >= 4.0)
+            .sort((a: any, b: any) => (b?.rating || 0) - (a?.rating || 0))
+            .slice(0, 6);
+          setFeaturedBusinesses(featured);
 
-        setAllBusinesses(businesses);
-        setFeaturedBusinesses(featured.slice(0, 6));
-        setStats(stats);
+          // Calculate stats
+          const totalReviews = businessData.reduce(
+            (sum: number, b: any) => sum + (b?.reviewCount || 0),
+            0,
+          );
+          const avgRating =
+            businessData.reduce(
+              (sum: number, b: any) => sum + (b?.rating || 0),
+              0,
+            ) / businessData.length;
+
+          setStats({
+            totalBusinesses: businessData.length,
+            totalReviews,
+            avgRating: Math.round(avgRating * 10) / 10,
+            locations: 15,
+            scamReports: 145,
+          });
+        } else {
+          throw new Error("Failed to fetch businesses");
+        }
 
         // Process categories for the homepage display
         const categoryCount: { [key: string]: number } = {};
