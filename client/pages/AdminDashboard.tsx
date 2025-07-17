@@ -1165,6 +1165,16 @@ function AdminDashboardContent() {
                           {isFetching ? "Fetching..." : "🚀 Fetch Businesses"}
                         </Button>
                         <Button
+                          onClick={() => handleBulkCategoryFetch()}
+                          className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+                          disabled={isFetching}
+                        >
+                          <Building2 className="h-4 w-4 mr-2" />
+                          {isFetching
+                            ? "Fetching..."
+                            : "🔥 Bulk Fetch All Categories"}
+                        </Button>
+                        <Button
                           variant="outline"
                           onClick={() => updateSearchPreview()}
                           className="border-orange-300 text-orange-700 hover:bg-orange-50"
