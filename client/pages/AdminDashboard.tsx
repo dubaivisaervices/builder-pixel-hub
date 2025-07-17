@@ -1293,11 +1293,10 @@ export default function AdminDashboard() {
                         </span>
                         <span className="font-bold text-green-900">957</span>
                       </div>
-                      <div className="text-xs text-orange-600 mt-2 p-2 bg-orange-100 rounded">
-                        ⚠️{" "}
-                        <strong>116 businesses fetched but NOT stored!</strong>{" "}
-                        Database connection failing. Fix NEON_DATABASE_URL in
-                        Netlify environment variables.
+                      <div className="text-xs text-blue-600 mt-2 p-2 bg-blue-100 rounded">
+                        ✅ <strong>Database connection fixed!</strong> New
+                        businesses will now be properly saved to PostgreSQL
+                        database.
                       </div>
                     </div>
                   </div>
