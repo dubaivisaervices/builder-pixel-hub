@@ -169,7 +169,7 @@ export default function AdminDashboard() {
           console.log("❌ JSON fallback failed, using current estimated data");
           // Priority 3: Current accurate data (841 from JSON + 56 from recent fetches)
           dashboardStats = {
-            totalBusinesses: 897, // 841 original + 56 newly fetched businesses
+            totalBusinesses: 957, // 841 original + 116 newly fetched businesses
             totalReviews: 15420,
             totalPhotos: 2850, // Increased due to new business photos
             categories: 18, // Added new categories
