@@ -97,39 +97,28 @@ export default function BusinessDirectory() {
 
   const fetchBusinesses = async () => {
     try {
-      console.log("🔄 Loading businesses using enhanced data loader...");
+      console.log("🔄 Loading businesses from static JSON files...");
 
-      // Import and use the enhanced data loader
-      const { dataLoader } = await import("../utils/dataLoader");
-      const data = await dataLoader.loadBusinessData();
+      // Try to fetch from static JSON files directly
+      const response = await fetch("/api/dubai-visa-services.json");
 
-      console.log(
-        "✅ Successfully loaded businesses:",
-        data.businesses.length,
-        "from source:",
-        data.meta.source,
-      );
-
-      setBusinesses(data.businesses || []);
-
-      // Log additional info for debugging
-      if (data.businesses.length > 100) {
-        console.log(
-          `🎉 Full dataset loaded - all ${data.total || data.businesses.length} businesses available!`,
-        );
-      } else if (data.businesses.length === 3) {
-        console.log("⚠️ Fallback data detected - connection issue");
-      } else {
-        console.log(
-          "📊 Partial dataset loaded:",
-          data.businesses.length,
-          "businesses",
-        );
+      if (!response.ok) {
+        throw new Error(`Failed to fetch: ${response.status}`);
       }
 
+      const businesses = await response.json();
+
+      if (!Array.isArray(businesses)) {
+        throw new Error("Invalid data format");
+      }
+
+      console.log(
+        `✅ Successfully loaded ${businesses.length} businesses from static files`,
+      );
+      setBusinesses(businesses);
       return;
     } catch (error) {
-      console.error("❌ Enhanced data loader failed:", error);
+      console.error("❌ Static file loading failed:", error);
 
       // Final fallback with sample data
       setBusinesses([
