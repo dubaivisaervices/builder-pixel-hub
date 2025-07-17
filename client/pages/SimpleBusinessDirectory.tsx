@@ -32,39 +32,62 @@ export default function SimpleBusinessDirectory() {
         setLoading(true);
         setError(null);
 
-        // Use smaller, reliable data source first
-        const sources = [`/api/dubai-visa-services.json?v=${Date.now()}`];
-
+        // Try to load complete businesses data in chunks to avoid timeout
         let businessData = null;
 
-        for (const source of sources) {
-          try {
-            console.log(`Trying to load from: ${source}`);
-            const response = await fetch(source);
-            if (response.ok) {
-              const data = await response.json();
+        try {
+          console.log("Loading complete businesses data...");
+          const response = await fetch(
+            `/api/complete-businesses.json?v=${Date.now()}`,
+          );
 
-              if (data.businesses && Array.isArray(data.businesses)) {
-                businessData = data.businesses;
-                console.log(
-                  `Successfully loaded ${businessData.length} businesses from ${source}`,
-                );
-                break;
-              } else if (Array.isArray(data)) {
-                businessData = data;
-                console.log(
-                  `Successfully loaded ${businessData.length} businesses from ${source}`,
-                );
-                break;
-              }
+          if (response.ok) {
+            const data = await response.json();
+            if (data.businesses && Array.isArray(data.businesses)) {
+              businessData = data.businesses;
+              console.log(
+                `Successfully loaded ${businessData.length} businesses from complete data`,
+              );
+              setAllDataLoaded(true);
             }
-          } catch (sourceError) {
-            console.warn(`Failed to load from ${source}:`, sourceError);
+          } else if (response.status === 403 || response.status >= 500) {
+            throw new Error("Large file access restricted, using fallback");
           }
+        } catch (error) {
+          console.warn(
+            "Failed to load complete data, using fallback:",
+            error.message,
+          );
         }
 
+        // Fallback to smaller dataset if complete data fails
         if (!businessData) {
-          throw new Error("No business data found from any source");
+          console.log("Loading fallback business data...");
+          const response = await fetch(
+            `/api/dubai-visa-services.json?v=${Date.now()}`,
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+
+          if (data.businesses && Array.isArray(data.businesses)) {
+            businessData = data.businesses;
+          } else if (Array.isArray(data)) {
+            businessData = data;
+          } else {
+            throw new Error("Invalid data format received");
+          }
+
+          console.log(
+            `Successfully loaded ${businessData.length} businesses from fallback`,
+          );
+        }
+
+        if (!businessData || businessData.length === 0) {
+          throw new Error("No business data found");
         }
 
         // Transform data to ensure consistent format
