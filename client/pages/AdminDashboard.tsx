@@ -352,7 +352,7 @@ export default function AdminDashboard() {
   const updateSearchPreview = () => {
     const companyName =
       (document.getElementById("companyName") as HTMLInputElement)?.value || "";
-    const category =
+    let category =
       (document.getElementById("businessCategory") as HTMLSelectElement)
         ?.value || "";
     const city =
@@ -364,6 +364,11 @@ export default function AdminDashboard() {
     if (companyName.trim()) {
       searchQuery = companyName.trim();
     } else {
+      // Handle random category in preview
+      if (category === "RANDOM") {
+        category = "🎲 [Random Category]";
+      }
+
       // Build query from category and city
       const parts = [];
       if (category) parts.push(category);
@@ -428,7 +433,7 @@ export default function AdminDashboard() {
         "insurance services",
       ];
       category = categories[Math.floor(Math.random() * categories.length)];
-      setSyncStatus(`��� Randomly selected category: "${category}"`);
+      setSyncStatus(`🎲 Randomly selected category: "${category}"`);
     }
     const maxResults = parseInt(
       (document.getElementById("maxResults") as HTMLInputElement)?.value ||
