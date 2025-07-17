@@ -114,9 +114,16 @@ async function quickExport() {
 }
 
 async function createNetlifyConfigFiles() {
-  // Create _redirects
+  // Create _redirects with proper .json support
   const redirectsContent = `
-# API Routes
+# Static JSON files - serve directly (most important)
+/api/dubai-visa-services.json /api/dubai-visa-services.json 200
+/api/stats.json /api/stats.json 200
+/api/categories.json /api/categories.json 200
+/api/cities.json /api/cities.json 200
+/api/featured.json /api/featured.json 200
+
+# API Routes without .json extension
 /api/dubai-visa-services /api/dubai-visa-services.json 200
 /api/businesses-static /api/dubai-visa-services.json 200
 /api/stats /api/stats.json 200
