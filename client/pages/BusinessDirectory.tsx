@@ -136,7 +136,9 @@ export default function BusinessDirectory() {
       // Try 2: Complete businesses file if main file has placeholder data
       if (!businesses) {
         try {
-          const response = await fetch("/api/complete-businesses.json");
+          const response = await fetch(
+            `/api/complete-businesses.json?v=${Date.now()}`,
+          );
           if (response.ok) {
             const data = await response.json();
             if (
