@@ -77,15 +77,18 @@ export default function Index() {
         setLoading(true);
         console.log("🔄 Fetching business data for homepage...");
 
-        // Import the new API client
-        const { apiClient } = await import("../utils/api");
+        // Fetch data from static JSON files
+        const [businessesRes, statsRes, featuredRes] = await Promise.all([
+          fetch("/api/dubai-visa-services.json"),
+          fetch("/api/stats.json"),
+          fetch("/api/featured.json"),
+        ]);
 
-        // Fetch complete data using the new API client
-        const completeData = await apiClient.getCompleteData();
+        const businesses = await businessesRes.json();
+        const stats = await statsRes.json();
+        const featured = await featuredRes.json();
 
-        console.log(`✅ Loaded ${completeData.businesses.length} businesses`);
-
-        const { businesses, stats, categories, featured } = completeData;
+        console.log(`✅ Loaded ${businesses.length} businesses`);
 
         setAllBusinesses(businesses);
         setFeaturedBusinesses(featured.slice(0, 6));
