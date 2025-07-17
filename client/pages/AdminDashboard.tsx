@@ -1293,9 +1293,11 @@ export default function AdminDashboard() {
                         </span>
                         <span className="font-bold text-green-900">957</span>
                       </div>
-                      <div className="text-xs text-green-600 mt-2">
-                        💡 New businesses stored in database. Fix database
-                        connection to display them in main directory.
+                      <div className="text-xs text-orange-600 mt-2 p-2 bg-orange-100 rounded">
+                        ⚠️{" "}
+                        <strong>116 businesses fetched but NOT stored!</strong>{" "}
+                        Database connection failing. Fix NEON_DATABASE_URL in
+                        Netlify environment variables.
                       </div>
                     </div>
                   </div>
