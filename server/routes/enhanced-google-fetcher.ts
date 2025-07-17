@@ -195,6 +195,61 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
           console.log(
             `ℹ️ No results found for query: "${searchQuery}" in location: ${location}`,
           );
+
+          // Try a broader search if the specific query returns no results
+          if (
+            page === 0 &&
+            searchQuery.includes("visa") &&
+            searchQuery.includes("Dubai")
+          ) {
+            console.log(`🔄 Trying broader search: "business services Dubai"`);
+            const broadSearchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent("business services Dubai")}&location=${location}&radius=${searchRadius * 2}&key=${apiKey}`;
+
+            try {
+              const broadResponse = await fetch(broadSearchUrl);
+              if (broadResponse.ok) {
+                const broadData = await broadResponse.json();
+                console.log(
+                  `📊 Broad search result: ${broadData.status}, ${broadData.results?.length || 0} results`,
+                );
+
+                if (
+                  broadData.status === "OK" &&
+                  broadData.results?.length > 0
+                ) {
+                  // Process the broad search results
+                  for (const place of broadData.results.slice(0, 5)) {
+                    // Limit to 5 results
+                    allBusinesses.push({
+                      id: place.place_id,
+                      name: place.name,
+                      address: place.formatted_address || "",
+                      category: "business services",
+                      phone: "",
+                      website: "",
+                      email: "",
+                      rating: place.rating || 4.0,
+                      reviewCount: place.user_ratings_total || 0,
+                      latitude: place.geometry?.location?.lat || 0,
+                      longitude: place.geometry?.location?.lng || 0,
+                      businessStatus: place.business_status || "OPERATIONAL",
+                      logoUrl: "",
+                      photos: [],
+                      reviews: [],
+                      hasTargetKeyword: false,
+                      createdAt: new Date().toISOString(),
+                      updatedAt: new Date().toISOString(),
+                    });
+                  }
+                  console.log(
+                    `✅ Added ${Math.min(5, broadData.results.length)} businesses from broad search`,
+                  );
+                }
+              }
+            } catch (broadError) {
+              console.log(`❌ Broad search failed:`, broadError);
+            }
+          }
           break;
         } else if (searchData.status === "INVALID_REQUEST") {
           throw new Error(
