@@ -149,8 +149,8 @@ export default function AdminDashboard() {
               }
             });
 
-            // Add adjustment for recently fetched businesses not yet in JSON
-            const adjustedBusinessCount = businesses.length + 116; // Add recently fetched businesses (56 + 60)
+            // Use actual business count from JSON, no artificial adjustments
+            const adjustedBusinessCount = businesses.length;
 
             dashboardStats = {
               totalBusinesses: adjustedBusinessCount,
