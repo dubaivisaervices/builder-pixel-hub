@@ -13,6 +13,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { getBestLogoUrl } from "@/lib/imageUtils";
+import { loadBusinessesWithFallback, databaseService } from "@/lib/database";
 
 export default function SimpleBusinessDirectory() {
   const [businesses, setBusinesses] = useState([]);
