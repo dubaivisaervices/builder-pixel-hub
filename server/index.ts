@@ -1664,10 +1664,10 @@ export function createServer() {
   // });
 
   // TEST: Test actual Hostinger upload service
-  app.get("/api/admin/test-upload", async (req, res) => {
-    const { testHostingerUpload } = await import("./routes/test-upload");
-    return testHostingerUpload(req, res);
-  });
+  // app.get("/api/admin/test-upload", async (req, res) => {
+  //   const { testHostingerUpload } = await import("./routes/test-upload");
+  //   return testHostingerUpload(req, res);
+  // });
 
   // Serve uploaded business images
   app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
