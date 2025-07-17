@@ -555,7 +555,9 @@ export default function AdminDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Upload Alert */}
-        <UploadAlert />
+        <React.Suspense fallback={<div className="h-4"></div>}>
+          <UploadAlert />
+        </React.Suspense>
 
         {/* Navigation Tabs */}
         <div className="mb-8">
