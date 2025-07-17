@@ -65,10 +65,12 @@ export default function AdminDashboard() {
   // Get active tab from URL
   const getActiveTabFromUrl = () => {
     const path = location.pathname;
+    console.log("🔍 AdminDashboard: Current path:", path);
     if (path === "/admin" || path === "/admin/") return "dashboard";
     if (path.includes("/admin/google")) return "google";
     if (path.includes("/admin/requests")) return "requests";
     if (path.includes("/admin/categories")) return "categories";
+    if (path.includes("/admin/netlify")) return "netlify";
     return "dashboard";
   };
 
@@ -96,7 +98,7 @@ export default function AdminDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      console.log("🔄 Fetching dashboard data...");
+      console.log("��� Fetching dashboard data...");
 
       // Fetch company requests
       const requestsResponse = await fetch("/api/admin/company-requests");
