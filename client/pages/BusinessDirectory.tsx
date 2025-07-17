@@ -47,7 +47,7 @@ export default function BusinessDirectory() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
-    const [displayCount, setDisplayCount] = useState(25);
+  const [displayCount, setDisplayCount] = useState(25);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [animateCards, setAnimateCards] = useState(false);
@@ -95,7 +95,7 @@ export default function BusinessDirectory() {
     setFilteredBusinesses(filtered);
   }, [searchTerm, businesses, selectedCategory]);
 
-      const fetchBusinesses = async () => {
+  const fetchBusinesses = async () => {
     try {
       console.log("🔄 Loading businesses using enhanced data loader...");
 
@@ -107,18 +107,24 @@ export default function BusinessDirectory() {
         "✅ Successfully loaded businesses:",
         data.businesses.length,
         "from source:",
-        data.meta.source
+        data.meta.source,
       );
 
-            setBusinesses(data.businesses || []);
+      setBusinesses(data.businesses || []);
 
       // Log additional info for debugging
       if (data.businesses.length > 100) {
-        console.log(`🎉 Full dataset loaded - all ${data.total || data.businesses.length} businesses available!`);
+        console.log(
+          `🎉 Full dataset loaded - all ${data.total || data.businesses.length} businesses available!`,
+        );
       } else if (data.businesses.length === 3) {
         console.log("⚠️ Fallback data detected - connection issue");
       } else {
-        console.log("📊 Partial dataset loaded:", data.businesses.length, "businesses");
+        console.log(
+          "📊 Partial dataset loaded:",
+          data.businesses.length,
+          "businesses",
+        );
       }
 
       return;
@@ -163,45 +169,6 @@ export default function BusinessDirectory() {
     } finally {
       setLoading(false);
     }
-  };
-      console.error("❌ Error fetching businesses:", error);
-      // Fallback with sample data
-            setBusinesses([
-        {
-          id: "sample1",
-          name: "Dubai Visa Solutions",
-          address: "Business Bay, Dubai, UAE",
-          rating: 4.8,
-          reviewCount: 156,
-          category: "Visa Services",
-          phone: "+971 4 123 4567",
-          website: "dubaivisasolutions.com",
-          hasTargetKeyword: true,
-        },
-        {
-          id: "sample2",
-          name: "Emirates Immigration Consultants",
-          address: "DIFC, Dubai, UAE",
-          rating: 4.6,
-          reviewCount: 89,
-          category: "Immigration Services",
-          phone: "+971 4 987 6543",
-          website: "emiratesimmigration.ae",
-          hasTargetKeyword: true,
-        },
-        {
-          id: "sample3",
-          name: "Al Majid PRO Services",
-          address: "Deira, Dubai, UAE",
-          rating: 4.5,
-          reviewCount: 234,
-          category: "PRO Services",
-                    phone: "+971 4 555 0123",
-          hasTargetKeyword: false,
-        },
-      ]);
-    }
-    setLoading(false);
   };
 
   const handleSearchChange = (value: string) => {
@@ -918,7 +885,7 @@ export default function BusinessDirectory() {
               {filteredBusinesses.length > displayCount && (
                 <div className="text-center mt-12">
                   <Button
-                                        onClick={() => setDisplayCount(displayCount + 25)}
+                    onClick={() => setDisplayCount(displayCount + 25)}
                     className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-xl text-lg"
                   >
                     Load More Businesses
