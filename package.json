@@ -31,6 +31,7 @@
     "db:setup": "node database/migrate-businesses.js",
     "db:schema": "psql $NEON_DATABASE_URL -f database/schema.sql",
     "import-now": "node import-data-now.js",
+    "fix-database": "node fix-database-data.js",
     "fix-react-app": "node fix-react-deployment.js",
     "diagnose-fix": "node diagnose-and-fix-deployment.js",
     "deploy-complete": "node complete-hostinger-deployment.js",
