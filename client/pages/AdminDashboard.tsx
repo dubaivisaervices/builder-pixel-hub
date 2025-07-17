@@ -510,18 +510,24 @@ function AdminDashboardContent() {
             }),
           });
 
-          const result = await response.json();
-
-          if (result.success) {
-            const found = result.businessesFound || 0;
-            totalBusinesses += found;
-            successfulCategories++;
-            setSyncStatus(
-              `✅ [${i + 1}/${categories.length}] ${category.replace(" Dubai", "")}: ${found} businesses found`,
-            );
+          if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+              const found = result.businessesFound || 0;
+              totalBusinesses += found;
+              successfulCategories++;
+              setSyncStatus(
+                `✅ [${i + 1}/${categories.length}] ${category.replace(" Dubai", "")}: ${found} businesses found`,
+              );
+            } else {
+              setSyncStatus(
+                `❌ [${i + 1}/${categories.length}] ${category.replace(" Dubai", "")}: ${result.error}`,
+              );
+            }
           } else {
+            const errorText = await response.text();
             setSyncStatus(
-              `❌ [${i + 1}/${categories.length}] ${category.replace(" Dubai", "")}: ${result.error}`,
+              `❌ [${i + 1}/${categories.length}] ${category.replace(" Dubai", "")}: HTTP ${response.status} - ${errorText}`,
             );
           }
         } catch (error) {
