@@ -74,7 +74,11 @@ export default function AdminDashboard() {
     return "dashboard";
   };
 
-  const [activeTab, setActiveTab] = useState(getActiveTabFromUrl());
+  const [activeTab, setActiveTab] = useState(() => {
+    const tab = getActiveTabFromUrl();
+    console.log("🔍 AdminDashboard: Setting initial tab:", tab);
+    return tab;
+  });
   const [companyRequests, setCompanyRequests] = useState<CompanyRequest[]>([]);
   const [stats, setStats] = useState<DatabaseStats>({
     totalBusinesses: 0,
@@ -98,7 +102,7 @@ export default function AdminDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      console.log("��� Fetching dashboard data...");
+      console.log("🔄 Fetching dashboard data...");
 
       // Fetch company requests
       const requestsResponse = await fetch("/api/admin/company-requests");
