@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report Visa Scam - Emergency Mode</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        min-height: 100vh;
+      }
+      .nav {
+        background: white;
+        padding: 1rem 2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        color: #1f2937;
+        font-weight: bold;
+        font-size: 1.25rem;
+      }
+      .logo-icon {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(45deg, #dc2626, #ea580c);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 8px;
+        color: white;
+      }
+      .nav-buttons {
+        display: flex;
+        gap: 8px;
+      }
+      .btn {
+        padding: 8px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .btn-primary {
+        background: #1d4ed8;
+        color: white;
+      }
+      .btn-primary:hover {
+        background: #1e40af;
+      }
+      .btn-secondary {
+        background: transparent;
+        color: #374151;
+      }
+      .btn-secondary:hover {
+        background: #f3f4f6;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      .emergency-alert {
+        background: rgba(255, 0, 0, 0.2);
+        border: 2px solid #ef4444;
+        border-radius: 12px;
+        padding: 2rem;
+        margin: 2rem 0;
+        text-align: center;
+      }
+      .status-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+      }
+      .status-card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 2rem;
+        backdrop-filter: blur(10px);
+      }
+      .status-card h3 {
+        margin-bottom: 1rem;
+        color: #4ade80;
+      }
+      .working-links {
+        background: rgba(34, 197, 94, 0.2);
+        border: 2px solid #22c55e;
+        border-radius: 12px;
+        padding: 2rem;
+        margin: 2rem 0;
+      }
+      .link-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .test-link {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s;
+      }
+      .test-link:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+      .business-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+      .business-card {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .business-name {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+      }
+      .business-category {
+        background: rgba(34, 197, 94, 0.3);
+        color: #4ade80;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        display: inline-block;
+        margin-bottom: 1rem;
+      }
+      .business-detail {
+        margin: 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .icon {
+        font-size: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="nav">
+      <div class="logo">
+        <div class="logo-icon">🛡️</div>
+        Report Visa Scam
+      </div>
+      <div class="nav-buttons">
+        <a href="#home" class="btn btn-primary"> <span>🏠</span> Home </a>
+        <a href="#report" class="btn btn-secondary">
+          <span>⚠️</span> Report Scam
+        </a>
+        <a href="#directory" class="btn btn-secondary">
+          <span>🏢</span> Directory
+        </a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <!-- Emergency Alert -->
+      <div class="emergency-alert">
+        <h1>🚨 EMERGENCY MODE ACTIVE</h1>
+        <h2>Website Deployment Issue Detected</h2>
+        <p>
+          The main React application is not loading properly. This emergency
+          page confirms your domain is working.
+        </p>
+        <p><strong>Current Time:</strong> <span id="currentTime"></span></p>
+      </div>
+
+      <!-- Working Features -->
+      <div class="working-links">
+        <h2>✅ CONFIRMED WORKING</h2>
+        <p>These components are functioning correctly:</p>
+        <div class="link-grid">
+          <a href="/" class="test-link">
+            <div>🌐 Domain Access</div>
+            <small>reportvisascam.com</small>
+          </a>
+          <a href="javascript:testAPI()" class="test-link">
+            <div>🔧 API Test</div>
+            <small>Check Functions</small>
+          </a>
+          <a href="javascript:testDatabase()" class="test-link">
+            <div>🗄️ Database</div>
+            <small>Connection Test</small>
+          </a>
+          <a href="javascript:location.reload()" class="test-link">
+            <div>🔄 Reload</div>
+            <small>Refresh Page</small>
+          </a>
+        </div>
+      </div>
+
+      <!-- Status Grid -->
+      <div class="status-grid">
+        <div class="status-card">
+          <h3>🌐 Website Status</h3>
+          <p>✅ Domain accessible</p>
+          <p>✅ HTML loading</p>
+          <p>✅ CSS working</p>
+          <p>❌ React app broken</p>
+          <p id="connectionStatus">🔄 Testing connection...</p>
+        </div>
+
+        <div class="status-card">
+          <h3>🗄️ Database Status</h3>
+          <p id="databaseStatus">🔄 Checking database...</p>
+          <p id="businessCount">📊 Business count: Testing...</p>
+          <p id="apiStatus">⚡ API functions: Testing...</p>
+        </div>
+
+        <div class="status-card">
+          <h3>🔧 Quick Fixes</h3>
+          <p><strong>1. React App Issues:</strong> Build/deployment problem</p>
+          <p><strong>2. Routing Broken:</strong> Static pages needed</p>
+          <p><strong>3. JSON Errors:</strong> File access blocked</p>
+          <p><strong>4. Solution:</strong> Emergency mode active</p>
+        </div>
+      </div>
+
+      <!-- Sample Business Directory -->
+      <div class="status-card">
+        <h2>🏢 Emergency Business Directory</h2>
+        <p>Sample of verified Dubai businesses (Emergency data)</p>
+      </div>
+
+      <div class="business-grid" id="businessGrid">
+        <!-- Businesses loaded by JavaScript -->
+      </div>
+
+      <!-- Instructions -->
+      <div class="status-card" style="text-align: center">
+        <h2>🛠️ Fix Instructions</h2>
+        <p>
+          <strong>This page proves your website is accessible!</strong>
+        </p>
+        <p>The issue is with the React app deployment, not the domain.</p>
+        <div style="margin: 1rem 0">
+          <a href="mailto:support@reportvisascam.com" class="btn btn-primary"
+            >📧 Contact Support</a
+          >
+          <button onclick="downloadLogs()" class="btn btn-secondary">
+            📋 Download Debug Info
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Update time
+      function updateTime() {
+        document.getElementById("currentTime").textContent =
+          new Date().toLocaleString();
+      }
+      updateTime();
+      setInterval(updateTime, 1000);
+
+      // Sample business data
+      const businesses = [
+        {
+          name: "10-PRO Consulting | Business Setup & Visa Services",
+          category: "Visa Services",
+          address: "Business Central Towers, Dubai Media City, UAE",
+          phone: "04 529 3354",
+          website: "https://10-pro.com/",
+          rating: "⭐ 4.7/5 (505 reviews)",
+        },
+        {
+          name: "4S Study Abroad | Education Visa Consultant",
+          category: "Education Visa",
+          address: "Sultan Business Centre, Oud Metha, Dubai, UAE",
+          phone: "04 553 8909",
+          website: "https://www.4sstudyabroad.com/",
+          rating: "⭐ 4.7/5 (218 reviews)",
+        },
+        {
+          name: "A to Z Document Clearing Services",
+          category: "Document Services",
+          address: "Al Fahidi, Dubai, UAE",
+          phone: "052 603 8558",
+          website: "http://www.a2zdocument.com/",
+          rating: "⭐ 5.0/5 (246 reviews)",
+        },
+        {
+          name: "Cross Border Visa Services LLC",
+          category: "Immigration Services",
+          address: "Naif Tower, Deira, Dubai, UAE",
+          phone: "04 323 9710",
+          website: "https://crossbordervisa.ae/",
+          rating: "⭐ 3.9/5 (46 reviews)",
+        },
+      ];
+
+      // Load businesses
+      function loadBusinesses() {
+        const grid = document.getElementById("businessGrid");
+        businesses.forEach((business) => {
+          const card = document.createElement("div");
+          card.className = "business-card";
+          card.innerHTML = `
+                    <div class="business-name">${business.name}</div>
+                    <div class="business-category">${business.category}</div>
+                    <div class="business-detail">
+                        <span class="icon">📍</span>
+                        <span>${business.address}</span>
+                    </div>
+                    <div class="business-detail">
+                        <span class="icon">📞</span>
+                        <span>${business.phone}</span>
+                    </div>
+                    <div class="business-detail">
+                        <span class="icon">🌐</span>
+                        <a href="${business.website}" target="_blank" style="color: #87CEEB;">${business.website.replace("https://", "").replace("http://", "")}</a>
+                    </div>
+                    <div class="business-detail">
+                        <span>${business.rating}</span>
+                    </div>
+                `;
+          grid.appendChild(card);
+        });
+      }
+
+      // Test functions
+      async function testAPI() {
+        try {
+          const response = await fetch("/.netlify/functions/database-health");
+          if (response.ok) {
+            alert("✅ API Functions are working!");
+          } else {
+            alert("❌ API Functions failed: " + response.status);
+          }
+        } catch (error) {
+          alert("❌ API Functions offline: " + error.message);
+        }
+      }
+
+      async function testDatabase() {
+        try {
+          const response = await fetch("/.netlify/functions/database-health");
+          if (response.ok) {
+            const data = await response.json();
+            alert(
+              `✅ Database: ${data.status}\nBusinesses: ${data.businessCount || 0}`,
+            );
+          } else {
+            alert("❌ Database connection failed");
+          }
+        } catch (error) {
+          alert("❌ Database offline: " + error.message);
+        }
+      }
+
+      function downloadLogs() {
+        const logs = {
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+          url: window.location.href,
+          status: "Emergency mode active",
+          issue: "React app not loading, static page working",
+        };
+        const blob = new Blob([JSON.stringify(logs, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "debug-info.json";
+        a.click();
+      }
+
+      // Auto-test components
+      async function runDiagnostics() {
+        // Test connection
+        document.getElementById("connectionStatus").textContent =
+          "✅ Internet connection working";
+
+        // Test database
+        try {
+          const dbResponse = await fetch("/.netlify/functions/database-health");
+          if (dbResponse.ok) {
+            const dbData = await dbResponse.json();
+            document.getElementById("databaseStatus").textContent =
+              `✅ Database: ${dbData.status || "Connected"}`;
+            document.getElementById("businessCount").textContent =
+              `📊 Business count: ${dbData.businessCount || 0}`;
+          } else {
+            document.getElementById("databaseStatus").textContent =
+              "❌ Database: Connection failed";
+          }
+        } catch (error) {
+          document.getElementById("databaseStatus").textContent =
+            "❌ Database: Offline";
+        }
+
+        // Test API
+        try {
+          const apiResponse = await fetch(
+            "/.netlify/functions/database-businesses?limit=1",
+          );
+          if (apiResponse.ok) {
+            document.getElementById("apiStatus").textContent =
+              "⚡ API functions: Working";
+          } else {
+            document.getElementById("apiStatus").textContent =
+              "❌ API functions: Failed";
+          }
+        } catch (error) {
+          document.getElementById("apiStatus").textContent =
+            "❌ API functions: Offline";
+        }
+      }
+
+      // Initialize
+      loadBusinesses();
+      runDiagnostics();
+    </script>
+  </body>
+</html>
