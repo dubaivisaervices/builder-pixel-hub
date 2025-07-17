@@ -33,17 +33,68 @@ export default function SimpleBusinessDirectory() {
         setLoading(true);
         setError(null);
 
-        console.log("🗄️ Loading businesses from Neon database...");
+        console.log("🗄️ Loading businesses from database...");
 
-        // Use the database service with automatic fallback
-        const businessData = await loadBusinessesWithFallback();
+        let businessData = null;
 
-        if (!businessData || businessData.length === 0) {
-          throw new Error("No business data found from any source");
+        // Priority 1: Try database first
+        try {
+          const dbResponse = await fetch(
+            "/.netlify/functions/database-businesses?all=true",
+          );
+          if (dbResponse.ok) {
+            const dbData = await dbResponse.json();
+            if (dbData.businesses && dbData.businesses.length > 0) {
+              businessData = dbData.businesses;
+              console.log(
+                `✅ Loaded ${businessData.length} businesses from database`,
+              );
+              setAllDataLoaded(true);
+            }
+          }
+        } catch (dbError) {
+          console.warn("Database failed, trying fallback:", dbError.message);
         }
 
-        console.log(`✅ Successfully loaded ${businessData.length} businesses`);
-        setAllDataLoaded(businessData.length > 100); // Assume complete if more than 100
+        // Priority 2: Fallback to small JSON file (avoid large file 403 errors)
+        if (!businessData) {
+          try {
+            const fallbackResponse = await fetch(
+              `/api/dubai-visa-services.json?v=${Date.now()}`,
+            );
+            if (fallbackResponse.ok) {
+              const fallbackData = await fallbackResponse.json();
+              businessData = Array.isArray(fallbackData)
+                ? fallbackData
+                : fallbackData.businesses || [];
+              console.log(
+                `📄 Loaded ${businessData.length} businesses from fallback JSON`,
+              );
+              setAllDataLoaded(false);
+            }
+          } catch (jsonError) {
+            console.warn("JSON fallback failed:", jsonError.message);
+          }
+        }
+
+        // Priority 3: Emergency hardcoded data to prevent blank page
+        if (!businessData || businessData.length === 0) {
+          businessData = [
+            {
+              id: "emergency-1",
+              name: "Loading businesses...",
+              address: "Please check database connection",
+              category: "System Status",
+              phone: "",
+              website: "",
+              rating: 4.0,
+              reviewCount: 0,
+              logoUrl:
+                "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
+            },
+          ];
+          console.log("⚠️ Using emergency data - check database connection");
+        }
 
         // Transform data to ensure consistent format
         const processedBusinesses = businessData.map((business) => ({
