@@ -215,6 +215,11 @@ export default function SimpleBusinessDirectory() {
         setBusinesses(processedBusinesses);
         setFilteredBusinesses(processedBusinesses);
         console.log(`Total businesses loaded: ${processedBusinesses.length}`);
+        console.log(
+          "First 3 business names:",
+          processedBusinesses.slice(0, 3).map((b) => b.name),
+        );
+        console.log("All data loaded flag:", allDataLoaded);
       } catch (error) {
         console.error("Error loading businesses:", error);
         setError(error.message);
