@@ -122,6 +122,7 @@ export default function BusinessDirectory() {
       console.log(
         `✅ Successfully loaded ${businesses.length} businesses from static files`,
       );
+      console.log("📊 First business:", businesses[0]);
       setBusinesses(businesses);
       return;
     } catch (error) {
