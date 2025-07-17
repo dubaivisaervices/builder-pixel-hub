@@ -278,13 +278,19 @@ export default function AdminDashboard() {
   // Google API functions
   const checkGoogleApiStatus = async () => {
     try {
-      const response = await fetch("/api/admin/google-api-status");
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(), 1000); // 1 second timeout
+
+      const response = await fetch("/api/admin/google-api-status", {
+        signal: controller.signal,
+      });
       if (response.ok) {
         const data = await response.json();
         setGoogleApiStatus(data);
       }
     } catch (error) {
-      console.error("Failed to check Google API status:", error);
+      // Silent fail for Google API status
+      setGoogleApiStatus({ configured: false, status: "Unknown" });
     }
   };
 
