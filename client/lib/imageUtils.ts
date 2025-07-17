@@ -58,8 +58,11 @@ export function getBestLogoUrl(business: BusinessImageData): string | null {
     return fixImageDomain(business.logoS3Url);
   }
 
-  // Second priority: Original logo URL from business data
-  if (business?.logoUrl) {
+  // Second priority: Original logo URL from business data (but skip corrupted local images)
+  if (
+    business?.logoUrl &&
+    !business.logoUrl.includes("/business-images/logos/")
+  ) {
     return fixImageDomain(business.logoUrl);
   }
 
