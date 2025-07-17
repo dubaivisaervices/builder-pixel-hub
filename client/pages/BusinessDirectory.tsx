@@ -196,8 +196,8 @@ export default function BusinessDirectory() {
           rating: 4.5,
           reviewCount: 234,
           category: "PRO Services",
-          phone: "+971 4 555 0123",
-                    hasTargetKeyword: false,
+                    phone: "+971 4 555 0123",
+          hasTargetKeyword: false,
         },
       ]);
     }
