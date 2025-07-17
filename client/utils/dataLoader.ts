@@ -73,7 +73,36 @@ class DataLoader {
     console.log("🔄 Loading business data...");
 
     try {
-      // Strategy 1: Try existing static JSON files
+      // Strategy 1: Try real businesses data first
+      try {
+        console.log("🔍 Loading real businesses data from complete file");
+
+        const completeRes = await fetch("/api/complete-businesses.json");
+
+        if (completeRes.ok) {
+          const completeData = await completeRes.json();
+
+          if (
+            completeData.businesses &&
+            Array.isArray(completeData.businesses) &&
+            completeData.businesses.length > 0
+          ) {
+            console.log(
+              `✅ Successfully loaded REAL data:`,
+              completeData.businesses.length,
+              "businesses",
+            );
+
+            this.cachedData = this.validateAndNormalizeData(completeData);
+            this.isLoading = false;
+            return this.cachedData;
+          }
+        }
+      } catch (error) {
+        console.log("❌ Failed to load real businesses data:", error.message);
+      }
+
+      // Strategy 2: Try existing static JSON files as fallback
       try {
         console.log("🔍 Loading static data from /api/ directory");
 
