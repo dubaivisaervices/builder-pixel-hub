@@ -149,8 +149,9 @@ class DataLoader {
         console.log("❌ Failed to load from /api/ directory:", error.message);
       }
 
-      // Strategy 2: Try alternative static paths and API endpoints
+      // Strategy 3: Try alternative static paths and API endpoints
       const apiPaths = [
+        "/api/complete-businesses.json", // Real complete data file
         "/api/dubai-visa-services.json", // Our main static file
         "/api/featured.json", // Featured businesses
         "/api/dubai-visa-services?limit=1000", // API endpoint
