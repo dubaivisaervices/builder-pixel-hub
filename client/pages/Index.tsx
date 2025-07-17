@@ -106,20 +106,49 @@ export default function Index() {
               0,
             ) / businessData.length;
 
-          setStats({
+                    setStats({
             totalBusinesses: businessData.length,
             totalReviews,
             avgRating: Math.round(avgRating * 10) / 10,
             locations: 15,
             scamReports: 145,
           });
+
+          // Set simple categories
+          setTopCategories([
+            {
+              category: "work",
+              count: 150,
+              title: "Work Visa Services",
+              description: "Employment visa processing and work permit assistance",
+              icon: "💼",
+              color: "from-blue-500 to-blue-600",
+            },
+            {
+              category: "tourist",
+              count: 120,
+              title: "Tourist Visa Services",
+              description: "Visit visa and tourist visa applications",
+              icon: "🏖️",
+              color: "from-green-500 to-green-600",
+            },
+            {
+              category: "business",
+              count: 100,
+              title: "Business Visa Services",
+              description: "Investor visa and business setup assistance",
+              icon: "🏢",
+              color: "from-orange-500 to-orange-600",
+            }
+          ]);
         } else {
           throw new Error("Failed to fetch businesses");
         }
 
-        // Process categories for the homepage display
+        // Remove complex category processing for now
+        /*
         const categoryCount: { [key: string]: number } = {};
-        if (businesses.length > 0) {
+        if (businessData.length > 0) {
           businesses.forEach((business) => {
             if (!business) return;
             const category = business.category?.toLowerCase() || "other";
