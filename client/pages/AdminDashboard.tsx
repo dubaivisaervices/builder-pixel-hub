@@ -1470,3 +1470,39 @@ function AdminDashboardContent() {
     </div>
   );
 }
+
+export default function AdminDashboard() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+          <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white shadow-xl">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+              <div className="flex items-center space-x-3">
+                <div className="bg-gradient-to-br from-red-500 to-orange-600 p-2 rounded-xl">
+                  <div className="h-8 w-8 text-white animate-pulse"></div>
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+                  <p className="text-gray-300">Loading...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="animate-pulse">
+              <div className="h-16 bg-gray-200 rounded-xl mb-8"></div>
+              <div className="grid md:grid-cols-4 gap-6 mb-8">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="h-24 bg-gray-200 rounded-xl"></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <AdminDashboardContent />
+    </React.Suspense>
+  );
+}
