@@ -69,6 +69,7 @@ const App = () => (
             <Route path="/admin/manage" element={<AdminManage />} />
             <Route path="/admin/*" element={<AdminDashboard />} />
             <Route path="/admin-images" element={<AdminImageManager />} />
+            <Route path="/supabase-admin" element={<SupabaseAdmin />} />
             <Route path="/hostinger-upload" element={<HostingerUpload />} />
             <Route path="/add-business" element={<AddBusinessPage />} />
             <Route path="/admin-login" element={<AdminBypass />} />
