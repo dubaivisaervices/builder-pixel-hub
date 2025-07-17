@@ -37,23 +37,41 @@ export default function SimpleBusinessDirectory() {
 
         let businessData = null;
 
-        // Priority 1: Try database first
+        // Priority 1: Try database first (force database loading)
         try {
+          console.log("🔄 Connecting to database...");
           const dbResponse = await fetch(
             "/.netlify/functions/database-businesses?all=true",
           );
+          console.log("📡 Database response status:", dbResponse.status);
+
           if (dbResponse.ok) {
             const dbData = await dbResponse.json();
+            console.log("📊 Database response:", dbData);
+
             if (dbData.businesses && dbData.businesses.length > 0) {
               businessData = dbData.businesses;
               console.log(
-                `✅ Loaded ${businessData.length} businesses from database`,
+                `✅ SUCCESS: Loaded ${businessData.length} businesses from database`,
               );
               setAllDataLoaded(true);
+            } else {
+              console.warn(
+                "⚠️ Database connected but no businesses found. Need to import data!",
+              );
+              throw new Error("No businesses in database - import needed");
             }
+          } else {
+            console.warn(
+              "❌ Database response not OK:",
+              dbResponse.status,
+              dbResponse.statusText,
+            );
+            throw new Error(`Database API failed: ${dbResponse.status}`);
           }
         } catch (dbError) {
-          console.warn("Database failed, trying fallback:", dbError.message);
+          console.error("❌ Database loading failed:", dbError.message);
+          console.log("📄 Falling back to JSON files...");
         }
 
         // Priority 2: Fallback to small JSON file (avoid large file 403 errors)
