@@ -1,4 +1,5 @@
 # Static JSON files - serve directly (most important)
+/api/complete-businesses.json /api/complete-businesses.json 200
 /api/dubai-visa-services.json /api/dubai-visa-services.json 200
 /api/stats.json /api/stats.json 200
 /api/categories.json /api/categories.json 200
