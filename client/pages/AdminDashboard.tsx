@@ -288,19 +288,6 @@ export default function AdminDashboard() {
     }
   };
 
-  const calculateTotalBusinesses = async () => {
-    try {
-      const response = await fetch("/api/dubai-visa-services?limit=1");
-      if (response.ok) {
-        const data = await response.json();
-        return data.total || data.businesses?.length || 0;
-      }
-    } catch (error) {
-      console.error("Failed to calculate total businesses:", error);
-    }
-    return 0;
-  };
-
   // Google API functions
   const checkGoogleApiStatus = async () => {
     try {
