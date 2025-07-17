@@ -154,8 +154,8 @@ export default function AdminDashboard() {
 
             dashboardStats = {
               totalBusinesses: adjustedBusinessCount,
-              totalReviews: totalReviews + 56 * 15, // Estimate reviews for new businesses
-              totalPhotos: totalPhotos + 56 * 5, // Estimate 5 photos per new business
+              totalReviews: totalReviews + 116 * 15, // Estimate reviews for new businesses
+              totalPhotos: totalPhotos + 116 * 5, // Estimate 5 photos per new business
               categories: Math.max(categories.size, 18), // At least 18 with new categories
             };
             console.log(
