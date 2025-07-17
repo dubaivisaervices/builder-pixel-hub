@@ -800,7 +800,7 @@ function CommunityReportsSection({
       <div className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-600 px-6 py-4">
         <CardTitle className="text-xl text-white flex items-center space-x-3">
           <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm">
-            <MessageCircleQuestion className="h-6 w-6" />
+            <MessageSquare className="h-6 w-6" />
           </div>
           <div>
             <span className="block">Community Reports</span>
