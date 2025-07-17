@@ -916,10 +916,10 @@ export default function AdminDashboard() {
                       </div>
                       <div className="bg-white rounded p-3 text-center">
                         <div className="text-lg font-bold text-blue-600">
-                          841
+                          {stats.totalBusinesses || 897}
                         </div>
                         <div className="text-sm text-gray-600">
-                          Current Businesses
+                          Total Businesses
                         </div>
                       </div>
                       <div className="bg-white rounded p-3 text-center">
