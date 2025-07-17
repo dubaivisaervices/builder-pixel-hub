@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report Visa Scam - Working Emergency Page</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 30px;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+      }
+      h1 {
+        text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      .status {
+        background: rgba(76, 175, 80, 0.3);
+        border: 1px solid #4caf50;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        text-align: center;
+      }
+      .nav-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin: 30px 0;
+      }
+      .nav-card {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        transition: transform 0.3s ease;
+      }
+      .nav-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.25);
+      }
+      .nav-card h3 {
+        margin-top: 0;
+        color: #4caf50;
+      }
+      .btn {
+        background: #4caf50;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-block;
+        font-weight: bold;
+        transition: background 0.3s ease;
+      }
+      .btn:hover {
+        background: #45a049;
+      }
+      .btn.secondary {
+        background: #2196f3;
+      }
+      .btn.secondary:hover {
+        background: #1976d2;
+      }
+      .test-results {
+        margin: 30px 0;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🛡️ Report Visa Scam</h1>
+
+      <div class="status">
+        <h2>✅ EMERGENCY PAGE WORKING</h2>
+        <p>This page confirms your website is online and accessible!</p>
+        <p><strong>Current Time:</strong> <span id="currentTime"></span></p>
+      </div>
+
+      <div class="nav-grid">
+        <div class="nav-card">
+          <h3>🏢 Business Directory</h3>
+          <p>Browse verified UAE businesses</p>
+          <a href="/dubai-businesses" class="btn">View Businesses</a>
+        </div>
+
+        <div class="nav-card">
+          <h3>🔧 Database Test</h3>
+          <p>Check database connection</p>
+          <a href="/database-test.html" class="btn secondary">Test Database</a>
+        </div>
+
+        <div class="nav-card">
+          <h3>⚠️ Report Scam</h3>
+          <p>Report visa fraud</p>
+          <a href="/complaint" class="btn">Report Now</a>
+        </div>
+
+        <div class="nav-card">
+          <h3>❓ Help Center</h3>
+          <p>Get support and help</p>
+          <a href="/help-center" class="btn secondary">Get Help</a>
+        </div>
+      </div>
+
+      <div class="test-results">
+        <h3>🔍 Quick System Test</h3>
+        <div id="testResults">Running tests...</div>
+        <button onclick="runTests()" class="btn" style="margin-top: 15px">
+          🔄 Rerun Tests
+        </button>
+      </div>
+
+      <div style="text-align: center; margin-top: 30px; opacity: 0.8">
+        <p>
+          💡 If you're seeing this page, your website deployment is working
+          correctly!
+        </p>
+        <p>
+          <a href="/" class="btn">🏠 Try Main Homepage</a>
+          <a href="/working.html" class="btn secondary">📄 Working Test</a>
+        </p>
+      </div>
+    </div>
+
+    <script>
+      function updateTime() {
+        document.getElementById("currentTime").textContent =
+          new Date().toLocaleString();
+      }
+
+      async function runTests() {
+        const resultsDiv = document.getElementById("testResults");
+        resultsDiv.innerHTML = "🔄 Running tests...";
+
+        let results = [];
+
+        // Test 1: Basic connectivity
+        results.push("✅ Website: Online and responsive");
+
+        // Test 2: Database health
+        try {
+          const dbResponse = await fetch("/.netlify/functions/database-health");
+          if (dbResponse.ok) {
+            const dbData = await dbResponse.json();
+            results.push(`✅ Database: ${dbData.status || "Connected"}`);
+          } else {
+            results.push("❌ Database: Connection failed");
+          }
+        } catch (error) {
+          results.push("❌ Database: Offline or unreachable");
+        }
+
+        // Test 3: Business API
+        try {
+          const bizResponse = await fetch(
+            "/.netlify/functions/database-businesses?limit=1",
+          );
+          if (bizResponse.ok) {
+            const bizData = await bizResponse.json();
+            results.push(
+              `✅ Business API: Working (${bizData.total || 0} businesses)`,
+            );
+          } else {
+            results.push("❌ Business API: Failed");
+          }
+        } catch (error) {
+          results.push("❌ Business API: Offline");
+        }
+
+        // Test 4: File access
+        try {
+          const fileResponse = await fetch("/api/dubai-visa-services.json");
+          if (fileResponse.ok) {
+            results.push("✅ File Access: JSON files accessible");
+          } else {
+            results.push("❌ File Access: JSON files blocked");
+          }
+        } catch (error) {
+          results.push("❌ File Access: Files unreachable");
+        }
+
+        resultsDiv.innerHTML = results
+          .map((r) => `<div style="margin: 5px 0;">${r}</div>`)
+          .join("");
+      }
+
+      // Initialize
+      updateTime();
+      setInterval(updateTime, 1000);
+      runTests();
+    </script>
+  </body>
+</html>
