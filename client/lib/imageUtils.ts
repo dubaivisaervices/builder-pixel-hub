@@ -56,8 +56,12 @@ export function getBestLogoUrl(business: BusinessImageData): string | null {
   // First priority: Try local business logo file
   const businessId = (business as any)?.id || (business as any)?.place_id;
   if (businessId) {
-    const localLogoUrl = `/business-images/logos/logo-${businessId}.jpg`;
-    // We'll return this and let the image onError handler deal with fallbacks
+    // Use absolute URL to ensure proper loading in production
+    const isProduction =
+      window.location.hostname !== "localhost" &&
+      !window.location.hostname.includes("127.0.0.1");
+    const baseUrl = isProduction ? "https://reportvisascam.com" : "";
+    const localLogoUrl = `${baseUrl}/business-images/logos/logo-${businessId}.jpg`;
     return localLogoUrl;
   }
 
