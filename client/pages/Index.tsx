@@ -71,7 +71,7 @@ export default function Index() {
 
   const navigate = useNavigate();
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -91,171 +91,128 @@ export default function Index() {
         setFeaturedBusinesses(featured.slice(0, 6));
         setStats(stats);
 
-          // Process categories - only if we have data
-          const categoryCount: { [key: string]: number } = {};
-          if (businessData.length > 0) {
-            businessData.forEach((business) => {
-              if (!business) return; // Skip invalid entries
-              const category = business.category?.toLowerCase() || "other";
+        // Process categories for the homepage display
+        const categoryCount: { [key: string]: number } = {};
+        if (businesses.length > 0) {
+          businesses.forEach((business) => {
+            if (!business) return;
+            const category = business.category?.toLowerCase() || "other";
 
-              if (
-                category.includes("work") ||
-                category.includes("employment") ||
-                category.includes("job")
-              ) {
-                categoryCount["work"] = (categoryCount["work"] || 0) + 1;
-              } else if (
-                category.includes("tourist") ||
-                category.includes("visit") ||
-                category.includes("travel")
-              ) {
-                categoryCount["tourist"] = (categoryCount["tourist"] || 0) + 1;
-              } else if (
-                category.includes("student") ||
-                category.includes("education") ||
-                category.includes("university")
-              ) {
-                categoryCount["student"] = (categoryCount["student"] || 0) + 1;
-              } else if (
-                category.includes("family") ||
-                category.includes("spouse") ||
-                category.includes("dependent")
-              ) {
-                categoryCount["family"] = (categoryCount["family"] || 0) + 1;
-              } else if (
-                category.includes("business") ||
-                category.includes("investor") ||
-                category.includes("trade")
-              ) {
-                categoryCount["business"] =
-                  (categoryCount["business"] || 0) + 1;
-              } else if (
-                category.includes("residence") ||
-                category.includes("permanent") ||
-                category.includes("settlement")
-              ) {
-                categoryCount["residence"] =
-                  (categoryCount["residence"] || 0) + 1;
-              } else {
-                categoryCount["other"] = (categoryCount["other"] || 0) + 1;
-              }
-            });
-
-            // Sort categories by count and get top 6
-            const sortedCategories = Object.entries(categoryCount)
-              .sort(([, a], [, b]) => b - a)
-              .slice(0, 6);
-
-            // Map to display format
-            const categoryDetails: {
-              [key: string]: {
-                title: string;
-                description: string;
-                icon: string;
-                color: string;
-              };
-            } = {
-              work: {
-                title: "Work Visa Services",
-                description:
-                  "Employment visa processing and work permit assistance",
-                icon: "💼",
-                color: "from-blue-500 to-blue-600",
-              },
-              tourist: {
-                title: "Tourist Visa Services",
-                description: "Visit visa and tourist visa applications",
-                icon: "🏖️",
-                color: "from-green-500 to-green-600",
-              },
-              student: {
-                title: "Student Visa Services",
-                description: "Education visa and university applications",
-                icon: "🎓",
-                color: "from-purple-500 to-purple-600",
-              },
-              family: {
-                title: "Family Visa Services",
-                description: "Family reunion and dependent visa processing",
-                icon: "👨‍👩‍👧‍👦",
-                color: "from-pink-500 to-pink-600",
-              },
-              business: {
-                title: "Business Visa Services",
-                description: "Investor visa and business setup assistance",
-                icon: "🏢",
-                color: "from-orange-500 to-orange-600",
-              },
-              residence: {
-                title: "Residence Visa Services",
-                description: "Permanent residence and citizenship support",
-                icon: "🏡",
-                color: "from-indigo-500 to-indigo-600",
-              },
-              other: {
-                title: "Other Visa Services",
-                description: "Additional visa services and consultation",
-                icon: "📋",
-                color: "from-gray-500 to-gray-600",
-              },
-            };
-
-            const topCategoriesData = sortedCategories.map(
-              ([category, count]) => ({
-                category,
-                count,
-                ...categoryDetails[category],
-              }),
-            );
-
-            setTopCategories(topCategoriesData);
-          }
-        } else {
-          console.warn(
-            "❌ Failed to fetch business data:",
-            businessResponse.status,
-            businessResponse.statusText,
-          );
-          // Set fallback data when API fails
-          setStats({
-            totalBusinesses: 841,
-            totalReviews: 4280,
-            avgRating: 3.8,
-            locations: 15,
-            scamReports: 145,
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-
-        // Try fallback API endpoint
-        try {
-          console.log("🔄 Trying fallback API...");
-          const fallbackResponse = await fetch("/api/businesses-static");
-          if (fallbackResponse.ok) {
-            const fallbackData = await fallbackResponse.json();
-            if (fallbackData && Array.isArray(fallbackData.businesses)) {
-              setAllBusinesses(fallbackData.businesses);
-              setFeaturedBusinesses(fallbackData.businesses.slice(0, 6));
-
-              setStats({
-                totalBusinesses: fallbackData.businesses.length,
-                totalReviews: fallbackData.businesses.reduce(
-                  (sum: number, b: BusinessData) => sum + (b?.reviewCount || 0),
-                  0,
-                ),
-                avgRating: 4.2,
-                locations: 15,
-                scamReports: 145,
-              });
-
-              console.log("✅ Fallback data loaded successfully");
-              return;
+            if (
+              category.includes("work") ||
+              category.includes("employment") ||
+              category.includes("job")
+            ) {
+              categoryCount["work"] = (categoryCount["work"] || 0) + 1;
+            } else if (
+              category.includes("tourist") ||
+              category.includes("visit") ||
+              category.includes("travel")
+            ) {
+              categoryCount["tourist"] = (categoryCount["tourist"] || 0) + 1;
+            } else if (
+              category.includes("student") ||
+              category.includes("education") ||
+              category.includes("university")
+            ) {
+              categoryCount["student"] = (categoryCount["student"] || 0) + 1;
+            } else if (
+              category.includes("family") ||
+              category.includes("spouse") ||
+              category.includes("dependent")
+            ) {
+              categoryCount["family"] = (categoryCount["family"] || 0) + 1;
+            } else if (
+              category.includes("business") ||
+              category.includes("investor") ||
+              category.includes("trade")
+            ) {
+              categoryCount["business"] = (categoryCount["business"] || 0) + 1;
+            } else if (
+              category.includes("residence") ||
+              category.includes("permanent") ||
+              category.includes("settlement")
+            ) {
+              categoryCount["residence"] =
+                (categoryCount["residence"] || 0) + 1;
+            } else {
+              categoryCount["other"] = (categoryCount["other"] || 0) + 1;
             }
-          }
-        } catch (fallbackError) {
-          console.error("Fallback API also failed:", fallbackError);
+          });
+
+          // Sort categories by count and get top 6
+          const sortedCategories = Object.entries(categoryCount)
+            .sort(([, a], [, b]) => b - a)
+            .slice(0, 6);
+
+          // Map to display format
+          const categoryDetails: {
+            [key: string]: {
+              title: string;
+              description: string;
+              icon: string;
+              color: string;
+            };
+          } = {
+            work: {
+              title: "Work Visa Services",
+              description:
+                "Employment visa processing and work permit assistance",
+              icon: "💼",
+              color: "from-blue-500 to-blue-600",
+            },
+            tourist: {
+              title: "Tourist Visa Services",
+              description: "Visit visa and tourist visa applications",
+              icon: "🏖️",
+              color: "from-green-500 to-green-600",
+            },
+            student: {
+              title: "Student Visa Services",
+              description: "Education visa and university applications",
+              icon: "🎓",
+              color: "from-purple-500 to-purple-600",
+            },
+            family: {
+              title: "Family Visa Services",
+              description: "Family reunion and dependent visa processing",
+              icon: "👨‍👩‍👧‍👦",
+              color: "from-pink-500 to-pink-600",
+            },
+            business: {
+              title: "Business Visa Services",
+              description: "Investor visa and business setup assistance",
+              icon: "🏢",
+              color: "from-orange-500 to-orange-600",
+            },
+            residence: {
+              title: "Residence Visa Services",
+              description: "Permanent residence and citizenship support",
+              icon: "🏡",
+              color: "from-indigo-500 to-indigo-600",
+            },
+            other: {
+              title: "Other Visa Services",
+              description: "Additional visa services and consultation",
+              icon: "📋",
+              color: "from-gray-500 to-gray-600",
+            },
+          };
+
+          const topCategoriesData = sortedCategories.map(
+            ([category, count]) => ({
+              category,
+              count,
+              ...categoryDetails[category],
+            }),
+          );
+
+          setTopCategories(topCategoriesData);
         }
+
+        console.log("✅ Homepage data loaded successfully");
+      } catch (error) {
+        console.error("❌ Error fetching homepage data:", error);
 
         // Ultimate fallback: create sample data
         const sampleBusinesses: BusinessData[] = [
@@ -289,9 +246,9 @@ export default function Index() {
         setFeaturedBusinesses(sampleBusinesses);
 
         setStats({
-          totalBusinesses: sampleBusinesses.length, // Use sample count as fallback
-          totalReviews: 4280,
-          avgRating: 3.8,
+          totalBusinesses: 841,
+          totalReviews: 306627,
+          avgRating: 4.5,
           locations: 15,
           scamReports: 145,
         });
