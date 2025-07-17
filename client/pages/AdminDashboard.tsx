@@ -1289,9 +1289,11 @@ export default function AdminDashboard() {
                       </div>
                       <div className="border-t border-green-200 pt-2 flex justify-between">
                         <span className="text-green-800 font-medium">
-                          Total Available:
+                          Total Businesses:
                         </span>
-                        <span className="font-bold text-green-900">957</span>
+                        <span className="font-bold text-green-900">
+                          {stats.totalBusinesses}
+                        </span>
                       </div>
                       <div className="text-xs text-blue-600 mt-2 p-2 bg-blue-100 rounded">
                         ✅ <strong>Database connection fixed!</strong> New
