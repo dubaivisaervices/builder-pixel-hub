@@ -97,21 +97,14 @@ export default function SimpleBusinessDirectory() {
 
         // Priority 3: Emergency hardcoded data to prevent blank page
         if (!businessData || businessData.length === 0) {
-          businessData = [
-            {
-              id: "emergency-1",
-              name: "Loading businesses...",
-              address: "Please check database connection",
-              category: "System Status",
-              phone: "",
-              website: "",
-              rating: 4.0,
-              reviewCount: 0,
-              logoUrl:
-                "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-            },
-          ];
-          console.log("⚠️ Using emergency data - check database connection");
+          console.log(
+            "⚠️ No data found from any source - using emergency fallback",
+          );
+          // Show a helpful error message instead of blank page
+          setError(
+            "No business data available. Please check database connection or try refreshing the page.",
+          );
+          businessData = [];
         }
 
         // Transform data to ensure consistent format
