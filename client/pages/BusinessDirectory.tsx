@@ -106,9 +106,11 @@ export default function BusinessDirectory() {
       // Try multiple data sources to ensure we get real data
       let businesses = null;
 
-      // Try 1: Direct static file
+      // Try 1: Direct static file with cache busting
       try {
-        const response = await fetch("/api/dubai-visa-services.json");
+        const response = await fetch(
+          `/api/dubai-visa-services.json?v=${Date.now()}`,
+        );
         if (response.ok) {
           const data = await response.json();
           if (
