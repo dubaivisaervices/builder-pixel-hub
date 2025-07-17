@@ -77,18 +77,51 @@ export default function Index() {
         setLoading(true);
         console.log("🔄 Fetching business data for homepage...");
 
-        // Fetch data from static JSON files
-        const [businessesRes, statsRes, featuredRes] = await Promise.all([
-          fetch("/api/dubai-visa-services.json"),
-          fetch("/api/stats.json"),
-          fetch("/api/featured.json"),
-        ]);
+        // Try to fetch real complete data first
+        let businesses, stats, featured;
 
-        const businesses = await businessesRes.json();
-        const stats = await statsRes.json();
-        const featured = await featuredRes.json();
+        try {
+          console.log("🔍 Trying complete businesses file...");
+          const completeRes = await fetch("/api/complete-businesses.json");
+          if (completeRes.ok) {
+            const completeData = await completeRes.json();
+            if (completeData.businesses && completeData.businesses.length > 0) {
+              businesses = completeData.businesses;
+              stats = completeData.stats || {
+                totalBusinesses: businesses.length,
+                totalReviews: 0,
+                avgRating: 4.5,
+                locations: 15,
+                scamReports: 145,
+              };
+              featured = businesses.filter((b) => b.rating >= 4.5).slice(0, 20);
+              console.log(
+                `✅ Loaded REAL ${businesses.length} businesses from complete data`,
+              );
+            }
+          }
+        } catch (error) {
+          console.log(
+            "❌ Failed to load complete data, trying individual files",
+          );
+        }
 
-        console.log(`✅ Loaded ${businesses.length} businesses`);
+        // Fallback to individual files if complete data failed
+        if (!businesses) {
+          console.log("🔍 Fetching from individual static JSON files...");
+          const [businessesRes, statsRes, featuredRes] = await Promise.all([
+            fetch("/api/dubai-visa-services.json"),
+            fetch("/api/stats.json"),
+            fetch("/api/featured.json"),
+          ]);
+
+          businesses = await businessesRes.json();
+          stats = await statsRes.json();
+          featured = await featuredRes.json();
+          console.log(
+            `✅ Loaded ${businesses.length} businesses from individual files`,
+          );
+        }
 
         setAllBusinesses(businesses);
         setFeaturedBusinesses(featured.slice(0, 6));
