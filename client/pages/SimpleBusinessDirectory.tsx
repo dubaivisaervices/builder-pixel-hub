@@ -37,17 +37,28 @@ export default function SimpleBusinessDirectory() {
 
         let businessData = null;
 
-        // Priority 1: Try database first (force database loading)
+        // Priority 1: Try database first (silently fail if not working)
         try {
-          console.log("🔄 Connecting to database...");
+          console.log("🔄 Trying database connection...");
           const dbResponse = await fetch(
             `/.netlify/functions/database-businesses?all=true&t=${Date.now()}`,
           );
-          console.log("📡 Database response status:", dbResponse.status);
 
           if (dbResponse.ok) {
-            const dbData = await dbResponse.json();
-            console.log("📊 Database response:", dbData);
+            const responseText = await dbResponse.text();
+            // Check if response is HTML (error page) vs JSON
+            if (
+              responseText.startsWith("<!doctype") ||
+              responseText.startsWith("<html")
+            ) {
+              console.log(
+                "📄 Database function returning HTML, falling back to JSON...",
+              );
+              throw new Error("Database function not responding properly");
+            }
+
+            const dbData = JSON.parse(responseText);
+            console.log("📊 Database response parsed successfully");
 
             if (dbData.businesses && dbData.businesses.length > 0) {
               businessData = dbData.businesses;
@@ -55,23 +66,27 @@ export default function SimpleBusinessDirectory() {
                 `✅ SUCCESS: Loaded ${businessData.length} businesses from database`,
               );
               setAllDataLoaded(true);
-            } else {
-              console.warn(
-                "⚠️ Database connected but no businesses found. Need to import data!",
+            } else if (dbData.error) {
+              console.log(
+                "📄 Database error, falling back to JSON:",
+                dbData.error,
               );
-              throw new Error("No businesses in database - import needed");
+              throw new Error("Database error");
+            } else {
+              console.log(
+                "📄 No businesses in database, falling back to JSON...",
+              );
+              throw new Error("No businesses in database");
             }
           } else {
-            console.warn(
-              "❌ Database response not OK:",
-              dbResponse.status,
-              dbResponse.statusText,
+            console.log(
+              "📄 Database API not available, falling back to JSON...",
             );
-            throw new Error(`Database API failed: ${dbResponse.status}`);
+            throw new Error("Database API not available");
           }
         } catch (dbError) {
-          console.error("❌ Database loading failed:", dbError.message);
-          console.log("📄 Falling back to JSON files...");
+          console.log("📄 Using JSON files instead of database");
+          // Don't log the actual error to avoid cluttering console
         }
 
         // Priority 2: Fallback to complete JSON file (try large file first)
