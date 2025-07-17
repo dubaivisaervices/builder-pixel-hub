@@ -16,7 +16,7 @@
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build",
     "build:server": "vite build --config vite.config.server.ts",
-    "build:netlify": "npm run build:client && cp public/_redirects dist/spa/ && cp public/*.html dist/spa/ && mkdir -p dist/netlify/functions && cp netlify/functions/*.js dist/netlify/functions/ && echo 'Netlify functions and assets copied successfully'",
+    "build:netlify": "npm run build:client && cp public/_redirects dist/spa/ && cp public/*.html dist/spa/ && cp -r public/business-images dist/spa/ && mkdir -p dist/netlify/functions && cp netlify/functions/*.js dist/netlify/functions/ && echo 'Netlify functions and assets copied successfully'",
     "start": "node dist/server/node-build.mjs",
     "start:sqlite": "node dist/server/sqlite-server.js",
     "deploy": "node deploy-simple-hostinger.js",
