@@ -1,158 +1,16 @@
 [build]
-  command = "npm run build:netlify"
   publish = "dist/spa"
-
-[build.environment]
-  NODE_VERSION = "20"
-
-[functions]
-  external_node_modules = ["serverless-http"]
-  node_bundler = "esbuild"
-  
-# API redirects disabled - using local database server instead
-# [[redirects]]
-#   from = "/api/ping"
-#   to = "/.netlify/functions/api/ping"
-#   status = 200
-#   force = true
-#
-# [[redirects]]
-#   from = "/api/health"
-#   to = "/.netlify/functions/api/health"
-#   status = 200
-#   force = true
-#
-# [[redirects]]
-#   from = "/api/dubai-visa-services"
-#   to = "/.netlify/functions/api/dubai-visa-services"
-#   status = 200
-#   force = true
-#
-# [[redirects]]
-#   from = "/api/businesses"
-#   to = "/.netlify/functions/api/businesses"
-#   status = 200
-#   force = true
-#
-# # Catch-all API
-# [[redirects]]
-#   from = "/api/*"
-#   to = "/.netlify/functions/api/:splat"
-#   status = 200
-#   force = true
-
-# Static files with force
-[[redirects]]
-  from = "/assets/*"
-  to = "/assets/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/favicon.ico"
-  to = "/favicon.ico"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/robots.txt"
-  to = "/robots.txt"
-  status = 200
-  force = true
-
-# Emergency access pages
-[[redirects]]
-  from = "/working.html"
-  to = "/working.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/emergency.html"
-  to = "/emergency.html"
-  status = 200
-  force = true
-
-# Specific React routes
-[[redirects]]
-  from = "/dubai-businesses"
-  to = "/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/business-directory"
-  to = "/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/report"
-  to = "/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/admin"
-  to = "/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/company/*"
-  to = "/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/modern-profile/*"
-  to = "/index.html"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/complaint"
-  to = "/index.html"
-  status = 200
-  force = true
-
-# Catch-all for SPA - MUST BE LAST
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-# Cache busting and performance headers
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "SAMEORIGIN"
-    Cache-Control = "no-cache, no-store, must-revalidate"
-    Pragma = "no-cache"
-    Expires = "0"
-    X-Content-Type-Options = "nosniff"
-    X-XSS-Protection = "1; mode=block"
-
-[[headers]]
-  for = "/*.html"
-  [headers.values]
-    Cache-Control = "no-cache, no-store, must-revalidate"
-    Pragma = "no-cache"
-    Expires = "0"
-
-[[headers]]
-  for = "/*.js"
-  [headers.values]
-    Cache-Control = "public, max-age=86400"
-
-[[headers]]
-  for = "/*.css"
-  [headers.values]
-    Cache-Control = "public, max-age=86400"
+  command = "npm run export:netlify && npm run build"
 
 [[headers]]
   for = "/api/*"
   [headers.values]
-    Cache-Control = "no-cache, no-store, must-revalidate"
-    Pragma = "no-cache"
-    Expires = "0"
+    Cache-Control = "public, max-age=3600"
+    Access-Control-Allow-Origin = "*"
+    Content-Type = "application/json"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
