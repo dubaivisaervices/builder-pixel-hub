@@ -1655,13 +1655,13 @@ export function createServer() {
 
   // Simplified endpoints - complex API control removed for stability
 
-  // DEBUG: Test Hostinger FTP connection and directory setup
-  app.get("/api/admin/debug-hostinger", async (req, res) => {
-    const { debugHostingerConnection } = await import(
-      "./routes/debug-hostinger"
-    );
-    return debugHostingerConnection(req, res);
-  });
+  // DEBUG: Test Hostinger FTP connection and directory setup (disabled)
+  // app.get("/api/admin/debug-hostinger", async (req, res) => {
+  //   const { debugHostingerConnection } = await import(
+  //     "./routes/debug-hostinger"
+  //   );
+  //   return debugHostingerConnection(req, res);
+  // });
 
   // TEST: Test actual Hostinger upload service
   app.get("/api/admin/test-upload", async (req, res) => {
