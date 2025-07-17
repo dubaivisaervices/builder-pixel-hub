@@ -363,8 +363,11 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    fetchDashboardData();
-    checkGoogleApiStatus();
+    // Non-blocking async calls
+    setTimeout(() => {
+      fetchDashboardData();
+      checkGoogleApiStatus();
+    }, 100); // Small delay to ensure component renders first
   }, []);
 
   useEffect(() => {
