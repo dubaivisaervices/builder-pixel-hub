@@ -321,14 +321,46 @@ export default function SimpleBusinessDirectory() {
         {filteredBusinesses.length > displayCount && (
           <div className="text-center mt-12">
             <Button
-              onClick={() => setDisplayCount(displayCount + 25)}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-xl text-lg"
+              onClick={() => {
+                setLoadingMore(true);
+                setTimeout(() => {
+                  setDisplayCount(displayCount + 50);
+                  setLoadingMore(false);
+                }, 500);
+              }}
+              disabled={loadingMore}
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-xl text-lg disabled:opacity-50"
             >
-              Load More Businesses
-              <Users className="ml-2 h-5 w-5" />
+              {loadingMore ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Loading More...
+                </>
+              ) : (
+                <>
+                  Load More Businesses (
+                  {Math.min(50, filteredBusinesses.length - displayCount)} more)
+                  <Users className="ml-2 h-5 w-5" />
+                </>
+              )}
             </Button>
           </div>
         )}
+
+        {/* Show completion message when all data is displayed */}
+        {filteredBusinesses.length <= displayCount &&
+          filteredBusinesses.length > 50 && (
+            <div className="text-center mt-12 text-gray-600">
+              <p className="text-lg">
+                🎉 All {filteredBusinesses.length} businesses loaded!
+              </p>
+              {allDataLoaded && (
+                <p className="text-sm mt-2">
+                  Showing complete directory of verified UAE businesses
+                </p>
+              )}
+            </div>
+          )}
       </div>
     </div>
   );
