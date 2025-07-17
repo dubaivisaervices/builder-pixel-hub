@@ -33,63 +33,17 @@ export default function SimpleBusinessDirectory() {
         setLoading(true);
         setError(null);
 
-        // Try to load complete businesses data in chunks to avoid timeout
-        let businessData = null;
+        console.log("🗄️ Loading businesses from Neon database...");
 
-        try {
-          console.log("Loading complete businesses data...");
-          const response = await fetch(
-            `/api/complete-businesses.json?v=${Date.now()}`,
-          );
-
-          if (response.ok) {
-            const data = await response.json();
-            if (data.businesses && Array.isArray(data.businesses)) {
-              businessData = data.businesses;
-              console.log(
-                `Successfully loaded ${businessData.length} businesses from complete data`,
-              );
-              setAllDataLoaded(true);
-            }
-          } else if (response.status === 403 || response.status >= 500) {
-            throw new Error("Large file access restricted, using fallback");
-          }
-        } catch (error) {
-          console.warn(
-            "Failed to load complete data, using fallback:",
-            error.message,
-          );
-        }
-
-        // Fallback to smaller dataset if complete data fails
-        if (!businessData) {
-          console.log("Loading fallback business data...");
-          const response = await fetch(
-            `/api/dubai-visa-services.json?v=${Date.now()}`,
-          );
-
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-          }
-
-          const data = await response.json();
-
-          if (data.businesses && Array.isArray(data.businesses)) {
-            businessData = data.businesses;
-          } else if (Array.isArray(data)) {
-            businessData = data;
-          } else {
-            throw new Error("Invalid data format received");
-          }
-
-          console.log(
-            `Successfully loaded ${businessData.length} businesses from fallback`,
-          );
-        }
+        // Use the database service with automatic fallback
+        const businessData = await loadBusinessesWithFallback();
 
         if (!businessData || businessData.length === 0) {
-          throw new Error("No business data found");
+          throw new Error("No business data found from any source");
         }
+
+        console.log(`✅ Successfully loaded ${businessData.length} businesses`);
+        setAllDataLoaded(businessData.length > 100); // Assume complete if more than 100
 
         // Transform data to ensure consistent format
         const processedBusinesses = businessData.map((business) => ({
