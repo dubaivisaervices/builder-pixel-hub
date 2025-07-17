@@ -115,6 +115,44 @@ export default function SimpleBusinessDirectory() {
     navigate(`/company/${business.id}`);
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin mx-auto mb-4 text-blue-600" />
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+            Loading Business Directory
+          </h2>
+          <p className="text-gray-600">
+            Fetching the latest business listings...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="text-red-500 mb-4">
+            <Building2 className="h-12 w-12 mx-auto" />
+          </div>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+            Error Loading Businesses
+          </h2>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <Button
+            onClick={() => window.location.reload()}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            Try Again
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Header */}
