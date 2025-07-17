@@ -364,11 +364,6 @@ export default function AdminDashboard() {
     if (companyName.trim()) {
       searchQuery = companyName.trim();
     } else {
-      // Handle random category in preview
-      if (category === "RANDOM") {
-        category = "🎲 [Random Category]";
-      }
-
       // Build query from category and city
       const parts = [];
       if (category) parts.push(category);
