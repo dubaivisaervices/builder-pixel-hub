@@ -123,6 +123,16 @@ import {
   netlifyFeaturedAPI,
 } from "./routes/netlify-api";
 import {
+  testSupabaseConnection,
+  getSupabaseBusinesses,
+  startSupabaseSync,
+  getSupabaseSyncStatus,
+  stopSupabaseSync,
+  testAllConnections,
+  getSupabaseCategories,
+  getSupabaseSyncResults,
+} from "./routes/supabase-sync";
+import {
   submitReport,
   getCompanyReports,
   getAllReports,
