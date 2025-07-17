@@ -1176,14 +1176,53 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
+                  {/* Real-time Status Display */}
+                  {syncStatus && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                      <h4 className="font-medium text-blue-900 mb-2">
+                        📊 Real-time Status
+                      </h4>
+                      <p className="text-sm text-blue-800">{syncStatus}</p>
+                    </div>
+                  )}
+
+                  {/* Loading Indicator */}
+                  {isFetching && (
+                    <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                      <div className="flex items-center space-x-3">
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-600"></div>
+                        <div>
+                          <h4 className="font-medium text-orange-900">
+                            🔄 Fetching Businesses...
+                          </h4>
+                          <p className="text-sm text-orange-700">
+                            Please wait while we search Google Places API
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Recent Fetches */}
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                     <h4 className="font-medium text-gray-900 mb-3">
                       Recent Fetch Results
                     </h4>
                     <div className="text-sm text-gray-600">
-                      No recent fetches. Start by searching for businesses
-                      above.
+                      {fetchResults?.summary ? (
+                        <div className="space-y-2">
+                          <p>
+                            ✅ Last fetch:{" "}
+                            {fetchResults.summary.totalBusinesses} businesses
+                          </p>
+                          <p>
+                            📸 Images: {fetchResults.summary.imagesDownloaded}
+                          </p>
+                          <p>💰 Cost: ${fetchResults.summary.totalCost}</p>
+                        </div>
+                      ) : (
+                        "No recent fetches. Start by searching for businesses above."
+                      )}
                     </div>
                   </div>
                 </div>
