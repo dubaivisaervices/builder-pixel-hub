@@ -30,16 +30,12 @@ import {
   Plus,
   Tags,
 } from "lucide-react";
-import BusinessSearchManager from "./BusinessSearchManager";
-import S3Configuration from "../components/S3Configuration";
-import UltraFastS3Sync from "../components/UltraFastS3Sync";
-import RealTimeSmartSync from "../components/RealTimeSmartSync";
-import UltraFastS3SyncNew from "../components/UltraFastS3Sync";
-import { DatabaseMigration } from "../components/DatabaseMigration";
-import { SimpleS3Status } from "../components/SimpleS3Status";
-import { ApiDebug } from "../components/ApiDebug";
-import { QuickUploadAccess } from "../components/QuickUploadAccess";
-import { UploadAlert } from "../components/UploadAlert";
+// Lazy load heavy components
+const NetlifyImageManager = React.lazy(() => import("./NetlifyImageManager"));
+const QuickUploadAccess = React.lazy(
+  () => import("../components/QuickUploadAccess"),
+);
+const UploadAlert = React.lazy(() => import("../components/UploadAlert"));
 
 interface CompanyRequest {
   id: number;
