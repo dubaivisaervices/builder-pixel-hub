@@ -19,6 +19,11 @@ const SimpleNavigation = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
+  // Hide navigation on admin routes
+  if (location.pathname.startsWith("/admin")) {
+    return null;
+  }
+
   const isActive = (path: string) => {
     if (path === "/" && location.pathname === "/") return true;
     if (path !== "/" && location.pathname.startsWith(path)) return true;
