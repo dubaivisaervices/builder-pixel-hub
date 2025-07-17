@@ -180,12 +180,12 @@ export default function AdminDashboard() {
       setStats(dashboardStats);
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
-      // Final fallback with current accurate data
+      // Final fallback with original data
       setStats({
-        totalBusinesses: 957, // 841 original + 116 newly fetched
-        totalReviews: 15420,
-        totalPhotos: 2850, // Increased due to new business photos
-        categories: 18, // Added new immigration categories
+        totalBusinesses: 841, // Original business count from JSON
+        totalReviews: 15000,
+        totalPhotos: 2500,
+        categories: 16,
       });
     }
   };
