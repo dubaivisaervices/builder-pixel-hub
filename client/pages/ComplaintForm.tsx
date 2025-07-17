@@ -1085,7 +1085,7 @@ export default function ComplaintForm() {
                         className="p-4 hover:bg-gray-50"
                       >
                         <span className="flex items-center">
-                          <MessageCircleQuestion className="h-4 w-4 mr-3 text-gray-500" />
+                          <MessageSquare className="h-4 w-4 mr-3 text-gray-500" />
                           Other
                         </span>
                       </SelectItem>
