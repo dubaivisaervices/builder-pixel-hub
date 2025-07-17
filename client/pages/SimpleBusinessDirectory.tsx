@@ -77,21 +77,31 @@ export default function SimpleBusinessDirectory() {
         // Priority 2: Fallback to small JSON file (avoid large file 403 errors)
         if (!businessData) {
           try {
+            console.log("📄 Trying JSON fallback...");
             const fallbackResponse = await fetch(
               `/api/dubai-visa-services.json?v=${Date.now()}`,
             );
+            console.log("📡 JSON response status:", fallbackResponse.status);
+
             if (fallbackResponse.ok) {
               const fallbackData = await fallbackResponse.json();
               businessData = Array.isArray(fallbackData)
                 ? fallbackData
                 : fallbackData.businesses || [];
               console.log(
-                `📄 Loaded ${businessData.length} businesses from fallback JSON`,
+                `📄 SUCCESS: Loaded ${businessData.length} businesses from JSON`,
               );
-              setAllDataLoaded(false);
+              setAllDataLoaded(businessData.length > 25);
+            } else {
+              console.warn(
+                `📄 JSON response failed: ${fallbackResponse.status}`,
+              );
+              throw new Error(
+                `JSON file access failed: ${fallbackResponse.status}`,
+              );
             }
           } catch (jsonError) {
-            console.warn("JSON fallback failed:", jsonError.message);
+            console.error("📄 JSON fallback failed:", jsonError.message);
           }
         }
 
