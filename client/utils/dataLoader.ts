@@ -120,9 +120,11 @@ class DataLoader {
         console.log("❌ Failed to load from /api/ directory:", error.message);
       }
 
-      // Strategy 2: Try API endpoints (for development/server hosting)
+      // Strategy 2: Try alternative static paths and API endpoints
       const apiPaths = [
-        "/api/dubai-visa-services?limit=1000",
+        "/api/dubai-visa-services.json", // Our main static file
+        "/api/featured.json", // Featured businesses
+        "/api/dubai-visa-services?limit=1000", // API endpoint
         "/api/businesses",
         "/api/admin/businesses-all",
       ];
