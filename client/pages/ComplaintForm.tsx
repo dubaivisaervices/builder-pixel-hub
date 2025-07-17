@@ -31,7 +31,7 @@ import {
   Users,
   TrendingDown,
   Clock,
-  MessageCircleQuestion,
+  MessageSquare,
   Building,
   Star,
   Zap,
