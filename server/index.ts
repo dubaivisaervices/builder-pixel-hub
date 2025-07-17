@@ -117,6 +117,12 @@ import {
 } from "./routes/google-image-refresh";
 import { testGoogleAPI } from "./routes/test-google-api";
 import {
+  netlifyBusinessesAPI,
+  netlifyStatsAPI,
+  netlifyCategoriesAPI,
+  netlifyFeaturedAPI,
+} from "./routes/netlify-api";
+import {
   submitReport,
   getCompanyReports,
   getAllReports,
@@ -1634,7 +1640,7 @@ export function createServer() {
         timestamp: new Date().toISOString(),
       });
     } catch (error: any) {
-      console.error("❌ Database migration failed:", error);
+      console.error("�� Database migration failed:", error);
       res.status(500).json({
         success: false,
         error: error.message,
