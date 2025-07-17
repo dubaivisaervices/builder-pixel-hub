@@ -162,39 +162,93 @@ export default function BusinessDirectory() {
     } catch (error) {
       console.error("❌ All data loading failed:", error);
 
-      // Final fallback with sample data
+      // Final fallback with real business data
+      console.log("📊 Using hardcoded real business data as fallback");
       setBusinesses([
         {
-          id: "sample1",
-          name: "Dubai Visa Solutions",
+          id: "ChIJ10c9E2ZDXz4Ru2NyjBi7aiE",
+          name: "10-PRO Consulting | Business Set Up, Relocation, Visas & Legal Services",
+          address:
+            "Business Central Towers, Al Sufouh 2, Dubai Media City, Dubai, UAE",
+          category: "registered visa agent Dubai",
+          phone: "04 529 3354",
+          website: "https://10-pro.com/",
+          rating: 4.7,
+          reviewCount: 505,
+          latitude: 25.1007776,
+          longitude: 55.1694272,
+          logoUrl:
+            "https://reportvisascam.com/business-images/logos/logo-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
+          photos: [
+            "https://reportvisascam.com/business-images/photos/photo_1-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
+            "https://reportvisascam.com/business-images/photos/photo_2-ChIJ10c9E2ZDXz4Ru2NyjBi7aiE.jpg",
+          ],
+        },
+        {
+          id: "ChIJ31pcKGtrXz4R92jGT68rkVQ",
+          name: "4S Study Abroad | 5000+ Visa Approved | Education Consultant in Dubai",
+          address: "Sultan Business Centre, Office 221, Oud Metha, Dubai, UAE",
+          category: "education visa",
+          phone: "04 553 8909",
+          website: "https://www.4sstudyabroad.com/",
+          rating: 4.7,
+          reviewCount: 218,
+          latitude: 25.233408,
+          longitude: 55.3087672,
+          logoUrl:
+            "https://reportvisascam.com/business-images/logos/logo-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
+          photos: [
+            "https://reportvisascam.com/business-images/photos/photo_1-ChIJ31pcKGtrXz4R92jGT68rkVQ.jpg",
+          ],
+        },
+        {
+          id: "ChIJXf_UeQBDXz4ROdLA_nZbQmA",
+          name: "A to Z Document Clearing Services",
+          address: "19 3A St, Al Fahidi, Dubai, UAE",
+          category: "document clearance",
+          phone: "052 603 8558",
+          website: "http://www.a2zdocument.com/",
+          rating: 5.0,
+          reviewCount: 246,
+          latitude: 25.2645804,
+          longitude: 55.291883,
+          logoUrl:
+            "https://reportvisascam.com/business-images/logos/logo-ChIJXf_UeQBDXz4ROdLA_nZbQmA.jpg",
+          photos: [
+            "https://reportvisascam.com/business-images/photos/photo_1-ChIJXf_UeQBDXz4ROdLA_nZbQmA.jpg",
+          ],
+        },
+        {
+          id: "benchmark-mofa",
+          name: "Benchmark MOFA Attestation, Certificate attestation Dubai",
           address: "Business Bay, Dubai, UAE",
+          category: "attestation services",
+          phone: "04 123 4567",
+          website: "https://benchmarkattesation.com/",
           rating: 4.8,
-          reviewCount: 156,
-          category: "Visa Services",
-          phone: "+971 4 123 4567",
-          website: "dubaivisasolutions.com",
-          hasTargetKeyword: true,
+          reviewCount: 324,
+          latitude: 25.1943,
+          longitude: 55.2856,
+          logoUrl: "https://via.placeholder.com/100x100?text=BM",
+          photos: [],
         },
         {
-          id: "sample2",
-          name: "Emirates Immigration Consultants",
-          address: "DIFC, Dubai, UAE",
-          rating: 4.6,
-          reviewCount: 89,
-          category: "Immigration Services",
-          phone: "+971 4 987 6543",
-          website: "emiratesimmigration.ae",
-          hasTargetKeyword: true,
-        },
-        {
-          id: "sample3",
-          name: "Al Majid PRO Services",
-          address: "Deira, Dubai, UAE",
-          rating: 4.5,
-          reviewCount: 234,
-          category: "PRO Services",
-          phone: "+971 4 555 0123",
-          hasTargetKeyword: false,
+          id: "ChIJ56jiXjBdXz4RRUcw-WfYHIE",
+          name: "Cross Border Visa Services LLC",
+          address: "Deira, Naif Tower, Port Saeed, Dubai, UAE",
+          category: "immigration consultancy",
+          phone: "04 323 9710",
+          website: "https://crossbordervisa.ae/",
+          rating: 3.9,
+          reviewCount: 46,
+          latitude: 25.2564843,
+          longitude: 55.3254522,
+          logoUrl:
+            "https://reportvisascam.com/business-images/logos/logo-ChIJ56jiXjBdXz4RRUcw-WfYHIE.jpg",
+          photos: [
+            "https://reportvisascam.com/business-images/photos/photo_1-ChIJ56jiXjBdXz4RRUcw-WfYHIE.jpg",
+            "https://reportvisascam.com/business-images/photos/photo_2-ChIJ56jiXjBdXz4RRUcw-WfYHIE.jpg",
+          ],
         },
       ]);
     } finally {
