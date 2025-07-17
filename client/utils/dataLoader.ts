@@ -73,45 +73,51 @@ class DataLoader {
     console.log("🔄 Loading business data...");
 
     try {
-      // Strategy 1: Try static data from multiple possible paths
-      const staticPaths = [
-        "/data/businesses.json", // Primary path
-        "/assets/data/businesses.json", // Alternative build path
-        "/static/businesses.json", // Common static path
-        "/businesses.json", // Root path
-        "./data/businesses.json", // Relative path
-      ];
+      // Strategy 1: Try existing static JSON files
+      try {
+        console.log("🔍 Loading static data from /api/ directory");
 
-      for (const path of staticPaths) {
-        try {
-          console.log(`🔍 Trying static data path: ${path}`);
-          const response = await fetch(path, {
-            cache: "no-cache", // Ensure fresh data
-            headers: {
-              "Cache-Control": "no-cache",
-            },
-          });
+        const [businessesRes, statsRes, categoriesRes] = await Promise.all([
+          fetch("/api/dubai-visa-services.json"),
+          fetch("/api/stats.json"),
+          fetch("/api/categories.json"),
+        ]);
 
-          if (response.ok) {
-            const data = await response.json();
-            if (
-              data.businesses &&
-              Array.isArray(data.businesses) &&
-              data.businesses.length > 0
-            ) {
-              console.log(
-                `✅ Successfully loaded from ${path}:`,
-                data.businesses.length,
-                "businesses",
-              );
-              this.cachedData = this.validateAndNormalizeData(data);
-              this.isLoading = false;
-              return this.cachedData;
-            }
+        if (businessesRes.ok && statsRes.ok) {
+          const businesses = await businessesRes.json();
+          const stats = await statsRes.json();
+          const categories = categoriesRes.ok ? await categoriesRes.json() : [];
+
+          if (Array.isArray(businesses) && businesses.length > 0) {
+            console.log(
+              `✅ Successfully loaded from /api/:`,
+              businesses.length,
+              "businesses",
+            );
+
+            const normalizedData = {
+              businesses,
+              categories,
+              stats,
+              meta: {
+                source: "Static JSON",
+                totalBusinesses: businesses.length,
+                hasPhotos: businesses.filter(
+                  (b: BusinessData) => b.photos && b.photos.length > 0,
+                ).length,
+                hasLogos: businesses.filter((b: BusinessData) => b.logoUrl)
+                  .length,
+                exportTimestamp: Date.now(),
+              },
+            };
+
+            this.cachedData = this.validateAndNormalizeData(normalizedData);
+            this.isLoading = false;
+            return this.cachedData;
           }
-        } catch (error) {
-          console.log(`❌ Failed to load from ${path}:`, error.message);
         }
+      } catch (error) {
+        console.log("❌ Failed to load from /api/ directory:", error.message);
       }
 
       // Strategy 2: Try API endpoints (for development/server hosting)
