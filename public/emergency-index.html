@@ -247,8 +247,15 @@
 
       <!-- Sample Business Directory -->
       <div class="status-card">
-        <h2>🏢 Emergency Business Directory</h2>
-        <p>Sample of verified Dubai businesses (Emergency data)</p>
+        <h2>🏢 Dubai Business Directory</h2>
+        <p id="businessSummary">Loading businesses from JSON data...</p>
+        <button
+          onclick="loadAllBusinesses()"
+          class="btn btn-primary"
+          style="margin-top: 10px"
+        >
+          📂 Load All 841 Businesses
+        </button>
       </div>
 
       <div class="business-grid" id="businessGrid">
