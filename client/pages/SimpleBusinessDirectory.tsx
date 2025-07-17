@@ -346,17 +346,68 @@ export default function SimpleBusinessDirectory() {
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
-                      // Try local business logo first
-                      if (!target.src.includes("/business-images/logos/")) {
-                        const businessId = business.id || business.place_id;
-                        if (businessId) {
-                          target.src = `/business-images/logos/logo-${businessId}.jpg`;
-                          return;
-                        }
+                      const currentSrc = target.src;
+
+                      // First attempt: Try original logoUrl from business data
+                      if (
+                        business.logoUrl &&
+                        !currentSrc.includes(business.logoUrl)
+                      ) {
+                        target.src = business.logoUrl;
+                        return;
                       }
-                      // Final fallback to stock image
-                      target.src =
-                        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
+
+                      // Second attempt: Try S3 logo if available
+                      if (
+                        (business as any).logoS3Url &&
+                        !currentSrc.includes((business as any).logoS3Url)
+                      ) {
+                        target.src = (business as any).logoS3Url;
+                        return;
+                      }
+
+                      // Third attempt: Try category-specific placeholder
+                      const category = business.category?.toLowerCase() || "";
+                      let categoryImage = "";
+
+                      if (
+                        category.includes("visa") ||
+                        category.includes("immigration")
+                      ) {
+                        categoryImage =
+                          "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
+                      } else if (
+                        category.includes("document") ||
+                        category.includes("attestation")
+                      ) {
+                        categoryImage =
+                          "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
+                      } else if (
+                        category.includes("education") ||
+                        category.includes("student")
+                      ) {
+                        categoryImage =
+                          "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
+                      } else {
+                        categoryImage =
+                          "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
+                      }
+
+                      if (
+                        categoryImage &&
+                        !currentSrc.includes(categoryImage)
+                      ) {
+                        target.src = categoryImage;
+                        return;
+                      }
+
+                      // Final fallback - generic business icon
+                      if (
+                        !currentSrc.includes("photo-1486406146926-c627a92ad1ab")
+                      ) {
+                        target.src =
+                          "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
+                      }
                     }}
                   />
                 </div>
