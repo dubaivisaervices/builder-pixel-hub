@@ -561,6 +561,16 @@ export function createServer() {
   app.get("/api/categories-netlify", netlifyCategoriesAPI);
   app.get("/api/featured-netlify", netlifyFeaturedAPI);
 
+  // Supabase integration routes
+  app.get("/api/supabase/test", testSupabaseConnection);
+  app.get("/api/supabase/businesses", getSupabaseBusinesses);
+  app.post("/api/supabase/sync/start", startSupabaseSync);
+  app.get("/api/supabase/sync/status", getSupabaseSyncStatus);
+  app.post("/api/supabase/sync/stop", stopSupabaseSync);
+  app.get("/api/supabase/sync/results", getSupabaseSyncResults);
+  app.get("/api/supabase/test-all", testAllConnections);
+  app.get("/api/supabase/categories", getSupabaseCategories);
+
   // Reports API
   app.post(
     "/api/reports/submit",
