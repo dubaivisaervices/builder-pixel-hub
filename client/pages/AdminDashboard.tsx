@@ -166,13 +166,13 @@ export default function AdminDashboard() {
             throw new Error("JSON stats calculation failed");
           }
         } catch (jsonError) {
-          console.log("❌ JSON fallback failed, using current estimated data");
-          // Priority 3: Current accurate data (841 from JSON + 56 from recent fetches)
+          console.log("❌ JSON fallback failed, using default fallback data");
+          // Priority 3: Default fallback data
           dashboardStats = {
-            totalBusinesses: 957, // 841 original + 116 newly fetched businesses
-            totalReviews: 15420,
-            totalPhotos: 2850, // Increased due to new business photos
-            categories: 18, // Added new categories
+            totalBusinesses: 841, // Original business count
+            totalReviews: 15000,
+            totalPhotos: 2500,
+            categories: 16,
           };
         }
       }
