@@ -1138,21 +1138,44 @@ export default function CompanyProfileModern() {
           "🔄 Skipping cached navigation state, fetching fresh data...",
         );
 
-        // Fetch from static JSON files
-        console.log("🔍 Fetching from static JSON files...");
-        const response = await fetch(
-          `/api/dubai-visa-services.json?_t=${Date.now()}`,
-        );
+        // Try to fetch from complete businesses file first
+        console.log("🔍 Fetching from complete businesses file...");
+        let businesses;
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch businesses");
+        try {
+          const completeRes = await fetch(
+            `/api/complete-businesses.json?_t=${Date.now()}`,
+          );
+          if (completeRes.ok) {
+            const completeData = await completeRes.json();
+            if (completeData.businesses && completeData.businesses.length > 0) {
+              businesses = completeData.businesses;
+              console.log(
+                `✅ Loaded REAL ${businesses.length} businesses from complete data`,
+              );
+            }
+          }
+        } catch (error) {
+          console.log("❌ Complete data failed, trying individual file");
         }
 
-        const businesses = await response.json();
-        console.log(
-          "📦 Raw static data:",
-          JSON.stringify(businesses).substring(0, 500) + "...",
-        );
+        // Fallback to individual file
+        if (!businesses) {
+          console.log("🔍 Fetching from static JSON files...");
+          const response = await fetch(
+            `/api/dubai-visa-services.json?_t=${Date.now()}`,
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch businesses");
+          }
+
+          businesses = await response.json();
+          console.log(
+            "📦 Raw static data:",
+            JSON.stringify(businesses).substring(0, 500) + "...",
+          );
+        }
 
         if (Array.isArray(businesses) && businesses.length > 0) {
           let business = businesses[0]; // Default fallback
