@@ -363,11 +363,11 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    // Non-blocking async calls
-    setTimeout(() => {
+    // Completely non-blocking - don't wait for anything
+    Promise.resolve().then(() => {
       fetchDashboardData();
       checkGoogleApiStatus();
-    }, 100); // Small delay to ensure component renders first
+    });
   }, []);
 
   useEffect(() => {
@@ -1286,7 +1286,7 @@ export default function AdminDashboard() {
                         </span>
                       </div>
                       <div className="text-xs text-blue-600 mt-2 p-2 bg-blue-100 rounded">
-                        ��� <strong>Database connection fixed!</strong> New
+                        ✅ <strong>Database connection fixed!</strong> New
                         businesses will now be properly saved to PostgreSQL
                         database.
                       </div>
