@@ -103,26 +103,64 @@ export default function BusinessDirectory() {
     try {
       console.log("🔄 Loading businesses from static JSON files...");
 
-      // Try to fetch from static JSON files directly
-      const response = await fetch("/api/dubai-visa-services.json");
+      // Try multiple data sources to ensure we get real data
+      let businesses = null;
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch: ${response.status}`);
+      // Try 1: Direct static file
+      try {
+        const response = await fetch("/api/dubai-visa-services.json");
+        if (response.ok) {
+          const data = await response.json();
+          if (
+            Array.isArray(data) &&
+            data.length > 10 &&
+            data[0].name &&
+            !data[0].name.includes("Dubai Business 1")
+          ) {
+            businesses = data;
+            console.log(
+              `✅ Successfully loaded ${businesses.length} real businesses from static files`,
+            );
+          } else {
+            console.log(
+              "⚠️ Static file contains placeholder data, trying alternatives",
+            );
+          }
+        }
+      } catch (error) {
+        console.log("❌ Static file failed:", error);
       }
 
-      const businesses = await response.json();
-
-      if (!Array.isArray(businesses)) {
-        throw new Error("Invalid data format");
+      // Try 2: Complete businesses file if main file has placeholder data
+      if (!businesses) {
+        try {
+          const response = await fetch("/api/complete-businesses.json");
+          if (response.ok) {
+            const data = await response.json();
+            if (
+              data.businesses &&
+              Array.isArray(data.businesses) &&
+              data.businesses.length > 0
+            ) {
+              businesses = data.businesses.slice(0, 50); // Take first 50 for performance
+              console.log(
+                `✅ Successfully loaded ${businesses.length} businesses from complete file`,
+              );
+            }
+          }
+        } catch (error) {
+          console.log("❌ Complete file failed:", error);
+        }
       }
 
-      console.log(
-        `✅ Successfully loaded ${businesses.length} businesses from static files`,
-      );
+      if (!businesses) {
+        throw new Error("No valid business data found");
+      }
+
       setBusinesses(businesses);
       return;
     } catch (error) {
-      console.error("❌ Static file loading failed:", error);
+      console.error("❌ All data loading failed:", error);
 
       // Final fallback with sample data
       setBusinesses([
