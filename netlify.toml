@@ -1,6 +1,6 @@
 [build]
   publish = "dist/spa"
-  command = "npm run build:production"
+  command = "npm run quick:build"
 
 [[headers]]
   for = "/api/*"
@@ -8,10 +8,3 @@
     Cache-Control = "public, max-age=3600"
     Access-Control-Allow-Origin = "*"
     Content-Type = "application/json"
-
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
