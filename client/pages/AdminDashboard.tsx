@@ -972,11 +972,32 @@ export default function AdminDashboard() {
                             className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
                           >
                             <option value="">All Categories</option>
-                            <option value="RANDOM">🎲 Random Category</option>
                             <option value="visa services">Visa Services</option>
                             <option value="immigration services">
                               Immigration Services
                             </option>
+                            <option value="europe work visa agent">
+                              Europe Work Visa Agent
+                            </option>
+                            <option value="visa consulting services">
+                              Visa Consulting Services
+                            </option>
+                            <option value="visa agent">Visa Agent</option>
+                            <option value="immigration consultants immigration naturalization service">
+                              Immigration Consultants Immigration &
+                              Naturalization Service
+                            </option>
+                            <option value="work permit consultants">
+                              Work Permit Consultants
+                            </option>
+                            <option value="visit visa consultants">
+                              Visit Visa Consultants
+                            </option>
+                            <option value="work visa agency">
+                              Work Visa Agency
+                            </option>
+                            <option value="consultants">Consultants</option>
+                            <option value="consulting">Consulting</option>
                             <option value="document clearance">
                               Document Clearance
                             </option>
