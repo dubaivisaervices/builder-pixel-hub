@@ -47,7 +47,7 @@ export default function BusinessDirectory() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
-  const [displayCount, setDisplayCount] = useState(12);
+    const [displayCount, setDisplayCount] = useState(25);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [animateCards, setAnimateCards] = useState(false);
