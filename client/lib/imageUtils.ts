@@ -53,22 +53,30 @@ function fixImageDomain(url: string): string {
  * Get the best available logo URL for a business
  */
 export function getBestLogoUrl(business: BusinessImageData): string | null {
-  // First try S3 URL (highest priority)
+  // First priority: Try local business logo file
+  const businessId = (business as any)?.id || (business as any)?.place_id;
+  if (businessId) {
+    const localLogoUrl = `/business-images/logos/logo-${businessId}.jpg`;
+    // We'll return this and let the image onError handler deal with fallbacks
+    return localLogoUrl;
+  }
+
+  // Second priority: S3 URL
   if (business?.logoS3Url) {
     return fixImageDomain(business.logoS3Url);
   }
 
-  // Then try regular logo URL
+  // Third priority: Regular logo URL
   if (business?.logoUrl) {
     return fixImageDomain(business.logoUrl);
   }
 
-  // Use base64 if available
+  // Fourth priority: Base64 if available
   if (business?.logo_base64) {
     return `data:image/jpeg;base64,${business.logo_base64}`;
   }
 
-  // Generate industry-specific placeholder only as last resort
+  // Generate industry-specific placeholder as fallback
   const category = (business as any)?.category?.toLowerCase() || "";
 
   if (category.includes("visa") || category.includes("immigration")) {
