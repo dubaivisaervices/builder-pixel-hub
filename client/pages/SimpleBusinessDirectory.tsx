@@ -74,31 +74,55 @@ export default function SimpleBusinessDirectory() {
           console.log("📄 Falling back to JSON files...");
         }
 
-        // Priority 2: Fallback to small JSON file (avoid large file 403 errors)
+        // Priority 2: Fallback to complete JSON file (try large file first)
         if (!businessData) {
           try {
-            console.log("📄 Trying JSON fallback...");
-            const fallbackResponse = await fetch(
-              `/api/dubai-visa-services.json?v=${Date.now()}`,
+            console.log("📄 Trying complete JSON file (841 businesses)...");
+            const completeResponse = await fetch(
+              `/api/complete-businesses.json?v=${Date.now()}`,
             );
-            console.log("📡 JSON response status:", fallbackResponse.status);
+            console.log(
+              "📡 Complete JSON response status:",
+              completeResponse.status,
+            );
 
-            if (fallbackResponse.ok) {
-              const fallbackData = await fallbackResponse.json();
-              businessData = Array.isArray(fallbackData)
-                ? fallbackData
-                : fallbackData.businesses || [];
+            if (completeResponse.ok) {
+              const completeData = await completeResponse.json();
+              businessData = Array.isArray(completeData)
+                ? completeData
+                : completeData.businesses || [];
               console.log(
-                `📄 SUCCESS: Loaded ${businessData.length} businesses from JSON`,
+                `📄 SUCCESS: Loaded ${businessData.length} businesses from complete JSON`,
               );
-              setAllDataLoaded(businessData.length > 25);
+              setAllDataLoaded(true);
             } else {
               console.warn(
-                `📄 JSON response failed: ${fallbackResponse.status}`,
+                `📄 Complete JSON failed: ${completeResponse.status}, trying smaller file...`,
               );
-              throw new Error(
-                `JSON file access failed: ${fallbackResponse.status}`,
+
+              // Fallback to smaller JSON file
+              const fallbackResponse = await fetch(
+                `/api/dubai-visa-services.json?v=${Date.now()}`,
               );
+              console.log(
+                "📡 Small JSON response status:",
+                fallbackResponse.status,
+              );
+
+              if (fallbackResponse.ok) {
+                const fallbackData = await fallbackResponse.json();
+                businessData = Array.isArray(fallbackData)
+                  ? fallbackData
+                  : fallbackData.businesses || [];
+                console.log(
+                  `📄 SUCCESS: Loaded ${businessData.length} businesses from small JSON`,
+                );
+                setAllDataLoaded(false);
+              } else {
+                throw new Error(
+                  `Both JSON files failed: ${fallbackResponse.status}`,
+                );
+              }
             }
           } catch (jsonError) {
             console.error("📄 JSON fallback failed:", jsonError.message);
