@@ -899,6 +899,15 @@ export default function AdminDashboard() {
         )}
 
         {/* Google API Fetch Tab */}
+        {(() => {
+          console.log(
+            "🔍 AdminDashboard: Rendering with activeTab:",
+            activeTab,
+            "google condition:",
+            activeTab === "google",
+          );
+          return null;
+        })()}
         {activeTab === "google" && (
           <div className="space-y-6">
             <Card className="shadow-xl border-0 bg-white/70 backdrop-blur-xl">
