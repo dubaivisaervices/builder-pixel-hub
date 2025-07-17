@@ -77,78 +77,23 @@ export default function Index() {
         setLoading(true);
         console.log("🔄 Fetching business data for homepage...");
 
-        // Fetch businesses directly (quick fix)
-        const businessResponse = await fetch(
-          "/api/dubai-visa-services?limit=1000",
-        );
+        // Import the new API client
+        const { apiClient } = await import("../utils/api");
 
-        if (businessResponse.ok) {
-          const businessData = await businessResponse.json();
-          console.log(`✅ Loaded ${businessData.length} businesses`);
+        // Fetch complete data using the new API client
+        const completeData = await apiClient.getCompleteData();
 
-          setAllBusinesses(businessData);
+        console.log(`✅ Loaded ${completeData.businesses.length} businesses`);
 
-          // Set featured businesses
-          const featured = businessData
-            .filter((b: any) => b?.rating && b.rating >= 4.0)
-            .sort((a: any, b: any) => (b?.rating || 0) - (a?.rating || 0))
-            .slice(0, 6);
-          setFeaturedBusinesses(featured);
+        const { businesses, stats, categories, featured } = completeData;
 
-          // Calculate stats
-          const totalReviews = businessData.reduce(
-            (sum: number, b: any) => sum + (b?.reviewCount || 0),
-            0,
-          );
-          const avgRating =
-            businessData.reduce(
-              (sum: number, b: any) => sum + (b?.rating || 0),
-              0,
-            ) / businessData.length;
+        setAllBusinesses(businesses);
+        setFeaturedBusinesses(featured.slice(0, 6));
+        setStats(stats);
 
-                    setStats({
-            totalBusinesses: businessData.length,
-            totalReviews,
-            avgRating: Math.round(avgRating * 10) / 10,
-            locations: 15,
-            scamReports: 145,
-          });
-
-          // Set simple categories
-          setTopCategories([
-            {
-              category: "work",
-              count: 150,
-              title: "Work Visa Services",
-              description: "Employment visa processing and work permit assistance",
-              icon: "💼",
-              color: "from-blue-500 to-blue-600",
-            },
-            {
-              category: "tourist",
-              count: 120,
-              title: "Tourist Visa Services",
-              description: "Visit visa and tourist visa applications",
-              icon: "🏖️",
-              color: "from-green-500 to-green-600",
-            },
-            {
-              category: "business",
-              count: 100,
-              title: "Business Visa Services",
-              description: "Investor visa and business setup assistance",
-              icon: "🏢",
-              color: "from-orange-500 to-orange-600",
-            }
-          ]);
-        } else {
-          throw new Error("Failed to fetch businesses");
-        }
-
-        // Remove complex category processing for now
-        /*
+        // Process categories for the homepage display
         const categoryCount: { [key: string]: number } = {};
-        if (businessData.length > 0) {
+        if (businesses.length > 0) {
           businesses.forEach((business) => {
             if (!business) return;
             const category = business.category?.toLowerCase() || "other";
