@@ -528,6 +528,14 @@ export default function BusinessDirectory() {
                 <div className="text-blue-200 text-xs sm:text-sm">Reviews</div>
               </div>
             </div>
+
+            {/* Debug section */}
+            <div className="mt-4 bg-white/20 backdrop-blur-sm rounded-lg p-3 text-white text-sm max-w-md mx-auto">
+              <p>
+                Debug: Loading={loading ? "true" : "false"}, Total=
+                {businesses.length}, Filtered={filteredBusinesses.length}
+              </p>
+            </div>
           </div>
         </div>
 
