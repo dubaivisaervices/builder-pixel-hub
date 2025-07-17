@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { businessService } from "../database/businessService";
+import { postgresService } from "../database/postgresService";
 import fs from "fs";
 import path from "path";
 
