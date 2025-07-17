@@ -30,12 +30,9 @@ import {
   Plus,
   Tags,
 } from "lucide-react";
-// Lazy load heavy components
-const NetlifyImageManager = React.lazy(() => import("./NetlifyImageManager"));
-const QuickUploadAccess = React.lazy(
-  () => import("../components/QuickUploadAccess"),
-);
-const UploadAlert = React.lazy(() => import("../components/UploadAlert"));
+import NetlifyImageManager from "./NetlifyImageManager";
+import { QuickUploadAccess } from "../components/QuickUploadAccess";
+import { UploadAlert } from "../components/UploadAlert";
 
 interface CompanyRequest {
   id: number;
