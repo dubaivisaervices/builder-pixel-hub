@@ -918,7 +918,7 @@ export default function BusinessDirectory() {
               {filteredBusinesses.length > displayCount && (
                 <div className="text-center mt-12">
                   <Button
-                    onClick={() => setDisplayCount(displayCount + 12)}
+                                        onClick={() => setDisplayCount(displayCount + 25)}
                     className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-xl text-lg"
                   >
                     Load More Businesses
