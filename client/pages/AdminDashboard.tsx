@@ -1280,11 +1280,11 @@ export default function AdminDashboard() {
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-orange-700">
-                          Recently Fetched (Pending Storage):
+                        <span className="text-blue-700">
+                          Database Businesses:
                         </span>
-                        <span className="font-semibold text-orange-900">
-                          116
+                        <span className="font-semibold text-blue-900">
+                          Loading...
                         </span>
                       </div>
                       <div className="border-t border-green-200 pt-2 flex justify-between">
