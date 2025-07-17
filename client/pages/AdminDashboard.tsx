@@ -404,37 +404,6 @@ export default function AdminDashboard() {
       (document.getElementById("cityLocation") as HTMLSelectElement)?.value ||
       "";
 
-    // Handle random category selection
-    if (category === "RANDOM") {
-      const categories = [
-        "visa services",
-        "immigration services",
-        "document clearance",
-        "PRO services",
-        "attestation services",
-        "work permit services",
-        "business visa",
-        "tourist visa",
-        "family visa",
-        "golden visa services",
-        "residence visa",
-        "employment visa",
-        "education visa",
-        "travel agency",
-        "embassy services",
-        "business setup",
-        "legal services",
-        "accounting services",
-        "real estate",
-        "medical services",
-        "education services",
-        "consulting services",
-        "translation services",
-        "insurance services",
-      ];
-      category = categories[Math.floor(Math.random() * categories.length)];
-      setSyncStatus(`🎲 Randomly selected category: "${category}"`);
-    }
     const maxResults = parseInt(
       (document.getElementById("maxResults") as HTMLInputElement)?.value ||
         "60",
