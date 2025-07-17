@@ -1316,13 +1316,7 @@ function AdminDashboardContent() {
         {/* Netlify Images Tab */}
         {activeTab === "netlify" && (
           <div className="space-y-6">
-            <React.Suspense
-              fallback={
-                <div className="h-40 bg-gray-100 rounded animate-pulse"></div>
-              }
-            >
-              <NetlifyImageManager />
-            </React.Suspense>
+            <NetlifyImageManager />
           </div>
         )}
 
