@@ -1420,7 +1420,7 @@ export default function ComplaintForm() {
               <CardHeader className="pb-4 sm:pb-6 relative">
                 <CardTitle className="flex items-center text-xl sm:text-2xl font-bold text-gray-900">
                   <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg">
-                    <MessageCircleQuestion className="h-6 w-6 text-white" />
+                    <MessageSquare className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex-1">
                     <span className="bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
