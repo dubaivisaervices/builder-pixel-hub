@@ -71,73 +71,25 @@ export default function Index() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+    useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         console.log("🔄 Fetching business data for homepage...");
 
-        // Fetch all businesses
-        const businessResponse = await fetch("/api/dubai-visa-services");
-        if (businessResponse.ok) {
-          const responseData = await businessResponse.json();
-          console.log("📊 API Response:", responseData);
+        // Import the new API client
+        const { apiClient } = await import("../utils/api");
 
-          // Validate that we received an array
-          let businessData: BusinessData[] = [];
-          if (Array.isArray(responseData)) {
-            businessData = responseData;
-          } else if (responseData && Array.isArray(responseData.businesses)) {
-            businessData = responseData.businesses;
-          } else if (responseData && Array.isArray(responseData.data)) {
-            businessData = responseData.data;
-          } else {
-            console.warn("⚠️ Unexpected API response format:", responseData);
-            businessData = [];
-          }
+        // Fetch complete data using the new API client
+        const completeData = await apiClient.getCompleteData();
 
-          console.log(`✅ Loaded ${businessData.length} businesses`);
+        console.log(`✅ Loaded ${completeData.businesses.length} businesses`);
 
-          setAllBusinesses(businessData);
+        const { businesses, stats, categories, featured } = completeData;
 
-          // Set featured businesses (top rated ones) - only if we have data
-          if (businessData.length > 0) {
-            const featured = businessData
-              .filter((business) => business && business.rating >= 4.0)
-              .sort((a, b) => b.rating - a.rating)
-              .slice(0, 6);
-            setFeaturedBusinesses(featured);
-          }
-
-          // Calculate stats - handle empty data
-          if (businessData.length > 0) {
-            const totalReviews = businessData.reduce(
-              (sum, business) => sum + (business?.reviewCount || 0),
-              0,
-            );
-            const avgRating =
-              businessData.reduce(
-                (sum, business) => sum + (business?.rating || 0),
-                0,
-              ) / businessData.length;
-
-            setStats({
-              totalBusinesses: businessData.length,
-              totalReviews,
-              avgRating: Math.round(avgRating * 10) / 10,
-              locations: 15,
-              scamReports: 145,
-            });
-          } else {
-            // Fallback stats when no data is available
-            setStats({
-              totalBusinesses: 0,
-              totalReviews: 0,
-              avgRating: 0,
-              locations: 15,
-              scamReports: 145,
-            });
-          }
+        setAllBusinesses(businesses);
+        setFeaturedBusinesses(featured.slice(0, 6));
+        setStats(stats);
 
           // Process categories - only if we have data
           const categoryCount: { [key: string]: number } = {};
