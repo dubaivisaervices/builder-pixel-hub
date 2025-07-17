@@ -33,6 +33,7 @@ import DataDiagnostic from "./components/DataDiagnostic";
 import CompanyRedirect from "./pages/CompanyRedirect";
 import ImageTest from "./pages/ImageTest";
 import AddBusinessPage from "./pages/AddBusinessPage";
+import SupabaseAdmin from "./pages/SupabaseAdmin";
 
 const queryClient = new QueryClient();
 
