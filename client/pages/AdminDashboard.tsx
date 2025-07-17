@@ -991,6 +991,12 @@ export default function AdminDashboard() {
                             <option value="embassy services">
                               Embassy Services
                             </option>
+                            <option value="immigration consultants">
+                              Immigration Consultants
+                            </option>
+                            <option value="immigration naturalization service">
+                              Immigration Naturalization Service
+                            </option>
                           </select>
                           <p className="text-xs text-gray-500 mt-1">
                             Filter by business category
