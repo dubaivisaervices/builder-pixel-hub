@@ -317,28 +317,13 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
           // Save to database if enabled
           if (saveToDatabase) {
             try {
-              // Use Netlify function to save to PostgreSQL
-              const saveResponse = await fetch(
-                `/.netlify/functions/save-business`,
-                {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(businessData),
-                },
+              await postgresService.upsertBusiness(businessData);
+              console.log(
+                `✅ Saved to PostgreSQL database: ${businessData.name}`,
               );
-
-              if (saveResponse.ok) {
-                console.log(`✅ Saved to database: ${businessData.name}`);
-              } else {
-                const errorData = await saveResponse.json();
-                console.error(
-                  `❌ Database save failed for ${businessData.name}:`,
-                  errorData.error,
-                );
-              }
             } catch (dbError) {
               console.error(
-                `❌ Database save failed for ${businessData.name}:`,
+                `❌ PostgreSQL save failed for ${businessData.name}:`,
                 dbError,
               );
             }
