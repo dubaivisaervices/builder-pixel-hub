@@ -1155,7 +1155,7 @@ export default function CompanyProfileModern() {
         );
 
         if (Array.isArray(businesses) && businesses.length > 0) {
-          let business = data.businesses[0]; // Default fallback
+          let business = businesses[0]; // Default fallback
           console.log("🔍 Default business data:", {
             id: business.id,
             name: business.name,
@@ -1167,7 +1167,7 @@ export default function CompanyProfileModern() {
           // Try to find matching business by name
           if (companyName) {
             const searchName = companyName.replace(/-/g, " ").toLowerCase();
-            const found = data.businesses.find(
+            const found = businesses.find(
               (b: BusinessData) =>
                 b.name.toLowerCase().includes(searchName) ||
                 searchName.includes(b.name.toLowerCase()),
