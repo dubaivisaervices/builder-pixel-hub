@@ -5,10 +5,10 @@
  * Exports all 841 business listings from SQLite to JSON for production
  */
 
-const { database } = require("./server/database/database");
-const { businessService } = require("./server/database/businessService");
-const fs = require("fs");
-const path = require("path");
+import { database } from "./server/database/database.js";
+import { businessService } from "./server/database/businessService.js";
+import fs from "fs";
+import path from "path";
 
 async function exportBusinessData() {
   console.log("🚀 Starting Netlify deployment data export...");
