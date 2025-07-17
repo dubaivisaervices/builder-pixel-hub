@@ -1,5 +1,4 @@
 const { Pool } = require("pg");
-const fetch = require("node-fetch");
 
 // Neon PostgreSQL connection
 const pool = new Pool({
