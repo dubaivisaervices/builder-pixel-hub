@@ -638,13 +638,7 @@ function AdminDashboardContent() {
             </div>
 
             {/* Hostinger Upload Access */}
-            <React.Suspense
-              fallback={
-                <div className="h-20 bg-gray-100 rounded animate-pulse"></div>
-              }
-            >
-              <QuickUploadAccess />
-            </React.Suspense>
+            <QuickUploadAccess />
 
             {/* Business Entry Portal Access */}
             <Card className="shadow-xl border-0 bg-gradient-to-r from-green-50 to-blue-50 backdrop-blur-xl">
