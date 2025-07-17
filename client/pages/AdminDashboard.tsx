@@ -95,36 +95,33 @@ export default function AdminDashboard() {
   const [isFetching, setIsFetching] = useState(false);
   const [fetchResults, setFetchResults] = useState<any>(null);
 
-  const fetchDashboardData = async () => {
-    try {
-      // Set default stats immediately to prevent loading delays
-      setStats({
-        totalBusinesses: 841,
-        totalReviews: 15000,
-        totalPhotos: 2500,
-        categories: 16,
-      });
+  const fetchDashboardData = () => {
+    // Set default stats immediately - never block
+    setStats({
+      totalBusinesses: 841,
+      totalReviews: 15000,
+      totalPhotos: 2500,
+      categories: 16,
+    });
 
-      // Fetch company requests (non-blocking)
-      fetch("/api/admin/company-requests")
-        .then((response) => (response.ok ? response.json() : null))
-        .then((data) => {
-          if (data) setCompanyRequests(data.requests || []);
-        })
-        .catch(() => {}); // Silent fail
+    // All API calls are completely non-blocking
+    fetch("/api/admin/company-requests")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (data) setCompanyRequests(data.requests || []);
+      })
+      .catch(() => {});
 
-      // Try database stats with short timeout
-      const dbStatsController = new AbortController();
-      setTimeout(() => dbStatsController.abort(), 2000); // 2 second timeout
+    // Database stats with aggressive timeout
+    const dbStatsController = new AbortController();
+    setTimeout(() => dbStatsController.abort(), 1000); // 1 second timeout
 
-      try {
-        const dbStatsResponse = await fetch(
-          `/.netlify/functions/database-stats?t=${Date.now()}`,
-          { signal: dbStatsController.signal },
-        );
-
-        if (dbStatsResponse.ok) {
-          const dbStats = await dbStatsResponse.json();
+    fetch(`/.netlify/functions/database-stats?t=${Date.now()}`, {
+      signal: dbStatsController.signal,
+    })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((dbStats) => {
+        if (dbStats) {
           setStats({
             totalBusinesses: dbStats.totalBusinesses || 841,
             totalReviews: dbStats.totalReviews || 15000,
@@ -132,43 +129,37 @@ export default function AdminDashboard() {
             categories: dbStats.categories || 16,
           });
         }
-      } catch (dbError) {
-        // Database failed, try JSON with timeout
-        try {
-          const jsonController = new AbortController();
-          setTimeout(() => jsonController.abort(), 1000); // 1 second timeout
+      })
+      .catch(() => {
+        // If database fails, try JSON as backup
+        const jsonController = new AbortController();
+        setTimeout(() => jsonController.abort(), 500); // 500ms timeout
 
-          const completeResponse = await fetch(
-            `/api/complete-businesses.json?t=${Date.now()}`,
-            { signal: jsonController.signal },
-          );
-
-          if (completeResponse.ok) {
-            const completeData = await completeResponse.json();
-            const businesses = completeData.businesses || [];
-
-            setStats({
-              totalBusinesses: businesses.length,
-              totalReviews: businesses.reduce(
-                (sum, b) => sum + (b.reviewCount || 0),
-                0,
-              ),
-              totalPhotos: businesses.reduce(
-                (sum, b) => sum + (b.photos?.length || 0),
-                0,
-              ),
-              categories: new Set(
-                businesses.map((b) => b.category).filter(Boolean),
-              ).size,
-            });
-          }
-        } catch (jsonError) {
-          // Keep default stats if both fail
-        }
-      }
-    } catch (error) {
-      // Keep default stats on any error
-    }
+        fetch(`/api/complete-businesses.json?t=${Date.now()}`, {
+          signal: jsonController.signal,
+        })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((completeData) => {
+            if (completeData?.businesses) {
+              const businesses = completeData.businesses;
+              setStats({
+                totalBusinesses: businesses.length,
+                totalReviews: businesses.reduce(
+                  (sum, b) => sum + (b.reviewCount || 0),
+                  0,
+                ),
+                totalPhotos: businesses.reduce(
+                  (sum, b) => sum + (b.photos?.length || 0),
+                  0,
+                ),
+                categories: new Set(
+                  businesses.map((b) => b.category).filter(Boolean),
+                ).size,
+              });
+            }
+          })
+          .catch(() => {}); // Keep defaults if everything fails
+      });
   };
 
   const handleRequestStatus = async (
