@@ -74,7 +74,6 @@ import {
   Clock3,
   UserCheck2,
   X,
-  Info,
   Flag,
 } from "lucide-react";
 
