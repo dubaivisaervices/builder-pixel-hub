@@ -317,7 +317,7 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
           // Save to database if enabled
           if (saveToDatabase) {
             try {
-              await businessService.createBusiness(businessData);
+              await businessService.upsertBusiness(businessData);
               console.log(`✅ Saved to database: ${businessData.name}`);
             } catch (dbError) {
               console.error(
