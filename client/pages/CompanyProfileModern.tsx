@@ -1138,21 +1138,23 @@ export default function CompanyProfileModern() {
           "🔄 Skipping cached navigation state, fetching fresh data...",
         );
 
-        // Fetch from API with cache busting
-        console.log("🔍 Fetching from API...");
-        const response = await fetch(`/api/businesses?_t=${Date.now()}`);
+        // Fetch from static JSON files
+        console.log("🔍 Fetching from static JSON files...");
+        const response = await fetch(
+          `/api/dubai-visa-services.json?_t=${Date.now()}`,
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch businesses");
         }
 
-        const data = await response.json();
+        const businesses = await response.json();
         console.log(
-          "📦 Raw API Response data:",
-          JSON.stringify(data).substring(0, 500) + "...",
+          "📦 Raw static data:",
+          JSON.stringify(businesses).substring(0, 500) + "...",
         );
 
-        if (data.businesses && data.businesses.length > 0) {
+        if (Array.isArray(businesses) && businesses.length > 0) {
           let business = data.businesses[0]; // Default fallback
           console.log("🔍 Default business data:", {
             id: business.id,
