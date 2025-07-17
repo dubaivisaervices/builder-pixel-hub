@@ -10,319 +10,91 @@ import {
   Building2,
   Search,
   Users,
+  Loader2,
 } from "lucide-react";
-
-// Real businesses with guaranteed local storage
-const REAL_BUSINESSES = [
-  {
-    id: "ChIJ10c9E2ZDXz4Ru2NyjBi7aiE",
-    name: "10-PRO Consulting | Business Set Up, Relocation, Visas & Legal Services",
-    address:
-      "Business Central Towers, Al Sufouh 2, Dubai Media City, Dubai, UAE",
-    category: "Visa Services",
-    phone: "04 529 3354",
-    website: "https://10-pro.com/",
-    rating: 4.7,
-    reviewCount: 505,
-    logoUrl:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "ChIJ31pcKGtrXz4R92jGT68rkVQ",
-    name: "4S Study Abroad | 5000+ Visa Approved | Education Consultant in Dubai",
-    address: "Sultan Business Centre, Office 221, Oud Metha, Dubai, UAE",
-    category: "Education Visa",
-    phone: "04 553 8909",
-    website: "https://www.4sstudyabroad.com/",
-    rating: 4.7,
-    reviewCount: 218,
-    logoUrl:
-      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "ChIJXf_UeQBDXz4ROdLA_nZbQmA",
-    name: "A to Z Document Clearing Services",
-    address: "19 3A St, Al Fahidi, Dubai, UAE",
-    category: "Document Clearing",
-    phone: "052 603 8558",
-    website: "http://www.a2zdocument.com/",
-    rating: 5.0,
-    reviewCount: 246,
-    logoUrl:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "ChIJ56jiXjBdXz4RRUcw-WfYHIE",
-    name: "Cross Border Visa Services LLC",
-    address: "Deira, Naif Tower, Port Saeed, Dubai, UAE",
-    category: "Immigration Services",
-    phone: "04 323 9710",
-    website: "https://crossbordervisa.ae/",
-    rating: 3.9,
-    reviewCount: 46,
-    logoUrl:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "benchmark-mofa",
-    name: "Benchmark MOFA Attestation, Certificate attestation Dubai",
-    address: "Business Bay, Dubai, UAE",
-    category: "Attestation Services",
-    phone: "04 123 4567",
-    website: "https://benchmarkattesation.com/",
-    rating: 4.8,
-    reviewCount: 324,
-    logoUrl:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "emirates-visa-pro",
-    name: "Emirates Visa Pro Services",
-    address: "Jumeirah Lakes Towers, Dubai, UAE",
-    category: "Visa Services",
-    phone: "04 321 9876",
-    website: "https://emiratesvisapro.com/",
-    rating: 4.6,
-    reviewCount: 234,
-    logoUrl:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "dubai-immigration-hub",
-    name: "Dubai Immigration Hub",
-    address: "Al Karama, Dubai, UAE",
-    category: "Immigration Services",
-    phone: "04 567 8901",
-    website: "https://dubaiimmigrationhub.com/",
-    rating: 4.4,
-    reviewCount: 178,
-    logoUrl:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "global-visa-consultants",
-    name: "Global Visa Consultants Dubai",
-    address: "Deira City Centre, Dubai, UAE",
-    category: "Visa Consultancy",
-    phone: "04 234 5678",
-    website: "https://globalvisadubai.com/",
-    rating: 4.3,
-    reviewCount: 145,
-    logoUrl:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "express-documents",
-    name: "Express Documents Clearing LLC",
-    address: "Al Rigga, Deira, Dubai, UAE",
-    category: "Document Clearing",
-    phone: "04 345 6789",
-    website: "https://expressdocuments.ae/",
-    rating: 4.1,
-    reviewCount: 98,
-    logoUrl:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "fast-track-visa",
-    name: "Fast Track Visa Services",
-    address: "Dubai Marina, Dubai, UAE",
-    category: "Visa Processing",
-    phone: "04 456 7890",
-    website: "https://fasttrackvisadubai.com/",
-    rating: 4.7,
-    reviewCount: 289,
-    logoUrl:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "al-noor-services",
-    name: "Al Noor PRO Services",
-    address: "Satwa, Dubai, UAE",
-    category: "PRO Services",
-    phone: "04 567 8901",
-    website: "https://alnoorpro.ae/",
-    rating: 4.0,
-    reviewCount: 67,
-    logoUrl:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "golden-visa-center",
-    name: "Golden Visa Center Dubai",
-    address: "Downtown Dubai, UAE",
-    category: "Golden Visa",
-    phone: "04 678 9012",
-    website: "https://goldenvisacenter.ae/",
-    rating: 4.9,
-    reviewCount: 456,
-    logoUrl:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "smart-visa-solutions",
-    name: "Smart Visa Solutions",
-    address: "Al Qusais, Dubai, UAE",
-    category: "Visa Solutions",
-    phone: "04 789 0123",
-    website: "https://smartvisasolutions.ae/",
-    rating: 4.2,
-    reviewCount: 123,
-    logoUrl:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "premium-attestation",
-    name: "Premium Attestation Services",
-    address: "Trade Centre, Dubai, UAE",
-    category: "Attestation",
-    phone: "04 890 1234",
-    website: "https://premiumattestation.ae/",
-    rating: 4.6,
-    reviewCount: 201,
-    logoUrl:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "reliable-pro-services",
-    name: "Reliable PRO Services Dubai",
-    address: "Naif, Deira, Dubai, UAE",
-    category: "PRO Services",
-    phone: "04 901 2345",
-    website: "https://reliablepro.ae/",
-    rating: 4.3,
-    reviewCount: 156,
-    logoUrl:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "dubai-work-visa",
-    name: "Dubai Work Visa Center",
-    address: "Al Garhoud, Dubai, UAE",
-    category: "Work Visa",
-    phone: "04 012 3456",
-    website: "https://dubaiworkvisa.com/",
-    rating: 4.4,
-    reviewCount: 267,
-    logoUrl:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "elite-document-services",
-    name: "Elite Document Services",
-    address: "Jumeirah, Dubai, UAE",
-    category: "Document Services",
-    phone: "04 123 4567",
-    website: "https://elitedocuments.ae/",
-    rating: 4.5,
-    reviewCount: 189,
-    logoUrl:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "uae-immigration-experts",
-    name: "UAE Immigration Experts",
-    address: "Baniyas Square, Deira, Dubai, UAE",
-    category: "Immigration",
-    phone: "04 234 5678",
-    website: "https://uaeimmigrationexperts.com/",
-    rating: 4.1,
-    reviewCount: 134,
-    logoUrl:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "swift-clearing-services",
-    name: "Swift Clearing Services",
-    address: "Al Fahidi Historical District, Dubai, UAE",
-    category: "Clearing Services",
-    phone: "04 345 6789",
-    website: "https://swiftclearing.ae/",
-    rating: 4.0,
-    reviewCount: 76,
-    logoUrl:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "mega-visa-services",
-    name: "Mega Visa Services Dubai",
-    address: "Mankhool, Bur Dubai, UAE",
-    category: "Visa Services",
-    phone: "04 456 7890",
-    website: "https://megavisaservices.ae/",
-    rating: 4.3,
-    reviewCount: 198,
-    logoUrl:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "apex-pro-consultants",
-    name: "Apex PRO Consultants",
-    address: "Port Saeed, Deira, Dubai, UAE",
-    category: "PRO Consultancy",
-    phone: "04 567 8901",
-    website: "https://apexpro.ae/",
-    rating: 4.7,
-    reviewCount: 245,
-    logoUrl:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "royal-attestation",
-    name: "Royal Attestation Center",
-    address: "Al Karama, Dubai, UAE",
-    category: "Attestation",
-    phone: "04 678 9012",
-    website: "https://royalattestation.ae/",
-    rating: 4.2,
-    reviewCount: 167,
-    logoUrl:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "professional-visa-hub",
-    name: "Professional Visa Hub",
-    address: "Al Mizhar, Dubai, UAE",
-    category: "Visa Hub",
-    phone: "04 789 0123",
-    website: "https://professionalvisahub.com/",
-    rating: 4.4,
-    reviewCount: 212,
-    logoUrl:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "trusted-documents",
-    name: "Trusted Documents Clearing",
-    address: "Hor Al Anz, Deira, Dubai, UAE",
-    category: "Document Clearing",
-    phone: "04 890 1234",
-    website: "https://trusteddocuments.ae/",
-    rating: 4.1,
-    reviewCount: 89,
-    logoUrl:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-  {
-    id: "first-choice-visa",
-    name: "First Choice Visa Services",
-    address: "Al Nahda, Dubai, UAE",
-    category: "Visa Services",
-    phone: "04 901 2345",
-    website: "https://firstchoicevisa.ae/",
-    rating: 4.6,
-    reviewCount: 278,
-    logoUrl:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80",
-  },
-];
+import { getBestLogoUrl } from "@/lib/imageUtils";
 
 export default function SimpleBusinessDirectory() {
-  const [businesses] = useState(REAL_BUSINESSES);
-  const [filteredBusinesses, setFilteredBusinesses] = useState(REAL_BUSINESSES);
+  const [businesses, setBusinesses] = useState([]);
+  const [filteredBusinesses, setFilteredBusinesses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [displayCount, setDisplayCount] = useState(25);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // Load businesses from API
+  useEffect(() => {
+    async function loadBusinesses() {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Try multiple sources for businesses data
+        const sources = [
+          `/api/complete-businesses.json?v=${Date.now()}`,
+          `/api/dubai-visa-services.json?v=${Date.now()}`,
+        ];
+
+        let businessData = null;
+
+        for (const source of sources) {
+          try {
+            console.log(`Trying to load from: ${source}`);
+            const response = await fetch(source);
+            if (response.ok) {
+              const data = await response.json();
+
+              if (data.businesses && Array.isArray(data.businesses)) {
+                businessData = data.businesses;
+                console.log(
+                  `Successfully loaded ${businessData.length} businesses from ${source}`,
+                );
+                break;
+              } else if (Array.isArray(data)) {
+                businessData = data;
+                console.log(
+                  `Successfully loaded ${businessData.length} businesses from ${source}`,
+                );
+                break;
+              }
+            }
+          } catch (sourceError) {
+            console.warn(`Failed to load from ${source}:`, sourceError);
+          }
+        }
+
+        if (!businessData) {
+          throw new Error("No business data found from any source");
+        }
+
+        // Transform data to ensure consistent format
+        const processedBusinesses = businessData.map((business) => ({
+          id: business.id || business.place_id,
+          name: business.name,
+          address: business.address || business.formatted_address || "",
+          category: business.category || business.type || "Business Services",
+          phone: business.phone || business.formatted_phone_number || "",
+          website: business.website || "",
+          rating: business.rating || business.google_rating || 4.0,
+          reviewCount: business.reviewCount || business.user_ratings_total || 0,
+          logoUrl: getBestLogoUrl(business),
+          photos: business.photos || [],
+        }));
+
+        setBusinesses(processedBusinesses);
+        setFilteredBusinesses(processedBusinesses);
+        console.log(`Total businesses loaded: ${processedBusinesses.length}`);
+      } catch (error) {
+        console.error("Error loading businesses:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadBusinesses();
+  }, []);
 
   // Filter businesses based on search
   useEffect(() => {
