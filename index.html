@@ -118,11 +118,15 @@
       // Check if React app mounted properly
       setTimeout(() => {
         const root = document.getElementById("root");
+        // Don't show fallback for admin routes
+        if (window.location.pathname.startsWith("/admin")) {
+          return;
+        }
         if (root && root.innerHTML.includes("Loading")) {
           console.warn("React app might not have mounted properly");
           showEmergencyFallback("React application mounting issue");
         }
-      }, 3000);
+      }, 5000);
     </script>
   </body>
 </html>
