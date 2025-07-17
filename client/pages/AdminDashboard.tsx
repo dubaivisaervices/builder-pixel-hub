@@ -54,7 +54,7 @@ interface DatabaseStats {
   categories: number;
 }
 
-export default function AdminDashboard() {
+function AdminDashboardContent() {
   const location = useLocation();
   const navigate = useNavigate();
 
