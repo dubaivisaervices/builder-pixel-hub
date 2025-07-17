@@ -28,6 +28,8 @@
     "fix-mime-error": "node fix-mime-error.js",
     "fix-403": "node fix-403-error.js",
     "remove-htaccess": "node remove-htaccess.js",
+    "db:setup": "node database/migrate-businesses.js",
+    "db:schema": "psql $NEON_DATABASE_URL -f database/schema.sql",
     "fix-react-app": "node fix-react-deployment.js",
     "diagnose-fix": "node diagnose-and-fix-deployment.js",
     "deploy-complete": "node complete-hostinger-deployment.js",
