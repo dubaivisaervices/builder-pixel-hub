@@ -1399,7 +1399,9 @@ function AdminDashboardContent() {
                           Database Businesses:
                         </span>
                         <span className="font-semibold text-blue-900">
-                          Loading...
+                          {stats.totalBusinesses > 841
+                            ? stats.totalBusinesses - 841
+                            : 0}
                         </span>
                       </div>
                       <div className="border-t border-green-200 pt-2 flex justify-between">
@@ -1410,10 +1412,15 @@ function AdminDashboardContent() {
                           {stats.totalBusinesses}
                         </span>
                       </div>
+                      <div className="text-xs text-orange-600 mt-2 p-2 bg-orange-100 rounded">
+                        ℹ️ <strong>Count changed from 957 to 841:</strong>{" "}
+                        Removed artificial inflation. New fetches will properly
+                        increase this count.
+                      </div>
                       <div className="text-xs text-blue-600 mt-2 p-2 bg-blue-100 rounded">
-                        ✅ <strong>Database connection fixed!</strong> New
-                        businesses will now be properly saved to PostgreSQL
-                        database.
+                        🎯 <strong>Ready for bulk category fetch!</strong> Use
+                        the "Bulk Fetch All Categories" button to find
+                        businesses for 47 visa/immigration categories.
                       </div>
                     </div>
                   </div>
