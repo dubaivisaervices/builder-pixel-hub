@@ -18,9 +18,11 @@ export default function SimpleBusinessDirectory() {
   const [businesses, setBusinesses] = useState([]);
   const [filteredBusinesses, setFilteredBusinesses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [displayCount, setDisplayCount] = useState(25);
+  const [displayCount, setDisplayCount] = useState(50);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [allDataLoaded, setAllDataLoaded] = useState(false);
   const navigate = useNavigate();
 
   // Load businesses from API
