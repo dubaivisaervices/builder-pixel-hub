@@ -73,11 +73,7 @@ export default function AdminDashboard() {
     return "dashboard";
   };
 
-  const [activeTab, setActiveTab] = useState(() => {
-    const tab = getActiveTabFromUrl();
-    console.log("🔍 AdminDashboard: Setting initial tab:", tab);
-    return tab;
-  });
+  const [activeTab, setActiveTab] = useState(getActiveTabFromUrl());
   const [companyRequests, setCompanyRequests] = useState<CompanyRequest[]>([]);
   const [stats, setStats] = useState<DatabaseStats>({
     totalBusinesses: 0,
