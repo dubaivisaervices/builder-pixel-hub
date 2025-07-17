@@ -45,6 +45,8 @@
     "inspect-ftp": "node inspect-ftp.js",
     "explore": "node explore-ftp.js",
     "export-data": "node export-businesses.mjs",
+    "export:netlify": "node deploy-to-netlify.js",
+    "build:production": "node deploy-to-netlify.js && npm run build",
     "inspect-schema": "node inspect-schema.mjs",
     "test-ftp": "node test-ftp.js",
     "test": "vitest --run",
