@@ -95,9 +95,10 @@ export default function SimpleBusinessDirectory() {
         if (!businessData) {
           try {
             console.log("📄 Trying complete JSON file (841 businesses)...");
-            const completeResponse = await fetch(
-              `/api/complete-businesses.json?v=${Date.now()}`,
-            );
+            const cacheBuster = Date.now();
+            const jsonUrl = `/api/complete-businesses.json?v=${cacheBuster}&cb=${Math.random()}`;
+            console.log("📄 Fetching from URL:", jsonUrl);
+            const completeResponse = await fetch(jsonUrl);
             console.log(
               "📡 Complete JSON response status:",
               completeResponse.status,
