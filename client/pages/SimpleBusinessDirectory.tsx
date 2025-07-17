@@ -228,11 +228,20 @@ export default function SimpleBusinessDirectory() {
                 {/* Logo */}
                 <div className="w-16 h-16 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100">
                   <img
-                    src={business.logoUrl}
+                    src={business.logoUrl || getBestLogoUrl(business)}
                     alt={`${business.name} logo`}
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
+                      // Try local business logo first
+                      if (!target.src.includes("/business-images/logos/")) {
+                        const businessId = business.id || business.place_id;
+                        if (businessId) {
+                          target.src = `/business-images/logos/logo-${businessId}.jpg`;
+                          return;
+                        }
+                      }
+                      // Final fallback to stock image
                       target.src =
                         "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
                     }}
