@@ -42,9 +42,42 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
   try {
     const apiKey = process.env.GOOGLE_PLACES_API_KEY;
     if (!apiKey) {
+      console.error("❌ GOOGLE_PLACES_API_KEY environment variable not set");
       return res.status(500).json({
         error: "Google Places API key not configured",
         success: false,
+      });
+    }
+
+    console.log(
+      `🔑 API Key configured: ${apiKey.substring(0, 8)}...${apiKey.substring(apiKey.length - 4)}`,
+    );
+
+    // Test API key with a simple query first
+    try {
+      const testUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurant&location=25.2048,55.2708&radius=1000&key=${apiKey}`;
+      const testResponse = await fetch(testUrl);
+      const testData = await testResponse.json();
+
+      console.log(`🧪 API Key test result:`, {
+        status: testData.status,
+        resultsCount: testData.results?.length || 0,
+      });
+
+      if (testData.status === "REQUEST_DENIED") {
+        return res.status(500).json({
+          error:
+            "Google Places API key is invalid or doesn't have required permissions",
+          success: false,
+          details: testData,
+        });
+      }
+    } catch (testError) {
+      console.error("❌ API key test failed:", testError);
+      return res.status(500).json({
+        error: "Failed to test Google Places API key",
+        success: false,
+        details: testError.message,
       });
     }
 
