@@ -133,17 +133,45 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
         `📱 API Call ${totalApiCalls + 1}: Fetching page ${page + 1}`,
       );
 
+      console.log(`🔍 Making API call to: ${searchUrl}`);
+
       const searchResponse = await fetch(searchUrl);
       totalApiCalls++;
 
       if (!searchResponse.ok) {
+        console.error(`❌ Google API HTTP error: ${searchResponse.status}`);
         throw new Error(`Google API error: ${searchResponse.status}`);
       }
 
       const searchData: GoogleSearchResponse = await searchResponse.json();
 
+      console.log(`📊 Google API Response:`, {
+        status: searchData.status,
+        resultsCount: searchData.results?.length || 0,
+        nextPageToken: searchData.next_page_token ? "present" : "none",
+      });
+
       if (searchData.status !== "OK") {
-        console.warn(`Google API warning: ${searchData.status}`);
+        console.error(`❌ Google API status error: ${searchData.status}`);
+        console.error(`❌ Full API response:`, searchData);
+
+        // Handle specific error cases
+        if (searchData.status === "ZERO_RESULTS") {
+          console.log(
+            `ℹ️ No results found for query: "${searchQuery}" in location: ${location}`,
+          );
+          break;
+        } else if (searchData.status === "INVALID_REQUEST") {
+          throw new Error(
+            `Invalid request parameters: ${JSON.stringify(searchData)}`,
+          );
+        } else if (searchData.status === "OVER_QUERY_LIMIT") {
+          throw new Error(`Google API quota exceeded`);
+        } else if (searchData.status === "REQUEST_DENIED") {
+          throw new Error(
+            `Google API request denied - check API key and permissions`,
+          );
+        }
         break;
       }
 
