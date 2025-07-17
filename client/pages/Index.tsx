@@ -77,33 +77,73 @@ export default function Index() {
         setLoading(true);
         console.log("🔄 Fetching business data for homepage...");
 
-        // Try to fetch real complete data first
+        // Priority 1: Try database first for real current data
         let businesses, stats, featured;
 
         try {
-          console.log("🔍 Trying complete businesses file...");
-          const completeRes = await fetch("/api/complete-businesses.json");
-          if (completeRes.ok) {
-            const completeData = await completeRes.json();
-            if (completeData.businesses && completeData.businesses.length > 0) {
-              businesses = completeData.businesses;
-              stats = completeData.stats || {
+          console.log("🔍 Trying database for latest business count...");
+          const [dbBusinessesRes, dbStatsRes] = await Promise.all([
+            fetch(
+              `/.netlify/functions/database-businesses?all=true&t=${Date.now()}`,
+            ),
+            fetch(`/.netlify/functions/database-stats?t=${Date.now()}`),
+          ]);
+
+          if (dbBusinessesRes.ok && dbStatsRes.ok) {
+            const dbBusinesses = await dbBusinessesRes.json();
+            const dbStats = await dbStatsRes.json();
+
+            if (dbBusinesses.businesses && dbBusinesses.businesses.length > 0) {
+              businesses = dbBusinesses.businesses;
+              stats = {
                 totalBusinesses: businesses.length,
-                totalReviews: 0,
-                avgRating: 4.5,
+                totalReviews: dbStats.totalReviews || 0,
+                avgRating: dbStats.avgRating || 4.5,
                 locations: 15,
                 scamReports: 145,
               };
               featured = businesses.filter((b) => b.rating >= 4.5).slice(0, 20);
               console.log(
-                `✅ Loaded REAL ${businesses.length} businesses from complete data`,
+                `✅ Loaded REAL ${businesses.length} businesses from DATABASE`,
               );
             }
           }
         } catch (error) {
-          console.log(
-            "❌ Failed to load complete data, trying individual files",
-          );
+          console.log("❌ Database failed, trying JSON files...");
+        }
+
+        // Priority 2: Try complete JSON file if database failed
+        if (!businesses) {
+          try {
+            console.log("🔍 Trying complete businesses file...");
+            const completeRes = await fetch("/api/complete-businesses.json");
+            if (completeRes.ok) {
+              const completeData = await completeRes.json();
+              if (
+                completeData.businesses &&
+                completeData.businesses.length > 0
+              ) {
+                businesses = completeData.businesses;
+                stats = completeData.stats || {
+                  totalBusinesses: businesses.length,
+                  totalReviews: 0,
+                  avgRating: 4.5,
+                  locations: 15,
+                  scamReports: 145,
+                };
+                featured = businesses
+                  .filter((b) => b.rating >= 4.5)
+                  .slice(0, 20);
+                console.log(
+                  `📄 Loaded ${businesses.length} businesses from complete JSON`,
+                );
+              }
+            }
+          } catch (error) {
+            console.log(
+              "❌ Failed to load complete data, trying individual files",
+            );
+          }
         }
 
         // Fallback to individual files if complete data failed
