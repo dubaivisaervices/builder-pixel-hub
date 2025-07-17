@@ -416,6 +416,140 @@ function AdminDashboardContent() {
     updateSearchPreview();
   };
 
+  const handleBulkCategoryFetch = async () => {
+    const categories = [
+      "Visa consulting services Dubai",
+      "Visa agent Dubai",
+      "Immigration Consultants Dubai",
+      "Consultants Dubai",
+      "Education services Dubai",
+      "Work permit Dubai",
+      "Europe Work Visa Consultants Dubai",
+      "Canada Visa Agent Dubai",
+      "USA Student Visa Consultants Dubai",
+      "US Immigration Consultants Dubai",
+      "USA Tourist Visa Agents Dubai",
+      "UK Immigration Consultants Dubai",
+      "UK Work Visa Consultants Dubai",
+      "UK Student Visa Consultants Dubai",
+      "MARA Agent Dubai",
+      "Australia PR Consultant Dubai",
+      "Australia Immigration Agents Dubai",
+      "Australia Student Visa Services Dubai",
+      "Australia Work Visa Consultants Dubai",
+      "Europe Work Visa Agent Dubai",
+      "Canada Immigration Consultants Dubai",
+      "Canada PR Visa Agents Dubai",
+      "Canada Work Permit Consultant Dubai",
+      "Canada Express Entry Consultant Dubai",
+      "Best Canada Immigration Agency Dubai",
+      "Canada Student Visa Consultant Dubai",
+      "Canada Tourist Visa Agents Dubai",
+      "Immigration naturalization service Dubai",
+      "Germany Work permit Visa agency Dubai",
+      "Czech Republic work permit visa agency Dubai",
+      "Cyprus work visa permit agency Dubai",
+      "Netherlands Work permit Visa agency Dubai",
+      "France work permit visa agency Dubai",
+      "Hungary work permit visa agency Dubai",
+      "Romania work permit visa agency Dubai",
+      "Poland work permit agents agency Dubai",
+      "Spain work permit visa agency Dubai",
+      "Portugal work permit visa agency Dubai",
+      "Italy seasonal work permit visa agency Dubai",
+      "Malta work permit visa agency Dubai",
+      "Luxembourg work visa agency Dubai",
+      "Greece work permit agency Dubai",
+      "Norway Work Permit Visa agency Dubai",
+      "Work permit Consultants Dubai",
+      "Visit visa consultants Dubai",
+      "Work visa agency Dubai",
+    ];
+
+    if (
+      !confirm(
+        `🚀 This will fetch businesses for ${categories.length} categories. This may take 20-30 minutes and use significant API quota. Continue?`,
+      )
+    ) {
+      return;
+    }
+
+    setIsFetching(true);
+    setSyncStatus(
+      `🔄 Starting bulk fetch for ${categories.length} categories...`,
+    );
+
+    let totalBusinesses = 0;
+    let successfulCategories = 0;
+
+    try {
+      for (let i = 0; i < categories.length; i++) {
+        const category = categories[i];
+        setSyncStatus(
+          `🔍 [${i + 1}/${categories.length}] Fetching: ${category.replace(" Dubai", "")}`,
+        );
+
+        try {
+          const response = await fetch("/api/admin/fetch-google-businesses", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              searchQuery: category,
+              maxResults: 15, // Reasonable limit per category
+              radius: 50,
+              minRating: 0,
+              downloadImages: true,
+              saveToDatabase: true,
+              getReviews: true,
+              skipExisting: true,
+              filters: {
+                companyName: null,
+                category: category.replace(" Dubai", ""),
+                city: "Dubai",
+              },
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            const found = result.businessesFound || 0;
+            totalBusinesses += found;
+            successfulCategories++;
+            setSyncStatus(
+              `✅ [${i + 1}/${categories.length}] ${category.replace(" Dubai", "")}: ${found} businesses found`,
+            );
+          } else {
+            setSyncStatus(
+              `❌ [${i + 1}/${categories.length}] ${category.replace(" Dubai", "")}: ${result.error}`,
+            );
+          }
+        } catch (error) {
+          setSyncStatus(
+            `❌ [${i + 1}/${categories.length}] ${category.replace(" Dubai", "")}: ${error.message}`,
+          );
+        }
+
+        // Add delay between requests to avoid rate limiting
+        if (i < categories.length - 1) {
+          await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 second delay
+        }
+      }
+
+      setSyncStatus(
+        `🎉 Bulk fetch complete! ${totalBusinesses} businesses from ${successfulCategories}/${categories.length} categories`,
+      );
+
+      // Refresh dashboard data
+      await fetchDashboardData();
+    } catch (error) {
+      setSyncStatus(`❌ Bulk fetch failed: ${error.message}`);
+    } finally {
+      setIsFetching(false);
+      setTimeout(() => setSyncStatus(""), 10000);
+    }
+  };
+
   const handleGoogleApiFetch = async () => {
     const companyName =
       (document.getElementById("companyName") as HTMLInputElement)?.value || "";
