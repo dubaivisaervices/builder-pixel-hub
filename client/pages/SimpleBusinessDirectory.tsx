@@ -348,16 +348,40 @@ export default function SimpleBusinessDirectory() {
                       const target = e.target as HTMLImageElement;
                       const currentSrc = target.src;
 
-                      // First attempt: Try original logoUrl from business data
+                      // Ensure we're trying the production domain for business logos
+                      if (
+                        currentSrc.includes("/business-images/logos/") &&
+                        !currentSrc.includes("reportvisascam.com")
+                      ) {
+                        const filename = currentSrc.split("/").pop();
+                        if (filename) {
+                          target.src = `https://reportvisascam.com/business-images/logos/${filename}`;
+                          return;
+                        }
+                      }
+
+                      // Try alternative local logo URL pattern
+                      const businessId =
+                        business.id || (business as any).place_id;
+                      if (
+                        businessId &&
+                        !currentSrc.includes(`logo-${businessId}.jpg`)
+                      ) {
+                        target.src = `https://reportvisascam.com/business-images/logos/logo-${businessId}.jpg`;
+                        return;
+                      }
+
+                      // Try original logoUrl from business data
                       if (
                         business.logoUrl &&
-                        !currentSrc.includes(business.logoUrl)
+                        !currentSrc.includes(business.logoUrl) &&
+                        !currentSrc.includes("unsplash.com")
                       ) {
                         target.src = business.logoUrl;
                         return;
                       }
 
-                      // Second attempt: Try S3 logo if available
+                      // Try S3 logo if available
                       if (
                         (business as any).logoS3Url &&
                         !currentSrc.includes((business as any).logoS3Url)
@@ -366,7 +390,7 @@ export default function SimpleBusinessDirectory() {
                         return;
                       }
 
-                      // Third attempt: Try category-specific placeholder
+                      // Category-specific placeholder
                       const category = business.category?.toLowerCase() || "";
                       let categoryImage = "";
 
@@ -395,18 +419,9 @@ export default function SimpleBusinessDirectory() {
 
                       if (
                         categoryImage &&
-                        !currentSrc.includes(categoryImage)
+                        !currentSrc.includes(categoryImage.split("?")[0])
                       ) {
                         target.src = categoryImage;
-                        return;
-                      }
-
-                      // Final fallback - generic business icon
-                      if (
-                        !currentSrc.includes("photo-1486406146926-c627a92ad1ab")
-                      ) {
-                        target.src =
-                          "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
                       }
                     }}
                   />
