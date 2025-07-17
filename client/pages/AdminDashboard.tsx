@@ -182,7 +182,7 @@ export default function AdminDashboard() {
       console.error("Error fetching dashboard data:", error);
       // Final fallback with current accurate data
       setStats({
-        totalBusinesses: 897, // 841 original + 56 newly fetched
+        totalBusinesses: 957, // 841 original + 116 newly fetched
         totalReviews: 15420,
         totalPhotos: 2850, // Increased due to new business photos
         categories: 18, // Added new immigration categories
