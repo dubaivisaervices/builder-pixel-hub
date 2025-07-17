@@ -388,7 +388,9 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     // Update active tab when URL changes
-    setActiveTab(getActiveTabFromUrl());
+    const newTab = getActiveTabFromUrl();
+    console.log("🔍 AdminDashboard: URL changed, setting tab to:", newTab);
+    setActiveTab(newTab);
   }, [location.pathname]);
 
   const handleTabChange = (tabId: string) => {
