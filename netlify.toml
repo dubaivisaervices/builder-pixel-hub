@@ -5,6 +5,6 @@
 [[headers]]
   for = "/api/*"
   [headers.values]
-    Cache-Control = "public, max-age=3600"
+    Cache-Control = "public, max-age=0, must-revalidate"
     Access-Control-Allow-Origin = "*"
     Content-Type = "application/json"
