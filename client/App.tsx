@@ -60,7 +60,10 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/complaint" element={<ComplaintForm />} />
-            <Route path="/dubai-businesses" element={<BusinessDirectory />} />
+            <Route
+              path="/dubai-businesses"
+              element={<SimpleBusinessDirectory />}
+            />
             <Route path="/services" element={<BusinessListing />} />
             <Route path="/services/:category" element={<BusinessListing />} />
             <Route path="/help-center" element={<HelpCenter />} />
