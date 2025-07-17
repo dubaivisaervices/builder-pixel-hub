@@ -18,23 +18,53 @@ export default function CompanyRedirect() {
       try {
         console.log(`🔍 Looking up company with ID: ${companyId}`);
 
-        // Fetch businesses from API
-        const response = await fetch(
-          `/api/dubai-visa-services?limit=1000&_t=${Date.now()}`,
-        );
+        // Try to fetch from complete businesses file first
+        let business = null;
 
-        if (!response.ok) {
-          throw new Error(`API responded with status: ${response.status}`);
+        try {
+          const completeRes = await fetch(
+            `/api/complete-businesses.json?_t=${Date.now()}`,
+          );
+          if (completeRes.ok) {
+            const completeData = await completeRes.json();
+            if (
+              completeData.businesses &&
+              Array.isArray(completeData.businesses)
+            ) {
+              business = completeData.businesses.find(
+                (b: any) => b.id === companyId,
+              );
+              if (business) {
+                console.log(
+                  `✅ Found business in complete data: ${business.name}`,
+                );
+              }
+            }
+          }
+        } catch (error) {
+          console.log(
+            "⚠️ Complete businesses file not available, trying main file",
+          );
         }
 
-        const data = await response.json();
+        // Fallback to main businesses file
+        if (!business) {
+          const response = await fetch(
+            `/api/dubai-visa-services.json?_t=${Date.now()}`,
+          );
 
-        if (!data.businesses || !Array.isArray(data.businesses)) {
-          throw new Error("Invalid API response format");
+          if (!response.ok) {
+            throw new Error(`API responded with status: ${response.status}`);
+          }
+
+          const businesses = await response.json();
+
+          if (!Array.isArray(businesses)) {
+            throw new Error("Invalid API response format");
+          }
+
+          business = businesses.find((b: any) => b.id === companyId);
         }
-
-        // Find the business by ID
-        const business = data.businesses.find((b: any) => b.id === companyId);
 
         if (!business) {
           throw new Error("Company not found");
