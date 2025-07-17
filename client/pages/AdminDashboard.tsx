@@ -906,7 +906,7 @@ export default function AdminDashboard() {
                       </div>
                       <div className="bg-white rounded p-3 text-center">
                         <div className="text-lg font-bold text-blue-600">
-                          {stats.totalBusinesses || 957}
+                          {stats.totalBusinesses || 841}
                         </div>
                         <div className="text-sm text-gray-600">
                           Total Businesses
@@ -1286,7 +1286,7 @@ export default function AdminDashboard() {
                         </span>
                       </div>
                       <div className="text-xs text-blue-600 mt-2 p-2 bg-blue-100 rounded">
-                        ✅ <strong>Database connection fixed!</strong> New
+                        ��� <strong>Database connection fixed!</strong> New
                         businesses will now be properly saved to PostgreSQL
                         database.
                       </div>
