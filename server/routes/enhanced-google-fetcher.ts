@@ -62,6 +62,7 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
       console.log(`🧪 API Key test result:`, {
         status: testData.status,
         resultsCount: testData.results?.length || 0,
+        errorMessage: testData.error_message || "none",
       });
 
       if (testData.status === "REQUEST_DENIED") {
@@ -69,7 +70,23 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
           error:
             "Google Places API key is invalid or doesn't have required permissions",
           success: false,
-          details: testData,
+          details: testData.error_message || "API key denied",
+        });
+      }
+
+      if (testData.status === "OVER_QUERY_LIMIT") {
+        return res.status(500).json({
+          error: "Google Places API quota exceeded for today",
+          success: false,
+          details: "Please check your API billing and quotas",
+        });
+      }
+
+      if (testData.status !== "OK" && testData.status !== "ZERO_RESULTS") {
+        return res.status(500).json({
+          error: `Google Places API error: ${testData.status}`,
+          success: false,
+          details: testData.error_message || testData,
         });
       }
     } catch (testError) {
