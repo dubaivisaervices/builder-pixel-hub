@@ -97,97 +97,77 @@ export default function AdminDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      console.log("🔄 Fetching dashboard data...");
-
-      // Fetch company requests
-      const requestsResponse = await fetch("/api/admin/company-requests");
-      if (requestsResponse.ok) {
-        const requestsData = await requestsResponse.json();
-        setCompanyRequests(requestsData.requests || []);
-      }
-
-      // Priority 1: Try database stats
-      let dashboardStats = {};
-      try {
-        console.log("🔍 Trying database stats...");
-        const dbStatsResponse = await fetch(
-          `/.netlify/functions/database-stats?t=${Date.now()}`,
-        );
-        if (dbStatsResponse.ok) {
-          const dbStats = await dbStatsResponse.json();
-          dashboardStats = {
-            totalBusinesses: dbStats.totalBusinesses || 0,
-            totalReviews: dbStats.totalReviews || 0,
-            totalPhotos: dbStats.totalPhotos || 0,
-            categories: dbStats.categories || 0,
-          };
-          console.log("✅ Loaded stats from database:", dashboardStats);
-        } else {
-          throw new Error("Database stats failed");
-        }
-      } catch (dbError) {
-        console.log("❌ Database stats failed, trying JSON fallback...");
-
-        // Priority 2: Calculate from complete businesses JSON
-        try {
-          const completeResponse = await fetch(
-            `/api/complete-businesses.json?t=${Date.now()}`,
-          );
-          if (completeResponse.ok) {
-            const completeData = await completeResponse.json();
-            const businesses = completeData.businesses || [];
-
-            // Calculate stats from JSON data
-            let totalReviews = 0;
-            let totalPhotos = 0;
-            const categories = new Set();
-
-            businesses.forEach((business) => {
-              totalReviews += business.reviewCount || 0;
-              totalPhotos += business.photos?.length || 0;
-              if (business.category) {
-                categories.add(business.category.toLowerCase());
-              }
-            });
-
-            // Use actual business count from JSON, no artificial adjustments
-            const adjustedBusinessCount = businesses.length;
-
-            dashboardStats = {
-              totalBusinesses: adjustedBusinessCount,
-              totalReviews: totalReviews,
-              totalPhotos: totalPhotos,
-              categories: categories.size,
-            };
-            console.log(
-              "✅ Calculated stats from JSON (with adjustments):",
-              dashboardStats,
-            );
-          } else {
-            throw new Error("JSON stats calculation failed");
-          }
-        } catch (jsonError) {
-          console.log("❌ JSON fallback failed, using default fallback data");
-          // Priority 3: Default fallback data
-          dashboardStats = {
-            totalBusinesses: 841, // Original business count
-            totalReviews: 15000,
-            totalPhotos: 2500,
-            categories: 16,
-          };
-        }
-      }
-
-      setStats(dashboardStats);
-    } catch (error) {
-      console.error("Error fetching dashboard data:", error);
-      // Final fallback with original data
+      // Set default stats immediately to prevent loading delays
       setStats({
-        totalBusinesses: 841, // Original business count from JSON
+        totalBusinesses: 841,
         totalReviews: 15000,
         totalPhotos: 2500,
         categories: 16,
       });
+
+      // Fetch company requests (non-blocking)
+      fetch("/api/admin/company-requests")
+        .then((response) => (response.ok ? response.json() : null))
+        .then((data) => {
+          if (data) setCompanyRequests(data.requests || []);
+        })
+        .catch(() => {}); // Silent fail
+
+      // Try database stats with short timeout
+      const dbStatsController = new AbortController();
+      setTimeout(() => dbStatsController.abort(), 2000); // 2 second timeout
+
+      try {
+        const dbStatsResponse = await fetch(
+          `/.netlify/functions/database-stats?t=${Date.now()}`,
+          { signal: dbStatsController.signal },
+        );
+
+        if (dbStatsResponse.ok) {
+          const dbStats = await dbStatsResponse.json();
+          setStats({
+            totalBusinesses: dbStats.totalBusinesses || 841,
+            totalReviews: dbStats.totalReviews || 15000,
+            totalPhotos: dbStats.totalPhotos || 2500,
+            categories: dbStats.categories || 16,
+          });
+        }
+      } catch (dbError) {
+        // Database failed, try JSON with timeout
+        try {
+          const jsonController = new AbortController();
+          setTimeout(() => jsonController.abort(), 1000); // 1 second timeout
+
+          const completeResponse = await fetch(
+            `/api/complete-businesses.json?t=${Date.now()}`,
+            { signal: jsonController.signal },
+          );
+
+          if (completeResponse.ok) {
+            const completeData = await completeResponse.json();
+            const businesses = completeData.businesses || [];
+
+            setStats({
+              totalBusinesses: businesses.length,
+              totalReviews: businesses.reduce(
+                (sum, b) => sum + (b.reviewCount || 0),
+                0,
+              ),
+              totalPhotos: businesses.reduce(
+                (sum, b) => sum + (b.photos?.length || 0),
+                0,
+              ),
+              categories: new Set(
+                businesses.map((b) => b.category).filter(Boolean),
+              ).size,
+            });
+          }
+        } catch (jsonError) {
+          // Keep default stats if both fail
+        }
+      }
+    } catch (error) {
+      // Keep default stats on any error
     }
   };
 
