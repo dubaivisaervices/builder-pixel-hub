@@ -65,7 +65,6 @@ export default function AdminDashboard() {
   // Get active tab from URL
   const getActiveTabFromUrl = () => {
     const path = location.pathname;
-    console.log("🔍 AdminDashboard: Current path:", path);
     if (path === "/admin" || path === "/admin/") return "dashboard";
     if (path.includes("/admin/google")) return "google";
     if (path.includes("/admin/requests")) return "requests";
