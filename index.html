@@ -53,21 +53,72 @@
     <script type="module" src="/client/main.tsx"></script>
 
     <script>
-      // Simple error handling for production
+      // Enhanced error handling for production
+      let errorCount = 0;
+
       window.addEventListener("error", function (e) {
-        console.error("App error:", e.error);
-        // Could add error reporting here
+        errorCount++;
+        console.error("App error:", e.error, e.filename, e.lineno);
+
+        if (errorCount >= 3) {
+          showEmergencyFallback("Multiple JavaScript errors detected");
+        }
       });
 
-      // Timeout fallback
+      window.addEventListener("unhandledrejection", function (e) {
+        console.error("Unhandled promise rejection:", e.reason);
+        errorCount++;
+
+        if (errorCount >= 3) {
+          showEmergencyFallback("Promise rejection errors detected");
+        }
+      });
+
+      function showEmergencyFallback(reason) {
+        const root = document.getElementById("root");
+        if (root) {
+          root.innerHTML = `
+            <div style="padding: 2rem; text-align: center; font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; min-height: 100vh;">
+              <div style="max-width: 600px; margin: 0 auto; padding: 2rem; background: rgba(255,255,255,0.1); border-radius: 15px; backdrop-filter: blur(10px);">
+                <h1 style="margin-bottom: 1rem;">🛡️ Report Visa Scam</h1>
+                <h2 style="color: #ff6b6b; margin-bottom: 1rem;">⚠️ Loading Issue Detected</h2>
+                <p style="margin-bottom: 2rem;">Reason: ${reason}</p>
+
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
+                  <a href="/emergency-debug.html" style="padding: 12px 24px; background: #4CAF50; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">🔧 Debug Mode</a>
+                  <a href="/simple-index.html" style="padding: 12px 24px; background: #2196F3; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">📄 Simple Version</a>
+                  <button onclick="location.reload()" style="padding: 12px 24px; background: #FF9800; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">🔄 Reload Page</button>
+                </div>
+
+                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: left;">
+                  <h3>Quick Access:</h3>
+                  <p>• <a href="/dubai-businesses" style="color: #87CEEB;">Business Directory</a></p>
+                  <p>• <a href="/api/dubai-visa-services.json" style="color: #87CEEB;">API Data Test</a></p>
+                  <p>• <a href="/working.html" style="color: #87CEEB;">Connection Test</a></p>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      // Timeout fallback - reduced to 6 seconds for faster response
       setTimeout(() => {
         const root = document.getElementById("root");
         if (root && root.innerHTML.includes("Loading")) {
           console.warn("App taking too long to load, showing fallback");
-          root.innerHTML =
-            '<div style="padding: 2rem; text-align: center; font-family: Arial;"><h1>Reviews Visa Scam</h1><p>Loading...</p><p><a href="/fallback.html">Click here if page doesn\'t load</a></p></div>';
+          showEmergencyFallback("Application timeout (6 seconds)");
         }
-      }, 10000);
+      }, 6000);
+
+      // Check if React app mounted properly
+      setTimeout(() => {
+        const root = document.getElementById("root");
+        if (root && root.innerHTML.includes("Loading")) {
+          console.warn("React app might not have mounted properly");
+          showEmergencyFallback("React application mounting issue");
+        }
+      }, 3000);
     </script>
   </body>
 </html>
