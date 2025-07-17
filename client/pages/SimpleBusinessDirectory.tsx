@@ -34,6 +34,8 @@ export default function SimpleBusinessDirectory() {
         setError(null);
 
         console.log("🗄️ Loading businesses from database...");
+        console.log("🌐 Current URL:", window.location.href);
+        console.log("🌐 Hostname:", window.location.hostname);
 
         let businessData = null;
 
