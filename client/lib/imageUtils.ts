@@ -106,14 +106,32 @@ export function getProcessedPhotos(business: BusinessImageData): Array<{
 
   return business.photos
     .map((photo) => {
-      const bestUrl = getBestImageUrl(photo);
-      if (!bestUrl) return null;
+      // Handle photos as either objects (ImageData) or strings (URLs)
+      let photoUrl: string | null = null;
+      let caption: string | undefined = undefined;
+      let isS3 = false;
+      let isBase64 = false;
+
+      if (typeof photo === "string") {
+        // Photo is a direct URL string
+        photoUrl = fixImageDomain(photo);
+        isS3 = photo.includes(".s3.") || photo.includes("s3.amazonaws.com");
+        isBase64 = photo.startsWith("data:image/");
+      } else if (typeof photo === "object" && photo !== null) {
+        // Photo is an ImageData object
+        photoUrl = getBestImageUrl(photo);
+        caption = photo.caption;
+        isS3 = !!photo.s3Url;
+        isBase64 = !!photoUrl?.startsWith("data:image/");
+      }
+
+      if (!photoUrl) return null;
 
       return {
-        url: bestUrl,
-        caption: photo.caption,
-        isS3: !!photo.s3Url,
-        isBase64: bestUrl.startsWith("data:image/"),
+        url: photoUrl,
+        caption,
+        isS3,
+        isBase64,
       };
     })
     .filter((photo): photo is NonNullable<typeof photo> => photo !== null);
