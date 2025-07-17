@@ -102,14 +102,14 @@
         }
       }
 
-      // Timeout fallback - reduced to 6 seconds for faster response
+      // Timeout fallback - increased to 10 seconds for admin routes
       setTimeout(() => {
         const root = document.getElementById("root");
         if (root && root.innerHTML.includes("Loading")) {
           console.warn("App taking too long to load, showing fallback");
-          showEmergencyFallback("Application timeout (6 seconds)");
+          showEmergencyFallback("Application timeout (10 seconds)");
         }
-      }, 6000);
+      }, 10000);
 
       // Check if React app mounted properly
       setTimeout(() => {
