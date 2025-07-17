@@ -96,9 +96,6 @@ export default function BusinessDirectory() {
       );
     }
 
-    console.log(
-      `🔍 Filtered ${filtered.length} businesses from ${businesses.length} total`,
-    );
     setFilteredBusinesses(filtered);
   }, [searchTerm, businesses, selectedCategory]);
 
