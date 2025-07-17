@@ -545,7 +545,11 @@ export function createServer() {
   app.post("/api/google/stop-refresh", stopImageRefresh);
   app.get("/api/google/refresh-results", getImageRefreshResults);
 
-  // Netlify-compatible static API routes (routes defined in imports at top)
+  // Netlify-compatible static API routes
+  app.get("/api/businesses-netlify", netlifyBusinessesAPI);
+  app.get("/api/stats-netlify", netlifyStatsAPI);
+  app.get("/api/categories-netlify", netlifyCategoriesAPI);
+  app.get("/api/featured-netlify", netlifyFeaturedAPI);
 
   // Reports API
   app.post(
@@ -1640,7 +1644,7 @@ export function createServer() {
         timestamp: new Date().toISOString(),
       });
     } catch (error: any) {
-      console.error("�� Database migration failed:", error);
+      console.error("❌ Database migration failed:", error);
       res.status(500).json({
         success: false,
         error: error.message,
