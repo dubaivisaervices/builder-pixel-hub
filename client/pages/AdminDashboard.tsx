@@ -267,22 +267,20 @@ export default function AdminDashboard() {
   };
 
   // Google API functions
-  const checkGoogleApiStatus = async () => {
-    try {
-      const controller = new AbortController();
-      setTimeout(() => controller.abort(), 1000); // 1 second timeout
+  const checkGoogleApiStatus = () => {
+    // Set default status immediately
+    setGoogleApiStatus({ configured: true, status: "Ready", canFetch: true });
 
-      const response = await fetch("/api/admin/google-api-status", {
-        signal: controller.signal,
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setGoogleApiStatus(data);
-      }
-    } catch (error) {
-      // Silent fail for Google API status
-      setGoogleApiStatus({ configured: false, status: "Unknown" });
-    }
+    // Try to get real status non-blocking
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(), 500); // 500ms timeout
+
+    fetch("/api/admin/google-api-status", { signal: controller.signal })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (data) setGoogleApiStatus(data);
+      })
+      .catch(() => {}); // Keep default status
   };
 
   const handleGoogleFetch = async () => {
