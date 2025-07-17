@@ -75,23 +75,30 @@ export default function BusinessDirectory() {
 
   useEffect(() => {
     // Filter businesses based on search term and category
-    let filtered = businesses;
+    let filtered = businesses || [];
 
     if (selectedCategory !== "all") {
       filtered = filtered.filter(
-        (business) => business.category === selectedCategory,
+        (business) => business && business.category === selectedCategory,
       );
     }
 
     if (searchTerm.trim()) {
       filtered = filtered.filter(
         (business) =>
-          business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          business.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          business.category.toLowerCase().includes(searchTerm.toLowerCase()),
+          business &&
+          business.name &&
+          business.address &&
+          business.category &&
+          (business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            business.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            business.category.toLowerCase().includes(searchTerm.toLowerCase())),
       );
     }
 
+    console.log(
+      `🔍 Filtered ${filtered.length} businesses from ${businesses.length} total`,
+    );
     setFilteredBusinesses(filtered);
   }, [searchTerm, businesses, selectedCategory]);
 
