@@ -215,7 +215,7 @@ export const fetchBusinessesWithImages: RequestHandler = async (req, res) => {
 
           // Skip existing businesses if enabled
           if (skipExisting) {
-            const existingBusiness = await businessService.getBusinessById(
+            const existingBusiness = await postgresService.getBusinessById(
               details.place_id,
             );
             if (existingBusiness) {
