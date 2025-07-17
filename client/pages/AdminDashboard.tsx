@@ -1280,18 +1280,18 @@ export default function AdminDashboard() {
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-green-700">
-                          Recently Fetched (Database):
+                        <span className="text-orange-700">
+                          Recently Fetched (Pending Storage):
                         </span>
-                        <span className="font-semibold text-green-900">
-                          56+
+                        <span className="font-semibold text-orange-900">
+                          116
                         </span>
                       </div>
                       <div className="border-t border-green-200 pt-2 flex justify-between">
                         <span className="text-green-800 font-medium">
-                          Total Estimated:
+                          Total Available:
                         </span>
-                        <span className="font-bold text-green-900">897+</span>
+                        <span className="font-bold text-green-900">957</span>
                       </div>
                       <div className="text-xs text-green-600 mt-2">
                         💡 New businesses stored in database. Fix database
