@@ -141,6 +141,8 @@ import { enhancedFetcherComplete } from "./routes/enhanced-fetcher-complete";
 import { enhancedFetcherWorking } from "./routes/enhanced-fetcher-working";
 import { enhanceAllBusinesses } from "./routes/enhance-all-businesses";
 import { checkEnhancementStatus } from "./routes/check-enhancement-status";
+import { migratePhotosToNetlify } from "./routes/migrate-photos-to-netlify";
+import { enhancedFetcherNetlify } from "./routes/enhanced-fetcher-netlify";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
