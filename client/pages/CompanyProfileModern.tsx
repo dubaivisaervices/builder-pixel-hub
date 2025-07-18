@@ -675,10 +675,39 @@ function CommunityReportsSection({
           setError("Failed to load reports");
         }
       } catch (err) {
-        setError(`Error loading reports: ${err.message}`);
         console.error("❌ Error fetching reports:", err);
         console.error("❌ Business ID:", businessId);
         console.error("❌ Request URL:", `/api/reports/company/${businessId}`);
+
+        let errorMessage = "Error loading reports";
+        if (err.message && err.message.includes("JSON")) {
+          errorMessage = "API returned invalid response (using sample data)";
+
+          // Add sample report for demonstration when API fails
+          const sampleReport = {
+            id: "sample-report-netlify",
+            issueType: "poor_service",
+            description:
+              "Sample report for demonstration. Real reports will load when API is working properly.",
+            reporterName: "Sample User",
+            reporterLocation: "Dubai",
+            dateOfIncident: "2024-01-15",
+            createdAt: new Date().toISOString(),
+            severity: "medium",
+            status: "approved",
+            helpful: 5,
+            notHelpful: 1,
+            evidenceCount: 0,
+            isAnonymous: false,
+            tags: ["sample", "demo"],
+          };
+
+          setReports([sampleReport]);
+        } else {
+          errorMessage = err.message;
+        }
+
+        setError(errorMessage);
 
         // Add sample report even on error for demonstration
         if (
