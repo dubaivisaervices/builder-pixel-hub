@@ -482,32 +482,99 @@ export default function FraudImmigrationConsultants() {
                             </div>
                           )}
 
-                        <div className="space-y-2 text-sm text-gray-600">
-                          <div className="flex items-start gap-2">
-                            <MapPin className="h-4 w-4 mt-0.5 text-gray-400" />
-                            <span>{business.address}</span>
+                                                  <div className="space-y-2 text-sm text-gray-600">
+                            <div className="flex items-start gap-2">
+                              <MapPin className="h-4 w-4 mt-0.5 text-gray-400" />
+                              <span>{enhancedBusiness.address}</span>
+                            </div>
+
+                            {enhancedBusiness.phone && (
+                              <div className="flex items-center gap-2">
+                                <Phone className="h-4 w-4 text-gray-400" />
+                                <span>{enhancedBusiness.phone}</span>
+                              </div>
+                            )}
+
+                            {enhancedBusiness.website && (
+                              <div className="flex items-center gap-2">
+                                <Globe className="h-4 w-4 text-gray-400" />
+                                <a
+                                  href={enhancedBusiness.website}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:underline"
+                                >
+                                  {enhancedBusiness.website}
+                                </a>
+                              </div>
+                            )}
+
+                            {enhancedBusiness.email && (
+                              <div className="flex items-center gap-2">
+                                <Mail className="h-4 w-4 text-gray-400" />
+                                <span>{enhancedBusiness.email}</span>
+                              </div>
+                            )}
+
+                            {/* Business Hours */}
+                            {enhancedBusiness.businessHours && enhancedBusiness.businessHours.length > 0 && (
+                              <div className="mt-2">
+                                <div className="text-xs font-medium text-gray-500 mb-1">Business Hours:</div>
+                                <div className="text-xs text-gray-600">
+                                  {enhancedBusiness.businessHours.slice(0, 2).map((hours, index) => (
+                                    <div key={index}>{hours}</div>
+                                  ))}
+                                  {enhancedBusiness.businessHours.length > 2 && (
+                                    <div className="text-blue-600 cursor-pointer hover:underline">
+                                      +{enhancedBusiness.businessHours.length - 2} more
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            )}
                           </div>
 
-                          {business.phone && (
-                            <div className="flex items-center gap-2">
-                              <Phone className="h-4 w-4 text-gray-400" />
-                              <span>{business.phone}</span>
-                            </div>
-                          )}
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            <Badge variant="outline" className="text-xs">
+                              {enhancedBusiness.category}
+                            </Badge>
 
-                          {business.website && (
-                            <div className="flex items-center gap-2">
-                              <Globe className="h-4 w-4 text-gray-400" />
-                              <a
-                                href={business.website}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 hover:underline"
-                              >
-                                {business.website}
-                              </a>
-                            </div>
-                          )}
+                            {/* Business Types */}
+                            {enhancedBusiness.businessTypes && enhancedBusiness.businessTypes.slice(0, 2).map((type, index) => (
+                              <Badge key={index} variant="secondary" className="text-xs">
+                                {type.replace(/_/g, ' ').toLowerCase()}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Actions and Report Count */}
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-red-600">
+                          {reports[business.id] || 0}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          Community Reports
+                        </div>
+                      </div>
+
+                      <Button
+                        onClick={() => handleWriteReport(business)}
+                        className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-2"
+                        size="sm"
+                      >
+                        <FileText className="h-4 w-4" />
+                        Write a Report
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
 
                           {business.email && (
                             <div className="flex items-center gap-2">
