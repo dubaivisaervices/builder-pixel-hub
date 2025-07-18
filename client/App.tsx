@@ -84,6 +84,10 @@ const App = () => (
               path="/fraud-immigration-consultants"
               element={<FraudImmigrationConsultants />}
             />
+            <Route
+              path="/fraud-immigration-consultants-static"
+              element={<FraudImmigrationConsultantsStatic />}
+            />
             <Route path="/data-diagnostic" element={<DataDiagnostic />} />
             <Route path="/data-persistence" element={<DataPersistence />} />
             <Route path="/reviews-sync" element={<ReviewsSync />} />
