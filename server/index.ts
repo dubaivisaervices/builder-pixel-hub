@@ -496,6 +496,7 @@ export function createServer() {
   app.get("/api/admin/fetch-keyword-businesses", fetchKeywordBusinesses);
   app.get("/api/admin/keyword-businesses-report", keywordBusinessesReport);
   app.get("/api/admin/fetch-consultants", fetchConsultants);
+  app.get("/api/admin/search-company-names", searchCompanyNames);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
