@@ -62,7 +62,7 @@ const App = () => (
         <main className="min-h-screen pt-4">
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/complaint" element={<ComplaintForm />} />
+            <Route path="/complaint" element={<ComplaintFormModern />} />
             <Route
               path="/dubai-businesses"
               element={<SimpleBusinessDirectory />}
