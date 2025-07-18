@@ -814,7 +814,9 @@ export default function SimpleBusinessDirectory() {
                 {/* Card Header with Logo and Background */}
                 <div
                   className={`relative ${
-                    viewMode === "list" ? "w-48 flex-shrink-0" : "w-full h-32"
+                    viewMode === "list"
+                      ? "w-40 sm:w-48 flex-shrink-0"
+                      : "w-full h-28 sm:h-32"
                   } bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 overflow-hidden`}
                 >
                   <div className="absolute inset-0 bg-black/10"></div>
