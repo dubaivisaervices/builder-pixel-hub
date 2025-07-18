@@ -247,6 +247,25 @@ export default function FraudImmigrationConsultants() {
             setEnhancedBusinesses(enhanced);
             return;
           }
+
+          // Try to parse the response to check if it's valid JSON
+          try {
+            await testResponse.json();
+          } catch (jsonError) {
+            console.log(
+              "ℹ️ Enhanced business endpoint returned invalid JSON, using basic data",
+            );
+            businesses.forEach((business) => {
+              enhanced[business.id] = {
+                ...business,
+                description: `Professional ${business.category?.toLowerCase() || "immigration"} services in UAE. Specializing in visa processing, immigration consulting, and related government documentation services.`,
+                businessStatus: "Unknown",
+                source: "basic_fallback",
+              };
+            });
+            setEnhancedBusinesses(enhanced);
+            return;
+          }
         } catch (testError) {
           console.log(
             "ℹ️ Enhanced business endpoint test failed, using basic data",
