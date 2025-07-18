@@ -352,7 +352,7 @@ export function createServer() {
                 source: "s3",
                 uploadedAt: new Date().toISOString(),
               });
-              console.log(`📸 ✅ S3 photo ${i + 1} validated:`, s3Key);
+              console.log(`��� ✅ S3 photo ${i + 1} validated:`, s3Key);
             } else {
               console.log(`📸 ❌ S3 photo ${i + 1} not found:`, s3Key);
             }
@@ -482,6 +482,7 @@ export function createServer() {
   app.get("/api/admin/test-simple-search", testSimpleSearch);
   app.get("/api/admin/debug-visa-search", debugVisaSearch);
   app.get("/api/admin/fetch-visa-categories", fetchVisaCategories);
+  app.get("/api/admin/test-visa-direct", testVisaDirect);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
