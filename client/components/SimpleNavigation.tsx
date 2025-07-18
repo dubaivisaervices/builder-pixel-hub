@@ -34,6 +34,11 @@ const SimpleNavigation = () => {
     { path: "/", label: "Home", icon: Home },
     { path: "/complaint", label: "Report Scam", icon: AlertTriangle },
     { path: "/dubai-businesses", label: "Directory", icon: Building2 },
+    {
+      path: "/fraud-immigration-consultants",
+      label: "Fraud Consultants",
+      icon: Shield,
+    },
     { path: "/help-center", label: "Help", icon: HelpCircle },
   ];
 
