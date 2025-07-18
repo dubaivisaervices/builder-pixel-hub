@@ -54,14 +54,20 @@ interface Report {
 export default function FraudImmigrationConsultants() {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>([]);
+  const [displayedBusinesses, setDisplayedBusinesses] = useState<Business[]>(
+    [],
+  );
   const [enhancedBusinesses, setEnhancedBusinesses] = useState<
     Record<string, Business>
   >({});
   const [reports, setReports] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 25;
 
   const navigate = useNavigate();
 
