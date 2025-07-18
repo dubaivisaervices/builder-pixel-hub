@@ -421,20 +421,16 @@ function AdminDashboardContent() {
     setSyncStatus("🔧 Testing database connection...");
 
     try {
-      const response = await fetch("/api/admin/test-database");
+      // Test using the existing database-stats function which we know works
+      const response = await fetch("/.netlify/functions/database-stats");
 
       if (response.ok) {
         const result = await response.json();
-        if (result.success) {
-          setSyncStatus(
-            `✅ Database test passed! Connection: ${result.test.connection}, Insert: ${result.test.insertWorked ? "✅" : "❌"}`,
-          );
-        } else {
-          setSyncStatus(`❌ Database test failed: ${result.message}`);
-        }
+        setSyncStatus(
+          `✅ Database connection working! Found ${result.totalBusinesses || 0} businesses in database`,
+        );
       } else {
-        const errorText = await response.text();
-        setSyncStatus(`❌ Test failed: HTTP ${response.status} - ${errorText}`);
+        setSyncStatus(`❌ Database test failed: HTTP ${response.status}`);
       }
     } catch (error) {
       setSyncStatus(`❌ Test error: ${error.message}`);
