@@ -729,6 +729,37 @@ export default function FraudImmigrationConsultants() {
           })}
         </div>
 
+        {/* Load More Button */}
+        {displayedBusinesses.length < filteredBusinesses.length && (
+          <Card className="mt-8">
+            <CardContent className="p-6 text-center">
+              <Button
+                onClick={loadMoreBusinesses}
+                disabled={loadingMore}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg"
+                size="lg"
+              >
+                {loadingMore ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Loading...
+                  </>
+                ) : (
+                  <>
+                    Load More (
+                    {filteredBusinesses.length - displayedBusinesses.length}{" "}
+                    remaining)
+                  </>
+                )}
+              </Button>
+              <p className="text-sm text-gray-500 mt-2">
+                Showing {displayedBusinesses.length} of{" "}
+                {filteredBusinesses.length} consultants
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
         {/* No Results */}
         {filteredBusinesses.length === 0 && (
           <Card className="text-center py-12">
