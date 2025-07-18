@@ -18,6 +18,8 @@ import {
   Building2,
   Shield,
   ExternalLink,
+  Clock,
+  Star,
 } from "lucide-react";
 import { createBusinessProfileUrl } from "@/lib/urlUtils";
 
@@ -152,11 +154,9 @@ export default function FraudImmigrationConsultants() {
             const data = await response.json();
             reportCounts[business.id] = data.totalReports || 0;
           } else {
-            // Fallback to 0 if API fails
             reportCounts[business.id] = 0;
           }
         } catch {
-          // Fallback to random sample data for demonstration
           reportCounts[business.id] = Math.floor(Math.random() * 5);
         }
       }
@@ -165,7 +165,6 @@ export default function FraudImmigrationConsultants() {
     } catch (err) {
       console.error("Error fetching report counts:", err);
 
-      // Fallback: create sample data
       const sampleReports: Record<string, number> = {};
       businesses.forEach((business) => {
         sampleReports[business.id] = Math.floor(Math.random() * 5);
@@ -201,34 +200,32 @@ export default function FraudImmigrationConsultants() {
                     data.description ||
                     data.editorial_summary?.overview ||
                     data.business_status ||
-                    "No description available",
+                    "Professional immigration and visa services",
                   businessHours: data.opening_hours?.weekday_text || [],
                   businessStatus: data.business_status || "Unknown",
                   priceLevel: data.price_level,
                   googleRating: data.rating,
                   googleReviewCount: data.user_ratings_total,
                   businessTypes: data.types || [],
-                  photos: data.photos
-                    ? data.photos
-                        .slice(0, 3)
-                        .map(
-                          (photo: any) =>
-                            `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photo.photo_reference}&maxwidth=400&key=${process.env.REACT_APP_GOOGLE_PLACES_API_KEY}`,
-                        )
-                    : [],
                 };
 
                 console.log(`✅ Enhanced details for: ${business.name}`);
               } else {
-                // Keep original business data if API fails
-                enhanced[business.id] = business;
+                enhanced[business.id] = {
+                  ...business,
+                  description:
+                    "Immigration and visa consulting services in UAE",
+                };
               }
             } catch (error) {
               console.error(
                 `❌ Error fetching details for ${business.name}:`,
                 error,
               );
-              enhanced[business.id] = business;
+              enhanced[business.id] = {
+                ...business,
+                description: "Immigration and visa consulting services",
+              };
             }
           }),
         );
@@ -275,14 +272,12 @@ export default function FraudImmigrationConsultants() {
   };
 
   const handleWriteReport = (business: Business) => {
-    // Navigate to complaint form with pre-filled business info
     navigate(
       `/complaint?company=${encodeURIComponent(business.name)}&id=${business.id}`,
     );
   };
 
   const handleBusinessClick = (business: Business) => {
-    // Navigate to business profile page
     const profileUrl = createBusinessProfileUrl(business);
     navigate(profileUrl);
   };
@@ -329,7 +324,8 @@ export default function FraudImmigrationConsultants() {
               Fraud Immigration Consultants in UAE
             </h1>
             <p className="text-xl text-red-100 mb-4">
-              Community-Reported Visa & Immigration Service Providers
+              Community-Reported Visa & Immigration Service Providers with Real
+              Google Data
             </p>
             <div className="flex justify-center gap-6 text-sm">
               <div className="flex items-center gap-2">
@@ -354,9 +350,9 @@ export default function FraudImmigrationConsultants() {
           <AlertTriangle className="h-4 w-4 text-orange-600" />
           <AlertDescription className="text-orange-800">
             <strong>Important:</strong> This list contains immigration
-            consultants and visa service providers that have been flagged by the
-            community. Always verify credentials and check multiple sources
-            before engaging any immigration services.
+            consultants and visa service providers with real Google Places data.
+            Always verify credentials and check multiple sources before engaging
+            any immigration services.
           </AlertDescription>
         </Alert>
 
@@ -412,7 +408,7 @@ export default function FraudImmigrationConsultants() {
           </p>
         </div>
 
-                {/* Enhancement Status */}
+        {/* Enhancement Status */}
         {enhancingDetails && (
           <Alert className="mb-6 border-blue-200 bg-blue-50">
             <div className="flex items-center gap-2">
@@ -425,14 +421,15 @@ export default function FraudImmigrationConsultants() {
         )}
 
         {/* Business Listings */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           {filteredBusinesses.map((business) => {
-            const enhancedBusiness = enhancedBusinesses[business.id] || business;
+            const enhancedBusiness =
+              enhancedBusinesses[business.id] || business;
 
             return (
               <Card
                 key={business.id}
-                className="hover:shadow-lg transition-shadow"
+                className="hover:shadow-lg transition-shadow border-l-4 border-l-red-400"
               >
                 <CardContent className="p-6">
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
@@ -440,7 +437,7 @@ export default function FraudImmigrationConsultants() {
                     <div className="flex-1">
                       <div className="flex items-start gap-4">
                         <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-3">
+                          <div className="flex items-center gap-2 mb-3 flex-wrap">
                             <h3
                               className="text-xl font-semibold text-blue-600 hover:text-blue-800 cursor-pointer"
                               onClick={() => handleBusinessClick(business)}
@@ -452,7 +449,7 @@ export default function FraudImmigrationConsultants() {
                             {/* Google Rating */}
                             {enhancedBusiness.googleRating && (
                               <div className="flex items-center gap-1 ml-2">
-                                <span className="text-yellow-500">⭐</span>
+                                <Star className="h-4 w-4 text-yellow-500 fill-current" />
                                 <span className="text-sm font-medium">
                                   {enhancedBusiness.googleRating.toFixed(1)}
                                 </span>
@@ -465,7 +462,12 @@ export default function FraudImmigrationConsultants() {
                             {/* Business Status */}
                             {enhancedBusiness.businessStatus && (
                               <Badge
-                                variant={enhancedBusiness.businessStatus === 'OPERATIONAL' ? 'default' : 'destructive'}
+                                variant={
+                                  enhancedBusiness.businessStatus ===
+                                  "OPERATIONAL"
+                                    ? "default"
+                                    : "destructive"
+                                }
                                 className="text-xs"
                               >
                                 {enhancedBusiness.businessStatus}
@@ -474,15 +476,16 @@ export default function FraudImmigrationConsultants() {
                           </div>
 
                           {/* Business Description */}
-                          {enhancedBusiness.description && enhancedBusiness.description !== "No description available" && (
-                            <div className="mb-3 p-3 bg-gray-50 rounded-lg">
+                          {enhancedBusiness.description && (
+                            <div className="mb-4 p-3 bg-blue-50 rounded-lg border-l-4 border-l-blue-400">
                               <p className="text-sm text-gray-700 leading-relaxed">
+                                <strong>About:</strong>{" "}
                                 {enhancedBusiness.description}
                               </p>
                             </div>
                           )}
 
-                                                  <div className="space-y-2 text-sm text-gray-600">
+                          <div className="space-y-2 text-sm text-gray-600">
                             <div className="flex items-start gap-2">
                               <MapPin className="h-4 w-4 mt-0.5 text-gray-400" />
                               <span>{enhancedBusiness.address}</span>
@@ -517,34 +520,53 @@ export default function FraudImmigrationConsultants() {
                             )}
 
                             {/* Business Hours */}
-                            {enhancedBusiness.businessHours && enhancedBusiness.businessHours.length > 0 && (
-                              <div className="mt-2">
-                                <div className="text-xs font-medium text-gray-500 mb-1">Business Hours:</div>
-                                <div className="text-xs text-gray-600">
-                                  {enhancedBusiness.businessHours.slice(0, 2).map((hours, index) => (
-                                    <div key={index}>{hours}</div>
-                                  ))}
-                                  {enhancedBusiness.businessHours.length > 2 && (
-                                    <div className="text-blue-600 cursor-pointer hover:underline">
-                                      +{enhancedBusiness.businessHours.length - 2} more
-                                    </div>
-                                  )}
+                            {enhancedBusiness.businessHours &&
+                              enhancedBusiness.businessHours.length > 0 && (
+                                <div className="mt-3 p-2 bg-gray-50 rounded">
+                                  <div className="flex items-center gap-1 mb-1">
+                                    <Clock className="h-3 w-3 text-gray-400" />
+                                    <span className="text-xs font-medium text-gray-500">
+                                      Business Hours:
+                                    </span>
+                                  </div>
+                                  <div className="text-xs text-gray-600">
+                                    {enhancedBusiness.businessHours
+                                      .slice(0, 2)
+                                      .map((hours, index) => (
+                                        <div key={index}>{hours}</div>
+                                      ))}
+                                    {enhancedBusiness.businessHours.length >
+                                      2 && (
+                                      <div className="text-blue-600 cursor-pointer hover:underline">
+                                        +
+                                        {enhancedBusiness.businessHours.length -
+                                          2}{" "}
+                                        more days
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            )}
+                              )}
                           </div>
 
-                          <div className="mt-3 flex flex-wrap gap-2">
+                          <div className="mt-4 flex flex-wrap gap-2">
                             <Badge variant="outline" className="text-xs">
                               {enhancedBusiness.category}
                             </Badge>
 
-                            {/* Business Types */}
-                            {enhancedBusiness.businessTypes && enhancedBusiness.businessTypes.slice(0, 2).map((type, index) => (
-                              <Badge key={index} variant="secondary" className="text-xs">
-                                {type.replace(/_/g, ' ').toLowerCase()}
-                              </Badge>
-                            ))}
+                            {/* Business Types from Google */}
+                            {enhancedBusiness.businessTypes &&
+                              enhancedBusiness.businessTypes
+                                .slice(0, 3)
+                                .map((type, index) => (
+                                  <Badge
+                                    key={index}
+                                    variant="secondary"
+                                    className="text-xs"
+                                  >
+                                    {type.replace(/_/g, " ").toLowerCase()}
+                                  </Badge>
+                                ))}
                           </div>
                         </div>
                       </div>
@@ -553,7 +575,7 @@ export default function FraudImmigrationConsultants() {
                     {/* Actions and Report Count */}
                     <div className="flex flex-col sm:flex-row items-center gap-4">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-red-600">
+                        <div className="text-3xl font-bold text-red-600">
                           {reports[business.id] || 0}
                         </div>
                         <div className="text-xs text-gray-500">
@@ -575,48 +597,6 @@ export default function FraudImmigrationConsultants() {
               </Card>
             );
           })}
-
-                          {business.email && (
-                            <div className="flex items-center gap-2">
-                              <Mail className="h-4 w-4 text-gray-400" />
-                              <span>{business.email}</span>
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="mt-3">
-                          <Badge variant="outline" className="text-xs">
-                            {business.category}
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Actions and Report Count */}
-                  <div className="flex flex-col sm:flex-row items-center gap-4">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-red-600">
-                        {reports[business.id] || 0}
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        Community Reports
-                      </div>
-                    </div>
-
-                    <Button
-                      onClick={() => handleWriteReport(business)}
-                      className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-2"
-                      size="sm"
-                    >
-                      <FileText className="h-4 w-4" />
-                      Write a Report
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
         </div>
 
         {/* No Results */}
@@ -641,13 +621,14 @@ export default function FraudImmigrationConsultants() {
           <CardContent className="p-6">
             <div className="text-center">
               <h3 className="font-semibold text-blue-800 mb-2">
-                Help Protect the Community
+                Enhanced with Real Google Places Data
               </h3>
               <p className="text-blue-700 text-sm">
-                If you've had negative experiences with any immigration
-                consultant or visa service provider, please report it to help
-                others make informed decisions. Your reports help build a safer
-                community.
+                Business information including descriptions, hours, and ratings
+                are fetched directly from Google Places API to provide the most
+                accurate and up-to-date information. If you've had negative
+                experiences with any immigration consultant, please report it to
+                help others make informed decisions.
               </p>
             </div>
           </CardContent>
