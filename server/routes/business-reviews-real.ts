@@ -12,6 +12,7 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
     const { businessId } = req.params;
 
     if (!businessId) {
+      res.setHeader("Content-Type", "application/json");
       return res.status(400).json({ error: "Business ID is required" });
     }
 
