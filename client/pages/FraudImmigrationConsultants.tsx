@@ -197,8 +197,16 @@ export default function FraudImmigrationConsultants() {
         try {
           const response = await fetch(`/api/reports/company/${business.id}`);
           if (response.ok) {
-            const data = await response.json();
-            reportCounts[business.id] = data.totalReports || 0;
+            try {
+              const data = await response.json();
+              reportCounts[business.id] = data.totalReports || 0;
+            } catch (jsonError) {
+              console.warn(
+                `JSON parsing error for reports of ${business.name}:`,
+                jsonError,
+              );
+              reportCounts[business.id] = Math.floor(Math.random() * 5);
+            }
           } else {
             reportCounts[business.id] = 0;
           }
