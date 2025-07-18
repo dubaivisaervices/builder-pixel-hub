@@ -514,14 +514,11 @@ function AdminDashboardContent() {
             hasTargetKeyword: business.hasTargetKeyword || false,
           };
 
-          const saveResponse = await fetch(
-            "/.netlify/functions/save-business",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(businessData),
-            },
-          );
+          const saveResponse = await fetch("/api/admin/save-business", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(businessData),
+          });
 
           if (saveResponse.ok) {
             const result = await saveResponse.json();
