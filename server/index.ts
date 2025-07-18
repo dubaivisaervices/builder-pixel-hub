@@ -508,6 +508,7 @@ export function createServer() {
   app.get("/api/admin/debug-database-save", debugDatabaseSave);
   app.get("/api/admin/test-google-business-save", testGoogleBusinessSave);
   app.get("/api/admin/save-business-correctly", saveBusinessCorrectly);
+  app.get("/api/admin/fetch-companies-working", fetchCompaniesWorking);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
