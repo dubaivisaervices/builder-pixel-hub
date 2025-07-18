@@ -92,7 +92,11 @@ export default function FraudImmigrationConsultants() {
 
   useEffect(() => {
     if (businesses.length > 0) {
-      fetchEnhancedBusinessDetails();
+      // Only fetch enhanced details in development or if the enhanced endpoint exists
+      // Skip this for Netlify until the function is deployed with the new endpoints
+      if (process.env.NODE_ENV === "development") {
+        fetchEnhancedBusinessDetails();
+      }
     }
   }, [businesses]);
 
