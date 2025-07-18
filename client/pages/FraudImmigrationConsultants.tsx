@@ -59,7 +59,6 @@ export default function FraudImmigrationConsultants() {
   >({});
   const [reports, setReports] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
-  const [enhancingDetails, setEnhancingDetails] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
