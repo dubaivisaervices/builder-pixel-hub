@@ -541,9 +541,12 @@ export default function FraudImmigrationConsultants() {
         {/* Results Summary */}
         <div className="mb-6">
           <p className="text-gray-600">
-            Showing <strong>{filteredBusinesses.length}</strong> of{" "}
-            <strong>{businesses.length}</strong> immigration consultants
+            Showing <strong>{displayedBusinesses.length}</strong> of{" "}
+            <strong>{filteredBusinesses.length}</strong> immigration consultants
             {searchTerm && ` matching "${searchTerm}"`}
+            {filteredBusinesses.length !== businesses.length && (
+              <span> (filtered from {businesses.length} total)</span>
+            )}
           </p>
         </div>
 
