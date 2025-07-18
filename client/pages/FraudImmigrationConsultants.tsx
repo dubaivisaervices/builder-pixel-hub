@@ -207,8 +207,8 @@ export default function FraudImmigrationConsultants() {
         }
       }
 
-      // Reports endpoint exists, fetch for all businesses
-      for (const business of businesses) {
+      // Reports endpoint exists, fetch for displayed businesses
+      for (const business of displayedBusinesses) {
         try {
           const response = await fetch(`/api/reports/company/${business.id}`);
           if (response.ok) {
