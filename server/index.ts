@@ -696,6 +696,9 @@ export function createServer() {
   // Test Netlify credentials endpoint
   app.get("/api/test-netlify-credentials", testNetlifyCredentials);
 
+  // Enhanced business details with Google Places API
+  app.get("/api/business/:businessId", getEnhancedBusinessDetails);
+
   // S3 image upload endpoints
   app.post(
     "/api/upload-business-image",
