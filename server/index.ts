@@ -523,6 +523,8 @@ export function createServer() {
   app.get("/api/admin/enhanced-fetcher-working", enhancedFetcherWorking);
   app.get("/api/admin/enhance-all-businesses", enhanceAllBusinesses);
   app.get("/api/admin/check-enhancement-status", checkEnhancementStatus);
+  app.get("/api/admin/migrate-photos-to-netlify", migratePhotosToNetlify);
+  app.get("/api/admin/enhanced-fetcher-netlify", enhancedFetcherNetlify);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
