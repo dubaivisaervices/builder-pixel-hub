@@ -1315,6 +1315,16 @@ function AdminDashboardContent() {
                             : "🔥 Bulk Fetch All Categories"}
                         </Button>
                         <Button
+                          onClick={() => handleImportExistingBusinesses()}
+                          className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700"
+                          disabled={isFetching}
+                        >
+                          <Database className="h-4 w-4 mr-2" />
+                          {isFetching
+                            ? "Importing..."
+                            : "📊 Import Existing Businesses"}
+                        </Button>
+                        <Button
                           variant="outline"
                           onClick={() => updateSearchPreview()}
                           className="border-orange-300 text-orange-700 hover:bg-orange-50"
