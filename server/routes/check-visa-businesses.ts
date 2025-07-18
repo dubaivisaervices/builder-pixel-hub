@@ -5,7 +5,7 @@ export const checkVisaBusinesses: RequestHandler = async (req, res) => {
   try {
     // Search for visa-related businesses in the database
     const query = `
-      SELECT name, address, category, rating, place_id 
+      SELECT name, address, category, rating, id 
       FROM businesses 
       WHERE LOWER(name) LIKE '%visa%' 
          OR LOWER(name) LIKE '%immigration%' 
