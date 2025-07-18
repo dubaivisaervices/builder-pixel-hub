@@ -127,6 +127,7 @@ import { checkVisaBusinesses } from "./routes/check-visa-businesses";
 import { checkDbSchema } from "./routes/check-db-schema";
 import { fetchKeywordBusinesses } from "./routes/fetch-keyword-businesses";
 import { keywordBusinessesReport } from "./routes/keyword-businesses-report";
+import { fetchConsultants } from "./routes/fetch-consultants";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
