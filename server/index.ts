@@ -663,6 +663,20 @@ export function createServer() {
   // API test endpoint for debugging
   app.get("/api/test", apiTest);
 
+  // Debug endpoint to test if API routing works
+  app.get("/api/debug-reviews/:businessId", (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.json({
+      success: true,
+      message: "Debug endpoint working",
+      businessId: req.params.businessId,
+      timestamp: new Date().toISOString(),
+      headers: req.headers,
+      url: req.url,
+      path: req.path,
+    });
+  });
+
   // Real Google reviews API (cache-first, no fake reviews)
   app.get("/api/business-reviews/:businessId", getBusinessReviews);
 
