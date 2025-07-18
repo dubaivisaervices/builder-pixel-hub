@@ -32,6 +32,29 @@ exports.handler = async (event, context) => {
     const client = await pool.connect();
 
     try {
+      // Create businesses table if it doesn't exist
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS businesses (
+          id VARCHAR(255) PRIMARY KEY,
+          name TEXT NOT NULL,
+          address TEXT,
+          category TEXT,
+          phone TEXT,
+          website TEXT,
+          email TEXT,
+          rating DECIMAL(3,2),
+          review_count INTEGER,
+          latitude DECIMAL(10,8),
+          longitude DECIMAL(11,8),
+          business_status TEXT,
+          logo_url TEXT,
+          photos JSONB,
+          has_target_keyword BOOLEAN,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+
       // Check if business already exists
       const existingBusiness = await client.query(
         "SELECT id FROM businesses WHERE id = $1",
