@@ -53,6 +53,7 @@ import {
   getSearchCategories,
   checkGoogleApiStatus,
 } from "./routes/enhanced-google-fetcher";
+import { importBusinesses } from "./routes/import-businesses";
 import {
   saveAllBusinessData,
   saveBusinessImagesToGitHub,
