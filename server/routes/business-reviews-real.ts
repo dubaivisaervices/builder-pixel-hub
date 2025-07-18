@@ -174,6 +174,7 @@ export const getBusinessReviews: RequestHandler = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching business reviews:", error);
+    res.setHeader("Content-Type", "application/json");
     res.status(500).json({
       error: "Failed to fetch business reviews",
       details: error instanceof Error ? error.message : "Unknown error",
