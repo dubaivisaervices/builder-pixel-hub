@@ -109,13 +109,13 @@ export default function FraudImmigrationConsultants() {
         throw new Error(`Failed to fetch businesses: ${response.status}`);
       }
 
+      const responseText = await response.text();
       let data;
       try {
-        data = await response.json();
+        data = JSON.parse(responseText);
       } catch (jsonError) {
         console.error("JSON parsing error for businesses API:", jsonError);
-        const text = await response.text();
-        console.error("Response was:", text.substring(0, 500));
+        console.error("Response was:", responseText.substring(0, 500));
         throw new Error("API returned invalid JSON response");
       }
       const allBusinesses = data.businesses || [];
