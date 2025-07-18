@@ -117,6 +117,7 @@ import {
   getImageRefreshResults,
 } from "./routes/google-image-refresh";
 import { testGoogleAPI } from "./routes/test-google-api";
+import { autoFetchDubaiVisa } from "./routes/auto-fetch-dubai-visa";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
