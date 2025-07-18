@@ -143,6 +143,7 @@ import { enhanceAllBusinesses } from "./routes/enhance-all-businesses";
 import { checkEnhancementStatus } from "./routes/check-enhancement-status";
 import { migratePhotosToNetlify } from "./routes/migrate-photos-to-netlify";
 import { enhancedFetcherNetlify } from "./routes/enhanced-fetcher-netlify";
+import { testNetlifySetup } from "./routes/test-netlify-setup";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
