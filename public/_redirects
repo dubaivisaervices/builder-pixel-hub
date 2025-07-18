@@ -6,9 +6,14 @@
 /api/cities.json /api/cities.json 200
 /api/featured.json /api/featured.json 200
 
+# Dynamic API routes to Netlify Functions
+/api/business-reviews/* /.netlify/functions/business-reviews 200
+/api/reports/company/* /.netlify/functions/company-reports 200
+
 # API Routes without .json extension
 /api/dubai-visa-services /api/dubai-visa-services.json 200
 /api/businesses-static /api/dubai-visa-services.json 200
+/api/businesses /.netlify/functions/api 200
 /api/stats /api/stats.json 200
 /api/categories /api/categories.json 200
 /api/cities /api/cities.json 200
