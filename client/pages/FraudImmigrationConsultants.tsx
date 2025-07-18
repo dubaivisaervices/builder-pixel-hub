@@ -71,7 +71,7 @@ export default function FraudImmigrationConsultants() {
 
   const navigate = useNavigate();
 
-  // Target categories for immigration/visa consultants - updated to match real data
+    // Target categories for immigration/visa consultants - updated to match real data
   const targetCategories = [
     "visa agent",
     "immigration consultants",
@@ -122,28 +122,24 @@ export default function FraudImmigrationConsultants() {
     updateDisplayedBusinesses();
   }, [filteredBusinesses, currentPage]);
 
-  const fetchBusinesses = async () => {
+    const fetchBusinesses = async () => {
     try {
       setLoading(true);
 
       // Try to fetch from API first, but have a robust fallback
       let allBusinesses: Business[] = [];
 
-      try {
+            try {
         // Try multiple endpoints to get real business data
         let response = await fetch("/api/businesses?limit=1000");
 
         // If first endpoint fails, try the Netlify function endpoints
         if (!response.ok) {
-          response = await fetch(
-            "/.netlify/functions/api/businesses?limit=1000",
-          );
+          response = await fetch("/.netlify/functions/api/businesses?limit=1000");
         }
 
         if (!response.ok) {
-          response = await fetch(
-            "/.netlify/functions/api/dubai-visa-services?limit=1000",
-          );
+          response = await fetch("/.netlify/functions/api/dubai-visa-services?limit=1000");
         }
 
         if (response.ok) {
@@ -151,9 +147,7 @@ export default function FraudImmigrationConsultants() {
           try {
             const data = JSON.parse(responseText);
             allBusinesses = data.businesses || [];
-            console.log(
-              `✅ Loaded ${allBusinesses.length} businesses from API`,
-            );
+                        console.log(`✅ Loaded ${allBusinesses.length} businesses from API`);
 
             // If we got a reasonable number of businesses, this is likely real data
             if (allBusinesses.length > 100) {
@@ -164,9 +158,7 @@ export default function FraudImmigrationConsultants() {
             allBusinesses = [];
           }
         } else {
-          console.warn(
-            `API request failed with status ${response.status}, using fallback data`,
-          );
+          console.warn(`API request failed with status ${response.status}, using fallback data`);
           allBusinesses = [];
         }
       } catch (networkError) {
@@ -174,9 +166,27 @@ export default function FraudImmigrationConsultants() {
         allBusinesses = [];
       }
 
-      // If API failed, use static sample data
+            // If API failed, try to load from static JSON file or use sample data
       if (allBusinesses.length === 0) {
-        console.log("📋 Using static sample immigration consultants data");
+        console.log("📋 API failed, trying to load businesses from static files");
+
+        // Try to load from a static businesses.json file
+        try {
+          const staticResponse = await fetch("/business-data/businesses.json");
+          if (staticResponse.ok) {
+            const staticData = await staticResponse.json();
+            if (staticData.businesses && staticData.businesses.length > 0) {
+              allBusinesses = staticData.businesses;
+              console.log(`✅ Loaded ${allBusinesses.length} businesses from static JSON file`);
+            }
+          }
+        } catch (staticError) {
+          console.warn("Static JSON file not found, using sample data");
+        }
+
+        // If still no data, use sample data
+        if (allBusinesses.length === 0) {
+          console.log("📋 Using fallback sample immigration consultants data");
         allBusinesses = [
           {
             id: "sample-1",
@@ -224,7 +234,7 @@ export default function FraudImmigrationConsultants() {
             phone: "+971 7 XXX XXXX",
             rating: 4.1,
             reviewCount: 92,
-          },
+          }
         ];
       }
 
@@ -245,7 +255,7 @@ export default function FraudImmigrationConsultants() {
         `📊 Found ${immigrationBusinesses.length} immigration/visa consultants out of ${allBusinesses.length} total businesses`,
       );
 
-      setBusinesses(immigrationBusinesses);
+            setBusinesses(immigrationBusinesses);
       setFilteredBusinesses(immigrationBusinesses);
       setError(null); // Clear any previous errors
     } catch (err) {
@@ -261,7 +271,7 @@ export default function FraudImmigrationConsultants() {
           phone: "+971 4 XXX XXXX",
           rating: 4.0,
           reviewCount: 50,
-        },
+        }
       ];
 
       setBusinesses(fallbackBusinesses);
