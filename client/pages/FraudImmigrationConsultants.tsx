@@ -251,9 +251,11 @@ export default function FraudImmigrationConsultants() {
       const enhanced: Record<string, Business> = {};
 
       // Test if the enhanced endpoint exists by trying the first business
-      if (businesses.length > 0) {
+      if (displayedBusinesses.length > 0) {
         try {
-          const testResponse = await fetch(`/api/business/${businesses[0].id}`);
+          const testResponse = await fetch(
+            `/api/business/${displayedBusinesses[0].id}`,
+          );
           if (!testResponse.ok && testResponse.status === 404) {
             // Enhanced endpoint doesn't exist, use businesses as-is
             console.log(
