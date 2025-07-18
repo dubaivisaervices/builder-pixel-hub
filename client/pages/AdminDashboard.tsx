@@ -1423,10 +1423,15 @@ function AdminDashboardContent() {
                         Removed artificial inflation. New fetches will properly
                         increase this count.
                       </div>
+                      <div className="text-xs text-red-600 mt-2 p-2 bg-red-100 rounded">
+                        ⚠️ <strong>Database is empty!</strong> Click "Import
+                        Existing Businesses" below to transfer 841 businesses
+                        from JSON to database first.
+                      </div>
                       <div className="text-xs text-blue-600 mt-2 p-2 bg-blue-100 rounded">
-                        🎯 <strong>Ready for bulk category fetch!</strong> Use
-                        the "Bulk Fetch All Categories" button to find
-                        businesses for 47 visa/immigration categories.
+                        🎯 <strong>After import:</strong> Use "Bulk Fetch All
+                        Categories" to add businesses for 47 visa/immigration
+                        categories.
                       </div>
                     </div>
                   </div>
