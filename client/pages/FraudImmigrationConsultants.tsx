@@ -308,6 +308,20 @@ export default function FraudImmigrationConsultants() {
             description:
               "Specialized work visa processing for skilled workers, engineers, and healthcare professionals.",
           },
+          {
+            id: "ChIJCz-J5TBDXz4RRjYNt3y35Zs",
+            name: "A2W Consultants",
+            address:
+              "Office No 1601 - Al Moosa Tower 2 - Sheikh Zayed Road - Trade Centre - Dubai - United Arab Emirates",
+            category: "استشارات الهجرة دبي",
+            phone: "04 320 2413",
+            website: "http://www.a2w-consultants.ae/",
+            email: "info@a2wconsultants.ae",
+            rating: 3.7,
+            reviewCount: 195,
+            description:
+              "Immigration consultancy services in Dubai providing visa and migration assistance in Arabic and English.",
+          },
         ];
         console.log("🎯 Using REAL business data from your actual database");
       }
