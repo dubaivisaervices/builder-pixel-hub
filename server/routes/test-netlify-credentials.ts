@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import fetch from "node-fetch";
 
 export const testNetlifyCredentials: RequestHandler = async (req, res) => {
   try {
