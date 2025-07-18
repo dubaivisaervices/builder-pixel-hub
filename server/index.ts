@@ -532,6 +532,7 @@ export function createServer() {
   app.get("/api/admin/test-netlify-setup", testNetlifySetup);
   app.get("/api/admin/configure-netlify", configureNetlify);
   app.get("/api/admin/migrate-photos-direct", migratePhotosDirect);
+  app.get("/api/admin/simple-photo-migration", simplePhotoMigration);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
