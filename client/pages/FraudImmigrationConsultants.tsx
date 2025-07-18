@@ -221,11 +221,26 @@ export default function FraudImmigrationConsultants() {
 
       setBusinesses(immigrationBusinesses);
       setFilteredBusinesses(immigrationBusinesses);
+      setError(null); // Clear any previous errors
     } catch (err) {
-      console.error("Error fetching businesses:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to load businesses",
-      );
+      console.error("Error in fetchBusinesses:", err);
+
+      // Even if there's an error, provide fallback data so the page still works
+      const fallbackBusinesses = [
+        {
+          id: "fallback-1",
+          name: "Sample Immigration Consultant",
+          address: "Dubai, UAE",
+          category: "immigration consultants",
+          phone: "+971 4 XXX XXXX",
+          rating: 4.0,
+          reviewCount: 50,
+        },
+      ];
+
+      setBusinesses(fallbackBusinesses);
+      setFilteredBusinesses(fallbackBusinesses);
+      setError("Using sample data - API unavailable");
     } finally {
       setLoading(false);
     }
