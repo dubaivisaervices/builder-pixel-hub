@@ -106,6 +106,10 @@ export default function FraudImmigrationConsultants() {
     filterBusinesses();
   }, [businesses, searchTerm, selectedCategory]);
 
+  useEffect(() => {
+    updateDisplayedBusinesses();
+  }, [filteredBusinesses, currentPage]);
+
   const fetchBusinesses = async () => {
     try {
       setLoading(true);
