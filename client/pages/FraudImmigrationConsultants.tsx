@@ -174,24 +174,80 @@ export default function FraudImmigrationConsultants() {
   const fetchBusinesses = async () => {
     try {
       setLoading(true);
-      console.log(
-        "🔄 Loading ALL immigration businesses from comprehensive dataset...",
-      );
+      console.log("🔄 Loading immigration businesses from database...");
 
-      // Load directly from the comprehensive dataset - NO MORE FALLBACKS!
-      const response = await fetch("/data/complete-dataset.json");
-      const data = await response.json();
+      let data: any = null;
+      let businessesArray: any[] = [];
 
-      if (!data.businesses || data.businesses.length === 0) {
-        throw new Error("No businesses found in dataset");
+      // Try multiple data sources in order of preference
+      const dataSources = [
+        { url: "/data/complete-dataset.json", name: "Complete Dataset" },
+        { url: "/api/complete-businesses.json", name: "Complete Businesses" },
+        { url: "/business-data/businesses.json", name: "Business Data" },
+        { url: "/api/dubai-visa-services.json", name: "Visa Services" },
+      ];
+
+      for (const source of dataSources) {
+        try {
+          console.log(`🔄 Trying ${source.name} at ${source.url}...`);
+          const response = await fetch(source.url);
+
+          if (!response.ok) {
+            console.warn(
+              `❌ ${source.name} returned ${response.status}: ${response.statusText}`,
+            );
+            continue;
+          }
+
+          const responseText = await response.text();
+
+          // Check if response is HTML (error page)
+          if (
+            responseText.trim().startsWith("<!DOCTYPE") ||
+            responseText.trim().startsWith("<html")
+          ) {
+            console.warn(`❌ ${source.name} returned HTML instead of JSON`);
+            continue;
+          }
+
+          try {
+            data = JSON.parse(responseText);
+
+            // Handle different data structures
+            if (Array.isArray(data)) {
+              businessesArray = data;
+            } else if (data.businesses && Array.isArray(data.businesses)) {
+              businessesArray = data.businesses;
+            } else {
+              console.warn(`❌ ${source.name} has unexpected structure`);
+              continue;
+            }
+
+            if (businessesArray.length > 0) {
+              console.log(
+                `✅ Successfully loaded ${businessesArray.length} businesses from ${source.name}`,
+              );
+              break;
+            }
+          } catch (jsonError) {
+            console.warn(`❌ ${source.name} has invalid JSON:`, jsonError);
+            continue;
+          }
+        } catch (fetchError) {
+          console.warn(`❌ Failed to fetch ${source.name}:`, fetchError);
+          continue;
+        }
       }
 
-      console.log(
-        `📊 Found ${data.businesses.length} total businesses in dataset`,
-      );
+      // If no data source worked, throw error
+      if (!businessesArray || businessesArray.length === 0) {
+        throw new Error("No business data could be loaded from any source");
+      }
 
-      // Filter ALL businesses that match immigration/visa categories
-      const immigrationBusinesses = data.businesses
+      console.log(`📊 Processing ${businessesArray.length} total businesses`);
+
+      // Filter businesses that match immigration/visa categories
+      const immigrationBusinesses = businessesArray
         .filter((business: any) => {
           const category = business.category?.toLowerCase() || "";
           const name = business.name?.toLowerCase() || "";
@@ -221,16 +277,18 @@ export default function FraudImmigrationConsultants() {
         }));
 
       console.log(
-        `🎯 Filtered ${immigrationBusinesses.length} immigration/visa businesses from ${data.businesses.length} total`,
+        `🎯 Filtered ${immigrationBusinesses.length} immigration/visa businesses from ${businessesArray.length} total`,
       );
-      console.log("✅ SUCCESS: Loaded REAL data from comprehensive dataset");
+      console.log("✅ SUCCESS: Loaded REAL data from database");
 
       setBusinesses(immigrationBusinesses);
       setFilteredBusinesses(immigrationBusinesses);
       setError(null);
     } catch (err) {
       console.error("Error loading businesses:", err);
-      setError("Failed to load businesses from database");
+      setError(
+        `Failed to load businesses: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
 
       // Set empty array on error
       setBusinesses([]);
