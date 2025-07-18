@@ -412,6 +412,8 @@ function createBusinessServer() {
         "GET /api/health",
         "GET /api/dubai-visa-services?search=<query>&category=<cat>&city=<city>",
         "GET /api/businesses?search=<query>&category=<cat>&city=<city>",
+        "GET /api/business/:businessId",
+        "GET /api/reports/company/:companyId",
         "GET /api/debug",
       ],
       businessDataStatus: {
