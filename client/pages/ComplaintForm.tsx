@@ -220,7 +220,7 @@ export default function ComplaintForm() {
     return () => clearTimeout(timer);
   }, [reportData.description, reportData.evidenceDescription]);
 
-    const fetchBusinesses = async () => {
+  const fetchBusinesses = async () => {
     try {
       console.log("🔄 Fetching businesses for complaint form...");
 
@@ -236,18 +236,24 @@ export default function ComplaintForm() {
           const response = await fetch(source);
           if (response.ok) {
             const data = await response.json();
-            const businessesArray = Array.isArray(data) ? data : (data.businesses || []);
+            const businessesArray = Array.isArray(data)
+              ? data
+              : data.businesses || [];
 
             if (businessesArray.length > 0) {
-              console.log(`✅ Successfully loaded ${businessesArray.length} businesses from ${source}`);
-              setBusinesses(businessesArray.map(business => ({
-                id: business.id,
-                name: business.name,
-                address: business.address,
-                rating: business.rating || 4.0,
-                reviewCount: business.reviewCount || 0,
-                category: business.category,
-              })));
+              console.log(
+                `✅ Successfully loaded ${businessesArray.length} businesses from ${source}`,
+              );
+              setBusinesses(
+                businessesArray.map((business) => ({
+                  id: business.id,
+                  name: business.name,
+                  address: business.address,
+                  rating: business.rating || 4.0,
+                  reviewCount: business.reviewCount || 0,
+                  category: business.category,
+                })),
+              );
               return;
             }
           }
@@ -256,59 +262,57 @@ export default function ComplaintForm() {
         }
       }
 
-            // If all sources fail, use fallback
+      // If all sources fail, use fallback
       console.warn("❌ All data sources failed, using fallback data");
-        // Fallback with comprehensive sample data
-        const fallbackBusinesses = [
-          {
-            id: "sample1",
-            name: "Dubai Visa Solutions",
-            address: "Business Bay, Dubai, UAE",
-            rating: 4.8,
-            reviewCount: 156,
-            category: "Visa Services",
-          },
-          {
-            id: "sample2",
-            name: "Emirates Document Clearing",
-            address: "DIFC, Dubai, UAE",
-            rating: 4.6,
-            reviewCount: 89,
-            category: "Document Clearing",
-          },
-          {
-            id: "sample3",
-            name: "Gulf Immigration Services",
-            address: "Downtown Dubai, UAE",
-            rating: 4.7,
-            reviewCount: 203,
-            category: "Immigration Services",
-          },
-          {
-            id: "sample4",
-            name: "Al Rostamani Business Setup",
-            address: "Sheikh Zayed Road, Dubai, UAE",
-            rating: 4.5,
-            reviewCount: 124,
-            category: "Business Setup",
-          },
-          {
-            id: "sample5",
-            name: "Professional PRO Services",
-            address: "Jumeirah Lakes Towers, Dubai, UAE",
-            rating: 4.9,
-            reviewCount: 87,
-            category: "PRO Services",
-          },
-        ];
+      const fallbackBusinesses = [
+        {
+          id: "sample1",
+          name: "Dubai Visa Solutions",
+          address: "Business Bay, Dubai, UAE",
+          rating: 4.8,
+          reviewCount: 156,
+          category: "Visa Services",
+        },
+        {
+          id: "sample2",
+          name: "Emirates Document Clearing",
+          address: "DIFC, Dubai, UAE",
+          rating: 4.6,
+          reviewCount: 89,
+          category: "Document Clearing",
+        },
+        {
+          id: "sample3",
+          name: "Gulf Immigration Services",
+          address: "Downtown Dubai, UAE",
+          rating: 4.7,
+          reviewCount: 203,
+          category: "Immigration Services",
+        },
+        {
+          id: "sample4",
+          name: "Al Rostamani Business Setup",
+          address: "Sheikh Zayed Road, Dubai, UAE",
+          rating: 4.5,
+          reviewCount: 124,
+          category: "Business Setup",
+        },
+        {
+          id: "sample5",
+          name: "Professional PRO Services",
+          address: "Jumeirah Lakes Towers, Dubai, UAE",
+          rating: 4.9,
+          reviewCount: 87,
+          category: "PRO Services",
+        },
+      ];
 
-        console.log(
-          "🔧 Using fallback data with",
-          fallbackBusinesses.length,
-          "businesses",
-        );
-        setBusinesses(fallbackBusinesses);
-      }
+      console.log(
+        "🔧 Using fallback data with",
+        fallbackBusinesses.length,
+        "businesses",
+      );
+      setBusinesses(fallbackBusinesses);
     } catch (error) {
       console.error("❌ Network error fetching businesses:", error);
       // Same fallback as above
