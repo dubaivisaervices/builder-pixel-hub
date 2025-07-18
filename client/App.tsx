@@ -36,6 +36,7 @@ import AddBusinessPage from "./pages/AddBusinessPage";
 import SupabaseAdmin from "./pages/SupabaseAdmin";
 import LegacyRedirect from "./components/LegacyRedirect";
 import FraudImmigrationConsultants from "./pages/FraudImmigrationConsultants";
+import FraudImmigrationConsultantsStatic from "./pages/FraudImmigrationConsultantsStatic";
 
 const queryClient = new QueryClient();
 
