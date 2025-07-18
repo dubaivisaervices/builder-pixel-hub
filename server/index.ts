@@ -662,6 +662,9 @@ export function createServer() {
   // Real Google reviews API (cache-first, no fake reviews)
   app.get("/api/business-reviews/:businessId", getBusinessReviews);
 
+  // Netlify photo upload endpoint
+  app.post("/api/upload-photos-to-netlify", uploadPhotosToNetlify);
+
   // S3 image upload endpoints
   app.post(
     "/api/upload-business-image",
