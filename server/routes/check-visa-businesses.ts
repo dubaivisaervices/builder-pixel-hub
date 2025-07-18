@@ -4,44 +4,25 @@ import { database } from "../database/database";
 export const checkVisaBusinesses: RequestHandler = async (req, res) => {
   try {
     // Search for visa-related businesses in the database
-    const visaKeywords = [
-      "%visa%",
-      "%immigration%",
-      "%consultant%",
-      "%permit%",
-      "%agent%",
-    ];
+    const query = `
+      SELECT name, formatted_address, category, rating, place_id 
+      FROM businesses 
+      WHERE LOWER(name) LIKE '%visa%' 
+         OR LOWER(name) LIKE '%immigration%' 
+         OR LOWER(name) LIKE '%consultant%' 
+         OR LOWER(name) LIKE '%permit%'
+         OR LOWER(name) LIKE '%agent%'
+         OR LOWER(category) LIKE '%visa%' 
+         OR LOWER(category) LIKE '%immigration%' 
+         OR LOWER(category) LIKE '%consultant%'
+      ORDER BY rating DESC
+      LIMIT 50
+    `;
 
-    let allVisaBusinesses: any[] = [];
+    const businesses = await database.query(query);
 
-    for (const keyword of visaKeywords) {
-      const businesses = database
-        .prepare(
-          `
-        SELECT name, formatted_address, category, rating, place_id 
-        FROM businesses 
-        WHERE LOWER(name) LIKE LOWER(?) 
-           OR LOWER(category) LIKE LOWER(?)
-           OR LOWER(formatted_address) LIKE LOWER(?)
-        ORDER BY rating DESC
-        LIMIT 20
-      `,
-        )
-        .all(keyword, keyword, keyword);
-
-      allVisaBusinesses = allVisaBusinesses.concat(businesses);
-    }
-
-    // Remove duplicates based on place_id
-    const uniqueBusinesses = allVisaBusinesses.filter(
-      (business, index, self) =>
-        index === self.findIndex((b) => b.place_id === business.place_id),
-    );
-
-    // Get category breakdown
-    const categoryStats = database
-      .prepare(
-        `
+    // Get category stats
+    const categoryQuery = `
       SELECT category, COUNT(*) as count 
       FROM businesses 
       WHERE LOWER(category) LIKE '%visa%' 
@@ -50,18 +31,18 @@ export const checkVisaBusinesses: RequestHandler = async (req, res) => {
          OR LOWER(category) LIKE '%permit%'
       GROUP BY category 
       ORDER BY count DESC
-    `,
-      )
-      .all();
+    `;
+
+    const categoryStats = await database.query(categoryQuery);
 
     res.json({
       success: true,
       summary: {
-        totalVisaRelatedBusinesses: uniqueBusinesses.length,
+        totalVisaRelatedBusinesses: businesses.length,
         categories: categoryStats,
       },
-      sampleBusinesses: uniqueBusinesses.slice(0, 15),
-      message: `Found ${uniqueBusinesses.length} visa-related businesses in database`,
+      sampleBusinesses: businesses.slice(0, 15),
+      message: `Found ${businesses.length} visa-related businesses in database`,
     });
   } catch (error) {
     console.error("Check visa businesses error:", error);
