@@ -73,19 +73,8 @@ export default function CompanyRedirect() {
 
         console.log(`✅ Found company: ${business.name}`);
 
-        // Create URL-friendly company name
-        const urlFriendlyName = business.name
-          .toLowerCase()
-          .replace(/[^a-z0-9\s]/g, "") // Remove special characters
-          .replace(/\s+/g, "-") // Replace spaces with hyphens
-          .replace(/-+/g, "-") // Replace multiple hyphens with single
-          .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
-
-        // Default location to "dubai" if not available
-        const location = "dubai";
-
-        // Redirect to modern profile
-        const modernProfileUrl = `/modern-profile/${location}/${urlFriendlyName}`;
+        // Create consistent URL using the utility function
+        const modernProfileUrl = createBusinessProfileUrl(business);
         console.log(`➡️ Redirecting to: ${modernProfileUrl}`);
 
         navigate(modernProfileUrl, {
