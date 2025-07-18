@@ -761,7 +761,7 @@ export default function FraudImmigrationConsultants() {
         )}
 
         {/* No Results */}
-        {filteredBusinesses.length === 0 && (
+        {filteredBusinesses.length === 0 && !loading && (
           <Card className="text-center py-12">
             <CardContent>
               <AlertTriangle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
