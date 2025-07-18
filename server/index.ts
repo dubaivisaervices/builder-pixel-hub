@@ -502,6 +502,7 @@ export function createServer() {
   app.get("/api/admin/search-company-names", searchCompanyNames);
   app.get("/api/admin/search-companies-simple", searchCompaniesSimple);
   app.get("/api/admin/fetch-specific-companies", fetchSpecificCompanies);
+  app.get("/api/admin/debug-database-save", debugDatabaseSave);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
