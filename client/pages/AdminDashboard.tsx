@@ -416,6 +416,34 @@ function AdminDashboardContent() {
     updateSearchPreview();
   };
 
+  const handleTestDatabase = async () => {
+    setIsFetching(true);
+    setSyncStatus("🔧 Testing database connection...");
+
+    try {
+      const response = await fetch("/.netlify/functions/test-database");
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success) {
+          setSyncStatus(
+            `✅ Database test passed! Connection: ${result.test.connection}, Insert: ${result.test.insertWorked ? "✅" : "❌"}`,
+          );
+        } else {
+          setSyncStatus(`❌ Database test failed: ${result.message}`);
+        }
+      } else {
+        const errorText = await response.text();
+        setSyncStatus(`❌ Test failed: HTTP ${response.status} - ${errorText}`);
+      }
+    } catch (error) {
+      setSyncStatus(`❌ Test error: ${error.message}`);
+    } finally {
+      setIsFetching(false);
+      setTimeout(() => setSyncStatus(""), 10000);
+    }
+  };
+
   const handleImportExistingBusinesses = async () => {
     if (
       !confirm(
