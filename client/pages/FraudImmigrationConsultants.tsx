@@ -384,18 +384,6 @@ export default function FraudImmigrationConsultants() {
           </p>
         </div>
 
-        {/* Enhancement Status */}
-        {enhancingDetails && (
-          <Alert className="mb-6 border-blue-200 bg-blue-50">
-            <div className="flex items-center gap-2">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-              <span className="text-blue-800">
-                Fetching detailed business information from Google Places API...
-              </span>
-            </div>
-          </Alert>
-        )}
-
         {/* Business Listings */}
         <div className="space-y-6">
           {filteredBusinesses.map((business) => {
