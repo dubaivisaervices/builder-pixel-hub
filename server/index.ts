@@ -176,6 +176,7 @@ import {
 //   getOptimizedDownloadProgress,
 // } from "./routes/optimized-photo-download";
 import { getBusinessReviews } from "./routes/business-reviews-real";
+import { healthCheck } from "./routes/health";
 import {
   syncAllGoogleReviews,
   syncBusinessReviews,
