@@ -55,13 +55,29 @@ export default function GoogleReviewsWidget({
         console.log("🔍 API URL:", apiUrl);
 
         // Try to fetch real reviews from our API
-        const response = await fetch(apiUrl, {
+        let response = await fetch(apiUrl, {
           method: "GET",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
         });
+
+        // If primary endpoint fails, try alternative endpoint
+        if (
+          !response.ok ||
+          response.headers.get("content-type")?.includes("text/html")
+        ) {
+          console.log("🔄 Primary API failed, trying alternative endpoint");
+          const altApiUrl = `/api/reviews/${placeId}`;
+          response = await fetch(altApiUrl, {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          });
+        }
 
         if (response.ok) {
           const data = await response.json();
