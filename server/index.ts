@@ -122,6 +122,7 @@ import { testSimpleSearch } from "./routes/test-simple-search";
 import { debugVisaSearch } from "./routes/debug-visa-search";
 import { fetchVisaCategories } from "./routes/fetch-visa-categories";
 import { testVisaDirect } from "./routes/test-visa-direct";
+import { simpleVisaFetch } from "./routes/simple-visa-fetch";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
@@ -352,7 +353,7 @@ export function createServer() {
                 source: "s3",
                 uploadedAt: new Date().toISOString(),
               });
-              console.log(`��� ✅ S3 photo ${i + 1} validated:`, s3Key);
+              console.log(`📸 ✅ S3 photo ${i + 1} validated:`, s3Key);
             } else {
               console.log(`📸 ❌ S3 photo ${i + 1} not found:`, s3Key);
             }
