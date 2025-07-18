@@ -235,7 +235,7 @@ export default function FraudImmigrationConsultants() {
       console.error("Error fetching report counts:", err);
 
       const sampleReports: Record<string, number> = {};
-      businesses.forEach((business) => {
+      displayedBusinesses.forEach((business) => {
         sampleReports[business.id] = Math.floor(Math.random() * 5);
       });
       setReports(sampleReports);
