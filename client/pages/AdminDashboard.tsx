@@ -462,8 +462,34 @@ function AdminDashboardContent() {
     setSyncStatus("📋 Since this is Fly.dev (not Netlify), here's what to do:");
 
     try {
-      // First, load the businesses from JSON
-      const jsonResponse = await fetch("/api/complete-businesses.json");
+      setTimeout(
+        () =>
+          setSyncStatus(
+            "1️⃣ Try '🚀 Fetch Businesses' with a simple query like 'visa services Dubai'",
+          ),
+        1000,
+      );
+      setTimeout(
+        () =>
+          setSyncStatus(
+            "2���⃣ Then use '🔥 Bulk Fetch All Categories' to get 700+ businesses",
+          ),
+        3000,
+      );
+      setTimeout(
+        () =>
+          setSyncStatus(
+            "3️⃣ Each fetch will save businesses directly to PostgreSQL database",
+          ),
+        5000,
+      );
+      setTimeout(
+        () =>
+          setSyncStatus(
+            "✅ This approach works better in Fly.dev environment!",
+          ),
+        7000,
+      );
       if (!jsonResponse.ok) {
         throw new Error("Failed to load businesses from JSON");
       }
@@ -1625,7 +1651,7 @@ function AdminDashboardContent() {
                           <p>
                             📸 Images: {fetchResults.summary.imagesDownloaded}
                           </p>
-                          <p>💰 Cost: ${fetchResults.summary.totalCost}</p>
+                          <p>��� Cost: ${fetchResults.summary.totalCost}</p>
                         </div>
                       ) : (
                         <div className="space-y-2">
