@@ -654,6 +654,10 @@ export function createServer() {
   //   getOptimizedDownloadProgress,
   // );
 
+  // Health check endpoint for DigitalOcean
+  import { healthCheck } from "./routes/health";
+  app.get("/api/health", healthCheck);
+
   // Real Google reviews API (cache-first, no fake reviews)
   app.get("/api/business-reviews/:businessId", getBusinessReviews);
 
