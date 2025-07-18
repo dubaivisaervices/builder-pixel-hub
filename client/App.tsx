@@ -34,6 +34,7 @@ import CompanyRedirect from "./pages/CompanyRedirect";
 import ImageTest from "./pages/ImageTest";
 import AddBusinessPage from "./pages/AddBusinessPage";
 import SupabaseAdmin from "./pages/SupabaseAdmin";
+import LegacyRedirect from "./components/LegacyRedirect";
 
 const queryClient = new QueryClient();
 
