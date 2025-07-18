@@ -412,28 +412,75 @@ export default function FraudImmigrationConsultants() {
           </p>
         </div>
 
+                {/* Enhancement Status */}
+        {enhancingDetails && (
+          <Alert className="mb-6 border-blue-200 bg-blue-50">
+            <div className="flex items-center gap-2">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+              <span className="text-blue-800">
+                Fetching detailed business information from Google Places API...
+              </span>
+            </div>
+          </Alert>
+        )}
+
         {/* Business Listings */}
         <div className="space-y-4">
-          {filteredBusinesses.map((business) => (
-            <Card
-              key={business.id}
-              className="hover:shadow-lg transition-shadow"
-            >
-              <CardContent className="p-6">
-                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                  {/* Business Info */}
-                  <div className="flex-1">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3
-                            className="text-xl font-semibold text-blue-600 hover:text-blue-800 cursor-pointer"
-                            onClick={() => handleBusinessClick(business)}
-                          >
-                            {business.name}
-                          </h3>
-                          <ExternalLink className="h-4 w-4 text-gray-400" />
-                        </div>
+          {filteredBusinesses.map((business) => {
+            const enhancedBusiness = enhancedBusinesses[business.id] || business;
+
+            return (
+              <Card
+                key={business.id}
+                className="hover:shadow-lg transition-shadow"
+              >
+                <CardContent className="p-6">
+                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+                    {/* Business Info */}
+                    <div className="flex-1">
+                      <div className="flex items-start gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-3">
+                            <h3
+                              className="text-xl font-semibold text-blue-600 hover:text-blue-800 cursor-pointer"
+                              onClick={() => handleBusinessClick(business)}
+                            >
+                              {enhancedBusiness.name}
+                            </h3>
+                            <ExternalLink className="h-4 w-4 text-gray-400" />
+
+                            {/* Google Rating */}
+                            {enhancedBusiness.googleRating && (
+                              <div className="flex items-center gap-1 ml-2">
+                                <span className="text-yellow-500">⭐</span>
+                                <span className="text-sm font-medium">
+                                  {enhancedBusiness.googleRating.toFixed(1)}
+                                </span>
+                                <span className="text-xs text-gray-500">
+                                  ({enhancedBusiness.googleReviewCount} reviews)
+                                </span>
+                              </div>
+                            )}
+
+                            {/* Business Status */}
+                            {enhancedBusiness.businessStatus && (
+                              <Badge
+                                variant={enhancedBusiness.businessStatus === 'OPERATIONAL' ? 'default' : 'destructive'}
+                                className="text-xs"
+                              >
+                                {enhancedBusiness.businessStatus}
+                              </Badge>
+                            )}
+                          </div>
+
+                          {/* Business Description */}
+                          {enhancedBusiness.description && enhancedBusiness.description !== "No description available" && (
+                            <div className="mb-3 p-3 bg-gray-50 rounded-lg">
+                              <p className="text-sm text-gray-700 leading-relaxed">
+                                {enhancedBusiness.description}
+                              </p>
+                            </div>
+                          )}
 
                         <div className="space-y-2 text-sm text-gray-600">
                           <div className="flex items-start gap-2">
