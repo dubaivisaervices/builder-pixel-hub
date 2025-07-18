@@ -11,6 +11,7 @@
 /api/reports/company/:companyId /.netlify/functions/company-reports 200
 /api/reviews/:businessId /.netlify/functions/business-reviews 200
 /api/test /.netlify/functions/test-api 200
+/api/simple-test /.netlify/functions/simple-test 200
 
 # API Routes without .json extension
 /api/dubai-visa-services /api/dubai-visa-services.json 200
