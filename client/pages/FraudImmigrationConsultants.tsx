@@ -261,7 +261,7 @@ export default function FraudImmigrationConsultants() {
             console.log(
               "ℹ️ Enhanced business endpoint not available, using basic data",
             );
-            businesses.forEach((business) => {
+            displayedBusinesses.forEach((business) => {
               enhanced[business.id] = {
                 ...business,
                 description: `Professional ${business.category?.toLowerCase() || "immigration"} services in UAE. Specializing in visa processing, immigration consulting, and related government documentation services.`,
