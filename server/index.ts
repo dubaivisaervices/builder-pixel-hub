@@ -178,6 +178,7 @@ import {
 import { getBusinessReviews } from "./routes/business-reviews-real";
 import { healthCheck } from "./routes/health";
 import { uploadPhotosToNetlify } from "./routes/netlify-photo-upload";
+import { testNetlifyCredentials } from "./routes/test-netlify-credentials";
 import { apiTest } from "./routes/api-test";
 import {
   syncAllGoogleReviews,
