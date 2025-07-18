@@ -54,7 +54,21 @@ export default function NetlifyUploadButton() {
         setUploadResults([`❌ ${errorMessage}`]);
       }
     } catch (error) {
-      setUploadResults([`❌ Network error: ${error.message}`]);
+      console.error("❌ Netlify upload error:", error);
+
+      let errorMessage = "Network error occurred";
+      if (error.message) {
+        if (error.message.includes("body stream already read")) {
+          errorMessage = "API response parsing error - please try again";
+        } else if (error.message.includes("fetch")) {
+          errorMessage =
+            "Network connection error - check your internet connection";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+
+      setUploadResults((prev) => [...prev, `❌ ${errorMessage}`]);
     } finally {
       setIsUploading(false);
     }
