@@ -31,6 +31,14 @@ interface Business {
   category: string;
   rating?: number;
   reviewCount?: number;
+  description?: string;
+  businessHours?: string[];
+  businessStatus?: string;
+  priceLevel?: number;
+  googleRating?: number;
+  googleReviewCount?: number;
+  businessTypes?: string[];
+  photos?: string[];
 }
 
 interface Report {
