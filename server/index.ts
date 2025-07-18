@@ -137,6 +137,7 @@ import { saveBusinessCorrectly } from "./routes/save-business-correctly";
 import { fetchCompaniesWorking } from "./routes/fetch-companies-working";
 import { fetchCategoriesPermanent } from "./routes/fetch-categories-permanent";
 import { fetchCategoriesFixed } from "./routes/fetch-categories-fixed";
+import { enhancedFetcherComplete } from "./routes/enhanced-fetcher-complete";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
