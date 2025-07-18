@@ -256,8 +256,8 @@ export default function ComplaintForm() {
         }
       }
 
-      // If all sources fail, use fallback
-        console.error("❌ Failed to fetch businesses:", response.status);
+            // If all sources fail, use fallback
+      console.warn("❌ All data sources failed, using fallback data");
         // Fallback with comprehensive sample data
         const fallbackBusinesses = [
           {
@@ -1795,7 +1795,7 @@ export default function ComplaintForm() {
                   <Input
                     id="companyName"
                     type="text"
-                    placeholder="🏢 Enter the full company name"
+                    placeholder="���� Enter the full company name"
                     value={newCompanyData.name}
                     onChange={(e) =>
                       setNewCompanyData((prev) => ({
