@@ -625,8 +625,11 @@ function CommunityReportsSection({
 
       try {
         setLoading(true);
+        console.log("🔍 Fetching reports for business:", businessId);
         const response = await fetch(`/api/reports/company/${businessId}`);
+        console.log("🔍 Reports API response status:", response.status);
         const data = await response.json();
+        console.log("🔍 Reports API data:", data);
 
         if (data.success) {
           const apiReports = data.reports || [];
