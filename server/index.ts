@@ -123,6 +123,7 @@ import { debugVisaSearch } from "./routes/debug-visa-search";
 import { fetchVisaCategories } from "./routes/fetch-visa-categories";
 import { testVisaDirect } from "./routes/test-visa-direct";
 import { simpleVisaFetch } from "./routes/simple-visa-fetch";
+import { checkVisaBusinesses } from "./routes/check-visa-businesses";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
