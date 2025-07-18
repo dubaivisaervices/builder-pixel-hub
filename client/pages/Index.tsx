@@ -574,6 +574,37 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Fraud Alert Section */}
+      <section
+        className={`py-16 bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 transition-all duration-1000 delay-300 ${fadeIn ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center">
+            <div className="flex justify-center mb-4">
+              <div className="bg-white/20 rounded-full p-4">
+                <AlertTriangle className="h-12 w-12 text-white" />
+              </div>
+            </div>
+            <h2 className="text-3xl font-bold text-white mb-4">
+              ⚠️ Protect Yourself from Fraud Immigration Consultants
+            </h2>
+            <p className="text-xl text-white/90 mb-6 max-w-3xl mx-auto">
+              Our community has identified immigration consultants and visa
+              service providers with questionable practices. View the list to
+              stay informed and protect yourself.
+            </p>
+            <Button
+              onClick={() => navigate("/fraud-immigration-consultants")}
+              size="lg"
+              className="bg-white text-red-600 hover:bg-gray-100 font-semibold px-8 py-3"
+            >
+              <Shield className="h-5 w-5 mr-2" />
+              View Fraud Consultants List
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Services */}
       {featuredBusinesses.length > 0 && (
         <section
