@@ -1450,6 +1450,15 @@ function AdminDashboardContent() {
                             : "📊 Import Existing Businesses"}
                         </Button>
                         <Button
+                          onClick={() => handleTestDatabase()}
+                          className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                          disabled={isFetching}
+                          variant="outline"
+                        >
+                          <Settings className="h-4 w-4 mr-2" />
+                          🔧 Test Database
+                        </Button>
+                        <Button
                           variant="outline"
                           onClick={() => updateSearchPreview()}
                           className="border-orange-300 text-orange-700 hover:bg-orange-50"
