@@ -4,6 +4,10 @@ import fetch from "node-fetch";
 
 // Get ONLY real reviews for a specific business - NO FAKE REVIEWS, MAX 30
 export const getBusinessReviews: RequestHandler = async (req, res) => {
+  // Ensure JSON content type
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Cache-Control", "no-cache");
+
   try {
     const { businessId } = req.params;
 
