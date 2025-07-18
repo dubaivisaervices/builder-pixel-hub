@@ -102,9 +102,19 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    // Extract company ID from path
-    const pathParts = event.path.split("/");
-    const companyId = pathParts[pathParts.length - 1];
+    // Extract company ID from path - handle both direct path and query string
+    let companyId = null;
+
+    // Try to get from path parameters first
+    if (event.pathParameters && event.pathParameters.companyId) {
+      companyId = event.pathParameters.companyId;
+    } else {
+      // Fallback to parsing the path
+      const pathParts = event.path.split("/");
+      companyId = pathParts[pathParts.length - 1];
+    }
+
+    console.log(`🔍 Path: ${event.path}, Extracted companyId: ${companyId}`);
 
     if (!companyId) {
       return {
