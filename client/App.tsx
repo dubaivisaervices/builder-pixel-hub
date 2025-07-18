@@ -79,6 +79,10 @@ const App = () => (
             <Route path="/add-business" element={<AddBusinessPage />} />
             <Route path="/admin-login" element={<AdminBypass />} />
             <Route path="/admin-access" element={<InstantAdmin />} />
+            <Route
+              path="/fraud-immigration-consultants"
+              element={<FraudImmigrationConsultants />}
+            />
             <Route path="/data-diagnostic" element={<DataDiagnostic />} />
             <Route path="/data-persistence" element={<DataPersistence />} />
             <Route path="/reviews-sync" element={<ReviewsSync />} />
