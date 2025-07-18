@@ -529,6 +529,8 @@ export function createServer() {
   app.get("/api/admin/migrate-photos-to-netlify", migratePhotosToNetlify);
   app.get("/api/admin/enhanced-fetcher-netlify", enhancedFetcherNetlify);
   app.get("/api/admin/test-netlify-setup", testNetlifySetup);
+  app.get("/api/admin/configure-netlify", configureNetlify);
+  app.get("/api/admin/migrate-photos-direct", migratePhotosDirect);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
