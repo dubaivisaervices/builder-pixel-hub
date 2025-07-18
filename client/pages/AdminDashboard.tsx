@@ -1588,15 +1588,14 @@ function AdminDashboardContent() {
                         Removed artificial inflation. New fetches will properly
                         increase this count.
                       </div>
-                      <div className="text-xs text-red-600 mt-2 p-2 bg-red-100 rounded">
-                        ⚠️ <strong>Database is empty!</strong> Click "Import
-                        Existing Businesses" below to transfer 841 businesses
-                        from JSON to database first.
+                      <div className="text-xs text-orange-600 mt-2 p-2 bg-orange-100 rounded">
+                        ℹ️ <strong>Fly.dev Environment:</strong> Netlify
+                        functions aren't available here.
                       </div>
-                      <div className="text-xs text-blue-600 mt-2 p-2 bg-blue-100 rounded">
-                        🎯 <strong>After import:</strong> Use "Bulk Fetch All
-                        Categories" to add businesses for 47 visa/immigration
-                        categories.
+                      <div className="text-xs text-green-600 mt-2 p-2 bg-green-100 rounded">
+                        ✅ <strong>Solution:</strong> Use "🚀 Fetch Businesses"
+                        and "🔥 Bulk Fetch All Categories" to populate database
+                        from Google API.
                       </div>
                     </div>
                   </div>
