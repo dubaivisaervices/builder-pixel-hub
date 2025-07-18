@@ -58,7 +58,12 @@ export default function GoogleReviewsWidget({
             setReviews([]);
           }
         } else {
-          console.log(`❌ API Response error: ${response.status}`);
+          console.log(
+            `❌ API Response error: ${response.status} - ${response.statusText}`,
+          );
+          console.log(`❌ Request URL: ${response.url}`);
+          const errorText = await response.text();
+          console.log(`❌ Error details:`, errorText);
           setReviews([]);
         }
       } catch (err) {
