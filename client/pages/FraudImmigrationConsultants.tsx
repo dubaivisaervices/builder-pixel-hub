@@ -177,7 +177,7 @@ export default function FraudImmigrationConsultants() {
           if (!testResponse.ok && testResponse.status === 404) {
             // Reports endpoint doesn't exist, use mock data
             console.log("ℹ️ Reports endpoint not available, using mock data");
-            businesses.forEach((business) => {
+            displayedBusinesses.forEach((business) => {
               reportCounts[business.id] = Math.floor(Math.random() * 5);
             });
             setReports(reportCounts);
