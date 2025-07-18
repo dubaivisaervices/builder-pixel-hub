@@ -109,7 +109,15 @@ export default function FraudImmigrationConsultants() {
         throw new Error(`Failed to fetch businesses: ${response.status}`);
       }
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        console.error("JSON parsing error for businesses API:", jsonError);
+        const text = await response.text();
+        console.error("Response was:", text.substring(0, 500));
+        throw new Error("API returned invalid JSON response");
+      }
       const allBusinesses = data.businesses || [];
 
       // Filter businesses that match immigration/visa categories
