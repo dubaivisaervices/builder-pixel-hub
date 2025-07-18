@@ -692,6 +692,9 @@ export function createServer() {
   // Netlify photo upload endpoint
   app.post("/api/upload-photos-to-netlify", uploadPhotosToNetlify);
 
+  // Test Netlify credentials endpoint
+  app.get("/api/test-netlify-credentials", testNetlifyCredentials);
+
   // S3 image upload endpoints
   app.post(
     "/api/upload-business-image",
