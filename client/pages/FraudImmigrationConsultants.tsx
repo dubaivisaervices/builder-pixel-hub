@@ -394,6 +394,20 @@ export default function FraudImmigrationConsultants() {
     }
 
     setFilteredBusinesses(filtered);
+    setCurrentPage(1); // Reset to first page when filtering
+  };
+
+  const updateDisplayedBusinesses = () => {
+    const startIndex = 0;
+    const endIndex = currentPage * itemsPerPage;
+    const businessesToShow = filteredBusinesses.slice(startIndex, endIndex);
+    setDisplayedBusinesses(businessesToShow);
+  };
+
+  const loadMoreBusinesses = async () => {
+    setLoadingMore(true);
+    setCurrentPage((prev) => prev + 1);
+    setLoadingMore(false);
   };
 
   const handleWriteReport = (business: Business) => {
