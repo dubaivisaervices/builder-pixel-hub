@@ -326,7 +326,7 @@ export default function FraudImmigrationConsultants() {
           <AlertTriangle className="h-4 w-4 text-orange-600" />
           <AlertDescription className="text-orange-800">
             <strong>Important:</strong> This list contains immigration
-            consultants and visa service providers with real Google Places data.
+            consultants and visa service providers with stored business data.
             Always verify credentials and check multiple sources before engaging
             any immigration services.
           </AlertDescription>
