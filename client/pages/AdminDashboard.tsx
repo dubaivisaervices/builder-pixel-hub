@@ -452,14 +452,14 @@ function AdminDashboardContent() {
   const handleImportExistingBusinesses = async () => {
     if (
       !confirm(
-        "📊 This will import all 841 existing businesses from JSON to the PostgreSQL database. Continue?",
+        "ℹ️ In this Fly.dev environment, we'll use Google API fetching to populate the database. Continue?",
       )
     ) {
       return;
     }
 
     setIsFetching(true);
-    setSyncStatus("🔄 Loading existing businesses from JSON...");
+    setSyncStatus("📋 Since this is Fly.dev (not Netlify), here's what to do:");
 
     try {
       // First, load the businesses from JSON
