@@ -27,6 +27,7 @@ import {
   Award,
   TrendingUp,
   Target,
+  FileText,
 } from "lucide-react";
 import { getBestLogoUrl } from "@/lib/imageUtils";
 
