@@ -514,6 +514,7 @@ export function createServer() {
   app.get("/api/admin/fetch-companies-working", fetchCompaniesWorking);
   app.get("/api/admin/fetch-categories-permanent", fetchCategoriesPermanent);
   app.get("/api/admin/fetch-categories-fixed", fetchCategoriesFixed);
+  app.get("/api/admin/enhanced-fetcher-complete", enhancedFetcherComplete);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
