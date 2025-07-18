@@ -121,6 +121,7 @@ import { autoFetchDubaiVisa } from "./routes/auto-fetch-dubai-visa";
 import { testSimpleSearch } from "./routes/test-simple-search";
 import { debugVisaSearch } from "./routes/debug-visa-search";
 import { fetchVisaCategories } from "./routes/fetch-visa-categories";
+import { testVisaDirect } from "./routes/test-visa-direct";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
