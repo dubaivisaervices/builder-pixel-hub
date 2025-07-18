@@ -660,6 +660,9 @@ export function createServer() {
   // Health check endpoint for DigitalOcean
   app.get("/api/health", healthCheck);
 
+  // API test endpoint for debugging
+  app.get("/api/test", apiTest);
+
   // Real Google reviews API (cache-first, no fake reviews)
   app.get("/api/business-reviews/:businessId", getBusinessReviews);
 
