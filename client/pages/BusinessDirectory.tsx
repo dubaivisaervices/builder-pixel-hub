@@ -287,15 +287,8 @@ export default function BusinessDirectory() {
   };
 
   const navigateToDetails = (business: BusinessData) => {
-    const locationSlug =
-      business.address
-        .split(",")[0]
-        ?.trim()
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, "-") || "dubai";
-    const nameSlug = business.name.toLowerCase().replace(/[^a-z0-9]/g, "-");
-
-    navigate(`/modern-profile/${locationSlug}/${nameSlug}`);
+    const profileUrl = createBusinessProfileUrl(business);
+    navigate(profileUrl);
   };
 
   const toggleFavorite = (businessId: string, e: React.MouseEvent) => {
