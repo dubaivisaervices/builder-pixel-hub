@@ -245,7 +245,7 @@ export default function FraudImmigrationConsultants() {
   const fetchEnhancedBusinessDetails = async () => {
     try {
       console.log(
-        `🔍 Fetching stored details for ${businesses.length} businesses`,
+        `🔍 Fetching stored details for ${displayedBusinesses.length} businesses`,
       );
 
       const enhanced: Record<string, Business> = {};
