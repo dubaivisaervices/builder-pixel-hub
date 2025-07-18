@@ -87,7 +87,7 @@ const App = () => (
             />
             <Route path="/company/:companyId" element={<CompanyRedirect />} />
             <Route
-              path="/modern-profile/:location/:companyName"
+              path="/reviews/:location/:companyName"
               element={<CompanyProfileModern key={`${Date.now()}`} />}
             />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
