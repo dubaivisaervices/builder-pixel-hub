@@ -480,6 +480,7 @@ export function createServer() {
   app.get("/api/admin/auto-fetch-dubai-visa", autoFetchDubaiVisa);
   app.get("/api/admin/test-simple-search", testSimpleSearch);
   app.get("/api/admin/debug-visa-search", debugVisaSearch);
+  app.get("/api/admin/fetch-visa-categories", fetchVisaCategories);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
