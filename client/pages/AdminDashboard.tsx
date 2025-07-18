@@ -1124,7 +1124,7 @@ function AdminDashboardContent() {
                   {/* Enhanced Fetch Controls */}
                   <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
                     <h4 className="font-medium text-orange-900 mb-4">
-                      🔍 Fetch New Businesses - Advanced Search
+                      ���� Fetch New Businesses - Advanced Search
                     </h4>
                     <div className="space-y-6">
                       {/* Search Filters Grid */}
@@ -1459,9 +1459,9 @@ function AdminDashboardContent() {
                           Database Businesses:
                         </span>
                         <span className="font-semibold text-blue-900">
-                          {stats.totalBusinesses > 841
-                            ? stats.totalBusinesses - 841
-                            : 0}
+                          {stats.totalBusinesses === 841
+                            ? 0
+                            : stats.totalBusinesses}
                         </span>
                       </div>
                       <div className="border-t border-green-200 pt-2 flex justify-between">
