@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { getBestLogoUrl } from "../lib/imageUtils";
 import { useNavigate, useLocation } from "react-router-dom";
+import { createBusinessProfileUrl } from "@/lib/urlUtils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
