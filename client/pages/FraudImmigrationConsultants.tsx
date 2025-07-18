@@ -154,6 +154,11 @@ export default function FraudImmigrationConsultants() {
             console.log(
               `✅ Loaded ${allBusinesses.length} businesses from API`,
             );
+
+            // If we got a reasonable number of businesses, this is likely real data
+            if (allBusinesses.length > 100) {
+              console.log("🎯 Using real business data from server/Netlify");
+            }
           } catch (jsonError) {
             console.warn("API returned invalid JSON, using fallback data");
             allBusinesses = [];
