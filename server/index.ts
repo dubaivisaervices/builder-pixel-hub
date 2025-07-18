@@ -494,6 +494,7 @@ export function createServer() {
   app.get("/api/admin/check-db-schema", checkDbSchema);
   app.get("/api/admin/fetch-keyword-businesses", fetchKeywordBusinesses);
   app.get("/api/admin/keyword-businesses-report", keywordBusinessesReport);
+  app.get("/api/admin/fetch-consultants", fetchConsultants);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
