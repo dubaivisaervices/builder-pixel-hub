@@ -308,9 +308,9 @@ export default function FraudImmigrationConsultants() {
         }
       }
 
-      // Enhanced endpoint exists, fetch for all businesses
+      // Enhanced endpoint exists, fetch for displayed businesses
       await Promise.all(
-        businesses.map(async (business) => {
+        displayedBusinesses.map(async (business) => {
           try {
             const response = await fetch(`/api/business/${business.id}`);
             if (response.ok) {
