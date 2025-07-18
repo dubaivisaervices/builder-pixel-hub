@@ -5,7 +5,7 @@ export const checkVisaBusinesses: RequestHandler = async (req, res) => {
   try {
     // Search for visa-related businesses in the database
     const query = `
-      SELECT name, formatted_address, category, rating, place_id 
+      SELECT name, address, category, rating, place_id 
       FROM businesses 
       WHERE LOWER(name) LIKE '%visa%' 
          OR LOWER(name) LIKE '%immigration%' 
@@ -19,7 +19,7 @@ export const checkVisaBusinesses: RequestHandler = async (req, res) => {
       LIMIT 50
     `;
 
-    const businesses = await database.query(query);
+    const businesses = await database.all(query);
 
     // Get category stats
     const categoryQuery = `
@@ -29,11 +29,14 @@ export const checkVisaBusinesses: RequestHandler = async (req, res) => {
          OR LOWER(category) LIKE '%immigration%' 
          OR LOWER(category) LIKE '%consultant%'
          OR LOWER(category) LIKE '%permit%'
+         OR LOWER(name) LIKE '%visa%'
+         OR LOWER(name) LIKE '%immigration%'
       GROUP BY category 
       ORDER BY count DESC
+      LIMIT 20
     `;
 
-    const categoryStats = await database.query(categoryQuery);
+    const categoryStats = await database.all(categoryQuery);
 
     res.json({
       success: true,
