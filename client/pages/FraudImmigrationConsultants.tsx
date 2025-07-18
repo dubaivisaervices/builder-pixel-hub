@@ -126,11 +126,10 @@ export default function FraudImmigrationConsultants() {
     try {
       setLoading(true);
 
-      // Load REAL business data directly from your database - no API calls needed
+            // Load REAL business data directly from your database - no API calls needed
       console.log("🔄 Loading REAL immigration consultants from database...");
+      console.log("📋 Using REAL immigration consultants data from database");
       const allBusinesses: Business[] = [
-        console.log("📋 Using REAL immigration consultants data from database");
-        allBusinesses = [
           {
             id: "ChIJ10c9E2ZDXz4Ru2NyjBi7aiE",
             name: "10-PRO Consulting | Business Set Up, Relocation, Visas & Legal Services",
