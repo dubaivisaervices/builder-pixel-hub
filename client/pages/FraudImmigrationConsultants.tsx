@@ -300,8 +300,8 @@ export default function FraudImmigrationConsultants() {
               Fraud Immigration Consultants in UAE
             </h1>
             <p className="text-xl text-red-100 mb-4">
-              Community-Reported Visa & Immigration Service Providers with Real
-              Google Data
+              Community-Reported Visa & Immigration Service Providers with
+              Stored Business Data
             </p>
             <div className="flex justify-center gap-6 text-sm">
               <div className="flex items-center gap-2">
