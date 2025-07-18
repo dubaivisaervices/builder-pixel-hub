@@ -541,34 +541,33 @@ export default function SimpleBusinessDirectory() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Simplified Hero Section with Integrated Search */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="text-center space-y-8">
-            {/* Simple Title */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+      {/* Compact Hero Section */}
+      <div className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="text-center space-y-6">
+            {/* Title */}
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">
               Find Genuine Immigration Consultants in UAE
             </h1>
 
             {/* Description */}
-            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Research and verify immigration consultants before enrolling.
-              Check reviews, reports, and find trusted visa services in Dubai
-              and UAE.
+            <p className="text-base sm:text-lg text-blue-100 max-w-2xl mx-auto">
+              Research and verify before enrolling. Check reviews, reports, and
+              find trusted visa services.
             </p>
 
-            {/* Search Box */}
-            <div className="relative max-w-2xl mx-auto mt-8">
-              <div className="relative group">
+            {/* Search Box - Mobile Friendly */}
+            <div className="relative max-w-xl mx-auto mt-6">
+              <div className="relative">
                 {/* Search Icon */}
-                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10">
-                  <Search className="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors duration-200" />
+                <div className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 z-20">
+                  <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                 </div>
 
                 {/* Search Input */}
-                <Input
+                <input
                   type="text"
-                  placeholder="Search immigration consultants, visa services, or locations..."
+                  placeholder="Search consultants..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onFocus={() =>
@@ -578,25 +577,24 @@ export default function SimpleBusinessDirectory() {
                     setTimeout(() => setShowSuggestions(false), 200)
                   }
                   className="
-                    pl-12 pr-20 py-4 text-base
-                    bg-white border-2 border-gray-300 rounded-xl
-                    focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500
-                    hover:border-gray-400 transition-all duration-200
-                    w-full font-normal placeholder-gray-500
-                    shadow-lg hover:shadow-xl focus:shadow-xl
+                    w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-3.5 text-sm sm:text-base
+                    bg-white border border-gray-300 rounded-lg
+                    focus:ring-2 focus:ring-blue-300 focus:border-blue-500 focus:outline-none
+                    placeholder-gray-500 text-gray-900
+                    shadow-md transition-all duration-200
                   "
                 />
 
-                {/* Search Stats */}
-                <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                  <span className="text-xs text-gray-400 font-medium">
-                    {stats.total}+ consultants
+                {/* Search Stats - Hidden on Mobile */}
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 hidden sm:block">
+                  <span className="text-xs text-gray-500 font-medium">
+                    {stats.total}+
                   </span>
                 </div>
 
                 {/* Enhanced Search Suggestions */}
                 {showSuggestions && searchSuggestions.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-3 bg-white/98 backdrop-blur-xl rounded-2xl shadow-2xl border-2 border-gray-100 overflow-hidden z-[110] max-h-96 overflow-y-auto">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-[200] max-h-80 overflow-y-auto">
                     <div className="p-2">
                       {searchSuggestions.map((suggestion, index) => (
                         <div
