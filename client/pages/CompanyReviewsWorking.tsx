@@ -14,7 +14,7 @@ export default function CompanyReviewsWorking() {
 
       // Use setTimeout to avoid DOM manipulation conflicts
       const timer = setTimeout(() => {
-        const newPath = `/modern-profile/${locationParam}/${companyName}`;
+        const newPath = `/reviews/${locationParam}/${companyName}`;
         navigate(newPath, { replace: true });
       }, 100);
 
