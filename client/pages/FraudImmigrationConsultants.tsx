@@ -179,12 +179,16 @@ export default function FraudImmigrationConsultants() {
       let data: any = null;
       let businessesArray: any[] = [];
 
-      // Try multiple data sources in order of preference
+      // Try multiple data sources in order of preference (ALL 841 businesses)
       const dataSources = [
+        {
+          url: "/api/complete-businesses.json",
+          name: "Complete Businesses (841)",
+        },
+        { url: "/data/businesses.json", name: "Business Data (841)" },
         { url: "/data/complete-dataset.json", name: "Complete Dataset" },
-        { url: "/api/complete-businesses.json", name: "Complete Businesses" },
-        { url: "/business-data/businesses.json", name: "Business Data" },
-        { url: "/api/dubai-visa-services.json", name: "Visa Services" },
+        { url: "/api/businesses?limit=1000", name: "API All Businesses" },
+        { url: "/api/dubai-visa-services.json", name: "Visa Services (25)" },
       ];
 
       for (const source of dataSources) {
