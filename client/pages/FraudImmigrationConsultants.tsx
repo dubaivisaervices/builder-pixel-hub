@@ -123,7 +123,15 @@ export default function FraudImmigrationConsultants() {
       let allBusinesses: Business[] = [];
 
       try {
-        const response = await fetch("/api/businesses?limit=1000");
+        // Try Netlify function endpoint first for real data
+        let response = await fetch(
+          "/.netlify/functions/api/businesses?limit=1000",
+        );
+
+        // Fallback to regular API endpoint
+        if (!response.ok) {
+          response = await fetch("/api/businesses?limit=1000");
+        }
 
         if (response.ok) {
           const responseText = await response.text();
