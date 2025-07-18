@@ -585,14 +585,14 @@ export default function FraudImmigrationConsultants() {
           <CardContent className="p-6">
             <div className="text-center">
               <h3 className="font-semibold text-blue-800 mb-2">
-                Enhanced with Real Google Places Data
+                Enhanced with Stored Business Data
               </h3>
               <p className="text-blue-700 text-sm">
                 Business information including descriptions, hours, and ratings
-                are fetched directly from Google Places API to provide the most
-                accurate and up-to-date information. If you've had negative
-                experiences with any immigration consultant, please report it to
-                help others make informed decisions.
+                are stored in our database to provide comprehensive and reliable
+                information. If you've had negative experiences with any
+                immigration consultant, please report it to help others make
+                informed decisions.
               </p>
             </div>
           </CardContent>
