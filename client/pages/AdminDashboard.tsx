@@ -489,8 +489,17 @@ function AdminDashboardContent() {
             "✅ This approach works better in Fly.dev environment!",
           ),
         7000,
-      );
-      if (!jsonResponse.ok) {
+            );
+    } catch (error) {
+      setSyncStatus(`❌ Error: ${error.message}`);
+    } finally {
+      setIsFetching(false);
+      setTimeout(() => setSyncStatus(""), 10000);
+    }
+  };
+
+  const handleBulkCategoryFetch = async () => {
+    if (false) { // Keep old code for reference but skip execution
         throw new Error("Failed to load businesses from JSON");
       }
 
