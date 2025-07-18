@@ -77,6 +77,14 @@ export default function Footer() {
               </li>
               <li>
                 <button
+                  onClick={() => navigate("/fraud-immigration-consultants")}
+                  className="hover:text-white transition-colors cursor-pointer text-left"
+                >
+                  Fraud Consultants
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => navigate("/help-center")}
                   className="hover:text-white transition-colors cursor-pointer text-left"
                 >
