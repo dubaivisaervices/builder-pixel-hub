@@ -125,6 +125,7 @@ import { testVisaDirect } from "./routes/test-visa-direct";
 import { simpleVisaFetch } from "./routes/simple-visa-fetch";
 import { checkVisaBusinesses } from "./routes/check-visa-businesses";
 import { checkDbSchema } from "./routes/check-db-schema";
+import { fetchKeywordBusinesses } from "./routes/fetch-keyword-businesses";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
