@@ -71,7 +71,7 @@ export default function FraudImmigrationConsultants() {
 
   const navigate = useNavigate();
 
-  // Target categories for immigration/visa consultants
+  // Target categories for immigration/visa consultants - updated to match real data
   const targetCategories = [
     "visa agent",
     "immigration consultants",
@@ -81,14 +81,21 @@ export default function FraudImmigrationConsultants() {
     "work visa",
     "visa consulting services",
     "registered visa agent",
+    "registered visa agent dubai",
     "migration services",
     "overseas consultants",
     "abroad consultants",
     "student visa",
+    "education visa",
     "business visa",
     "tourist visa",
     "family visa",
     "residence visa",
+    "document clearance",
+    "document clearing",
+    "business formation",
+    "business setup",
+    "pro services",
   ];
 
   useEffect(() => {
