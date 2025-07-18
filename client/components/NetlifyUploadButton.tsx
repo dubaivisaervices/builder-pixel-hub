@@ -108,7 +108,34 @@ export default function NetlifyUploadButton() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
+          <Button
+            onClick={async () => {
+              setUploadResults(["🔍 Testing Netlify credentials..."]);
+              try {
+                const response = await fetch("/api/test-netlify-credentials");
+                const result = await response.json();
+                setUploadResults(
+                  [
+                    result.message,
+                    `Access Token: ${result.credentials?.hasAccessToken ? "✅ Set" : "❌ Missing"}`,
+                    `Site ID: ${result.credentials?.hasSiteId ? "✅ Set" : "❌ Missing"}`,
+                    result.siteInfo
+                      ? `Site: ${result.siteInfo.name} (${result.siteInfo.state})`
+                      : "",
+                  ].filter(Boolean),
+                );
+              } catch (error) {
+                setUploadResults([`❌ Test failed: ${error.message}`]);
+              }
+            }}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <CheckCircle className="h-4 w-4" />
+            Test Credentials
+          </Button>
+
           <Button
             onClick={handleNetlifyUpload}
             disabled={isUploading}
