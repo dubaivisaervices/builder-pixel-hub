@@ -653,7 +653,7 @@ export default function SimpleBusinessDirectory() {
       </div>
 
       {/* Classic Search Section */}
-      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-gray-200/80 shadow-sm">
+      <div className="sticky top-0 z-[100] bg-white/95 backdrop-blur-xl border-b border-gray-200/80 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="relative max-w-2xl mx-auto">
             <div className="relative group">
@@ -692,7 +692,7 @@ export default function SimpleBusinessDirectory() {
 
               {/* Enhanced Search Suggestions */}
               {showSuggestions && searchSuggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-3 bg-white/98 backdrop-blur-xl rounded-2xl shadow-2xl border-2 border-gray-100 overflow-hidden z-[60] max-h-96 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-3 bg-white/98 backdrop-blur-xl rounded-2xl shadow-2xl border-2 border-gray-100 overflow-hidden z-[110] max-h-96 overflow-y-auto">
                   <div className="p-2">
                     {searchSuggestions.map((suggestion, index) => (
                       <div
