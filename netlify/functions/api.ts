@@ -363,6 +363,43 @@ function createBusinessServer() {
     }
   });
 
+  // Reports endpoint for company report counts
+  app.get("/api/reports/company/:companyId", (req: any, res: any) => {
+    logDebug("Company reports requested", {
+      companyId: req.params.companyId,
+    });
+
+    try {
+      const companyId = req.params.companyId;
+
+      // For now, return mock data since we don't have a reports system in Netlify
+      // In a real implementation, this would query a reports database
+      const mockReportCount = Math.floor(Math.random() * 5); // Random number 0-4
+
+      const response = {
+        success: true,
+        companyId: companyId,
+        totalReports: mockReportCount,
+        reports: [], // Empty for now
+        source: "netlify_mock",
+        timestamp: new Date().toISOString(),
+      };
+
+      logDebug(
+        `✅ Retrieved report count for company: ${companyId} (${mockReportCount} reports)`,
+      );
+      res.json(response);
+    } catch (error) {
+      logDebug("Error fetching company reports:", error.message);
+      res.status(500).json({
+        error: "Failed to fetch company reports",
+        message: error.message,
+        companyId: req.params.companyId,
+        totalReports: 0,
+      });
+    }
+  });
+
   // Debug endpoint
   app.get("/api/debug", (req: any, res: any) => {
     const businessData = getBusinessData();
