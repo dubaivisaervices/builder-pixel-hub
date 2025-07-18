@@ -302,6 +302,67 @@ function createBusinessServer() {
     app._router.handle(req, res);
   });
 
+  // Individual business details endpoint for enhanced data
+  app.get("/api/business/:businessId", (req: any, res: any) => {
+    logDebug("Individual business details requested", {
+      businessId: req.params.businessId,
+    });
+
+    try {
+      const allBusinesses = getBusinessData();
+      const businessId = req.params.businessId;
+
+      // Find the specific business by ID
+      const business = allBusinesses.find((b: any) => b.id === businessId);
+
+      if (!business) {
+        logDebug(`Business not found: ${businessId}`);
+        return res.status(404).json({
+          error: "Business not found",
+          businessId: businessId,
+          available: allBusinesses.length,
+        });
+      }
+
+      // Return enhanced business data in the expected format
+      const enhancedBusiness = {
+        id: business.id,
+        name: business.name,
+        address: business.address,
+        phone: business.phone,
+        website: business.website,
+        email: business.email,
+        category: business.category,
+
+        // Enhanced data from stored fields
+        description:
+          business.businessStatus ||
+          `Professional ${business.category?.toLowerCase() || "immigration"} services in UAE. Specializing in visa processing, immigration consulting, and related government documentation services.`,
+        businessHours: business.businessHours || [],
+        businessStatus: business.businessStatus || "Unknown",
+        priceLevel: business.priceLevel,
+        googleRating: business.rating,
+        googleReviewCount: business.reviewCount,
+        businessTypes: business.businessTypes || [],
+        photos: business.photos || [],
+
+        // Source indicator
+        source: "netlify_json_stored",
+        lastUpdated: business.updatedAt || business.createdAt,
+      };
+
+      logDebug(`✅ Retrieved business details for: ${business.name}`);
+      res.json(enhancedBusiness);
+    } catch (error) {
+      logDebug("Error fetching individual business details:", error.message);
+      res.status(500).json({
+        error: "Failed to fetch business details",
+        message: error.message,
+        businessId: req.params.businessId,
+      });
+    }
+  });
+
   // Debug endpoint
   app.get("/api/debug", (req: any, res: any) => {
     const businessData = getBusinessData();
