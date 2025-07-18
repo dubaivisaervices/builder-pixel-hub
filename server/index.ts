@@ -144,6 +144,8 @@ import { checkEnhancementStatus } from "./routes/check-enhancement-status";
 import { migratePhotosToNetlify } from "./routes/migrate-photos-to-netlify";
 import { enhancedFetcherNetlify } from "./routes/enhanced-fetcher-netlify";
 import { testNetlifySetup } from "./routes/test-netlify-setup";
+import { configureNetlify } from "./routes/configure-netlify";
+import { migratePhotosDirect } from "./routes/migrate-photos-direct";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
