@@ -596,17 +596,72 @@ export default function SimpleBusinessDirectory() {
               </div>
             </div>
 
-            {/* Enhanced Search */}
+            {/* Enhanced Search with Suggestions */}
             <div className="max-w-2xl mx-auto mt-8">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-6 w-6" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-6 w-6 z-10" />
                 <Input
                   type="text"
                   placeholder="Search businesses, services, or locations..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-12 pr-4 py-4 text-lg border-0 bg-white/90 backdrop-blur-sm rounded-xl focus:ring-4 focus:ring-white/30 shadow-xl"
+                  onFocus={() =>
+                    searchTerm.length >= 2 && setShowSuggestions(true)
+                  }
+                  onBlur={() =>
+                    setTimeout(() => setShowSuggestions(false), 200)
+                  }
+                  className="pl-12 pr-4 py-4 text-lg border-0 bg-white/90 backdrop-blur-sm rounded-xl focus:ring-4 focus:ring-white/30 shadow-xl w-full"
                 />
+
+                {/* Search Suggestions */}
+                {showSuggestions && searchSuggestions.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-lg rounded-xl shadow-2xl border border-white/20 overflow-hidden z-50 max-h-80 overflow-y-auto">
+                    {searchSuggestions.map((suggestion, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleSuggestionClick(suggestion)}
+                        className="px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          {suggestion.type === "business" && (
+                            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                              <Building2 className="h-4 w-4 text-blue-600" />
+                            </div>
+                          )}
+                          {suggestion.type === "category" && (
+                            <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                              <Target className="h-4 w-4 text-purple-600" />
+                            </div>
+                          )}
+                          {suggestion.type === "location" && (
+                            <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                              <MapPin className="h-4 w-4 text-green-600" />
+                            </div>
+                          )}
+
+                          <div className="flex-1">
+                            <div className="font-medium text-gray-900">
+                              {suggestion.text}
+                            </div>
+                            {suggestion.category && (
+                              <div className="text-sm text-gray-500">
+                                {suggestion.category}
+                              </div>
+                            )}
+                            {suggestion.count && (
+                              <div className="text-sm text-gray-500">
+                                {suggestion.count} businesses
+                              </div>
+                            )}
+                          </div>
+
+                          <ArrowRight className="h-4 w-4 text-gray-400" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
