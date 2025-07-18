@@ -512,6 +512,7 @@ export function createServer() {
   app.get("/api/admin/save-business-correctly", saveBusinessCorrectly);
   app.get("/api/admin/fetch-companies-working", fetchCompaniesWorking);
   app.get("/api/admin/fetch-categories-permanent", fetchCategoriesPermanent);
+  app.get("/api/admin/fetch-categories-fixed", fetchCategoriesFixed);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
