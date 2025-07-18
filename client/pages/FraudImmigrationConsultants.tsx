@@ -199,7 +199,7 @@ export default function FraudImmigrationConsultants() {
           }
         } catch (testError) {
           console.log("ℹ️ Reports endpoint test failed, using mock data");
-          businesses.forEach((business) => {
+          displayedBusinesses.forEach((business) => {
             reportCounts[business.id] = Math.floor(Math.random() * 5);
           });
           setReports(reportCounts);
