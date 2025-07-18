@@ -677,8 +677,9 @@ export function createServer() {
     });
   });
 
-  // Real Google reviews API (cache-first, no fake reviews)
+  // Real Google reviews API (cache-first, no fake reviews) - Multiple endpoints for reliability
   app.get("/api/business-reviews/:businessId", getBusinessReviews);
+  app.get("/api/reviews/:businessId", getBusinessReviews); // Alternative endpoint
 
   // Netlify photo upload endpoint
   app.post("/api/upload-photos-to-netlify", uploadPhotosToNetlify);
