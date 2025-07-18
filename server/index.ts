@@ -139,6 +139,7 @@ import { fetchCategoriesPermanent } from "./routes/fetch-categories-permanent";
 import { fetchCategoriesFixed } from "./routes/fetch-categories-fixed";
 import { enhancedFetcherComplete } from "./routes/enhanced-fetcher-complete";
 import { enhancedFetcherWorking } from "./routes/enhanced-fetcher-working";
+import { enhanceAllBusinesses } from "./routes/enhance-all-businesses";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
