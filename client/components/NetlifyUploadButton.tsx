@@ -39,8 +39,19 @@ export default function NetlifyUploadButton() {
 
         setUploadComplete(true);
       } else {
-        const error = await response.json();
-        setUploadResults([`❌ Upload failed: ${error.error}`]);
+        // Get error message without parsing JSON to avoid body stream issues
+        const errorText = await response.text();
+        let errorMessage = `Upload failed: ${response.status} ${response.statusText}`;
+
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = `Upload failed: ${errorData.error || errorData.message || errorText}`;
+        } catch {
+          // If JSON parsing fails, use the raw text
+          errorMessage = `Upload failed: ${errorText || response.statusText}`;
+        }
+
+        setUploadResults([`❌ ${errorMessage}`]);
       }
     } catch (error) {
       setUploadResults([`❌ Network error: ${error.message}`]);
