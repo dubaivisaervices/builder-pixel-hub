@@ -124,8 +124,8 @@ export const autoFetchDubaiVisa: RequestHandler = async (req, res) => {
 
       // Add delay between requests to avoid rate limiting
       if (i < categories.length - 1) {
-        res.write(`⏳ Waiting 2 seconds before next category...\n\n`);
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        res.write(`⏳ Waiting 3 seconds before next category...\n\n`);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
       }
     }
 
