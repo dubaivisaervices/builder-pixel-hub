@@ -54,6 +54,7 @@ import {
   checkGoogleApiStatus,
 } from "./routes/enhanced-google-fetcher";
 import { importBusinesses } from "./routes/import-businesses";
+import { testDatabase } from "./routes/test-database";
 import {
   saveAllBusinessData,
   saveBusinessImagesToGitHub,
