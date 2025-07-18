@@ -297,9 +297,25 @@ export default function FraudImmigrationConsultants() {
           try {
             const response = await fetch(`/api/business/${business.id}`);
             if (response.ok) {
-              const data = await response.json();
-              enhanced[business.id] = data;
-              console.log(`✅ Retrieved stored details for: ${business.name}`);
+              try {
+                const data = await response.json();
+                enhanced[business.id] = data;
+                console.log(
+                  `✅ Retrieved stored details for: ${business.name}`,
+                );
+              } catch (jsonError) {
+                console.warn(
+                  `JSON parsing error for ${business.name}:`,
+                  jsonError,
+                );
+                enhanced[business.id] = {
+                  ...business,
+                  description:
+                    "Immigration and visa consulting services in UAE",
+                  businessStatus: "Unknown",
+                  source: "json_error_fallback",
+                };
+              }
             } else {
               enhanced[business.id] = {
                 ...business,
