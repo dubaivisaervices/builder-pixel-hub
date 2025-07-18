@@ -50,14 +50,14 @@ export function extractLocationSlug(address: string = ""): string {
 }
 
 /**
- * Creates a modern profile URL for a business
+ * Creates a reviews profile URL for a business
  * Consistent URL generation used across all components
  */
 export function createBusinessProfileUrl(business: Business): string {
   const locationSlug = extractLocationSlug(business.address);
   const nameSlug = createSlug(business.name);
 
-  return `/modern-profile/${locationSlug}/${nameSlug}`;
+  return `/reviews/${locationSlug}/${nameSlug}`;
 }
 
 /**
