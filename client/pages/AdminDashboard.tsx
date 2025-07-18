@@ -480,7 +480,7 @@ function AdminDashboardContent() {
 
         if (i % 50 === 0) {
           setSyncStatus(
-            `🔄 Importing ${i + 1}/${businesses.length} businesses...`,
+            `��� Importing ${i + 1}/${businesses.length} businesses...`,
           );
         }
 
@@ -922,6 +922,9 @@ function AdminDashboardContent() {
                 </Card>
               ))}
             </div>
+
+            {/* Netlify Photo Upload */}
+            <NetlifyUploadButton />
 
             {/* Hostinger Upload Access */}
             <QuickUploadAccess />
