@@ -1,0 +1,122 @@
+{
+  "businesses": [
+    {
+      "id": "ChIJ10c9E2ZDXz4Ru2NyjBi7aiE",
+      "name": "10-PRO Consulting | Business Set Up, Relocation, Visas & Legal Services",
+      "address": "Business Central Towers, Tower B Office # 2004, 20th Floor Al Sufouh 2, Dubai Media City, Dubai, UAE",
+      "category": "registered visa agent Dubai",
+      "phone": "04 529 3354",
+      "website": "https://10-pro.com/",
+      "email": "info@10proconsultingbusin.ae",
+      "rating": 4.7,
+      "reviewCount": 505,
+      "businessStatus": "OPERATIONAL",
+      "description": "Professional immigration and visa services in Dubai. Specializing in business setup, relocation services, visas, and legal services for freezone, mainland, and offshore companies."
+    },
+    {
+      "id": "ChIJ31pcKGtrXz4R92jGT68rkVQ",
+      "name": "4S Study Abroad | 5000+ Visa Approved | Education Consultant in Dubai",
+      "address": "Sultan Business Centre - Office 221 - Oud Metha - Dubai - United Arab Emirates",
+      "category": "education visa",
+      "phone": "04 553 8909",
+      "website": "https://www.4sstudyabroad.com/",
+      "email": "info@4sstudyabroad5000vis.ae",
+      "rating": 4.7,
+      "reviewCount": 218,
+      "businessStatus": "OPERATIONAL",
+      "description": "Education visa specialist with over 5000+ visa approvals. Providing education consultation and student visa services in Dubai."
+    },
+    {
+      "id": "ChIJ6RJA5qJdXz4RNAbDft-_XVw",
+      "name": "A A Documents Clearing services LLC",
+      "address": "Deira - 119 office 1st Floor - Muteena - Dubai - United Arab Emirates",
+      "category": "document clearance",
+      "phone": "055 547 3616",
+      "website": "https://www.aadocumentsclearingservices.com/",
+      "email": "info@aadocumentsclearings.ae",
+      "rating": 3.8,
+      "reviewCount": 13,
+      "businessStatus": "OPERATIONAL",
+      "description": "Document clearing services for visas, immigration, and government documentation in Dubai."
+    },
+    {
+      "id": "ChIJXf_UeQBDXz4ROdLA_nZbQmA",
+      "name": "A to Z Document Clearing Services",
+      "address": "19 3A St - Al Fahidi - Dubai - United Arab Emirates",
+      "category": "document clearance",
+      "phone": "04 393 8855",
+      "rating": 4.1,
+      "reviewCount": 45,
+      "businessStatus": "OPERATIONAL",
+      "description": "Complete A to Z document clearing services for immigration, visas, and business documentation."
+    },
+    {
+      "id": "ChIJhTMPaXhCXz4Rr87WA7HUSnE",
+      "name": "A&A Associate - Business Setup in Dubai, UAE",
+      "address": "Level 12, Rolex Tower - E11 - Trade Centre - DIFC - Dubai - United Arab Emirates",
+      "category": "business formation",
+      "phone": "050 483 6190",
+      "website": "https://www.aaconsultancy.ae/dubai",
+      "email": "info@aaassociatebusinesss.ae",
+      "rating": 4.5,
+      "reviewCount": 1819,
+      "businessStatus": "OPERATIONAL",
+      "description": "Business setup and formation services in Dubai, UAE including visa services for business owners."
+    },
+    {
+      "id": "sample-visa-1",
+      "name": "Emirates Visa Center",
+      "address": "Sheikh Zayed Road, Dubai, UAE",
+      "category": "visa services",
+      "phone": "04 XXX XXXX",
+      "rating": 4.2,
+      "reviewCount": 156,
+      "businessStatus": "OPERATIONAL",
+      "description": "Comprehensive visa services including tourist visas, business visas, and residence permits for UAE."
+    },
+    {
+      "id": "sample-visa-2",
+      "name": "Dubai Immigration Solutions",
+      "address": "Business Bay, Dubai, UAE",
+      "category": "immigration consultants",
+      "phone": "04 XXX XXXX",
+      "rating": 3.9,
+      "reviewCount": 89,
+      "businessStatus": "OPERATIONAL",
+      "description": "Immigration consultancy services for UAE golden visa, investor visa, and skilled migration programs."
+    },
+    {
+      "id": "sample-visa-3",
+      "name": "Al Majid Visa Services",
+      "address": "Deira, Dubai, UAE",
+      "category": "visa agent",
+      "phone": "04 XXX XXXX",
+      "rating": 4.0,
+      "reviewCount": 234,
+      "businessStatus": "OPERATIONAL",
+      "description": "Registered visa agent providing work visa, family visa, and tourist visa services."
+    },
+    {
+      "id": "sample-visa-4",
+      "name": "Gulf Migration Consultants",
+      "address": "Abu Dhabi, UAE",
+      "category": "migration services",
+      "phone": "02 XXX XXXX",
+      "rating": 3.7,
+      "reviewCount": 67,
+      "businessStatus": "OPERATIONAL",
+      "description": "Migration services for Canada, Australia, and European countries from UAE."
+    },
+    {
+      "id": "sample-visa-5",
+      "name": "Student Visa Hub Dubai",
+      "address": "Academic City, Dubai, UAE",
+      "category": "student visa",
+      "phone": "04 XXX XXXX",
+      "rating": 4.3,
+      "reviewCount": 145,
+      "businessStatus": "OPERATIONAL",
+      "description": "Specialized in student visa applications for UAE and international universities."
+    }
+  ]
+}
