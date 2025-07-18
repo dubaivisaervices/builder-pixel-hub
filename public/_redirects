@@ -23,5 +23,8 @@
 /api/cities /api/cities.json 200
 /api/featured /api/featured.json 200
 
+# Legacy URL redirects (301 permanent redirect for SEO)
+/modern-profile/:location/:company /reviews/:location/:company 301!
+
 # SPA fallback
 /* /index.html 200
