@@ -134,7 +134,16 @@ export default function GoogleReviewsWidget({
         }
 
         setError(errorMessage);
-        setReviews([]);
+
+        // Use fallback reviews when API fails
+        console.log("🔄 Using fallback reviews due to API failure");
+        const fallbackData = getFallbackReviews(placeId);
+        if (fallbackData.length > 0) {
+          setReviews(fallbackData);
+          setError(`${errorMessage} (showing sample reviews)`);
+        } else {
+          setReviews([]);
+        }
       } finally {
         setIsLoading(false);
       }
