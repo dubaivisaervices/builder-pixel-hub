@@ -220,19 +220,43 @@ export default function ComplaintForm() {
     return () => clearTimeout(timer);
   }, [reportData.description, reportData.evidenceDescription]);
 
-  const fetchBusinesses = async () => {
+    const fetchBusinesses = async () => {
     try {
       console.log("🔄 Fetching businesses for complaint form...");
-      const response = await fetch("/api/dubai-visa-services?limit=1000");
-      if (response.ok) {
-        const data = await response.json();
-        console.log(
-          "✅ Successfully loaded",
-          data.businesses?.length || 0,
-          "businesses",
-        );
-        setBusinesses(data.businesses || []);
-      } else {
+
+      // Try multiple data sources for comprehensive business list
+      const dataSources = [
+        "/api/complete-businesses.json",
+        "/data/businesses.json",
+        "/api/dubai-visa-services.json",
+      ];
+
+      for (const source of dataSources) {
+        try {
+          const response = await fetch(source);
+          if (response.ok) {
+            const data = await response.json();
+            const businessesArray = Array.isArray(data) ? data : (data.businesses || []);
+
+            if (businessesArray.length > 0) {
+              console.log(`✅ Successfully loaded ${businessesArray.length} businesses from ${source}`);
+              setBusinesses(businessesArray.map(business => ({
+                id: business.id,
+                name: business.name,
+                address: business.address,
+                rating: business.rating || 4.0,
+                reviewCount: business.reviewCount || 0,
+                category: business.category,
+              })));
+              return;
+            }
+          }
+        } catch (error) {
+          console.warn(`Failed to load from ${source}:`, error);
+        }
+      }
+
+      // If all sources fail, use fallback
         console.error("❌ Failed to fetch businesses:", response.status);
         // Fallback with comprehensive sample data
         const fallbackBusinesses = [
