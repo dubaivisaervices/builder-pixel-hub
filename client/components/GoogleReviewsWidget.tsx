@@ -68,7 +68,9 @@ export default function GoogleReviewsWidget({
         }
       } catch (err) {
         console.error("❌ Error fetching reviews:", err);
-        setError("Failed to load reviews");
+        console.error("❌ Request URL:", `/api/business-reviews/${placeId}`);
+        console.error("❌ PlaceId:", placeId);
+        setError(`Failed to load reviews: ${err.message}`);
         setReviews([]);
       } finally {
         setIsLoading(false);
