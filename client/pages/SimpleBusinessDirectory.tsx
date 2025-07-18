@@ -390,6 +390,21 @@ export default function SimpleBusinessDirectory() {
     navigate(`/company/${business.id}`);
   };
 
+  const handleSuggestionClick = (suggestion: any) => {
+    if (suggestion.type === "business") {
+      setSearchTerm(suggestion.text);
+      setShowSuggestions(false);
+    } else if (suggestion.type === "category") {
+      setSelectedCategory(suggestion.text);
+      setSearchTerm("");
+      setShowSuggestions(false);
+    } else if (suggestion.type === "location") {
+      setSearchTerm(suggestion.text);
+      setShowSuggestions(false);
+    }
+    setCurrentPage(1);
+  };
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
