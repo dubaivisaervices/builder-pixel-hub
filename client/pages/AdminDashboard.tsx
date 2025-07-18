@@ -421,25 +421,16 @@ function AdminDashboardContent() {
     setSyncStatus("🔧 Testing database connection...");
 
     try {
-      // Since Netlify functions don't work in this environment, test the Google API instead
-      const response = await fetch("/api/admin/fetch-google-businesses", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          searchQuery: "restaurant Dubai",
-          maxResults: 1,
-          saveToDatabase: false,
-          downloadImages: false,
-        }),
-      });
+      // Test using the existing database-stats function which we know works
+      const response = await fetch("/.netlify/functions/database-stats");
 
       if (response.ok) {
         const result = await response.json();
         setSyncStatus(
-          `✅ Google API test successful! Server is working. Ready to fetch businesses.`,
+          `✅ Database connection working! Found ${result.totalBusinesses || 0} businesses in database`,
         );
       } else {
-        setSyncStatus(`❌ API test failed: HTTP ${response.status}`);
+        setSyncStatus(`❌ Database test failed: HTTP ${response.status}`);
       }
     } catch (error) {
       setSyncStatus(`❌ Test error: ${error.message}`);
@@ -452,53 +443,21 @@ function AdminDashboardContent() {
   const handleImportExistingBusinesses = async () => {
     if (
       !confirm(
-        "ℹ️ In this Fly.dev environment, we'll use Google API fetching to populate the database. Continue?",
+        "📊 This will import all 841 existing businesses from JSON to the PostgreSQL database. Continue?",
       )
     ) {
       return;
     }
 
     setIsFetching(true);
-    setSyncStatus("📋 Since this is Fly.dev (not Netlify), here's what to do:");
+    setSyncStatus("🔄 Loading existing businesses from JSON...");
 
     try {
-      setTimeout(
-        () =>
-          setSyncStatus(
-            "1️⃣ Try '🚀 Fetch Businesses' with a simple query like 'visa services Dubai'",
-          ),
-        1000,
-      );
-      setTimeout(
-        () =>
-          setSyncStatus(
-            "2���⃣ Then use '🔥 Bulk Fetch All Categories' to get 700+ businesses",
-          ),
-        3000,
-      );
-      setTimeout(
-        () =>
-          setSyncStatus(
-            "3️⃣ Each fetch will save businesses directly to PostgreSQL database",
-          ),
-        5000,
-      );
-      setTimeout(
-        () =>
-          setSyncStatus(
-            "✅ This approach works better in Fly.dev environment!",
-          ),
-        7000,
-            );
-    } catch (error) {
-      setSyncStatus(`❌ Error: ${error.message}`);
-    } finally {
-      setIsFetching(false);
-      setTimeout(() => setSyncStatus(""), 10000);
-    }
-  };
-
-    const handleBulkCategoryFetch = async () => {
+      // First, load the businesses from JSON
+      const jsonResponse = await fetch("/api/complete-businesses.json");
+      if (!jsonResponse.ok) {
+        throw new Error("Failed to load businesses from JSON");
+      }
 
       const jsonData = await jsonResponse.json();
       const businesses = jsonData.businesses || [];
@@ -1657,7 +1616,7 @@ function AdminDashboardContent() {
                           <p>
                             📸 Images: {fetchResults.summary.imagesDownloaded}
                           </p>
-                          <p>��� Cost: ${fetchResults.summary.totalCost}</p>
+                          <p>💰 Cost: ${fetchResults.summary.totalCost}</p>
                         </div>
                       ) : (
                         <div className="space-y-2">
