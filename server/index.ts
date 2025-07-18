@@ -478,6 +478,7 @@ export function createServer() {
   app.post("/api/admin/import-businesses", importBusinesses);
   app.get("/api/admin/auto-fetch-dubai-visa", autoFetchDubaiVisa);
   app.get("/api/admin/test-simple-search", testSimpleSearch);
+  app.get("/api/admin/debug-visa-search", debugVisaSearch);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
