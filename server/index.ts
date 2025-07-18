@@ -472,6 +472,7 @@ export function createServer() {
   app.post("/api/admin/fetch-google-businesses", fetchBusinessesWithImages);
   app.get("/api/admin/google-search-categories", getSearchCategories);
   app.get("/api/admin/google-api-status", checkGoogleApiStatus);
+  app.post("/api/admin/import-businesses", importBusinesses);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
