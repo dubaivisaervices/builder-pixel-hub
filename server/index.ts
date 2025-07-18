@@ -128,6 +128,7 @@ import { checkDbSchema } from "./routes/check-db-schema";
 import { fetchKeywordBusinesses } from "./routes/fetch-keyword-businesses";
 import { keywordBusinessesReport } from "./routes/keyword-businesses-report";
 import { fetchConsultants } from "./routes/fetch-consultants";
+import { searchCompanyNames } from "./routes/search-company-names";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
