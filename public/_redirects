@@ -9,6 +9,7 @@
 # Dynamic API routes to Netlify Functions
 /api/business-reviews/* /.netlify/functions/business-reviews 200
 /api/reports/company/* /.netlify/functions/company-reports 200
+/api/test /.netlify/functions/test-api 200
 
 # API Routes without .json extension
 /api/dubai-visa-services /api/dubai-visa-services.json 200
