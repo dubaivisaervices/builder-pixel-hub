@@ -885,7 +885,7 @@ export default function SimpleBusinessDirectory() {
                 >
                   {/* Business Name */}
                   <div className="text-center">
-                    <h3 className="font-bold text-lg text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
+                    <h3 className="font-bold text-base sm:text-lg text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
                       {business.name}
                     </h3>
                   </div>
