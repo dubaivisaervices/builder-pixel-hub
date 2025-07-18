@@ -595,7 +595,7 @@ export default function Index() {
                 <Card
                   key={business.id}
                   className="group hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer border-0 bg-white"
-                  onClick={() => navigate(`/company/${business.id}`)}
+                  onClick={() => navigate(createBusinessProfileUrl(business))}
                 >
                   <CardContent className="p-6">
                     <div className="flex items-center space-x-3 mb-4">
