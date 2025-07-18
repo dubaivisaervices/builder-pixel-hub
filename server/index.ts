@@ -146,6 +146,7 @@ import { enhancedFetcherNetlify } from "./routes/enhanced-fetcher-netlify";
 import { testNetlifySetup } from "./routes/test-netlify-setup";
 import { configureNetlify } from "./routes/configure-netlify";
 import { migratePhotosDirect } from "./routes/migrate-photos-direct";
+import { simplePhotoMigration } from "./routes/simple-photo-migration";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
