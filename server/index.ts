@@ -520,6 +520,7 @@ export function createServer() {
   app.get("/api/admin/enhanced-fetcher-complete", enhancedFetcherComplete);
   app.get("/api/admin/enhanced-fetcher-working", enhancedFetcherWorking);
   app.get("/api/admin/enhance-all-businesses", enhanceAllBusinesses);
+  app.get("/api/admin/check-enhancement-status", checkEnhancementStatus);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
