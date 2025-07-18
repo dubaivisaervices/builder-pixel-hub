@@ -510,6 +510,7 @@ export function createServer() {
   app.get("/api/admin/test-google-business-save", testGoogleBusinessSave);
   app.get("/api/admin/save-business-correctly", saveBusinessCorrectly);
   app.get("/api/admin/fetch-companies-working", fetchCompaniesWorking);
+  app.get("/api/admin/fetch-categories-permanent", fetchCategoriesPermanent);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
