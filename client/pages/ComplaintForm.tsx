@@ -363,7 +363,7 @@ export default function ComplaintForm() {
     setSearchTerm(value);
     setIsTyping(true);
 
-    if (value.length >= 1) {
+    if (value.length >= 2) {
       const filtered = businesses
         .filter(
           (business) =>
