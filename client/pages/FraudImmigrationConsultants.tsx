@@ -191,7 +191,7 @@ export default function FraudImmigrationConsultants() {
             console.log(
               "ℹ️ Reports endpoint returned invalid JSON, using mock data",
             );
-            businesses.forEach((business) => {
+            displayedBusinesses.forEach((business) => {
               reportCounts[business.id] = Math.floor(Math.random() * 5);
             });
             setReports(reportCounts);
