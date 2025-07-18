@@ -426,45 +426,103 @@ function AdminDashboardContent() {
     }
 
     setIsFetching(true);
-    setSyncStatus("🔄 Starting import of existing businesses to database...");
+    setSyncStatus("🔄 Loading existing businesses from JSON...");
 
     try {
-      const response = await fetch("/api/admin/import-businesses", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
+      // First, load the businesses from JSON
+      const jsonResponse = await fetch("/api/complete-businesses.json");
+      if (!jsonResponse.ok) {
+        throw new Error("Failed to load businesses from JSON");
+      }
 
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
+      const jsonData = await jsonResponse.json();
+      const businesses = jsonData.businesses || [];
+
+      if (businesses.length === 0) {
+        throw new Error("No businesses found in JSON file");
+      }
+
+      setSyncStatus(
+        `📊 Found ${businesses.length} businesses. Starting import...`,
+      );
+
+      let imported = 0;
+      let errors = 0;
+
+      // Import businesses in small batches using the save-business function
+      for (let i = 0; i < businesses.length; i++) {
+        const business = businesses[i];
+
+        if (i % 50 === 0) {
           setSyncStatus(
-            `✅ Import complete! ${result.imported} businesses imported to database`,
+            `🔄 Importing ${i + 1}/${businesses.length} businesses...`,
+          );
+        }
+
+        try {
+          const businessData = {
+            id: business.id || business.place_id || `business_${i}`,
+            name: business.name || "Unknown Business",
+            address: business.address || business.formatted_address || "",
+            category: business.category || "Business Services",
+            phone: business.phone || business.formatted_phone_number || "",
+            website: business.website || "",
+            email: business.email || "",
+            rating: parseFloat(
+              business.rating || business.google_rating || 4.0,
+            ),
+            reviewCount: parseInt(
+              business.reviewCount || business.user_ratings_total || 0,
+            ),
+            latitude: parseFloat(
+              business.latitude || business.location?.lat || 0,
+            ),
+            longitude: parseFloat(
+              business.longitude || business.location?.lng || 0,
+            ),
+            businessStatus: business.businessStatus || "OPERATIONAL",
+            logoUrl: business.logoUrl || "",
+            photos: business.photos || [],
+            hasTargetKeyword: business.hasTargetKeyword || false,
+          };
+
+          const saveResponse = await fetch(
+            "/.netlify/functions/save-business",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(businessData),
+            },
           );
 
-          // Refresh dashboard data to show updated count
-          setTimeout(() => {
-            fetchDashboardData();
-          }, 1000);
-        } else {
-          setSyncStatus(`❌ Import failed: ${result.error || result.message}`);
+          if (saveResponse.ok) {
+            imported++;
+          } else {
+            errors++;
+          }
+        } catch (businessError) {
+          errors++;
         }
-      } else {
-        // Fix response handling to avoid "body stream already read"
-        let errorMessage;
-        try {
-          const errorData = await response.json();
-          errorMessage =
-            errorData.error || errorData.message || `HTTP ${response.status}`;
-        } catch {
-          errorMessage = `HTTP ${response.status}`;
+
+        // Small delay to avoid overwhelming the database
+        if (i % 10 === 0) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
         }
-        setSyncStatus(`❌ Import failed: ${errorMessage}`);
       }
+
+      setSyncStatus(
+        `✅ Import complete! ${imported} businesses imported (${errors} errors)`,
+      );
+
+      // Refresh dashboard data to show updated count
+      setTimeout(() => {
+        fetchDashboardData();
+      }, 2000);
     } catch (error) {
       setSyncStatus(`❌ Import error: ${error.message}`);
     } finally {
       setIsFetching(false);
-      setTimeout(() => setSyncStatus(""), 10000);
+      setTimeout(() => setSyncStatus(""), 15000);
     }
   };
 
