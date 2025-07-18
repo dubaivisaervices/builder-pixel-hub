@@ -416,6 +416,50 @@ function AdminDashboardContent() {
     updateSearchPreview();
   };
 
+  const handleImportExistingBusinesses = async () => {
+    if (
+      !confirm(
+        "📊 This will import all 841 existing businesses from JSON to the PostgreSQL database. Continue?",
+      )
+    ) {
+      return;
+    }
+
+    setIsFetching(true);
+    setSyncStatus("🔄 Starting import of existing businesses to database...");
+
+    try {
+      const response = await fetch("/.netlify/functions/import-businesses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success) {
+          setSyncStatus(
+            `✅ Import complete! ${result.summary.finalDatabaseCount} businesses now in database`,
+          );
+
+          // Refresh dashboard data to show updated count
+          await fetchDashboardData();
+        } else {
+          setSyncStatus(`❌ Import failed: ${result.message}`);
+        }
+      } else {
+        const errorText = await response.text();
+        setSyncStatus(
+          `❌ Import failed: HTTP ${response.status} - ${errorText}`,
+        );
+      }
+    } catch (error) {
+      setSyncStatus(`❌ Import error: ${error.message}`);
+    } finally {
+      setIsFetching(false);
+      setTimeout(() => setSyncStatus(""), 10000);
+    }
+  };
+
   const handleBulkCategoryFetch = async () => {
     const categories = [
       "Visa consulting services Dubai",
