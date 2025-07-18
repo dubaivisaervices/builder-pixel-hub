@@ -429,7 +429,7 @@ function AdminDashboardContent() {
     setSyncStatus("🔄 Starting import of existing businesses to database...");
 
     try {
-      const response = await fetch("/.netlify/functions/import-businesses", {
+      const response = await fetch("/api/admin/import-businesses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
@@ -438,19 +438,27 @@ function AdminDashboardContent() {
         const result = await response.json();
         if (result.success) {
           setSyncStatus(
-            `✅ Import complete! ${result.summary.finalDatabaseCount} businesses now in database`,
+            `✅ Import complete! ${result.imported} businesses imported to database`,
           );
 
           // Refresh dashboard data to show updated count
-          await fetchDashboardData();
+          setTimeout(() => {
+            fetchDashboardData();
+          }, 1000);
         } else {
-          setSyncStatus(`❌ Import failed: ${result.message}`);
+          setSyncStatus(`❌ Import failed: ${result.error || result.message}`);
         }
       } else {
-        const errorText = await response.text();
-        setSyncStatus(
-          `❌ Import failed: HTTP ${response.status} - ${errorText}`,
-        );
+        // Fix response handling to avoid "body stream already read"
+        let errorMessage;
+        try {
+          const errorData = await response.json();
+          errorMessage =
+            errorData.error || errorData.message || `HTTP ${response.status}`;
+        } catch {
+          errorMessage = `HTTP ${response.status}`;
+        }
+        setSyncStatus(`❌ Import failed: ${errorMessage}`);
       }
     } catch (error) {
       setSyncStatus(`❌ Import error: ${error.message}`);
