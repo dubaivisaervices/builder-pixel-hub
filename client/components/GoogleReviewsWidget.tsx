@@ -36,6 +36,20 @@ export default function GoogleReviewsWidget({
         setError(null);
 
         console.log("🔍 Fetching reviews for placeId:", placeId);
+
+        // First test if API routing works at all
+        try {
+          const debugResponse = await fetch(`/api/debug-reviews/${placeId}`);
+          const debugData = await debugResponse.text();
+          console.log(
+            "🔍 Debug API test:",
+            debugResponse.status,
+            debugData.substring(0, 100),
+          );
+        } catch (debugErr) {
+          console.log("🔍 Debug API test failed:", debugErr.message);
+        }
+
         const apiUrl = `/api/business-reviews/${placeId}`;
         console.log("🔍 API URL:", apiUrl);
 
