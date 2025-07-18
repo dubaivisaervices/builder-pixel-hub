@@ -496,8 +496,23 @@ function AdminDashboardContent() {
           );
 
           if (saveResponse.ok) {
-            imported++;
+            const result = await saveResponse.json();
+            if (result.success) {
+              imported++;
+            } else {
+              console.error(
+                `Save failed for ${business.name}:`,
+                result.message,
+              );
+              errors++;
+            }
           } else {
+            const errorText = await saveResponse.text();
+            console.error(
+              `HTTP error for ${business.name}:`,
+              saveResponse.status,
+              errorText,
+            );
             errors++;
           }
         } catch (businessError) {
