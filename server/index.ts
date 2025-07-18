@@ -134,6 +134,7 @@ import { fetchSpecificCompanies } from "./routes/fetch-specific-companies";
 import { debugDatabaseSave } from "./routes/debug-database-save";
 import { testGoogleBusinessSave } from "./routes/test-google-business-save";
 import { saveBusinessCorrectly } from "./routes/save-business-correctly";
+import { fetchCompaniesWorking } from "./routes/fetch-companies-working";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
