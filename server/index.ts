@@ -273,6 +273,13 @@ export function createServer() {
   // Health check endpoints
   app.get("/api/ping", pingAPI);
   app.get("/api/health", pingAPI);
+  app.get("/api/status", (req, res) => {
+    res.json({
+      status: "ok",
+      timestamp: new Date().toISOString(),
+      message: "API is working",
+    });
+  });
 
   app.get("/api/demo", handleDemo);
 
