@@ -421,7 +421,7 @@ function AdminDashboardContent() {
     setSyncStatus("🔧 Testing database connection...");
 
     try {
-      const response = await fetch("/.netlify/functions/test-database");
+      const response = await fetch("/api/admin/test-database");
 
       if (response.ok) {
         const result = await response.json();
