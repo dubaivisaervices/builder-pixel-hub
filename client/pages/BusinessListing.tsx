@@ -180,15 +180,8 @@ export default function BusinessListing() {
 
   const navigateToDetails = (business: BusinessData) => {
     try {
-      const locationSlug =
-        business.address
-          .split(",")[0]
-          ?.trim()
-          .toLowerCase()
-          .replace(/[^a-z0-9]/g, "-") || "dubai";
-      const nameSlug = business.name.toLowerCase().replace(/[^a-z0-9]/g, "-");
-
-      navigate(`/modern-profile/${locationSlug}/${nameSlug}`);
+      const profileUrl = createBusinessProfileUrl(business);
+      navigate(profileUrl);
     } catch (error) {
       console.error("Navigation error:", error);
     }
