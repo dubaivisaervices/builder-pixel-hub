@@ -122,43 +122,65 @@ export default function FraudImmigrationConsultants() {
       // Try to fetch from API first, but have a robust fallback
       let allBusinesses: Business[] = [];
 
+      // First try to load from static JSON file (most reliable)
       try {
-        // Try Netlify function endpoint first for real data
-        let response = await fetch(
-          "/.netlify/functions/api/businesses?limit=1000",
-        );
-
-        // Fallback to regular API endpoint
-        if (!response.ok) {
-          response = await fetch("/api/businesses?limit=1000");
-        }
-
-        if (response.ok) {
-          const responseText = await response.text();
-          try {
-            const data = JSON.parse(responseText);
-            allBusinesses = data.businesses || [];
+        console.log("🔄 Trying to load from static business data file...");
+        const staticResponse = await fetch("/business-data/businesses.json");
+        if (staticResponse.ok) {
+          const staticData = await staticResponse.json();
+          if (staticData.businesses && staticData.businesses.length > 0) {
+            allBusinesses = staticData.businesses;
             console.log(
-              `✅ Loaded ${allBusinesses.length} businesses from API`,
+              `✅ Loaded ${allBusinesses.length} businesses from static JSON file`,
             );
+            console.log("🎯 Using REAL business data from static file");
+          }
+        }
+      } catch (staticError) {
+        console.warn("Static JSON file not accessible:", staticError);
+      }
 
-            // Log if this is likely real data from Netlify
-            if (allBusinesses.length > 100) {
-              console.log("🎯 Using REAL business data from Netlify JSON file");
+      // If static file didn't work, try API endpoints
+      if (allBusinesses.length === 0) {
+        try {
+          console.log("🔄 Trying API endpoints...");
+          // Try Netlify function endpoint first
+          let response = await fetch(
+            "/.netlify/functions/api/businesses?limit=1000",
+          );
+
+          // Fallback to regular API endpoint
+          if (!response.ok) {
+            response = await fetch("/api/businesses?limit=1000");
+          }
+
+          if (response.ok) {
+            const responseText = await response.text();
+            try {
+              const data = JSON.parse(responseText);
+              allBusinesses = data.businesses || [];
+              console.log(
+                `✅ Loaded ${allBusinesses.length} businesses from API`,
+              );
+
+              // Log if this is likely real data
+              if (allBusinesses.length > 5) {
+                console.log("🎯 Using REAL business data from API");
+              }
+            } catch (jsonError) {
+              console.warn("API returned invalid JSON, using fallback data");
+              allBusinesses = [];
             }
-          } catch (jsonError) {
-            console.warn("API returned invalid JSON, using fallback data");
+          } else {
+            console.warn(
+              `API request failed with status ${response.status}, using fallback data`,
+            );
             allBusinesses = [];
           }
-        } else {
-          console.warn(
-            `API request failed with status ${response.status}, using fallback data`,
-          );
+        } catch (networkError) {
+          console.warn("Network error accessing API, using fallback data");
           allBusinesses = [];
         }
-      } catch (networkError) {
-        console.warn("Network error accessing API, using fallback data");
-        allBusinesses = [];
       }
 
       // If API failed, use static sample data
