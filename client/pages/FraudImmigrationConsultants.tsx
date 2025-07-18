@@ -169,10 +169,10 @@ export default function FraudImmigrationConsultants() {
       const reportCounts: Record<string, number> = {};
 
       // Test if reports endpoint exists by trying the first business
-      if (businesses.length > 0) {
+      if (displayedBusinesses.length > 0) {
         try {
           const testResponse = await fetch(
-            `/api/reports/company/${businesses[0].id}`,
+            `/api/reports/company/${displayedBusinesses[0].id}`,
           );
           if (!testResponse.ok && testResponse.status === 404) {
             // Reports endpoint doesn't exist, use mock data
