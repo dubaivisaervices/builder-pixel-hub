@@ -174,6 +174,80 @@ export default function FraudImmigrationConsultants() {
     }
   };
 
+  const fetchEnhancedBusinessDetails = async () => {
+    try {
+      setEnhancingDetails(true);
+      console.log(
+        `🔍 Fetching enhanced details for ${businesses.length} businesses`,
+      );
+
+      const enhanced: Record<string, Business> = {};
+
+      // Process businesses in batches to avoid rate limiting
+      const batchSize = 5;
+      for (let i = 0; i < businesses.length; i += batchSize) {
+        const batch = businesses.slice(i, i + batchSize);
+
+        await Promise.all(
+          batch.map(async (business) => {
+            try {
+              const response = await fetch(`/api/business/${business.id}`);
+              if (response.ok) {
+                const data = await response.json();
+
+                enhanced[business.id] = {
+                  ...business,
+                  description:
+                    data.description ||
+                    data.editorial_summary?.overview ||
+                    data.business_status ||
+                    "No description available",
+                  businessHours: data.opening_hours?.weekday_text || [],
+                  businessStatus: data.business_status || "Unknown",
+                  priceLevel: data.price_level,
+                  googleRating: data.rating,
+                  googleReviewCount: data.user_ratings_total,
+                  businessTypes: data.types || [],
+                  photos: data.photos
+                    ? data.photos
+                        .slice(0, 3)
+                        .map(
+                          (photo: any) =>
+                            `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photo.photo_reference}&maxwidth=400&key=${process.env.REACT_APP_GOOGLE_PLACES_API_KEY}`,
+                        )
+                    : [],
+                };
+
+                console.log(`✅ Enhanced details for: ${business.name}`);
+              } else {
+                // Keep original business data if API fails
+                enhanced[business.id] = business;
+              }
+            } catch (error) {
+              console.error(
+                `❌ Error fetching details for ${business.name}:`,
+                error,
+              );
+              enhanced[business.id] = business;
+            }
+          }),
+        );
+
+        // Add delay between batches
+        if (i + batchSize < businesses.length) {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+      }
+
+      setEnhancedBusinesses(enhanced);
+      console.log(`✅ Enhanced ${Object.keys(enhanced).length} businesses`);
+    } catch (error) {
+      console.error("Error fetching enhanced business details:", error);
+    } finally {
+      setEnhancingDetails(false);
+    }
+  };
+
   const filterBusinesses = () => {
     let filtered = businesses;
 
