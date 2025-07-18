@@ -119,6 +119,7 @@ import {
 import { testGoogleAPI } from "./routes/test-google-api";
 import { autoFetchDubaiVisa } from "./routes/auto-fetch-dubai-visa";
 import { testSimpleSearch } from "./routes/test-simple-search";
+import { debugVisaSearch } from "./routes/debug-visa-search";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
