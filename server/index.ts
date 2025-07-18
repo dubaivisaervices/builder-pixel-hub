@@ -476,6 +476,7 @@ export function createServer() {
   app.get("/api/admin/google-api-status", checkGoogleApiStatus);
   app.post("/api/admin/import-businesses", importBusinesses);
   app.get("/api/admin/test-database", testDatabase);
+  app.post("/api/admin/save-business", saveBusiness);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
