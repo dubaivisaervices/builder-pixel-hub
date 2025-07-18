@@ -81,8 +81,8 @@ export const autoFetchDubaiVisa: RequestHandler = async (req, res) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             searchQuery: category,
-            maxResults: 15,
-            radius: 50,
+            maxResults: 20,
+            radius: 75,
             minRating: 0,
             downloadImages: true,
             saveToDatabase: true,
