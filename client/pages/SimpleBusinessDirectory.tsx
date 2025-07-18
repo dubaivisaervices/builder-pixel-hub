@@ -878,8 +878,10 @@ export default function SimpleBusinessDirectory() {
                 {/* Card Content */}
                 <div
                   className={`${
-                    viewMode === "list" ? "flex-1 p-6" : "p-6 pt-8"
-                  } space-y-4`}
+                    viewMode === "list"
+                      ? "flex-1 p-4 sm:p-6"
+                      : "p-4 sm:p-6 pt-6 sm:pt-8"
+                  } space-y-3 sm:space-y-4`}
                 >
                   {/* Business Name */}
                   <div className="text-center">
