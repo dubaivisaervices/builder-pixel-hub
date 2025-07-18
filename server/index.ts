@@ -504,6 +504,7 @@ export function createServer() {
   app.get("/api/admin/search-companies-simple", searchCompaniesSimple);
   app.get("/api/admin/fetch-specific-companies", fetchSpecificCompanies);
   app.get("/api/admin/debug-database-save", debugDatabaseSave);
+  app.get("/api/admin/test-google-business-save", testGoogleBusinessSave);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
