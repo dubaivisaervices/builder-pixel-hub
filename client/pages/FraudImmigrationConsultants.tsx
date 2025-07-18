@@ -251,11 +251,11 @@ export default function FraudImmigrationConsultants() {
         },
       );
 
-      console.log(
+            console.log(
         `📊 Found ${immigrationBusinesses.length} immigration/visa consultants out of ${allBusinesses.length} total businesses`,
       );
 
-            setBusinesses(immigrationBusinesses);
+      setBusinesses(immigrationBusinesses);
       setFilteredBusinesses(immigrationBusinesses);
       setError(null); // Clear any previous errors
     } catch (err) {
