@@ -40,16 +40,21 @@ export default function GoogleReviewsWidget({
 
         if (response.ok) {
           const data = await response.json();
-          if (data.reviews && data.reviews.length > 0) {
+          console.log("🔍 API Response:", data); // Debug log
+          if (data.success && data.reviews && data.reviews.length > 0) {
             // Limit to first 10 reviews for display
             setReviews(data.reviews.slice(0, 10));
-            const source = data.fromCache ? "cached database" : "Google API";
-            const cost = data.fromCache ? "(FREE)" : "(COST MONEY)";
+            const source =
+              data.source === "database_cache"
+                ? "cached database"
+                : "Google API";
+            const cost =
+              data.source === "database_cache" ? "(FREE)" : "(COST MONEY)";
             console.log(
               `✅ Loaded ${data.reviews.length} reviews from ${source} ${cost}`,
             );
           } else {
-            console.log("📭 No reviews available from API");
+            console.log("📭 No reviews available from API", data);
             setReviews([]);
           }
         } else {
