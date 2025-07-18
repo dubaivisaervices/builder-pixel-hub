@@ -131,6 +131,7 @@ import { fetchConsultants } from "./routes/fetch-consultants";
 import { searchCompanyNames } from "./routes/search-company-names";
 import { searchCompaniesSimple } from "./routes/search-companies-simple";
 import { fetchSpecificCompanies } from "./routes/fetch-specific-companies";
+import { debugDatabaseSave } from "./routes/debug-database-save";
 import {
   netlifyBusinessesAPI,
   netlifyStatsAPI,
