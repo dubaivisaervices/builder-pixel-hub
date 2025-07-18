@@ -250,8 +250,10 @@ export const submitReport: RequestHandler = async (req, res) => {
  */
 export const getCompanyReports: RequestHandler = async (req, res) => {
   try {
-    // Ensure JSON content type
+    // Ensure JSON content type and no caching
     res.setHeader("Content-Type", "application/json");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Access-Control-Allow-Origin", "*");
 
     const { companyId } = req.params;
 
