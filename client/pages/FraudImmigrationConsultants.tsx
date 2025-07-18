@@ -89,6 +89,13 @@ export default function FraudImmigrationConsultants() {
     "tourist visa",
     "family visa",
     "residence visa",
+    "استشارات الهجرة",
+    "استشارات الهجرة دبي",
+    "registered visa agent dubai",
+    "education visa",
+    "document clearance",
+    "document clearing",
+    "business formation",
   ];
 
   useEffect(() => {
