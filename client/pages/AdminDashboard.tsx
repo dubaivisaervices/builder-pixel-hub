@@ -498,10 +498,7 @@ function AdminDashboardContent() {
     }
   };
 
-  const handleBulkCategoryFetch = async () => {
-    if (false) { // Keep old code for reference but skip execution
-        throw new Error("Failed to load businesses from JSON");
-      }
+    const handleBulkCategoryFetch = async () => {
 
       const jsonData = await jsonResponse.json();
       const businesses = jsonData.businesses || [];
