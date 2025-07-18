@@ -9,9 +9,20 @@ export const uploadPhotosToNetlify: RequestHandler = async (req, res) => {
   try {
     const { NETLIFY_ACCESS_TOKEN, NETLIFY_SITE_ID } = process.env;
 
+    console.log("🔍 Checking Netlify credentials...");
+    console.log("🔍 NETLIFY_ACCESS_TOKEN exists:", !!NETLIFY_ACCESS_TOKEN);
+    console.log("🔍 NETLIFY_SITE_ID exists:", !!NETLIFY_SITE_ID);
+
     if (!NETLIFY_ACCESS_TOKEN || !NETLIFY_SITE_ID) {
+      console.log("❌ Netlify credentials missing");
       return res.status(500).json({
         error: "Netlify credentials not configured",
+        details: {
+          hasToken: !!NETLIFY_ACCESS_TOKEN,
+          hasSiteId: !!NETLIFY_SITE_ID,
+          message:
+            "Please configure NETLIFY_ACCESS_TOKEN and NETLIFY_SITE_ID environment variables",
+        },
       });
     }
 
