@@ -431,7 +431,7 @@ export function createServer() {
         },
       });
     } catch (error) {
-      console.error("📸 Error fetching business photos:", error);
+      console.error("��� Error fetching business photos:", error);
       res.status(500).json({
         success: false,
         error: "Failed to fetch business photos",
@@ -473,8 +473,6 @@ export function createServer() {
   app.get("/api/admin/google-search-categories", getSearchCategories);
   app.get("/api/admin/google-api-status", checkGoogleApiStatus);
   app.post("/api/admin/import-businesses", importBusinesses);
-  app.get("/api/admin/test-database", testDatabase);
-  app.post("/api/admin/save-business", saveBusiness);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
