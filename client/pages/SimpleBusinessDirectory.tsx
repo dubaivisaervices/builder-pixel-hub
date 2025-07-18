@@ -273,6 +273,83 @@ export default function SimpleBusinessDirectory() {
     setCurrentPage(1);
   }, [processedBusinesses]);
 
+  // Generate search suggestions when user types
+  useEffect(() => {
+    if (searchTerm.length >= 2) {
+      const suggestions = [];
+      const searchLower = searchTerm.toLowerCase();
+
+      // Add business name suggestions
+      businesses.forEach((business) => {
+        if (business.name.toLowerCase().includes(searchLower)) {
+          suggestions.push({
+            type: "business",
+            text: business.name,
+            category: business.category,
+            id: business.id,
+          });
+        }
+      });
+
+      // Add category suggestions
+      const categories = [...new Set(businesses.map((b) => b.category))];
+      categories.forEach((category) => {
+        if (category.toLowerCase().includes(searchLower)) {
+          suggestions.push({
+            type: "category",
+            text: category,
+            count: businesses.filter((b) => b.category === category).length,
+          });
+        }
+      });
+
+      // Add location suggestions
+      const locations = [
+        ...new Set(
+          businesses
+            .map((b) => {
+              const address = b.address.toLowerCase();
+              if (address.includes("dubai marina")) return "Dubai Marina";
+              if (address.includes("downtown")) return "Downtown Dubai";
+              if (address.includes("deira")) return "Deira";
+              if (address.includes("jumeirah")) return "Jumeirah";
+              if (address.includes("business bay")) return "Business Bay";
+              if (address.includes("bur dubai")) return "Bur Dubai";
+              if (address.includes("al karama")) return "Al Karama";
+              if (address.includes("al fahidi")) return "Al Fahidi";
+              return null;
+            })
+            .filter(Boolean),
+        ),
+      ];
+
+      locations.forEach((location) => {
+        if (location.toLowerCase().includes(searchLower)) {
+          suggestions.push({
+            type: "location",
+            text: location,
+            count: businesses.filter((b) =>
+              b.address.toLowerCase().includes(location.toLowerCase()),
+            ).length,
+          });
+        }
+      });
+
+      // Limit to 8 suggestions and sort by relevance
+      const limitedSuggestions = suggestions.slice(0, 8).sort((a, b) => {
+        if (a.type === "business" && b.type !== "business") return -1;
+        if (a.type !== "business" && b.type === "business") return 1;
+        return 0;
+      });
+
+      setSearchSuggestions(limitedSuggestions);
+      setShowSuggestions(limitedSuggestions.length > 0);
+    } else {
+      setSearchSuggestions([]);
+      setShowSuggestions(false);
+    }
+  }, [searchTerm, businesses]);
+
   // Update URL when search/filters change
   useEffect(() => {
     const params = new URLSearchParams();
