@@ -90,6 +90,11 @@ const App = () => (
               path="/reviews/:location/:companyName"
               element={<CompanyProfileModern key={`${Date.now()}`} />}
             />
+            {/* Legacy redirect for old modern-profile URLs */}
+            <Route
+              path="/modern-profile/:location/:companyName"
+              element={<LegacyRedirect />}
+            />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
