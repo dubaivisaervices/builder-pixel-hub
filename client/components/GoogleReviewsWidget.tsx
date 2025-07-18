@@ -102,7 +102,23 @@ export default function GoogleReviewsWidget({
         console.error("❌ Error fetching reviews:", err);
         console.error("❌ Request URL:", `/api/business-reviews/${placeId}`);
         console.error("❌ PlaceId:", placeId);
-        setError(`Failed to load reviews: ${err.message}`);
+        console.error("❌ Error type:", typeof err);
+        console.error("❌ Error stack:", err.stack);
+
+        let errorMessage = "Failed to load reviews";
+        if (err.message) {
+          if (
+            err.message.includes("JSON") ||
+            err.message.includes("Unexpected token")
+          ) {
+            errorMessage =
+              "API returned invalid response (HTML instead of JSON)";
+          } else {
+            errorMessage = `Failed to load reviews: ${err.message}`;
+          }
+        }
+
+        setError(errorMessage);
         setReviews([]);
       } finally {
         setIsLoading(false);
