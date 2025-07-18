@@ -97,10 +97,10 @@ export default function FraudImmigrationConsultants() {
   }, []);
 
   useEffect(() => {
-    if (businesses.length > 0) {
+    if (displayedBusinesses.length > 0) {
       fetchEnhancedBusinessDetails();
     }
-  }, [businesses]);
+  }, [displayedBusinesses]);
 
   useEffect(() => {
     filterBusinesses();
