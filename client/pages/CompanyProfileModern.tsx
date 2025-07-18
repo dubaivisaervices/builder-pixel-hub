@@ -675,8 +675,10 @@ function CommunityReportsSection({
           setError("Failed to load reports");
         }
       } catch (err) {
-        setError("Error loading reports");
-        console.error("Error fetching reports:", err);
+        setError(`Error loading reports: ${err.message}`);
+        console.error("❌ Error fetching reports:", err);
+        console.error("❌ Business ID:", businessId);
+        console.error("❌ Request URL:", `/api/reports/company/${businessId}`);
 
         // Add sample report even on error for demonstration
         if (
