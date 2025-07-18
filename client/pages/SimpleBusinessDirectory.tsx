@@ -803,8 +803,8 @@ export default function SimpleBusinessDirectory() {
           {currentBusinesses.map((business) => (
             <Card
               key={business.id}
-              className={`group cursor-pointer hover:shadow-2xl transition-all duration-500 border-0 bg-white/95 backdrop-blur-lg hover:bg-white transform hover:scale-[1.03] hover:-translate-y-2 shadow-lg ${
-                viewMode === "list" ? "flex max-w-none" : "max-w-sm mx-auto"
+              className={`group cursor-pointer hover:shadow-2xl transition-all duration-500 border-0 bg-white/95 backdrop-blur-lg hover:bg-white transform hover:scale-[1.02] hover:-translate-y-1 shadow-lg ${
+                viewMode === "list" ? "flex max-w-none" : "w-full mx-auto"
               }`}
               onClick={() => handleBusinessClick(business)}
             >
