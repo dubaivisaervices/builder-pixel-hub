@@ -486,6 +486,7 @@ export function createServer() {
   app.get("/api/admin/fetch-visa-categories", fetchVisaCategories);
   app.get("/api/admin/test-visa-direct", testVisaDirect);
   app.get("/api/admin/simple-visa-fetch", simpleVisaFetch);
+  app.get("/api/admin/check-visa-businesses", checkVisaBusinesses);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
