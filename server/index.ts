@@ -389,7 +389,7 @@ export function createServer() {
                 source: "s3",
                 uploadedAt: new Date().toISOString(),
               });
-              console.log(`📸 ✅ S3 photo ${i + 1} validated:`, s3Key);
+              console.log(`📸 �� S3 photo ${i + 1} validated:`, s3Key);
             } else {
               console.log(`📸 ❌ S3 photo ${i + 1} not found:`, s3Key);
             }
@@ -481,7 +481,7 @@ export function createServer() {
       });
     }
   });
-  app.get("/api/business/:placeId", getBusinessDetails);
+  // app.get("/api/business/:placeId", getBusinessDetails); // Disabled - using enhanced business details instead
   app.get("/api/business-photo/:photoReference", getBusinessPhoto);
   app.get("/api/business-db/:businessId", getBusinessById);
   app.get("/api/debug-images/:businessId", debugImageData);
