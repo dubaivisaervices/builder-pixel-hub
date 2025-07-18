@@ -474,6 +474,7 @@ export function createServer() {
   app.get("/api/admin/google-search-categories", getSearchCategories);
   app.get("/api/admin/google-api-status", checkGoogleApiStatus);
   app.post("/api/admin/import-businesses", importBusinesses);
+  app.get("/api/admin/auto-fetch-dubai-visa", autoFetchDubaiVisa);
 
   // Admin sync routes
   app.get("/api/admin/stats", getDatabaseStats);
