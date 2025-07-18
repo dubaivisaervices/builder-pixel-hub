@@ -830,7 +830,7 @@ export default function SimpleBusinessDirectory() {
                         : "absolute bottom-4 left-1/2 transform -translate-x-1/2"
                     }`}
                   >
-                    <div className="w-16 h-16 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm border-4 border-white/50 shadow-xl">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm border-2 sm:border-4 border-white/50 shadow-xl">
                       <img
                         src={business.logoUrl || getBestLogoUrl(business)}
                         alt={`${business.name} logo`}
