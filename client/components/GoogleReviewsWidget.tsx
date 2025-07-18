@@ -35,8 +35,18 @@ export default function GoogleReviewsWidget({
         setIsLoading(true);
         setError(null);
 
+        console.log("🔍 Fetching reviews for placeId:", placeId);
+        const apiUrl = `/api/business-reviews/${placeId}`;
+        console.log("🔍 API URL:", apiUrl);
+
         // Try to fetch real reviews from our API
-        const response = await fetch(`/api/business-reviews/${placeId}`);
+        const response = await fetch(apiUrl, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
 
         if (response.ok) {
           const data = await response.json();
