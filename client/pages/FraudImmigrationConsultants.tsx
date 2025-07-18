@@ -552,7 +552,7 @@ export default function FraudImmigrationConsultants() {
 
         {/* Business Listings */}
         <div className="space-y-6">
-          {filteredBusinesses.map((business) => {
+          {displayedBusinesses.map((business) => {
             const enhancedBusiness =
               enhancedBusinesses[business.id] || business;
 
