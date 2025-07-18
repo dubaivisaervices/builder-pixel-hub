@@ -93,8 +93,13 @@ export default function FraudImmigrationConsultants() {
 
   useEffect(() => {
     fetchBusinesses();
-    fetchReportCounts();
   }, []);
+
+  useEffect(() => {
+    if (displayedBusinesses.length > 0) {
+      fetchReportCounts();
+    }
+  }, [displayedBusinesses]);
 
   useEffect(() => {
     if (displayedBusinesses.length > 0) {
