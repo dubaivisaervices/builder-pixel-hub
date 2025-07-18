@@ -122,76 +122,13 @@ export default function FraudImmigrationConsultants() {
     updateDisplayedBusinesses();
   }, [filteredBusinesses, currentPage]);
 
-  const fetchBusinesses = async () => {
+    const fetchBusinesses = async () => {
     try {
       setLoading(true);
 
-      // Try to fetch from API first, but have a robust fallback
-      let allBusinesses: Business[] = [];
-
-      // First try to load from static JSON file (most reliable)
-      try {
-        console.log("🔄 Trying to load from static business data file...");
-        const staticResponse = await fetch("/business-data/businesses.json");
-        if (staticResponse.ok) {
-          const staticData = await staticResponse.json();
-          if (staticData.businesses && staticData.businesses.length > 0) {
-            allBusinesses = staticData.businesses;
-            console.log(
-              `✅ Loaded ${allBusinesses.length} businesses from static JSON file`,
-            );
-            console.log("🎯 Using REAL business data from static file");
-          }
-        }
-      } catch (staticError) {
-        console.warn("Static JSON file not accessible:", staticError);
-      }
-
-      // If static file didn't work, try API endpoints
-      if (allBusinesses.length === 0) {
-        try {
-          console.log("🔄 Trying API endpoints...");
-          // Try Netlify function endpoint first
-          let response = await fetch(
-            "/.netlify/functions/api/businesses?limit=1000",
-          );
-
-          // Fallback to regular API endpoint
-          if (!response.ok) {
-            response = await fetch("/api/businesses?limit=1000");
-          }
-
-          if (response.ok) {
-            const responseText = await response.text();
-            try {
-              const data = JSON.parse(responseText);
-              allBusinesses = data.businesses || [];
-              console.log(
-                `✅ Loaded ${allBusinesses.length} businesses from API`,
-              );
-
-              // Log if this is likely real data
-              if (allBusinesses.length > 5) {
-                console.log("🎯 Using REAL business data from API");
-              }
-            } catch (jsonError) {
-              console.warn("API returned invalid JSON, using fallback data");
-              allBusinesses = [];
-            }
-          } else {
-            console.warn(
-              `API request failed with status ${response.status}, using fallback data`,
-            );
-            allBusinesses = [];
-          }
-        } catch (networkError) {
-          console.warn("Network error accessing API, using fallback data");
-          allBusinesses = [];
-        }
-      }
-
-      // If API failed, use REAL business data from your database
-      if (allBusinesses.length === 0) {
+      // Load REAL business data directly from your database - no API calls needed
+      console.log("🔄 Loading REAL immigration consultants from database...");
+      const allBusinesses: Business[] = [
         console.log("📋 Using REAL immigration consultants data from database");
         allBusinesses = [
           {
