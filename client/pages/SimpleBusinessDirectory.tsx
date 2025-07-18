@@ -541,10 +541,10 @@ export default function SimpleBusinessDirectory() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Simplified Hero Section */}
+            {/* Simplified Hero Section with Integrated Search */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="text-center space-y-6">
+          <div className="text-center space-y-8">
             {/* Simple Title */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
               Find Genuine Immigration Consultants in UAE
@@ -556,47 +556,41 @@ export default function SimpleBusinessDirectory() {
               Check reviews, reports, and find trusted visa services in Dubai
               and UAE.
             </p>
-          </div>
-        </div>
-      </div>
 
-      {/* Classic Search Section */}
-      <div className="sticky top-0 z-[100] bg-white/95 backdrop-blur-xl border-b border-gray-200/80 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="relative max-w-2xl mx-auto">
-            <div className="relative group">
-              {/* Search Icon */}
-              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10">
-                <Search className="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors duration-200" />
-              </div>
+            {/* Search Box */}
+            <div className="relative max-w-2xl mx-auto mt-8">
+              <div className="relative group">
+                {/* Search Icon */}
+                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10">
+                  <Search className="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors duration-200" />
+                </div>
 
-              {/* Classic Search Input */}
-              <Input
-                type="text"
-                placeholder="Search businesses, services, or locations..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onFocus={() =>
-                  searchTerm.length >= 2 && setShowSuggestions(true)
-                }
-                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                className="
-                  pl-12 pr-6 py-3 text-base
-                  bg-white border border-gray-300 rounded-lg
-                  focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500
-                  hover:border-gray-400 transition-all duration-200
-                  w-full font-normal placeholder-gray-500
-                  shadow-sm hover:shadow-md focus:shadow-md
-                "
-                autoFocus
-              />
+                {/* Search Input */}
+                <Input
+                  type="text"
+                  placeholder="Search immigration consultants, visa services, or locations..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onFocus={() =>
+                    searchTerm.length >= 2 && setShowSuggestions(true)
+                  }
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                  className="
+                    pl-12 pr-20 py-4 text-base
+                    bg-white border-2 border-gray-300 rounded-xl
+                    focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500
+                    hover:border-gray-400 transition-all duration-200
+                    w-full font-normal placeholder-gray-500
+                    shadow-lg hover:shadow-xl focus:shadow-xl
+                  "
+                />
 
-              {/* Search Stats */}
-              <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                <span className="text-xs text-gray-400 font-medium">
-                  {stats.total}+ businesses
-                </span>
-              </div>
+                {/* Search Stats */}
+                <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                  <span className="text-xs text-gray-400 font-medium">
+                    {stats.total}+ consultants
+                  </span>
+                </div>
 
               {/* Enhanced Search Suggestions */}
               {showSuggestions && searchSuggestions.length > 0 && (
