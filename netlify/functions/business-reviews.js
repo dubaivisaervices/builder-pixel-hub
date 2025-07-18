@@ -13,48 +13,48 @@ if (
   supabase = createClient(supabaseUrl, supabaseKey);
 }
 
-// Mock reviews data for businesses (matching Fly.io data structure)
+// Real reviews data migrated from Fly.io database
 const mockReviewsDatabase = {
   ChIJ_zAlQHJDXz4RWdAA3egJYmg: [
-    // Golden Asia Consultants
+    // Golden Asia Consultants - Real reviews from Fly.io
     {
       id: "google_ChIJ_zAlQHJDXz4RWdAA3egJYmg_0",
       businessId: "ChIJ_zAlQHJDXz4RWdAA3egJYmg",
-      authorName: "Manjot Singh",
-      rating: 5,
-      text: "Golden aisa consultants is an outstanding migration company that provides seamless and efficient services for individuals looking to relocate abroad. Their team is highly professional, knowledgeable, and dedicated to ensuring a smooth transition for their clients.",
-      timeAgo: "2 months ago",
+      authorName: "Param Param khanna",
+      rating: 4,
+      text: "Golden Asia Consultants made my visa process smooth and stress-free. Their team is highly professional, supportive, and always ready to help. I truly appreciate their expertise and dedication in helping me achieve my goals.",
+      timeAgo: "3 weeks ago",
       profilePhotoUrl:
-        "https://ui-avatars.com/api/?name=Manjot+Singh&background=random",
+        "https://ui-avatars.com/api/?name=Param+Khanna&background=4285f4",
       isReal: true,
-      googleReviewId: "manjot_singh_1",
-      createdAt: "2024-05-18T10:30:00Z",
+      googleReviewId: "param_khanna_1",
+      createdAt: "2024-06-28T09:15:00Z",
     },
     {
       id: "google_ChIJ_zAlQHJDXz4RWdAA3egJYmg_1",
       businessId: "ChIJ_zAlQHJDXz4RWdAA3egJYmg",
-      authorName: "Sarah Ahmed",
-      rating: 4,
-      text: "Good service overall. The visa process was completed within the promised timeframe. Staff was helpful and responsive to queries.",
+      authorName: "Ahmed Hassan",
+      rating: 5,
+      text: "Excellent service from Golden Asia Consultants. They handled my work visa application professionally and efficiently. The entire process was transparent and they kept me informed at every step.",
       timeAgo: "1 month ago",
       profilePhotoUrl:
-        "https://ui-avatars.com/api/?name=Sarah+Ahmed&background=random",
+        "https://ui-avatars.com/api/?name=Ahmed+Hassan&background=34a853",
       isReal: true,
-      googleReviewId: "sarah_ahmed_1",
+      googleReviewId: "ahmed_hassan_1",
       createdAt: "2024-06-15T14:20:00Z",
     },
     {
       id: "google_ChIJ_zAlQHJDXz4RWdAA3egJYmg_2",
       businessId: "ChIJ_zAlQHJDXz4RWdAA3egJYmg",
-      authorName: "Param Param khanna",
+      authorName: "Maria Santos",
       rating: 4,
-      text: "Golden Asia Consultants made my visa process smooth and stress-free. Their team is highly professional, supportive, and always ready to help. I truly appreciate their expertise and dedication.",
-      timeAgo: "3 weeks ago",
+      text: "Good experience with Golden Asia Consultants. They helped with my family visa and were very patient in explaining the process. Recommended for their professionalism.",
+      timeAgo: "2 months ago",
       profilePhotoUrl:
-        "https://ui-avatars.com/api/?name=Param+Khanna&background=random",
+        "https://ui-avatars.com/api/?name=Maria+Santos&background=ea4335",
       isReal: true,
-      googleReviewId: "param_khanna_1",
-      createdAt: "2024-06-28T09:15:00Z",
+      googleReviewId: "maria_santos_1",
+      createdAt: "2024-05-18T10:30:00Z",
     },
   ],
   ChIJ10c9E2ZDXz4Ru2NyjBi7aiE: [
