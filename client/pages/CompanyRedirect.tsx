@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { createBusinessProfileUrl } from "@/lib/urlUtils";
 
 export default function CompanyRedirect() {
   const { companyId } = useParams();
