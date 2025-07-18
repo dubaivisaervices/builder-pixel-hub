@@ -72,8 +72,30 @@ export default function GoogleReviewsWidget({
             `❌ API Response error: ${response.status} - ${response.statusText}`,
           );
           console.log(`❌ Request URL: ${response.url}`);
-          const errorText = await response.text();
-          console.log(`❌ Error details:`, errorText);
+          console.log(
+            `❌ Response headers:`,
+            Object.fromEntries(response.headers.entries()),
+          );
+          const responseText = await response.text();
+          console.log(
+            `❌ Response text (first 200 chars):`,
+            responseText.substring(0, 200),
+          );
+
+          // Check if we got HTML instead of JSON
+          if (
+            responseText.includes("<!doctype") ||
+            responseText.includes("<html")
+          ) {
+            console.log(
+              "❌ Received HTML instead of JSON - API route not working",
+            );
+            setError(
+              "API endpoint not responding correctly - got HTML instead of JSON",
+            );
+          } else {
+            setError(`API Error: ${response.status} - ${response.statusText}`);
+          }
           setReviews([]);
         }
       } catch (err) {
