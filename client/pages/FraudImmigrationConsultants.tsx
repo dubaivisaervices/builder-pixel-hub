@@ -166,15 +166,21 @@ export default function FraudImmigrationConsultants() {
         console.warn("Dedicated visa services file not accessible:", visaError);
       }
 
-      // Then try to load from main businesses database for additional businesses
+      // Then try to load from the comprehensive dataset (2500+ businesses)
       try {
-        console.log("🔄 Loading additional businesses from main database...");
-        const businessesResponse = await fetch("/data/businesses.json");
-        if (businessesResponse.ok) {
-          const businessData = await businessesResponse.json();
-          if (businessData.businesses && businessData.businesses.length > 0) {
-            // Filter businesses from main database that match immigration/visa categories
-            const additionalBusinesses = businessData.businesses
+        console.log(
+          "🔄 Loading comprehensive dataset with 2500+ businesses...",
+        );
+        const datasetResponse = await fetch("/data/complete-dataset.json");
+        if (datasetResponse.ok) {
+          const datasetData = await datasetResponse.json();
+          if (datasetData.businesses && datasetData.businesses.length > 0) {
+            console.log(
+              `📊 Found ${datasetData.businesses.length} businesses in comprehensive dataset`,
+            );
+
+            // Filter businesses that match immigration/visa categories
+            const additionalBusinesses = datasetData.businesses
               .filter((business: any) => {
                 const category = business.category?.toLowerCase() || "";
                 const name = business.name?.toLowerCase() || "";
@@ -210,13 +216,71 @@ export default function FraudImmigrationConsultants() {
             allBusinesses = [...allBusinesses, ...newBusinesses];
 
             console.log(
-              `✅ Added ${newBusinesses.length} additional businesses from main database`,
+              `✅ Added ${newBusinesses.length} immigration/visa businesses from comprehensive dataset`,
             );
             console.log(`📊 Total businesses loaded: ${allBusinesses.length}`);
           }
+        } else {
+          console.warn(
+            "Comprehensive dataset not found, trying alternative sources...",
+          );
+
+          // Fallback to complete-businesses.json
+          const businessesResponse = await fetch(
+            "/api/complete-businesses.json",
+          );
+          if (businessesResponse.ok) {
+            const businessData = await businessesResponse.json();
+            if (businessData.businesses && businessData.businesses.length > 0) {
+              console.log(
+                `📊 Found ${businessData.businesses.length} businesses in complete-businesses dataset`,
+              );
+
+              const additionalBusinesses = businessData.businesses
+                .filter((business: any) => {
+                  const category = business.category?.toLowerCase() || "";
+                  const name = business.name?.toLowerCase() || "";
+
+                  return targetCategories.some(
+                    (targetCat) =>
+                      category.includes(targetCat) || name.includes(targetCat),
+                  );
+                })
+                .map((business: any) => ({
+                  id: business.id,
+                  name: business.name,
+                  address: business.address,
+                  category: business.category,
+                  phone: business.phone,
+                  website: business.website,
+                  email: business.email,
+                  rating: business.rating,
+                  reviewCount: business.reviewCount,
+                  description:
+                    business.description ||
+                    `Professional ${business.category?.toLowerCase()} services in Dubai.`,
+                  businessStatus: business.businessStatus,
+                  photos: business.photos,
+                  logoUrl: business.logoUrl,
+                }));
+
+              const existingIds = new Set(allBusinesses.map((b) => b.id));
+              const newBusinesses = additionalBusinesses.filter(
+                (b: Business) => !existingIds.has(b.id),
+              );
+              allBusinesses = [...allBusinesses, ...newBusinesses];
+
+              console.log(
+                `✅ Added ${newBusinesses.length} businesses from complete-businesses fallback`,
+              );
+              console.log(
+                `📊 Total businesses loaded: ${allBusinesses.length}`,
+              );
+            }
+          }
         }
       } catch (mainDbError) {
-        console.warn("Main businesses database not accessible:", mainDbError);
+        console.warn("Main databases not accessible:", mainDbError);
       }
 
       // If still no data, try API endpoints
