@@ -308,16 +308,7 @@ export default function BusinessDirectory() {
       navigator.share({
         title: business.name,
         text: `Check out ${business.name} on Dubai Business Directory`,
-        url:
-          window.location.origin +
-          `/modern-profile/${business.address
-            .split(",")[0]
-            ?.trim()
-            .toLowerCase()
-            .replace(
-              /[^a-z0-9]/g,
-              "-",
-            )}/${business.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`,
+        url: window.location.origin + createBusinessProfileUrl(business),
       });
     } else {
       // Fallback - copy to clipboard
