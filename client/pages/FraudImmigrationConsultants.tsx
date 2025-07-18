@@ -174,280 +174,25 @@ export default function FraudImmigrationConsultants() {
   const fetchBusinesses = async () => {
     try {
       setLoading(true);
+      console.log(
+        "🔄 Loading ALL immigration businesses from comprehensive dataset...",
+      );
 
-      // Load REAL business data directly from your database
-      console.log("🔄 Loading REAL immigration consultants from database...");
-      console.log("🎯 Using REAL business data from your actual database");
+      // Load directly from the comprehensive dataset - NO MORE FALLBACKS!
+      const response = await fetch("/data/complete-dataset.json");
+      const data = await response.json();
 
-      let allBusinesses: Business[] = [];
-
-      // First try to load dedicated visa services data (26 businesses)
-      try {
-        console.log("🔄 Loading dedicated visa services dataset...");
-        const visaResponse = await fetch("/api/dubai-visa-services.json");
-        if (visaResponse.ok) {
-          const visaData = await visaResponse.json();
-          if (visaData && Array.isArray(visaData) && visaData.length > 0) {
-            // Transform the visa services data to match our Business interface
-            const visaBusinesses: Business[] = visaData.map(
-              (business: any) => ({
-                id: business.id,
-                name: business.name,
-                address: business.address,
-                category: business.category,
-                phone: business.phone,
-                website: business.website,
-                email: business.email || undefined,
-                rating: business.rating,
-                reviewCount: business.reviewCount,
-                description:
-                  business.description ||
-                  `Professional ${business.category?.toLowerCase()} services in Dubai.`,
-              }),
-            );
-            allBusinesses = visaBusinesses;
-            console.log(
-              `✅ Loaded ${allBusinesses.length} visa services from dedicated dataset`,
-            );
-          }
-        }
-      } catch (visaError) {
-        console.warn("Dedicated visa services file not accessible:", visaError);
+      if (!data.businesses || data.businesses.length === 0) {
+        throw new Error("No businesses found in dataset");
       }
 
-      // Then try to load from the comprehensive dataset (2500+ businesses)
-      try {
-        console.log(
-          "🔄 Loading comprehensive dataset with 2500+ businesses...",
-        );
-        const datasetResponse = await fetch("/data/complete-dataset.json");
-        if (datasetResponse.ok) {
-          const datasetData = await datasetResponse.json();
-          if (datasetData.businesses && datasetData.businesses.length > 0) {
-            console.log(
-              `📊 Found ${datasetData.businesses.length} businesses in comprehensive dataset`,
-            );
+      console.log(
+        `📊 Found ${data.businesses.length} total businesses in dataset`,
+      );
 
-            // Filter businesses that match immigration/visa categories
-            const additionalBusinesses = datasetData.businesses
-              .filter((business: any) => {
-                const category = business.category?.toLowerCase() || "";
-                const name = business.name?.toLowerCase() || "";
-
-                return targetCategories.some(
-                  (targetCat) =>
-                    category.includes(targetCat) || name.includes(targetCat),
-                );
-              })
-              .map((business: any) => ({
-                id: business.id,
-                name: business.name,
-                address: business.address,
-                category: business.category,
-                phone: business.phone,
-                website: business.website,
-                email: business.email,
-                rating: business.rating,
-                reviewCount: business.reviewCount,
-                description:
-                  business.description ||
-                  `Professional ${business.category?.toLowerCase()} services in Dubai.`,
-                businessStatus: business.businessStatus,
-                photos: business.photos,
-                logoUrl: business.logoUrl,
-              }));
-
-            // Merge with existing businesses, avoiding duplicates
-            const existingIds = new Set(allBusinesses.map((b) => b.id));
-            const newBusinesses = additionalBusinesses.filter(
-              (b: Business) => !existingIds.has(b.id),
-            );
-            allBusinesses = [...allBusinesses, ...newBusinesses];
-
-            console.log(
-              `✅ Added ${newBusinesses.length} immigration/visa businesses from comprehensive dataset`,
-            );
-            console.log(`📊 Total businesses loaded: ${allBusinesses.length}`);
-          }
-        } else {
-          console.warn(
-            "Comprehensive dataset not found, trying alternative sources...",
-          );
-
-          // Fallback to complete-businesses.json
-          const businessesResponse = await fetch(
-            "/api/complete-businesses.json",
-          );
-          if (businessesResponse.ok) {
-            const businessData = await businessesResponse.json();
-            if (businessData.businesses && businessData.businesses.length > 0) {
-              console.log(
-                `📊 Found ${businessData.businesses.length} businesses in complete-businesses dataset`,
-              );
-
-              const additionalBusinesses = businessData.businesses
-                .filter((business: any) => {
-                  const category = business.category?.toLowerCase() || "";
-                  const name = business.name?.toLowerCase() || "";
-
-                  return targetCategories.some(
-                    (targetCat) =>
-                      category.includes(targetCat) || name.includes(targetCat),
-                  );
-                })
-                .map((business: any) => ({
-                  id: business.id,
-                  name: business.name,
-                  address: business.address,
-                  category: business.category,
-                  phone: business.phone,
-                  website: business.website,
-                  email: business.email,
-                  rating: business.rating,
-                  reviewCount: business.reviewCount,
-                  description:
-                    business.description ||
-                    `Professional ${business.category?.toLowerCase()} services in Dubai.`,
-                  businessStatus: business.businessStatus,
-                  photos: business.photos,
-                  logoUrl: business.logoUrl,
-                }));
-
-              const existingIds = new Set(allBusinesses.map((b) => b.id));
-              const newBusinesses = additionalBusinesses.filter(
-                (b: Business) => !existingIds.has(b.id),
-              );
-              allBusinesses = [...allBusinesses, ...newBusinesses];
-
-              console.log(
-                `✅ Added ${newBusinesses.length} businesses from complete-businesses fallback`,
-              );
-              console.log(
-                `📊 Total businesses loaded: ${allBusinesses.length}`,
-              );
-            }
-          }
-        }
-      } catch (mainDbError) {
-        console.warn("Main databases not accessible:", mainDbError);
-      }
-
-      // If still no data, try API endpoints
-      if (allBusinesses.length === 0) {
-        try {
-          console.log("🔄 Trying API endpoints...");
-          let response = await fetch(
-            "/.netlify/functions/api/businesses?limit=1000",
-          );
-
-          if (!response.ok) {
-            response = await fetch("/api/businesses?limit=1000");
-          }
-
-          if (response.ok) {
-            const responseText = await response.text();
-            try {
-              const data = JSON.parse(responseText);
-              allBusinesses = data.businesses || [];
-              console.log(
-                `✅ Loaded ${allBusinesses.length} businesses from API`,
-              );
-            } catch (jsonError) {
-              console.warn("API returned invalid JSON, using fallback data");
-              allBusinesses = [];
-            }
-          } else {
-            console.warn(
-              `API request failed with status ${response.status}, using fallback data`,
-            );
-            allBusinesses = [];
-          }
-        } catch (networkError) {
-          console.warn("Network error accessing API, using fallback data");
-          allBusinesses = [];
-        }
-      }
-
-      // If all else fails, use fallback data
-      if (allBusinesses.length === 0) {
-        console.log("📋 Using fallback immigration consultants data");
-        allBusinesses = [
-          {
-            id: "ChIJ10c9E2ZDXz4Ru2NyjBi7aiE",
-            name: "10-PRO Consulting | Business Set Up, Relocation, Visas & Legal Services",
-            address:
-              "Business Central Towers, Tower B Office # 2004, 20th Floor Al Sufouh 2, Dubai Media City, Dubai, UAE",
-            category: "registered visa agent Dubai",
-            phone: "04 529 3354",
-            website: "https://10-pro.com/",
-            email: "info@10proconsultingbusin.ae",
-            rating: 4.7,
-            reviewCount: 505,
-            description:
-              "Professional immigration and visa services in Dubai. Specializing in business setup, relocation services, visas, and legal services for freezone, mainland, and offshore companies.",
-          },
-          {
-            id: "ChIJ31pcKGtrXz4R92jGT68rkVQ",
-            name: "4S Study Abroad | 5000+ Visa Approved | Education Consultant in Dubai",
-            address:
-              "Sultan Business Centre - Office 221 - Oud Metha - Dubai - United Arab Emirates",
-            category: "education visa",
-            phone: "04 553 8909",
-            website: "https://www.4sstudyabroad.com/",
-            email: "info@4sstudyabroad5000vis.ae",
-            rating: 4.7,
-            reviewCount: 218,
-            description:
-              "Education visa specialist with over 5000+ visa approvals. Providing education consultation and student visa services in Dubai.",
-          },
-          {
-            id: "ChIJ6RJA5qJdXz4RNAbDft-_XVw",
-            name: "A A Documents Clearing services LLC",
-            address:
-              "Deira - 119 office 1st Floor - Muteena - Dubai - United Arab Emirates",
-            category: "document clearance",
-            phone: "055 547 3616",
-            website: "https://www.aadocumentsclearingservices.com/",
-            email: "info@aadocumentsclearings.ae",
-            rating: 3.8,
-            reviewCount: 13,
-            description:
-              "Document clearing services for visas, immigration, and government documentation in Dubai.",
-          },
-          {
-            id: "ChIJXf_UeQBDXz4ROdLA_nZbQmA",
-            name: "A to Z Document Clearing Services",
-            address: "19 3A St - Al Fahidi - Dubai - United Arab Emirates",
-            category: "document clearance",
-            phone: "052 603 8558",
-            website: "http://www.a2zdocument.com/",
-            email: "info@atozdocumentclearing.ae",
-            rating: 5.0,
-            reviewCount: 246,
-            description:
-              "Complete A to Z document clearing services for immigration, visas, and business documentation.",
-          },
-          {
-            id: "ChIJCz-J5TBDXz4RRjYNt3y35Zs",
-            name: "A2W Consultants",
-            address:
-              "Office No 1601 - Al Moosa Tower 2 - Sheikh Zayed Road - Trade Centre - Dubai - United Arab Emirates",
-            category: "استشارات الهجرة دبي",
-            phone: "04 320 2413",
-            website: "http://www.a2w-consultants.ae/",
-            email: "info@a2wconsultants.ae",
-            rating: 3.7,
-            reviewCount: 195,
-            description:
-              "Immigration consultancy services in Dubai providing visa and migration assistance in Arabic and English.",
-          },
-        ];
-        console.log("🎯 Using fallback data - limited dataset");
-      }
-
-      // Filter businesses that match immigration/visa categories
-      const immigrationBusinesses = allBusinesses.filter(
-        (business: Business) => {
+      // Filter ALL businesses that match immigration/visa categories
+      const immigrationBusinesses = data.businesses
+        .filter((business: any) => {
           const category = business.category?.toLowerCase() || "";
           const name = business.name?.toLowerCase() || "";
 
@@ -455,35 +200,41 @@ export default function FraudImmigrationConsultants() {
             (targetCat) =>
               category.includes(targetCat) || name.includes(targetCat),
           );
-        },
-      );
+        })
+        .map((business: any) => ({
+          id: business.id,
+          name: business.name,
+          address: business.address,
+          category: business.category,
+          phone: business.phone,
+          website: business.website,
+          email: business.email,
+          rating: business.rating,
+          reviewCount: business.reviewCount,
+          description: `Professional ${business.category?.toLowerCase() || "immigration"} services in Dubai.`,
+          businessStatus: business.businessStatus,
+          photos: business.photos,
+          logoUrl: business.logoUrl,
+          businessHours: business.hours
+            ? Object.values(business.hours)
+            : undefined,
+        }));
 
       console.log(
-        `📊 Found ${immigrationBusinesses.length} immigration/visa consultants out of ${allBusinesses.length} total businesses`,
+        `🎯 Filtered ${immigrationBusinesses.length} immigration/visa businesses from ${data.businesses.length} total`,
       );
+      console.log("✅ SUCCESS: Loaded REAL data from comprehensive dataset");
 
       setBusinesses(immigrationBusinesses);
       setFilteredBusinesses(immigrationBusinesses);
-      setError(null); // Clear any previous errors
+      setError(null);
     } catch (err) {
-      console.error("Error in fetchBusinesses:", err);
+      console.error("Error loading businesses:", err);
+      setError("Failed to load businesses from database");
 
-      // Even if there's an error, provide fallback data so the page still works
-      const fallbackBusinesses = [
-        {
-          id: "fallback-1",
-          name: "Sample Immigration Consultant",
-          address: "Dubai, UAE",
-          category: "immigration consultants",
-          phone: "+971 4 XXX XXXX",
-          rating: 4.0,
-          reviewCount: 50,
-        },
-      ];
-
-      setBusinesses(fallbackBusinesses);
-      setFilteredBusinesses(fallbackBusinesses);
-      setError("Using sample data - API unavailable");
+      // Set empty array on error
+      setBusinesses([]);
+      setFilteredBusinesses([]);
     } finally {
       setLoading(false);
     }
@@ -795,8 +546,8 @@ export default function FraudImmigrationConsultants() {
               Fraud Immigration Consultants in UAE
             </h1>
             <p className="text-xl text-red-100 mb-4">
-              Community-Reported Visa & Immigration Service Providers with
-              Stored Business Data
+              Community-Reported Visa & Immigration Service Providers from
+              Comprehensive Database
             </p>
             <div className="flex justify-center gap-6 text-sm">
               <div className="flex items-center gap-2">
@@ -821,9 +572,9 @@ export default function FraudImmigrationConsultants() {
           <AlertTriangle className="h-4 w-4 text-orange-600" />
           <AlertDescription className="text-orange-800">
             <strong>Important:</strong> This list contains immigration
-            consultants and visa service providers with stored business data.
-            Always verify credentials and check multiple sources before engaging
-            any immigration services.
+            consultants and visa service providers from our comprehensive
+            database. Always verify credentials and check multiple sources
+            before engaging any immigration services.
           </AlertDescription>
         </Alert>
 
@@ -1114,14 +865,13 @@ export default function FraudImmigrationConsultants() {
           <CardContent className="p-6">
             <div className="text-center">
               <h3 className="font-semibold text-blue-800 mb-2">
-                Enhanced with Stored Business Data
+                Loaded from Comprehensive Database
               </h3>
               <p className="text-blue-700 text-sm">
-                Business information including descriptions, hours, and ratings
-                are stored in our database to provide comprehensive and reliable
-                information. If you've had negative experiences with any
-                immigration consultant, please report it to help others make
-                informed decisions.
+                Business information loaded directly from our comprehensive
+                database containing 2,500+ businesses. If you've had negative
+                experiences with any immigration consultant, please report it to
+                help others make informed decisions.
               </p>
             </div>
           </CardContent>
