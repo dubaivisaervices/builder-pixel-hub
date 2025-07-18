@@ -180,7 +180,44 @@ export default function FraudImmigrationConsultants() {
 
       const enhanced: Record<string, Business> = {};
 
-      // Fetch stored enhanced details for all businesses
+      // Test if the enhanced endpoint exists by trying the first business
+      if (businesses.length > 0) {
+        try {
+          const testResponse = await fetch(`/api/business/${businesses[0].id}`);
+          if (!testResponse.ok && testResponse.status === 404) {
+            // Enhanced endpoint doesn't exist, use businesses as-is
+            console.log(
+              "ℹ️ Enhanced business endpoint not available, using basic data",
+            );
+            businesses.forEach((business) => {
+              enhanced[business.id] = {
+                ...business,
+                description: `Professional ${business.category?.toLowerCase() || "immigration"} services in UAE. Specializing in visa processing, immigration consulting, and related government documentation services.`,
+                businessStatus: "Unknown",
+                source: "basic_fallback",
+              };
+            });
+            setEnhancedBusinesses(enhanced);
+            return;
+          }
+        } catch (testError) {
+          console.log(
+            "ℹ️ Enhanced business endpoint test failed, using basic data",
+          );
+          businesses.forEach((business) => {
+            enhanced[business.id] = {
+              ...business,
+              description: `Professional ${business.category?.toLowerCase() || "immigration"} services in UAE. Specializing in visa processing, immigration consulting, and related government documentation services.`,
+              businessStatus: "Unknown",
+              source: "basic_fallback",
+            };
+          });
+          setEnhancedBusinesses(enhanced);
+          return;
+        }
+      }
+
+      // Enhanced endpoint exists, fetch for all businesses
       await Promise.all(
         businesses.map(async (business) => {
           try {
@@ -218,6 +255,18 @@ export default function FraudImmigrationConsultants() {
       );
     } catch (error) {
       console.error("Error fetching enhanced business details:", error);
+
+      // Fallback: Use basic business data
+      const enhanced: Record<string, Business> = {};
+      businesses.forEach((business) => {
+        enhanced[business.id] = {
+          ...business,
+          description: `Professional ${business.category?.toLowerCase() || "immigration"} services in UAE. Specializing in visa processing, immigration consulting, and related government documentation services.`,
+          businessStatus: "Unknown",
+          source: "error_fallback",
+        };
+      });
+      setEnhancedBusinesses(enhanced);
     }
   };
 
