@@ -652,24 +652,43 @@ export default function SimpleBusinessDirectory() {
         </div>
       </div>
 
-      {/* Top Search Section - First Interaction */}
-      <div className="sticky top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-200/50 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="relative max-w-3xl mx-auto">
-            <div className="relative">
-              <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-500 h-6 w-6 z-10" />
+      {/* Classic Search Section */}
+      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-gray-200/80 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="relative max-w-2xl mx-auto">
+            <div className="relative group">
+              {/* Search Icon */}
+              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10">
+                <Search className="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors duration-200" />
+              </div>
+
+              {/* Classic Search Input */}
               <Input
                 type="text"
-                placeholder="🔍 Search 857+ businesses, services, or locations..."
+                placeholder="Search businesses, services, or locations..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onFocus={() =>
                   searchTerm.length >= 2 && setShowSuggestions(true)
                 }
                 onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                className="pl-14 pr-6 py-4 text-lg border-2 border-gray-200 bg-white/95 backdrop-blur-sm rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 shadow-lg hover:shadow-xl transition-all duration-300 w-full font-medium"
+                className="
+                  pl-12 pr-6 py-3 text-base
+                  bg-white border border-gray-300 rounded-lg
+                  focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500
+                  hover:border-gray-400 transition-all duration-200
+                  w-full font-normal placeholder-gray-500
+                  shadow-sm hover:shadow-md focus:shadow-md
+                "
                 autoFocus
               />
+
+              {/* Search Stats */}
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                <span className="text-xs text-gray-400 font-medium">
+                  {stats.total}+ businesses
+                </span>
+              </div>
 
               {/* Enhanced Search Suggestions */}
               {showSuggestions && searchSuggestions.length > 0 && (
