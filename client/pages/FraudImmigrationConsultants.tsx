@@ -132,34 +132,101 @@ export default function FraudImmigrationConsultants() {
 
       let allBusinesses: Business[] = [];
 
-      // First try to load from static JSON file (most reliable)
+      // First try to load dedicated visa services data (26 businesses)
       try {
-        console.log("🔄 Trying to load from static business data file...");
-        const staticResponse = await fetch("/business-data/businesses.json");
-        if (staticResponse.ok) {
-          const staticData = await staticResponse.json();
-          if (staticData.businesses && staticData.businesses.length > 0) {
-            allBusinesses = staticData.businesses;
-            console.log(
-              `✅ Loaded ${allBusinesses.length} businesses from static JSON file`,
+        console.log("🔄 Loading dedicated visa services dataset...");
+        const visaResponse = await fetch("/api/dubai-visa-services.json");
+        if (visaResponse.ok) {
+          const visaData = await visaResponse.json();
+          if (visaData && Array.isArray(visaData) && visaData.length > 0) {
+            // Transform the visa services data to match our Business interface
+            const visaBusinesses: Business[] = visaData.map(
+              (business: any) => ({
+                id: business.id,
+                name: business.name,
+                address: business.address,
+                category: business.category,
+                phone: business.phone,
+                website: business.website,
+                email: business.email || undefined,
+                rating: business.rating,
+                reviewCount: business.reviewCount,
+                description:
+                  business.description ||
+                  `Professional ${business.category?.toLowerCase()} services in Dubai.`,
+              }),
             );
-            console.log("🎯 Using REAL business data from static file");
+            allBusinesses = visaBusinesses;
+            console.log(
+              `✅ Loaded ${allBusinesses.length} visa services from dedicated dataset`,
+            );
           }
         }
-      } catch (staticError) {
-        console.warn("Static JSON file not accessible:", staticError);
+      } catch (visaError) {
+        console.warn("Dedicated visa services file not accessible:", visaError);
       }
 
-      // If static file didn't work, try API endpoints
+      // Then try to load from main businesses database for additional businesses
+      try {
+        console.log("🔄 Loading additional businesses from main database...");
+        const businessesResponse = await fetch("/data/businesses.json");
+        if (businessesResponse.ok) {
+          const businessData = await businessesResponse.json();
+          if (businessData.businesses && businessData.businesses.length > 0) {
+            // Filter businesses from main database that match immigration/visa categories
+            const additionalBusinesses = businessData.businesses
+              .filter((business: any) => {
+                const category = business.category?.toLowerCase() || "";
+                const name = business.name?.toLowerCase() || "";
+
+                return targetCategories.some(
+                  (targetCat) =>
+                    category.includes(targetCat) || name.includes(targetCat),
+                );
+              })
+              .map((business: any) => ({
+                id: business.id,
+                name: business.name,
+                address: business.address,
+                category: business.category,
+                phone: business.phone,
+                website: business.website,
+                email: business.email,
+                rating: business.rating,
+                reviewCount: business.reviewCount,
+                description:
+                  business.description ||
+                  `Professional ${business.category?.toLowerCase()} services in Dubai.`,
+                businessStatus: business.businessStatus,
+                photos: business.photos,
+                logoUrl: business.logoUrl,
+              }));
+
+            // Merge with existing businesses, avoiding duplicates
+            const existingIds = new Set(allBusinesses.map((b) => b.id));
+            const newBusinesses = additionalBusinesses.filter(
+              (b: Business) => !existingIds.has(b.id),
+            );
+            allBusinesses = [...allBusinesses, ...newBusinesses];
+
+            console.log(
+              `✅ Added ${newBusinesses.length} additional businesses from main database`,
+            );
+            console.log(`📊 Total businesses loaded: ${allBusinesses.length}`);
+          }
+        }
+      } catch (mainDbError) {
+        console.warn("Main businesses database not accessible:", mainDbError);
+      }
+
+      // If still no data, try API endpoints
       if (allBusinesses.length === 0) {
         try {
           console.log("🔄 Trying API endpoints...");
-          // Try Netlify function endpoint first
           let response = await fetch(
             "/.netlify/functions/api/businesses?limit=1000",
           );
 
-          // Fallback to regular API endpoint
           if (!response.ok) {
             response = await fetch("/api/businesses?limit=1000");
           }
@@ -172,11 +239,6 @@ export default function FraudImmigrationConsultants() {
               console.log(
                 `✅ Loaded ${allBusinesses.length} businesses from API`,
               );
-
-              // Log if this is likely real data
-              if (allBusinesses.length > 5) {
-                console.log("🎯 Using REAL business data from API");
-              }
             } catch (jsonError) {
               console.warn("API returned invalid JSON, using fallback data");
               allBusinesses = [];
@@ -193,9 +255,9 @@ export default function FraudImmigrationConsultants() {
         }
       }
 
-      // If API failed, use REAL business data from your database
+      // If all else fails, use fallback data
       if (allBusinesses.length === 0) {
-        console.log("📋 Using REAL immigration consultants data from database");
+        console.log("📋 Using fallback immigration consultants data");
         allBusinesses = [
           {
             id: "ChIJ10c9E2ZDXz4Ru2NyjBi7aiE",
@@ -267,7 +329,7 @@ export default function FraudImmigrationConsultants() {
               "Immigration consultancy services in Dubai providing visa and migration assistance in Arabic and English.",
           },
         ];
-        console.log("🎯 Using REAL business data from your actual database");
+        console.log("🎯 Using fallback data - limited dataset");
       }
 
       // Filter businesses that match immigration/visa categories
