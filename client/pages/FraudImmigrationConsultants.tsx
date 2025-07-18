@@ -174,73 +174,50 @@ export default function FraudImmigrationConsultants() {
 
   const fetchEnhancedBusinessDetails = async () => {
     try {
-      setEnhancingDetails(true);
       console.log(
-        `🔍 Fetching enhanced details for ${businesses.length} businesses`,
+        `🔍 Fetching stored details for ${businesses.length} businesses`,
       );
 
       const enhanced: Record<string, Business> = {};
 
-      // Process businesses in batches to avoid rate limiting
-      const batchSize = 5;
-      for (let i = 0; i < businesses.length; i += batchSize) {
-        const batch = businesses.slice(i, i + batchSize);
-
-        await Promise.all(
-          batch.map(async (business) => {
-            try {
-              const response = await fetch(`/api/business/${business.id}`);
-              if (response.ok) {
-                const data = await response.json();
-
-                enhanced[business.id] = {
-                  ...business,
-                  description:
-                    data.description ||
-                    data.editorial_summary?.overview ||
-                    data.business_status ||
-                    "Professional immigration and visa services",
-                  businessHours: data.opening_hours?.weekday_text || [],
-                  businessStatus: data.business_status || "Unknown",
-                  priceLevel: data.price_level,
-                  googleRating: data.rating,
-                  googleReviewCount: data.user_ratings_total,
-                  businessTypes: data.types || [],
-                };
-
-                console.log(`✅ Enhanced details for: ${business.name}`);
-              } else {
-                enhanced[business.id] = {
-                  ...business,
-                  description:
-                    "Immigration and visa consulting services in UAE",
-                };
-              }
-            } catch (error) {
-              console.error(
-                `❌ Error fetching details for ${business.name}:`,
-                error,
-              );
+      // Fetch stored enhanced details for all businesses
+      await Promise.all(
+        businesses.map(async (business) => {
+          try {
+            const response = await fetch(`/api/business/${business.id}`);
+            if (response.ok) {
+              const data = await response.json();
+              enhanced[business.id] = data;
+              console.log(`✅ Retrieved stored details for: ${business.name}`);
+            } else {
               enhanced[business.id] = {
                 ...business,
-                description: "Immigration and visa consulting services",
+                description: "Immigration and visa consulting services in UAE",
+                businessStatus: "Unknown",
+                source: "fallback",
               };
             }
-          }),
-        );
-
-        // Add delay between batches
-        if (i + batchSize < businesses.length) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-        }
-      }
+          } catch (error) {
+            console.error(
+              `❌ Error fetching details for ${business.name}:`,
+              error,
+            );
+            enhanced[business.id] = {
+              ...business,
+              description: "Immigration and visa consulting services",
+              businessStatus: "Unknown",
+              source: "error_fallback",
+            };
+          }
+        }),
+      );
 
       setEnhancedBusinesses(enhanced);
-      console.log(`✅ Enhanced ${Object.keys(enhanced).length} businesses`);
+      console.log(
+        `✅ Retrieved details for ${Object.keys(enhanced).length} businesses`,
+      );
     } catch (error) {
       console.error("Error fetching enhanced business details:", error);
-    } finally {
-      setEnhancingDetails(false);
     }
   };
 
