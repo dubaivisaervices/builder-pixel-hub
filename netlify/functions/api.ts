@@ -446,6 +446,8 @@ function createBusinessServer() {
         "/api/health",
         "/api/dubai-visa-services",
         "/api/businesses",
+        "/api/business/:businessId",
+        "/api/reports/company/:companyId",
         "/api/debug",
       ],
     });
