@@ -14,6 +14,31 @@ export default function NetlifyUploadButton() {
     setUploadComplete(false);
 
     try {
+      // First test if Netlify credentials are configured
+      setUploadResults((prev) => [
+        ...prev,
+        "🔍 Testing Netlify credentials...",
+      ]);
+
+      const credentialsTest = await fetch("/api/test-netlify-credentials");
+      const credentialsResult = await credentialsTest.json();
+
+      if (!credentialsResult.success) {
+        setUploadResults((prev) => [
+          ...prev,
+          "❌ Netlify credentials test failed:",
+          credentialsResult.message,
+          "Please configure NETLIFY_ACCESS_TOKEN and NETLIFY_SITE_ID environment variables",
+        ]);
+        return;
+      }
+
+      setUploadResults((prev) => [
+        ...prev,
+        "✅ Netlify credentials verified",
+        "🚀 Starting photo upload...",
+      ]);
+
       const response = await fetch("/api/upload-photos-to-netlify", {
         method: "POST",
         headers: {
