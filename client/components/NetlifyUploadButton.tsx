@@ -10,7 +10,7 @@ export default function NetlifyUploadButton() {
 
   const handleNetlifyUpload = async () => {
     setIsUploading(true);
-    setUploadResults([]);
+    setUploadResults(["🔄 Starting Netlify upload process..."]);
     setUploadComplete(false);
 
     try {
