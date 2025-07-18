@@ -1,6 +1,7 @@
 [build]
   publish = "dist/spa"
   command = "npm run quick:build"
+  functions = "netlify/functions"
 
 [[headers]]
   for = "/api/*"
