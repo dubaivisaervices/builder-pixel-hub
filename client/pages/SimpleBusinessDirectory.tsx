@@ -768,80 +768,109 @@ export default function SimpleBusinessDirectory() {
           </CardContent>
         </Card>
 
-        {/* Business Grid */}
+        {/* Beautiful Business Cards */}
         <div
           className={`${
             viewMode === "grid"
-              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-              : "space-y-4"
+              ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+              : "space-y-6"
           }`}
         >
           {currentBusinesses.map((business) => (
             <Card
               key={business.id}
-              className={`group cursor-pointer hover:shadow-2xl transition-all duration-300 border-0 bg-white/90 backdrop-blur-sm hover:bg-white/95 hover:scale-[1.02] ${
-                viewMode === "list" ? "flex" : ""
+              className={`group cursor-pointer hover:shadow-2xl transition-all duration-500 border-0 bg-white/95 backdrop-blur-lg hover:bg-white transform hover:scale-[1.03] hover:-translate-y-2 shadow-lg ${
+                viewMode === "list" ? "flex max-w-none" : "max-w-sm mx-auto"
               }`}
               onClick={() => handleBusinessClick(business)}
             >
               <CardContent
-                className={`p-6 ${viewMode === "list" ? "flex gap-6 w-full" : ""}`}
+                className={`p-0 ${viewMode === "list" ? "flex w-full" : ""}`}
               >
-                {/* Logo */}
+                {/* Card Header with Logo and Background */}
                 <div
-                  className={`${
-                    viewMode === "list"
-                      ? "w-20 h-20 flex-shrink-0"
-                      : "w-16 h-16 mx-auto mb-4"
-                  } rounded-lg overflow-hidden bg-gray-100`}
+                  className={`relative ${
+                    viewMode === "list" ? "w-48 flex-shrink-0" : "w-full h-32"
+                  } bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 overflow-hidden`}
                 >
-                  <img
-                    src={business.logoUrl || getBestLogoUrl(business)}
-                    alt={`${business.name} logo`}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      const category = business.category?.toLowerCase() || "";
-                      let categoryImage = "";
+                  <div className="absolute inset-0 bg-black/10"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20"></div>
 
-                      if (
-                        category.includes("visa") ||
-                        category.includes("immigration")
-                      ) {
-                        categoryImage =
-                          "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
-                      } else if (
-                        category.includes("document") ||
-                        category.includes("attestation")
-                      ) {
-                        categoryImage =
-                          "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
-                      } else {
-                        categoryImage =
-                          "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
-                      }
+                  {/* Logo */}
+                  <div
+                    className={`${
+                      viewMode === "list"
+                        ? "absolute inset-0 flex items-center justify-center"
+                        : "absolute bottom-4 left-1/2 transform -translate-x-1/2"
+                    }`}
+                  >
+                    <div className="w-16 h-16 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm border-4 border-white/50 shadow-xl">
+                      <img
+                        src={business.logoUrl || getBestLogoUrl(business)}
+                        alt={`${business.name} logo`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          const category =
+                            business.category?.toLowerCase() || "";
+                          let categoryImage = "";
 
-                      target.src = categoryImage;
-                    }}
-                  />
+                          if (
+                            category.includes("visa") ||
+                            category.includes("immigration")
+                          ) {
+                            categoryImage =
+                              "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
+                          } else if (
+                            category.includes("document") ||
+                            category.includes("attestation")
+                          ) {
+                            categoryImage =
+                              "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
+                          } else {
+                            categoryImage =
+                              "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150&h=150&fit=crop&crop=center&auto=format&q=80";
+                          }
+
+                          target.src = categoryImage;
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Rating Badge */}
+                  <div className="absolute top-3 right-3">
+                    <div className="flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 shadow-lg">
+                      <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                      <span className="text-xs font-bold text-gray-900">
+                        {business.rating}
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="flex-1 space-y-3">
+                {/* Card Content */}
+                <div
+                  className={`${
+                    viewMode === "list" ? "flex-1 p-6" : "p-6 pt-8"
+                  } space-y-4`}
+                >
                   {/* Business Name */}
-                  <h3
-                    className={`font-bold text-gray-900 group-hover:text-blue-600 transition-colors ${
-                      viewMode === "list" ? "text-lg" : "text-center"
-                    } line-clamp-2`}
-                  >
-                    {business.name}
-                  </h3>
+                  <div className="text-center">
+                    <h3 className="font-bold text-lg text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
+                      {business.name}
+                    </h3>
+                  </div>
 
-                  {/* Rating */}
-                  <div
-                    className={`flex items-center ${
-                      viewMode === "list" ? "justify-start" : "justify-center"
-                    } gap-2`}
-                  >
+                  {/* Category Badge */}
+                  <div className="flex justify-center">
+                    <Badge className="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 border-blue-200 px-3 py-1 text-xs font-semibold">
+                      {business.category}
+                    </Badge>
+                  </div>
+
+                  {/* Rating Details */}
+                  <div className="flex items-center justify-center gap-2 py-2">
                     <div className="flex items-center">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star
@@ -854,39 +883,39 @@ export default function SimpleBusinessDirectory() {
                         />
                       ))}
                     </div>
-                    <span className="font-semibold text-gray-900">
-                      {business.rating}
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      ({business.reviewCount})
+                    <span className="text-sm text-gray-500 font-medium">
+                      ({business.reviewCount} reviews)
                     </span>
                   </div>
 
-                  {/* Category */}
-                  <div className={viewMode === "list" ? "" : "text-center"}>
-                    <Badge className="bg-blue-100 text-blue-800">
-                      {business.category}
-                    </Badge>
-                  </div>
-
-                  {/* Contact Info */}
-                  <div className="space-y-2">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
-                      <span className="line-clamp-1">{business.address}</span>
+                  {/* Contact Information */}
+                  <div className="space-y-3 border-t border-gray-100 pt-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <MapPin className="h-4 w-4 text-blue-600" />
+                      </div>
+                      <span className="text-sm text-gray-600 leading-relaxed line-clamp-2">
+                        {business.address}
+                      </span>
                     </div>
 
                     {business.phone && (
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Phone className="h-4 w-4 mr-2 text-green-500" />
-                        <span>{business.phone}</span>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Phone className="h-4 w-4 text-green-600" />
+                        </div>
+                        <span className="text-sm font-medium text-gray-700">
+                          {business.phone}
+                        </span>
                       </div>
                     )}
 
                     {business.website && (
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Globe className="h-4 w-4 mr-2 text-blue-500" />
-                        <span className="truncate">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Globe className="h-4 w-4 text-purple-600" />
+                        </div>
+                        <span className="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors truncate">
                           {business.website
                             .replace("https://", "")
                             .replace("http://", "")}
@@ -895,18 +924,33 @@ export default function SimpleBusinessDirectory() {
                     )}
                   </div>
 
-                  {/* Action Button */}
-                  <Button
-                    className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleBusinessClick(business);
-                    }}
-                  >
-                    <Eye className="h-4 w-4 mr-2" />
-                    View Details
-                  </Button>
+                  {/* Action Buttons */}
+                  <div className="pt-4 space-y-2">
+                    <Button
+                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleBusinessClick(business);
+                      }}
+                    >
+                      <Eye className="h-4 w-4 mr-2" />
+                      View Details
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      className="w-full border-2 border-gray-200 hover:bg-gray-50 text-gray-700 font-medium py-2 rounded-lg transition-all duration-200"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(
+                          `/complaint?company=${encodeURIComponent(business.name)}&id=${business.id}`,
+                        );
+                      }}
+                    >
+                      <FileText className="h-4 w-4 mr-2" />
+                      Report Issue
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
