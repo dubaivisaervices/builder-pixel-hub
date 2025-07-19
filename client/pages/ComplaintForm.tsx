@@ -987,30 +987,24 @@ export default function ComplaintForm() {
               </div>
             </div>
 
-            {/* Report Details - Enhanced */}
-            <Card className="glass-card shadow-2xl border-0 overflow-hidden fade-in-scale">
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-red-500/5"></div>
-              <CardHeader className="pb-4 sm:pb-6 relative">
-                <CardTitle className="flex items-center text-xl sm:text-2xl font-bold text-gray-900">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg">
-                    <AlertTriangle className="h-6 w-6 text-white" />
+                        {/* Step 2: Report Details - Compact Design */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                      <AlertTriangle className="h-4 w-4 text-orange-600" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900">Report Details</h3>
                   </div>
-                  <div className="flex-1">
-                    <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                      Report Details
-                    </span>
-                    {completedSteps.includes(2) && (
-                      <div className="flex items-center mt-1">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
-                        <span className="text-green-600 text-sm font-medium">
-                          Details Completed
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-6 relative">
+                  {completedSteps.includes(2) && (
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-4">
                 {/* Issue Type */}
                 <div className="space-y-3">
                   <Label
