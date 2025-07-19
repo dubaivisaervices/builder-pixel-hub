@@ -230,12 +230,17 @@ export default function ComplaintFormImproved() {
     }
 
     try {
-      const response = await fetch("/api/add-company-request", {
+      const response = await fetch("/api/admin/add-company-request", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(addCompanyData),
+        body: JSON.stringify({
+          name: addCompanyData.name,
+          address: addCompanyData.location,
+          city: addCompanyData.location,
+          description: addCompanyData.description,
+        }),
       });
 
       if (response.ok) {
