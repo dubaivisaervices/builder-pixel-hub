@@ -389,17 +389,6 @@ export default function ComplaintFormImproved() {
     setShowSuggestions(false);
   };
 
-  // Handle mobile viewport issues
-  const handleSelectOpen = (open: boolean) => {
-    if (open && window.innerWidth <= 768) {
-      // Prevent scroll to top on mobile
-      const currentScrollY = window.scrollY;
-      setTimeout(() => {
-        window.scrollTo(0, currentScrollY);
-      }, 100);
-    }
-  };
-
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
@@ -528,12 +517,11 @@ export default function ComplaintFormImproved() {
         </div>
       </div>
 
-            <div className="max-w-4xl mx-auto px-4 py-8">
-        <Card className="shadow-sm border border-gray-200">
-          <CardContent className="p-6 sm:p-8">
-            <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-10">
-              {/* Step 1: Company Selection */}
-              <div>
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+          {/* Step 1: Company Selection */}
+          <Card className="shadow-sm border border-gray-200">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                   <Building2 className="h-4 w-4 text-blue-600" />
@@ -548,7 +536,6 @@ export default function ComplaintFormImproved() {
                 <Select
                   value={selectedCompany?.id || ""}
                   onValueChange={handleSelectChange}
-                  onOpenChange={handleSelectOpen}
                   required
                 >
                   <SelectTrigger
@@ -563,16 +550,10 @@ export default function ComplaintFormImproved() {
                         placeholder="Type 2+ characters to search..."
                         value={searchTerm}
                         onChange={(e) => {
-                          const value = e.target.value;
-                          setSearchTerm(value);
-                          // Use setTimeout to prevent focus loss
-                          setTimeout(() => handleCompanySearch(value), 0);
-                        }}
-                        onFocus={(e) => {
-                          e.stopPropagation();
+                          setSearchTerm(e.target.value);
+                          handleCompanySearch(e.target.value);
                         }}
                         className="w-full px-3 py-2 pr-8 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        autoComplete="off"
                       />
                       {searchTerm && (
                         <button
