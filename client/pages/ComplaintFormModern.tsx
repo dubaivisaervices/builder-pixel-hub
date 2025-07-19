@@ -161,6 +161,14 @@ export default function ComplaintFormModern() {
   const handleCompanySearch = (value: string) => {
     setSearchTerm(value);
 
+    // Clear selected company when search is cleared
+    if (value.trim() === "") {
+      setSelectedCompany(null);
+      setSearchSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
     if (value.length >= 2) {
       const filtered = businesses
         .filter(
@@ -183,7 +191,6 @@ export default function ComplaintFormModern() {
     setSelectedCompany(business);
     setSearchTerm(business.name);
     setShowSuggestions(false);
-    setCurrentStep(2);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
