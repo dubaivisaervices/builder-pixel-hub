@@ -306,15 +306,28 @@ export default function ComplaintFormImproved() {
     try {
       const formData = new FormData();
       Object.entries(reportData).forEach(([key, value]) => {
-        if (value instanceof File) {
+        if (key === "evidenceFiles" && Array.isArray(value)) {
+          // Handle multiple evidence files
+          value.forEach((file, index) => {
+            formData.append(`evidenceFile_${index}`, file);
+          });
+        } else if (value instanceof File) {
           formData.append(key, value);
-        } else if (value) {
+        } else if (
+          value !== null &&
+          value !== undefined &&
+          key !== "evidenceFiles"
+        ) {
           formData.append(key, value.toString());
         }
       });
 
       formData.append("companyName", selectedCompany.name);
       formData.append("companyAddress", selectedCompany.address);
+      formData.append(
+        "evidenceFileCount",
+        (reportData.evidenceFiles?.length || 0).toString(),
+      );
 
       const response = await fetch("/api/reports/submit", {
         method: "POST",
