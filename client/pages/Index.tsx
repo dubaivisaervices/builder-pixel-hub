@@ -42,6 +42,15 @@ interface BusinessData {
 }
 
 export default function Index() {
+  // Initialize SEO for home page
+  useSEO({
+    title: "Dubai Approved Business Directory - Find Trusted Businesses in UAE",
+    description:
+      "Discover verified and trusted businesses in Dubai, UAE. Find immigration consultants, visa services, and more with reviews and ratings.",
+    keywords:
+      "Dubai business directory, UAE businesses, immigration consultants Dubai, visa services UAE, trusted businesses Dubai",
+  });
+
   const [companyName, setCompanyName] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState<BusinessData[]>(
