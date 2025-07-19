@@ -389,6 +389,17 @@ export default function ComplaintFormImproved() {
     setShowSuggestions(false);
   };
 
+  // Handle mobile viewport issues
+  const handleSelectOpen = (open: boolean) => {
+    if (open && window.innerWidth <= 768) {
+      // Prevent scroll to top on mobile
+      const currentScrollY = window.scrollY;
+      setTimeout(() => {
+        window.scrollTo(0, currentScrollY);
+      }, 100);
+    }
+  };
+
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
