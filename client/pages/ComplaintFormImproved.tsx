@@ -519,7 +519,10 @@ export default function ComplaintFormImproved() {
 
       <div className="max-w-4xl mx-auto px-2 sm:px-4 py-4 sm:py-8 w-full">
         <div className="border border-gray-200 rounded-lg shadow-sm bg-white mx-2 sm:mx-0">
-          <form onSubmit={handleSubmit} className="p-6 space-y-8">
+          <form
+            onSubmit={handleSubmit}
+            className="p-4 sm:p-6 space-y-6 sm:space-y-8"
+          >
             {/* Step 1: Company Selection */}
             <Card className="shadow-sm border border-gray-200">
               <CardContent className="p-4 sm:p-6">
