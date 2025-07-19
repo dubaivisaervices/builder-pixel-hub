@@ -794,7 +794,7 @@ export default function ComplaintForm() {
         </div>
 
         <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8 relative">
-                    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {/* Step 1: Company Selection - Compact Design */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
               <div className="p-4 sm:p-6">
@@ -803,7 +803,9 @@ export default function ComplaintForm() {
                     <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                       <Building2 className="h-4 w-4 text-blue-600" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900">Company Selection</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Company Selection
+                    </h3>
                   </div>
                   {completedSteps.includes(1) && (
                     <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
@@ -811,7 +813,8 @@ export default function ComplaintForm() {
                     </div>
                   )}
                 </div>
-              <CardContent className="p-4 sm:p-6 relative">
+
+                {/* Search Section */}
                 <div className="relative">
                   <div className="relative w-full sm:w-1/2 mx-auto">
                     <input
@@ -982,7 +985,7 @@ export default function ComplaintForm() {
                       <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 text-green-500 flex-shrink-0 mx-auto sm:mx-0" />
                     </div>
                   </div>
-                                )}
+                )}
               </div>
             </div>
 
@@ -1188,7 +1191,7 @@ export default function ComplaintForm() {
                     <Input
                       id="amountLost"
                       type="number"
-                      placeholder="��� 0"
+                      placeholder="���� 0"
                       value={reportData.amountLost || ""}
                       onChange={(e) =>
                         setReportData((prev) => ({
