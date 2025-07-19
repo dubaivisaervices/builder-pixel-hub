@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import SimpleNavigation from "./components/SimpleNavigation";
 import Index from "./pages/Index";
-import ComplaintFormModern from "./pages/ComplaintFormModern";
+import ComplaintFormImproved from "./pages/ComplaintFormImproved";
 import CompanyReviews from "./pages/CompanyReviewsWorking";
 import CompanyProfileModern from "./pages/CompanyProfileModern";
 import SimpleBusinessDirectory from "./pages/SimpleBusinessDirectory";
@@ -62,7 +62,7 @@ const App = () => (
         <main className="min-h-screen pt-4">
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/complaint" element={<ComplaintFormModern />} />
+            <Route path="/complaint" element={<ComplaintFormImproved />} />
             <Route
               path="/dubai-businesses"
               element={<SimpleBusinessDirectory />}
