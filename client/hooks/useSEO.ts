@@ -22,43 +22,61 @@ export const useSEO = (options: SEOOptions = {}) => {
 
   useEffect(() => {
     const currentPath = location.pathname;
+    let isMounted = true;
 
     const initializeSEO = async () => {
-      // Enhance Google indexing signals
-      enhanceGoogleIndexing();
+      try {
+        // Enhance Google indexing signals
+        enhanceGoogleIndexing();
 
-      if (!options.skipAutoLoad) {
-        // Try to load custom meta tags from database
-        await loadPageMetaTags(currentPath);
-      }
+        if (!options.skipAutoLoad && isMounted) {
+          // Try to load custom meta tags from database
+          await loadPageMetaTags(currentPath);
+        }
 
-      // Apply manual SEO options if provided
-      if (
-        options.title ||
-        options.description ||
-        options.keywords ||
-        options.ogImage
-      ) {
-        const defaultData = getDefaultSEOData(currentPath);
-        const seoData = {
-          ...defaultData,
-          title: options.title || defaultData.title,
-          description: options.description || defaultData.description,
-          keywords: options.keywords || defaultData.keywords,
-          ogImage: options.ogImage || defaultData.ogImage,
-        };
+        // Apply manual SEO options if provided and component is still mounted
+        if (
+          isMounted &&
+          (options.title ||
+            options.description ||
+            options.keywords ||
+            options.ogImage)
+        ) {
+          const defaultData = getDefaultSEOData(currentPath);
+          const seoData = {
+            ...defaultData,
+            title: options.title || defaultData.title,
+            description: options.description || defaultData.description,
+            keywords: options.keywords || defaultData.keywords,
+            ogImage: options.ogImage || defaultData.ogImage,
+          };
 
-        updateMetaTags(seoData);
-      }
+          updateMetaTags(seoData);
+        }
 
-      // Inject structured data if provided
-      if (options.structuredData) {
-        injectStructuredData(options.structuredData);
+        // Inject structured data if provided and component is still mounted
+        if (isMounted && options.structuredData) {
+          injectStructuredData(options.structuredData);
+        }
+      } catch (error) {
+        console.error("Error initializing SEO:", error);
       }
     };
 
     initializeSEO();
-  }, [location.pathname, options]);
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+    };
+  }, [
+    location.pathname,
+    options.title,
+    options.description,
+    options.keywords,
+    options.ogImage,
+    options.skipAutoLoad,
+  ]);
 
   // Return utility functions for manual SEO management
   return {
