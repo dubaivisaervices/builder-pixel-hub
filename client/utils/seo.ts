@@ -121,9 +121,12 @@ export const loadPageMetaTags = async (page: string) => {
 // Internal function that does the actual loading
 const loadPageMetaTagsInternal = async (page: string): Promise<void> => {
   try {
+    console.log(`Loading meta tags for page: ${page}`);
     const response = await fetch(
       `/api/admin/meta-tags/page/${encodeURIComponent(page)}`,
     );
+
+    console.log(`Response status for ${page}:`, response.status);
 
     // Check if response is ok before trying to parse JSON
     if (!response.ok) {
@@ -136,6 +139,7 @@ const loadPageMetaTagsInternal = async (page: string): Promise<void> => {
     }
 
     const data = await response.json();
+    console.log(`Meta tags data for ${page}:`, data);
 
     if (data.success && data.metaTag) {
       updateMetaTags(data.metaTag);
