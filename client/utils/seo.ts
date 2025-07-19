@@ -359,8 +359,16 @@ export const getDefaultSEOData = (page: string): SEOData => {
   );
 };
 
+// Flag to prevent multiple initializations
+let googleIndexingEnhanced = false;
+
 // Enhanced Google indexing signals
 export const enhanceGoogleIndexing = () => {
+  // Prevent multiple calls
+  if (googleIndexingEnhanced) {
+    return;
+  }
+  googleIndexingEnhanced = true;
   // Add performance monitoring
   if ("performance" in window) {
     window.addEventListener("load", () => {
