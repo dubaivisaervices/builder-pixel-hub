@@ -23,6 +23,7 @@ import {
   Eye,
   Lock,
   LogOut,
+  FileText,
   BarChart3,
   TrendingUp,
   Activity,
