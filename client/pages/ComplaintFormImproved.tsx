@@ -74,6 +74,9 @@ interface ReportFormData {
 }
 
 export default function ComplaintFormImproved() {
+  // Initialize SEO for complaint form
+  useComplaintFormSEO();
+
   const [businesses, setBusinesses] = useState<BusinessData[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState<BusinessData[]>(
