@@ -517,651 +517,657 @@ export default function ComplaintFormImproved() {
         </div>
       </div>
 
-            <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="border border-gray-200 rounded-lg shadow-sm bg-white">
           <form onSubmit={handleSubmit} className="p-6 space-y-8">
-          {/* Step 1: Company Selection */}
-          <Card className="shadow-sm border border-gray-200">
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Building2 className="h-4 w-4 text-blue-600" />
-                </div>
-                <h3 className="text-lg font-semibold">Select Company</h3>
-                {selectedCompany && (
-                  <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
-                )}
-              </div>
-
-              <div className="max-w-lg mx-auto">
-                                <Select
-                  value={selectedCompany?.id || ""}
-                  onValueChange={handleSelectChange}
-                  onOpenChange={(open) => {
-                    // Prevent scroll to top on mobile when select opens
-                    if (open && window.innerWidth <= 768) {
-                      const currentScrollY = window.scrollY;
-                      setTimeout(() => window.scrollTo(0, currentScrollY), 100);
-                    }
-                  }}
-                  required
-                >
-                  <SelectTrigger
-                    className={`w-full h-10 text-sm ${!selectedCompany ? "border-red-500" : "border-gray-300"}`}
-                  >
-                    <SelectValue placeholder="Select or search company..." />
-                  </SelectTrigger>
-                  <SelectContent className="max-h-60">
-                    <div className="p-2 relative">
-                      <input
-                        type="text"
-                        placeholder="Type 2+ characters to search..."
-                        value={searchTerm}
-                                                onChange={(e) => {
-                          const value = e.target.value;
-                          setSearchTerm(value);
-                          // Use setTimeout to prevent focus loss after 2 characters
-                          setTimeout(() => handleCompanySearch(value), 0);
-                        }}
-                        onFocus={(e) => e.stopPropagation()}
-                        autoComplete="off"
-                        className="w-full px-3 py-2 pr-8 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                      {searchTerm && (
-                        <button
-                          type="button"
-                          onClick={clearSearch}
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                        >
-                          <X className="h-4 w-4" />
-                        </button>
-                      )}
-                    </div>
-                    {searchTerm.length >= 2 ? (
-                      filteredBusinesses.length > 0 ? (
-                        filteredBusinesses.map((business) => (
-                          <SelectItem key={business.id} value={business.id}>
-                            <div className="flex items-center space-x-2 w-full">
-                              <div className="flex-1">
-                                <div className="font-medium text-sm">
-                                  {business.name}
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                  {business.category} • ⭐ {business.rating}
-                                </div>
-                              </div>
-                            </div>
-                          </SelectItem>
-                        ))
-                      ) : (
-                        <>
-                          <div className="p-3 text-center text-sm text-gray-500">
-                            Company not found
-                          </div>
-                          <SelectItem value="add-new">
-                            <div className="flex items-center space-x-2 text-green-600">
-                              <Building2 className="h-4 w-4" />
-                              <span>Add New Company</span>
-                            </div>
-                          </SelectItem>
-                        </>
-                      )
-                    ) : (
-                      <div className="p-3 text-center text-sm text-gray-500">
-                        Type at least 2 characters to search
-                      </div>
-                    )}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {selectedCompany && (
-                <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200 max-w-lg mx-auto">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
-                      {selectedCompany.name.charAt(0)}
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-medium text-gray-900 text-sm">
-                        {selectedCompany.name}
-                      </h4>
-                      <p className="text-xs text-gray-600">
-                        {selectedCompany.address}
-                      </p>
-                      <Badge className="mt-1 text-xs">
-                        {selectedCompany.category}
-                      </Badge>
-                    </div>
-                    <CheckCircle className="h-6 w-6 text-green-600" />
+            {/* Step 1: Company Selection */}
+            <Card className="shadow-sm border border-gray-200">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Building2 className="h-4 w-4 text-blue-600" />
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Step 2: Report Details */}
-          <Card
-            className={`shadow-sm border border-gray-200 ${!selectedCompany ? "opacity-50" : ""}`}
-          >
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <AlertTriangle className="h-4 w-4 text-orange-600" />
-                </div>
-                <h3 className="text-lg font-semibold">Report Details</h3>
-                {reportData.issueType &&
-                  reportData.description &&
-                  reportData.dateOfIncident && (
+                  <h3 className="text-lg font-semibold">Select Company</h3>
+                  {selectedCompany && (
                     <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
                   )}
-              </div>
+                </div>
 
-              <div className="space-y-4">
-                <div>
-                  <Label
-                    htmlFor="issueType"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Type of Issue *
-                  </Label>
+                <div className="max-w-lg mx-auto">
                   <Select
-                    value={reportData.issueType}
-                    onValueChange={(value) =>
-                      setReportData((prev) => ({
-                        ...prev,
-                        issueType: value,
-                      }))
-                    }
+                    value={selectedCompany?.id || ""}
+                    onValueChange={handleSelectChange}
+                    onOpenChange={(open) => {
+                      // Prevent scroll to top on mobile when select opens
+                      if (open && window.innerWidth <= 768) {
+                        const currentScrollY = window.scrollY;
+                        setTimeout(
+                          () => window.scrollTo(0, currentScrollY),
+                          100,
+                        );
+                      }
+                    }}
                     required
-                    disabled={!selectedCompany}
                   >
                     <SelectTrigger
-                      className={`mt-1 ${getFieldErrorClass(reportData.issueType, true)}`}
+                      className={`w-full h-10 text-sm ${!selectedCompany ? "border-red-500" : "border-gray-300"}`}
                     >
-                      <SelectValue placeholder="Select issue type..." />
+                      <SelectValue placeholder="Select or search company..." />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="fraud">Fraud / Scam</SelectItem>
-                      <SelectItem value="poor_service">
-                        Poor Service Quality
-                      </SelectItem>
-                      <SelectItem value="overcharging">
-                        Overcharging / Hidden Fees
-                      </SelectItem>
-                      <SelectItem value="unprofessional">
-                        Unprofessional Behavior
-                      </SelectItem>
-                      <SelectItem value="delayed_service">
-                        Delayed Service
-                      </SelectItem>
-                      <SelectItem value="license_issues">
-                        License / Legal Issues
-                      </SelectItem>
-                      <SelectItem value="refund_issues">
-                        Refund Problems
-                      </SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                    <SelectContent className="max-h-60">
+                      <div className="p-2 relative">
+                        <input
+                          type="text"
+                          placeholder="Type 2+ characters to search..."
+                          value={searchTerm}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setSearchTerm(value);
+                            // Use setTimeout to prevent focus loss after 2 characters
+                            setTimeout(() => handleCompanySearch(value), 0);
+                          }}
+                          onFocus={(e) => e.stopPropagation()}
+                          autoComplete="off"
+                          className="w-full px-3 py-2 pr-8 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        {searchTerm && (
+                          <button
+                            type="button"
+                            onClick={clearSearch}
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        )}
+                      </div>
+                      {searchTerm.length >= 2 ? (
+                        filteredBusinesses.length > 0 ? (
+                          filteredBusinesses.map((business) => (
+                            <SelectItem key={business.id} value={business.id}>
+                              <div className="flex items-center space-x-2 w-full">
+                                <div className="flex-1">
+                                  <div className="font-medium text-sm">
+                                    {business.name}
+                                  </div>
+                                  <div className="text-xs text-gray-500">
+                                    {business.category} • ⭐ {business.rating}
+                                  </div>
+                                </div>
+                              </div>
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <>
+                            <div className="p-3 text-center text-sm text-gray-500">
+                              Company not found
+                            </div>
+                            <SelectItem value="add-new">
+                              <div className="flex items-center space-x-2 text-green-600">
+                                <Building2 className="h-4 w-4" />
+                                <span>Add New Company</span>
+                              </div>
+                            </SelectItem>
+                          </>
+                        )
+                      ) : (
+                        <div className="p-3 text-center text-sm text-gray-500">
+                          Type at least 2 characters to search
+                        </div>
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
 
-                {reportData.issueType && (
-                  <div>
-                    <Label
-                      htmlFor="employeeName"
-                      className="text-sm font-medium text-gray-700"
-                    >
-                      Employee/Contact Person Involved (Optional)
-                    </Label>
-                    <Input
-                      id="employeeName"
-                      type="text"
-                      placeholder="Name of the employee or contact person"
-                      value={reportData.employeeName || ""}
-                      onChange={(e) =>
-                        setReportData((prev) => ({
-                          ...prev,
-                          employeeName: e.target.value,
-                        }))
-                      }
-                      className="mt-1"
-                      disabled={!selectedCompany}
-                    />
-                  </div>
-                )}
-
-                <div>
-                  <Label
-                    htmlFor="description"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Description *
-                  </Label>
-                  <Textarea
-                    id="description"
-                    placeholder="Please provide detailed information about the issue..."
-                    value={reportData.description}
-                    onChange={(e) =>
-                      setReportData((prev) => ({
-                        ...prev,
-                        description: e.target.value,
-                      }))
-                    }
-                    className={`mt-1 min-h-[100px] ${getFieldErrorClass(reportData.description, true)}`}
-                    required
-                    disabled={!selectedCompany}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <Label
-                      htmlFor="amountLost"
-                      className="text-sm font-medium text-gray-700"
-                    >
-                      Amount Lost (AED)
-                    </Label>
-                    <Input
-                      id="amountLost"
-                      type="number"
-                      placeholder="0"
-                      value={reportData.amountLost || ""}
-                      onChange={(e) =>
-                        setReportData((prev) => ({
-                          ...prev,
-                          amountLost: e.target.value,
-                        }))
-                      }
-                      className="mt-1"
-                      disabled={!selectedCompany}
-                    />
-                  </div>
-
-                  <div>
-                    <Label
-                      htmlFor="dateOfIncident"
-                      className="text-sm font-medium text-gray-700"
-                    >
-                      Date of Incident *
-                    </Label>
-                    <Input
-                      id="dateOfIncident"
-                      type="date"
-                      value={reportData.dateOfIncident}
-                      onChange={(e) =>
-                        setReportData((prev) => ({
-                          ...prev,
-                          dateOfIncident: e.target.value,
-                        }))
-                      }
-                      className={`mt-1 ${getFieldErrorClass(reportData.dateOfIncident, true)}`}
-                      required
-                      disabled={!selectedCompany}
-                    />
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Step 3: Evidence */}
-          <Card
-            className={`shadow-sm border border-gray-200 ${!reportData.issueType ? "opacity-50" : ""}`}
-          >
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <FileText className="h-4 w-4 text-purple-600" />
-                </div>
-                <h3 className="text-lg font-semibold">Evidence (Optional)</h3>
-                {(reportData.evidenceDescription ||
-                  (reportData.evidenceFiles &&
-                    reportData.evidenceFiles.length > 0)) && (
-                  <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
-                )}
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <Label
-                    htmlFor="evidenceDescription"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Evidence Description
-                  </Label>
-                  <Textarea
-                    id="evidenceDescription"
-                    placeholder="Describe any evidence you have..."
-                    value={reportData.evidenceDescription}
-                    onChange={(e) =>
-                      setReportData((prev) => ({
-                        ...prev,
-                        evidenceDescription: e.target.value,
-                      }))
-                    }
-                    className="mt-1"
-                    disabled={!reportData.issueType}
-                  />
-                </div>
-
-                {/* File Upload Section */}
-                <div>
-                  <Label className="text-sm font-medium text-gray-700 mb-2 block">
-                    Upload Evidence Files (Optional)
-                  </Label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
-                    <input
-                      type="file"
-                      id="evidenceFiles"
-                      multiple
-                      accept=".jpg,.jpeg,.png,.pdf,.webp"
-                      onChange={(e) => handleFileUpload(e.target.files)}
-                      className="hidden"
-                      disabled={!reportData.issueType}
-                    />
-                    <label
-                      htmlFor="evidenceFiles"
-                      className={`cursor-pointer flex flex-col items-center space-y-2 ${!reportData.issueType ? "opacity-50 cursor-not-allowed" : ""}`}
-                    >
-                      <Upload className="h-8 w-8 text-gray-400" />
-                      <div>
-                        <span className="text-sm font-medium text-gray-700">
-                          Click to upload files
-                        </span>
-                        <p className="text-xs text-gray-500 mt-1">
-                          JPG, PNG, PDF, WebP up to 5MB each (Max 5 files)
-                        </p>
+                {selectedCompany && (
+                  <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200 max-w-lg mx-auto">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
+                        {selectedCompany.name.charAt(0)}
                       </div>
-                    </label>
-                  </div>
-
-                  {/* Upload Errors */}
-                  {uploadErrors.length > 0 && (
-                    <div className="mt-2 space-y-1">
-                      {uploadErrors.map((error, index) => (
-                        <p
-                          key={index}
-                          className="text-sm text-red-600 flex items-center"
-                        >
-                          <X className="h-4 w-4 mr-1" />
-                          {error}
+                      <div className="flex-1">
+                        <h4 className="font-medium text-gray-900 text-sm">
+                          {selectedCompany.name}
+                        </h4>
+                        <p className="text-xs text-gray-600">
+                          {selectedCompany.address}
                         </p>
-                      ))}
+                        <Badge className="mt-1 text-xs">
+                          {selectedCompany.category}
+                        </Badge>
+                      </div>
+                      <CheckCircle className="h-6 w-6 text-green-600" />
                     </div>
-                  )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
 
-                  {/* Uploaded Files */}
-                  {reportData.evidenceFiles &&
-                    reportData.evidenceFiles.length > 0 && (
-                      <div className="mt-4 space-y-2">
-                        <Label className="text-sm font-medium text-gray-700">
-                          Uploaded Evidence Files (
-                          {reportData.evidenceFiles.length}/5)
-                        </Label>
-                        <div className="space-y-3">
-                          {reportData.evidenceFiles.map(
-                            (evidenceFile, index) => (
-                              <div
-                                key={index}
-                                className="p-4 bg-gray-50 rounded-lg border space-y-3"
-                              >
-                                {/* File Info */}
-                                <div className="flex items-center justify-between">
-                                  <div className="flex items-center space-x-3">
-                                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                                      {evidenceFile.type.includes("image") ? (
-                                        <Eye className="h-4 w-4 text-blue-600" />
-                                      ) : (
-                                        <FileText className="h-4 w-4 text-blue-600" />
-                                      )}
-                                    </div>
-                                    <div>
-                                      <p className="text-sm font-medium text-gray-900 truncate max-w-[200px]">
-                                        {evidenceFile.file.name}
-                                      </p>
-                                      <p className="text-xs text-gray-500">
-                                        {formatFileSize(evidenceFile.file.size)}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => removeFile(index)}
-                                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                  >
-                                    <X className="h-4 w-4" />
-                                  </Button>
-                                </div>
-
-                                {/* Evidence Name/Type */}
-                                <div>
-                                  <Label className="text-xs font-medium text-gray-600 mb-1 block">
-                                    Evidence Type/Name
-                                  </Label>
-                                  <Select
-                                    value={evidenceFile.name}
-                                    onValueChange={(value) =>
-                                      updateEvidenceName(index, value)
-                                    }
-                                  >
-                                    <SelectTrigger className="w-full h-8 text-xs">
-                                      <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      <SelectItem value="Agreement Copy">
-                                        Agreement Copy
-                                      </SelectItem>
-                                      <SelectItem value="Payment Receipt">
-                                        Payment Receipt
-                                      </SelectItem>
-                                      <SelectItem value="Invoice">
-                                        Invoice
-                                      </SelectItem>
-                                      <SelectItem value="Email/Message">
-                                        Email/Message
-                                      </SelectItem>
-                                      <SelectItem value="Photo Evidence">
-                                        Photo Evidence
-                                      </SelectItem>
-                                      <SelectItem value="Bank Statement">
-                                        Bank Statement
-                                      </SelectItem>
-                                      <SelectItem value="Contract">
-                                        Contract
-                                      </SelectItem>
-                                      <SelectItem value="ID Copy">
-                                        ID Copy
-                                      </SelectItem>
-                                      <SelectItem value="Other Document">
-                                        Other Document
-                                      </SelectItem>
-                                    </SelectContent>
-                                  </Select>
-                                </div>
-                              </div>
-                            ),
-                          )}
-                        </div>
-                      </div>
+            {/* Step 2: Report Details */}
+            <Card
+              className={`shadow-sm border border-gray-200 ${!selectedCompany ? "opacity-50" : ""}`}
+            >
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                    <AlertTriangle className="h-4 w-4 text-orange-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold">Report Details</h3>
+                  {reportData.issueType &&
+                    reportData.description &&
+                    reportData.dateOfIncident && (
+                      <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
                     )}
                 </div>
-              </div>
-            </CardContent>
-          </Card>
 
-          {/* Step 4: Contact Information */}
-          <Card
-            className={`shadow-sm border border-gray-200 ${!reportData.description ? "opacity-50" : ""}`}
-          >
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                  <UserCheck className="h-4 w-4 text-green-600" />
-                </div>
-                <h3 className="text-lg font-semibold">Your Information</h3>
-                {reportData.reporterName && reportData.reporterEmail && (
-                  <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
-                )}
-              </div>
-
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-4">
                   <div>
                     <Label
-                      htmlFor="reporterName"
+                      htmlFor="issueType"
                       className="text-sm font-medium text-gray-700"
                     >
-                      Full Name *
+                      Type of Issue *
                     </Label>
-                    <Input
-                      id="reporterName"
-                      type="text"
-                      placeholder="Enter your full name"
-                      value={reportData.reporterName}
-                      onChange={(e) =>
+                    <Select
+                      value={reportData.issueType}
+                      onValueChange={(value) =>
                         setReportData((prev) => ({
                           ...prev,
-                          reporterName: e.target.value,
+                          issueType: value,
                         }))
                       }
-                      className={`mt-1 ${getFieldErrorClass(reportData.reporterName, true)}`}
                       required
-                      disabled={!reportData.description}
-                    />
-                  </div>
-
-                  <div>
-                    <Label
-                      htmlFor="reporterEmail"
-                      className="text-sm font-medium text-gray-700"
+                      disabled={!selectedCompany}
                     >
-                      Email Address *
-                    </Label>
-                    <Input
-                      id="reporterEmail"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={reportData.reporterEmail}
-                      onChange={(e) =>
-                        setReportData((prev) => ({
-                          ...prev,
-                          reporterEmail: e.target.value,
-                        }))
-                      }
-                      className={`mt-1 ${getFieldErrorClass(reportData.reporterEmail, true)}`}
-                      required
-                      disabled={!reportData.description}
-                    />
+                      <SelectTrigger
+                        className={`mt-1 ${getFieldErrorClass(reportData.issueType, true)}`}
+                      >
+                        <SelectValue placeholder="Select issue type..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="fraud">Fraud / Scam</SelectItem>
+                        <SelectItem value="poor_service">
+                          Poor Service Quality
+                        </SelectItem>
+                        <SelectItem value="overcharging">
+                          Overcharging / Hidden Fees
+                        </SelectItem>
+                        <SelectItem value="unprofessional">
+                          Unprofessional Behavior
+                        </SelectItem>
+                        <SelectItem value="delayed_service">
+                          Delayed Service
+                        </SelectItem>
+                        <SelectItem value="license_issues">
+                          License / Legal Issues
+                        </SelectItem>
+                        <SelectItem value="refund_issues">
+                          Refund Problems
+                        </SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
-                </div>
 
-                <div>
-                  <Label
-                    htmlFor="reporterPhone"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Phone Number (Optional)
-                  </Label>
-                  <Input
-                    id="reporterPhone"
-                    type="tel"
-                    placeholder="Enter your phone number"
-                    value={reportData.reporterPhone}
-                    onChange={(e) =>
-                      setReportData((prev) => ({
-                        ...prev,
-                        reporterPhone: e.target.value,
-                      }))
-                    }
-                    className="mt-1"
-                    disabled={!reportData.description}
-                  />
-                </div>
-
-                {/* Confidentiality Settings */}
-                <div className="border-t pt-4">
-                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <Label className="text-sm font-medium text-gray-700 mb-3 block">
-                      Report Visibility Settings
-                    </Label>
-                    <div className="flex items-start space-x-3">
-                      <input
-                        type="checkbox"
-                        id="isPublic"
-                        checked={reportData.isPublic}
+                  {reportData.issueType && (
+                    <div>
+                      <Label
+                        htmlFor="employeeName"
+                        className="text-sm font-medium text-gray-700"
+                      >
+                        Employee/Contact Person Involved (Optional)
+                      </Label>
+                      <Input
+                        id="employeeName"
+                        type="text"
+                        placeholder="Name of the employee or contact person"
+                        value={reportData.employeeName || ""}
                         onChange={(e) =>
                           setReportData((prev) => ({
                             ...prev,
-                            isPublic: e.target.checked,
+                            employeeName: e.target.value,
                           }))
                         }
-                        className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                        disabled={!reportData.description}
+                        className="mt-1"
+                        disabled={!selectedCompany}
                       />
-                      <div>
-                        <label
-                          htmlFor="isPublic"
-                          className="text-sm font-medium text-gray-900 cursor-pointer"
-                        >
-                          Make my report public
-                        </label>
-                        <p className="text-xs text-gray-600 mt-1">
-                          {reportData.isPublic
-                            ? "✅ Your report will be publicly visible to help warn other customers. Your personal details will be kept confidential."
-                            : "🔒 Your report will be kept private and only shared with authorities and the reported company for resolution."}
-                        </p>
-                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <Label
+                      htmlFor="description"
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Description *
+                    </Label>
+                    <Textarea
+                      id="description"
+                      placeholder="Please provide detailed information about the issue..."
+                      value={reportData.description}
+                      onChange={(e) =>
+                        setReportData((prev) => ({
+                          ...prev,
+                          description: e.target.value,
+                        }))
+                      }
+                      className={`mt-1 min-h-[100px] ${getFieldErrorClass(reportData.description, true)}`}
+                      required
+                      disabled={!selectedCompany}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label
+                        htmlFor="amountLost"
+                        className="text-sm font-medium text-gray-700"
+                      >
+                        Amount Lost (AED)
+                      </Label>
+                      <Input
+                        id="amountLost"
+                        type="number"
+                        placeholder="0"
+                        value={reportData.amountLost || ""}
+                        onChange={(e) =>
+                          setReportData((prev) => ({
+                            ...prev,
+                            amountLost: e.target.value,
+                          }))
+                        }
+                        className="mt-1"
+                        disabled={!selectedCompany}
+                      />
                     </div>
 
-                    {/* Privacy Notice */}
-                    <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-                      <div className="flex items-start space-x-2">
-                        <Shield className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <Label
+                        htmlFor="dateOfIncident"
+                        className="text-sm font-medium text-gray-700"
+                      >
+                        Date of Incident *
+                      </Label>
+                      <Input
+                        id="dateOfIncident"
+                        type="date"
+                        value={reportData.dateOfIncident}
+                        onChange={(e) =>
+                          setReportData((prev) => ({
+                            ...prev,
+                            dateOfIncident: e.target.value,
+                          }))
+                        }
+                        className={`mt-1 ${getFieldErrorClass(reportData.dateOfIncident, true)}`}
+                        required
+                        disabled={!selectedCompany}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Step 3: Evidence */}
+            <Card
+              className={`shadow-sm border border-gray-200 ${!reportData.issueType ? "opacity-50" : ""}`}
+            >
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <FileText className="h-4 w-4 text-purple-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold">Evidence (Optional)</h3>
+                  {(reportData.evidenceDescription ||
+                    (reportData.evidenceFiles &&
+                      reportData.evidenceFiles.length > 0)) && (
+                    <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
+                  )}
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <Label
+                      htmlFor="evidenceDescription"
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Evidence Description
+                    </Label>
+                    <Textarea
+                      id="evidenceDescription"
+                      placeholder="Describe any evidence you have..."
+                      value={reportData.evidenceDescription}
+                      onChange={(e) =>
+                        setReportData((prev) => ({
+                          ...prev,
+                          evidenceDescription: e.target.value,
+                        }))
+                      }
+                      className="mt-1"
+                      disabled={!reportData.issueType}
+                    />
+                  </div>
+
+                  {/* File Upload Section */}
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                      Upload Evidence Files (Optional)
+                    </Label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+                      <input
+                        type="file"
+                        id="evidenceFiles"
+                        multiple
+                        accept=".jpg,.jpeg,.png,.pdf,.webp"
+                        onChange={(e) => handleFileUpload(e.target.files)}
+                        className="hidden"
+                        disabled={!reportData.issueType}
+                      />
+                      <label
+                        htmlFor="evidenceFiles"
+                        className={`cursor-pointer flex flex-col items-center space-y-2 ${!reportData.issueType ? "opacity-50 cursor-not-allowed" : ""}`}
+                      >
+                        <Upload className="h-8 w-8 text-gray-400" />
                         <div>
-                          <p className="text-xs font-medium text-yellow-800">
-                            Privacy Protection
+                          <span className="text-sm font-medium text-gray-700">
+                            Click to upload files
+                          </span>
+                          <p className="text-xs text-gray-500 mt-1">
+                            JPG, PNG, PDF, WebP up to 5MB each (Max 5 files)
                           </p>
-                          <p className="text-xs text-yellow-700 mt-1">
-                            Regardless of your choice, your personal contact
-                            information (name, email, phone) is always kept
-                            confidential and never shared publicly.
+                        </div>
+                      </label>
+                    </div>
+
+                    {/* Upload Errors */}
+                    {uploadErrors.length > 0 && (
+                      <div className="mt-2 space-y-1">
+                        {uploadErrors.map((error, index) => (
+                          <p
+                            key={index}
+                            className="text-sm text-red-600 flex items-center"
+                          >
+                            <X className="h-4 w-4 mr-1" />
+                            {error}
                           </p>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Uploaded Files */}
+                    {reportData.evidenceFiles &&
+                      reportData.evidenceFiles.length > 0 && (
+                        <div className="mt-4 space-y-2">
+                          <Label className="text-sm font-medium text-gray-700">
+                            Uploaded Evidence Files (
+                            {reportData.evidenceFiles.length}/5)
+                          </Label>
+                          <div className="space-y-3">
+                            {reportData.evidenceFiles.map(
+                              (evidenceFile, index) => (
+                                <div
+                                  key={index}
+                                  className="p-4 bg-gray-50 rounded-lg border space-y-3"
+                                >
+                                  {/* File Info */}
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex items-center space-x-3">
+                                      <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        {evidenceFile.type.includes("image") ? (
+                                          <Eye className="h-4 w-4 text-blue-600" />
+                                        ) : (
+                                          <FileText className="h-4 w-4 text-blue-600" />
+                                        )}
+                                      </div>
+                                      <div>
+                                        <p className="text-sm font-medium text-gray-900 truncate max-w-[200px]">
+                                          {evidenceFile.file.name}
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                          {formatFileSize(
+                                            evidenceFile.file.size,
+                                          )}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => removeFile(index)}
+                                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                    >
+                                      <X className="h-4 w-4" />
+                                    </Button>
+                                  </div>
+
+                                  {/* Evidence Name/Type */}
+                                  <div>
+                                    <Label className="text-xs font-medium text-gray-600 mb-1 block">
+                                      Evidence Type/Name
+                                    </Label>
+                                    <Select
+                                      value={evidenceFile.name}
+                                      onValueChange={(value) =>
+                                        updateEvidenceName(index, value)
+                                      }
+                                    >
+                                      <SelectTrigger className="w-full h-8 text-xs">
+                                        <SelectValue />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="Agreement Copy">
+                                          Agreement Copy
+                                        </SelectItem>
+                                        <SelectItem value="Payment Receipt">
+                                          Payment Receipt
+                                        </SelectItem>
+                                        <SelectItem value="Invoice">
+                                          Invoice
+                                        </SelectItem>
+                                        <SelectItem value="Email/Message">
+                                          Email/Message
+                                        </SelectItem>
+                                        <SelectItem value="Photo Evidence">
+                                          Photo Evidence
+                                        </SelectItem>
+                                        <SelectItem value="Bank Statement">
+                                          Bank Statement
+                                        </SelectItem>
+                                        <SelectItem value="Contract">
+                                          Contract
+                                        </SelectItem>
+                                        <SelectItem value="ID Copy">
+                                          ID Copy
+                                        </SelectItem>
+                                        <SelectItem value="Other Document">
+                                          Other Document
+                                        </SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                  </div>
+                                </div>
+                              ),
+                            )}
+                          </div>
+                        </div>
+                      )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Step 4: Contact Information */}
+            <Card
+              className={`shadow-sm border border-gray-200 ${!reportData.description ? "opacity-50" : ""}`}
+            >
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                    <UserCheck className="h-4 w-4 text-green-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold">Your Information</h3>
+                  {reportData.reporterName && reportData.reporterEmail && (
+                    <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
+                  )}
+                </div>
+
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label
+                        htmlFor="reporterName"
+                        className="text-sm font-medium text-gray-700"
+                      >
+                        Full Name *
+                      </Label>
+                      <Input
+                        id="reporterName"
+                        type="text"
+                        placeholder="Enter your full name"
+                        value={reportData.reporterName}
+                        onChange={(e) =>
+                          setReportData((prev) => ({
+                            ...prev,
+                            reporterName: e.target.value,
+                          }))
+                        }
+                        className={`mt-1 ${getFieldErrorClass(reportData.reporterName, true)}`}
+                        required
+                        disabled={!reportData.description}
+                      />
+                    </div>
+
+                    <div>
+                      <Label
+                        htmlFor="reporterEmail"
+                        className="text-sm font-medium text-gray-700"
+                      >
+                        Email Address *
+                      </Label>
+                      <Input
+                        id="reporterEmail"
+                        type="email"
+                        placeholder="Enter your email"
+                        value={reportData.reporterEmail}
+                        onChange={(e) =>
+                          setReportData((prev) => ({
+                            ...prev,
+                            reporterEmail: e.target.value,
+                          }))
+                        }
+                        className={`mt-1 ${getFieldErrorClass(reportData.reporterEmail, true)}`}
+                        required
+                        disabled={!reportData.description}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label
+                      htmlFor="reporterPhone"
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Phone Number (Optional)
+                    </Label>
+                    <Input
+                      id="reporterPhone"
+                      type="tel"
+                      placeholder="Enter your phone number"
+                      value={reportData.reporterPhone}
+                      onChange={(e) =>
+                        setReportData((prev) => ({
+                          ...prev,
+                          reporterPhone: e.target.value,
+                        }))
+                      }
+                      className="mt-1"
+                      disabled={!reportData.description}
+                    />
+                  </div>
+
+                  {/* Confidentiality Settings */}
+                  <div className="border-t pt-4">
+                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                      <Label className="text-sm font-medium text-gray-700 mb-3 block">
+                        Report Visibility Settings
+                      </Label>
+                      <div className="flex items-start space-x-3">
+                        <input
+                          type="checkbox"
+                          id="isPublic"
+                          checked={reportData.isPublic}
+                          onChange={(e) =>
+                            setReportData((prev) => ({
+                              ...prev,
+                              isPublic: e.target.checked,
+                            }))
+                          }
+                          className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          disabled={!reportData.description}
+                        />
+                        <div>
+                          <label
+                            htmlFor="isPublic"
+                            className="text-sm font-medium text-gray-900 cursor-pointer"
+                          >
+                            Make my report public
+                          </label>
+                          <p className="text-xs text-gray-600 mt-1">
+                            {reportData.isPublic
+                              ? "✅ Your report will be publicly visible to help warn other customers. Your personal details will be kept confidential."
+                              : "🔒 Your report will be kept private and only shared with authorities and the reported company for resolution."}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Privacy Notice */}
+                      <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                        <div className="flex items-start space-x-2">
+                          <Shield className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="text-xs font-medium text-yellow-800">
+                              Privacy Protection
+                            </p>
+                            <p className="text-xs text-yellow-700 mt-1">
+                              Regardless of your choice, your personal contact
+                              information (name, email, phone) is always kept
+                              confidential and never shared publicly.
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="pt-4">
-                  <Button
-                    type="submit"
-                    disabled={
-                      loading ||
-                      !selectedCompany ||
-                      !reportData.issueType ||
-                      !reportData.description ||
-                      !reportData.dateOfIncident ||
-                      !reportData.reporterName ||
-                      !reportData.reporterEmail
-                    }
-                    className="w-full bg-red-600 hover:bg-red-700 text-white py-3"
-                  >
-                    {loading ? (
-                      <div className="flex items-center space-x-2">
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        <span>Submitting...</span>
-                      </div>
-                    ) : (
-                      "Submit Report"
-                    )}
-                  </Button>
+                  <div className="pt-4">
+                    <Button
+                      type="submit"
+                      disabled={
+                        loading ||
+                        !selectedCompany ||
+                        !reportData.issueType ||
+                        !reportData.description ||
+                        !reportData.dateOfIncident ||
+                        !reportData.reporterName ||
+                        !reportData.reporterEmail
+                      }
+                      className="w-full bg-red-600 hover:bg-red-700 text-white py-3"
+                    >
+                      {loading ? (
+                        <div className="flex items-center space-x-2">
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          <span>Submitting...</span>
+                        </div>
+                      ) : (
+                        "Submit Report"
+                      )}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        </form>
+              </CardContent>
+            </Card>
+          </form>
+        </div>
 
         {/* Community Impact */}
         <div className="mt-12 bg-gradient-to-r from-blue-50 to-indigo-100 rounded-2xl p-6">
