@@ -204,17 +204,6 @@ export default function ComplaintFormImproved() {
     }
   };
 
-  // Handle mobile viewport issues
-  const handleSelectOpen = () => {
-    // Prevent scroll to top on mobile
-    if (window.innerWidth <= 768) {
-      const currentScrollY = window.scrollY;
-      setTimeout(() => {
-        window.scrollTo(0, currentScrollY);
-      }, 100);
-    }
-  };
-
   const handleCompanySelect = (business: BusinessData) => {
     setSelectedCompany(business);
     setSearchTerm(business.name);
@@ -528,12 +517,11 @@ export default function ComplaintFormImproved() {
         </div>
       </div>
 
-            <div className="max-w-4xl mx-auto px-4 py-8">
-        <Card className="shadow-sm border border-gray-200">
-          <CardContent className="p-4 sm:p-6">
-            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
-              {/* Step 1: Company Selection */}
-              <div>
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+          {/* Step 1: Company Selection */}
+          <Card className="shadow-sm border border-gray-200">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                   <Building2 className="h-4 w-4 text-blue-600" />
@@ -548,9 +536,6 @@ export default function ComplaintFormImproved() {
                 <Select
                   value={selectedCompany?.id || ""}
                   onValueChange={handleSelectChange}
-                  onOpenChange={(open) => {
-                    if (open) handleSelectOpen();
-                  }}
                   required
                 >
                   <SelectTrigger
@@ -558,35 +543,22 @@ export default function ComplaintFormImproved() {
                   >
                     <SelectValue placeholder="Select or search company..." />
                   </SelectTrigger>
-                  <SelectContent className="max-h-60" sideOffset={5}>
+                  <SelectContent className="max-h-60">
                     <div className="p-2 relative">
                       <input
                         type="text"
                         placeholder="Type 2+ characters to search..."
                         value={searchTerm}
                         onChange={(e) => {
-                          const value = e.target.value;
-                          setSearchTerm(value);
-                          // Don't auto-call handleCompanySearch to prevent focus issues
-                        }}
-                        onInput={(e) => {
-                          const value = e.currentTarget.value;
-                          handleCompanySearch(value);
-                        }}
-                        onFocus={(e) => {
-                          e.stopPropagation();
-                          // Keep focus on input
+                          setSearchTerm(e.target.value);
+                          handleCompanySearch(e.target.value);
                         }}
                         className="w-full px-3 py-2 pr-8 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        autoComplete="off"
                       />
                       {searchTerm && (
                         <button
                           type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            clearSearch();
-                          }}
+                          onClick={clearSearch}
                           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                         >
                           <X className="h-4 w-4" />
@@ -651,13 +623,11 @@ export default function ComplaintFormImproved() {
                     <CheckCircle className="h-6 w-6 text-green-600" />
                   </div>
                 </div>
-                            )}
-              </div>
+              )}
+            </CardContent>
+          </Card>
 
-              {/* Divider */}
-              <div className="border-t border-gray-200"></div>
-
-              {/* Step 2: Report Details */}
+          {/* Step 2: Report Details */}
           <Card
             className={`shadow-sm border border-gray-200 ${!selectedCompany ? "opacity-50" : ""}`}
           >
