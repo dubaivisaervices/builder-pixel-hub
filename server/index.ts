@@ -300,7 +300,7 @@ export function createServer() {
     try {
       await searchDubaiVisaServices(req, res);
     } catch (error) {
-      console.log("��� Database API failed, using fallback...");
+      console.log("����� Database API failed, using fallback...");
       await robustBusinessesAPI(req, res);
     }
   });
@@ -1036,6 +1036,16 @@ export function createServer() {
   app.get("/api/reports/company/:companyId", getCompanyReports);
   app.post("/api/reports/:reportId/vote", voteOnReport);
   app.get("/api/reports/stats", getReportsStats);
+
+  // Meta tag management API
+  app.get("/api/admin/meta-tags", getAllMetaTags);
+  app.get("/api/admin/meta-tags/page/:page", getMetaTagsByPage);
+  app.post("/api/admin/meta-tags", createMetaTags);
+  app.put("/api/admin/meta-tags/:id", updateMetaTags);
+  app.delete("/api/admin/meta-tags/:id", deleteMetaTags);
+  app.post("/api/admin/generate-sitemap", generateSitemap);
+  app.get("/api/admin/test-meta-tags", testMetaTags);
+  app.post("/api/admin/generate-robots", generateRobotsTxt);
 
   // Database status endpoint
   app.get("/api/database-status", async (_req, res) => {
