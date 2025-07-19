@@ -1144,7 +1144,11 @@ export default function ComplaintFormImproved() {
               {
                 number: 3,
                 label: "Evidence",
-                completed: !!reportData.evidenceDescription,
+                completed: !!(
+                  reportData.evidenceDescription ||
+                  (reportData.evidenceFiles &&
+                    reportData.evidenceFiles.length > 0)
+                ),
               },
               {
                 number: 4,
