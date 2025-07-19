@@ -97,8 +97,29 @@ export const updateMetaTags = (seoData: SEOData) => {
   }
 };
 
+// Cache to prevent multiple simultaneous requests for the same page
+const loadingCache = new Map<string, Promise<void>>();
+
 // Load meta tags for current page
 export const loadPageMetaTags = async (page: string) => {
+  // Check if we're already loading this page
+  if (loadingCache.has(page)) {
+    return loadingCache.get(page);
+  }
+
+  const loadPromise = loadPageMetaTagsInternal(page);
+  loadingCache.set(page, loadPromise);
+
+  // Clean up cache after completion
+  loadPromise.finally(() => {
+    loadingCache.delete(page);
+  });
+
+  return loadPromise;
+};
+
+// Internal function that does the actual loading
+const loadPageMetaTagsInternal = async (page: string) => {
   try {
     const response = await fetch(
       `/api/admin/meta-tags/page/${encodeURIComponent(page)}`,
