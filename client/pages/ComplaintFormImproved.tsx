@@ -853,6 +853,60 @@ export default function ComplaintFormImproved() {
                   />
                 </div>
 
+                {/* Confidentiality Settings */}
+                <div className="border-t pt-4">
+                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <Label className="text-sm font-medium text-gray-700 mb-3 block">
+                      Report Visibility Settings
+                    </Label>
+                    <div className="flex items-start space-x-3">
+                      <input
+                        type="checkbox"
+                        id="isPublic"
+                        checked={reportData.isPublic}
+                        onChange={(e) =>
+                          setReportData((prev) => ({
+                            ...prev,
+                            isPublic: e.target.checked,
+                          }))
+                        }
+                        className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        disabled={!reportData.description}
+                      />
+                      <div>
+                        <label
+                          htmlFor="isPublic"
+                          className="text-sm font-medium text-gray-900 cursor-pointer"
+                        >
+                          Make my report public
+                        </label>
+                        <p className="text-xs text-gray-600 mt-1">
+                          {reportData.isPublic
+                            ? "✅ Your report will be publicly visible to help warn other customers. Your personal details will be kept confidential."
+                            : "🔒 Your report will be kept private and only shared with authorities and the reported company for resolution."}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Privacy Notice */}
+                    <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                      <div className="flex items-start space-x-2">
+                        <Shield className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-xs font-medium text-yellow-800">
+                            Privacy Protection
+                          </p>
+                          <p className="text-xs text-yellow-700 mt-1">
+                            Regardless of your choice, your personal contact
+                            information (name, email, phone) is always kept
+                            confidential and never shared publicly.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="pt-4">
                   <Button
                     type="submit"
