@@ -405,74 +405,61 @@ export default function ComplaintFormImproved() {
                 )}
               </div>
 
-              <div className="relative max-w-lg mx-auto">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Search companies..."
-                    value={searchTerm}
-                    onChange={(e) => handleCompanySearch(e.target.value)}
-                    onFocus={() =>
-                      searchTerm.length >= 2 && setShowSuggestions(true)
-                    }
-                    onBlur={() =>
-                      setTimeout(() => setShowSuggestions(false), 200)
-                    }
-                    className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                    required
-                  />
-                </div>
-
-                {showSuggestions && (
-                  <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                    {searchSuggestions.length > 0
-                      ? searchSuggestions.map((business) => (
-                          <div
-                            key={business.id}
-                            onClick={() => handleCompanySelect(business)}
-                            className="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
-                          >
-                            <div className="font-medium text-gray-900 text-sm">
-                              {business.name}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                              {business.address}
-                            </div>
-                            <div className="flex items-center space-x-2 mt-1">
-                              <Badge variant="secondary" className="text-xs">
-                                {business.category}
-                              </Badge>
-                              <div className="flex items-center space-x-1">
-                                <Star className="h-3 w-3 text-yellow-400 fill-current" />
-                                <span className="text-xs text-gray-600">
-                                  {business.rating}
-                                </span>
+              <div className="max-w-lg mx-auto">
+                <Select
+                  value={selectedCompany?.id || ""}
+                  onValueChange={handleSelectChange}
+                  required
+                >
+                  <SelectTrigger className="w-full h-10 text-sm">
+                    <SelectValue placeholder="Select or search company..." />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-60">
+                    <div className="p-2">
+                      <input
+                        type="text"
+                        placeholder="Type 2+ characters to search..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    {searchTerm.length >= 2 ? (
+                      filteredBusinesses.length > 0 ? (
+                        filteredBusinesses.map((business) => (
+                          <SelectItem key={business.id} value={business.id}>
+                            <div className="flex items-center space-x-2 w-full">
+                              <div className="flex-1">
+                                <div className="font-medium text-sm">
+                                  {business.name}
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                  {business.category} • ⭐ {business.rating}
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          </SelectItem>
                         ))
-                      : searchTerm.length >= 2 && (
-                          <div className="p-6 text-center">
-                            <Building className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-                            <h4 className="text-sm font-medium text-gray-900 mb-2">
-                              Company not found
-                            </h4>
-                            <p className="text-xs text-gray-500 mb-4">
-                              Can't find the company you're looking for?
-                            </p>
-                            <Button
-                              type="button"
-                              onClick={() => navigate("/add-business")}
-                              className="w-full bg-green-600 hover:bg-green-700 text-white text-xs py-2"
-                            >
-                              <Building2 className="h-3 w-3 mr-2" />
-                              Add Company
-                            </Button>
+                      ) : (
+                        <>
+                          <div className="p-3 text-center text-sm text-gray-500">
+                            Company not found
                           </div>
-                        )}
-                  </div>
-                )}
+                          <SelectItem value="add-new">
+                            <div className="flex items-center space-x-2 text-green-600">
+                              <Building2 className="h-4 w-4" />
+                              <span>Add New Company</span>
+                            </div>
+                          </SelectItem>
+                        </>
+                      )
+                    ) : (
+                      <div className="p-3 text-center text-sm text-gray-500">
+                        Type at least 2 characters to search
+                      </div>
+                    )}
+                  </SelectContent>
+                </Select>
               </div>
 
               {selectedCompany && (
