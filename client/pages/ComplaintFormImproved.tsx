@@ -573,7 +573,10 @@ export default function ComplaintFormImproved() {
                         {searchTerm && (
                           <button
                             type="button"
-                            onClick={clearSearch}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              clearSearch();
+                            }}
                             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                           >
                             <X className="h-4 w-4" />
