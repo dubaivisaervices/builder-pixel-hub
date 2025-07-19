@@ -119,7 +119,7 @@ export const loadPageMetaTags = async (page: string) => {
 };
 
 // Internal function that does the actual loading
-const loadPageMetaTagsInternal = async (page: string) => {
+const loadPageMetaTagsInternal = async (page: string): Promise<void> => {
   try {
     const response = await fetch(
       `/api/admin/meta-tags/page/${encodeURIComponent(page)}`,
