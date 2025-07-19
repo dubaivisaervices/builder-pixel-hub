@@ -22,8 +22,16 @@ interface StructuredData {
 
 // Dynamic meta tag injection
 export const updateMetaTags = (seoData: SEOData) => {
+  // Ensure we're in the browser environment
+  if (typeof document === "undefined") {
+    console.warn("updateMetaTags called outside browser environment");
+    return;
+  }
+
   // Update document title
-  document.title = seoData.title;
+  if (seoData.title) {
+    document.title = seoData.title;
+  }
 
   // Update or create meta tags
   const metaTags = [
