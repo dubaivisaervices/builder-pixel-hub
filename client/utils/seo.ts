@@ -95,13 +95,34 @@ export const loadPageMetaTags = async (page: string) => {
     const response = await fetch(
       `/api/admin/meta-tags/page/${encodeURIComponent(page)}`,
     );
+
+    // Check if response is ok before trying to parse JSON
+    if (!response.ok) {
+      // If 404, that's expected for pages without custom meta tags
+      if (response.status === 404) {
+        console.log(`No custom meta tags found for page: ${page}`);
+        return;
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const data = await response.json();
 
     if (data.success && data.metaTag) {
       updateMetaTags(data.metaTag);
     }
   } catch (error) {
-    console.error("Error loading page meta tags:", error);
+    // Only log actual errors, not expected 404s
+    if (
+      error instanceof TypeError &&
+      error.message.includes("body stream already read")
+    ) {
+      console.warn(
+        "Response body was already consumed - skipping meta tag loading",
+      );
+    } else {
+      console.error("Error loading page meta tags:", error);
+    }
   }
 };
 
