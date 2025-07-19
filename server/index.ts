@@ -169,6 +169,16 @@ import {
   getAllReports,
   updateReportStatus,
 } from "./routes/reports-api";
+import {
+  getAllMetaTags,
+  getMetaTagsByPage,
+  createMetaTags,
+  updateMetaTags,
+  deleteMetaTags,
+  generateSitemap,
+  testMetaTags,
+  generateRobotsTxt,
+} from "./routes/meta-tags";
 // Temporarily disabled due to space constraints
 // import {
 //   downloadOptimizedPhotos,
