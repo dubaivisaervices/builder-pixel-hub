@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import NetlifyUploadButton from "@/components/NetlifyUploadButton";
+import MetaTagManager from "@/components/MetaTagManager";
 import {
   Shield,
   Users,
