@@ -956,31 +956,37 @@ export default function ComplaintFormImproved() {
                                       </SelectTrigger>
                                       <SelectContent>
                                         <SelectItem value="Agreement Copy">
-                                          Agreement Copy
+                                          📄 Agreement Copy
                                         </SelectItem>
                                         <SelectItem value="Payment Receipt">
-                                          Payment Receipt
+                                          🧾 Payment Receipt
                                         </SelectItem>
                                         <SelectItem value="Invoice">
-                                          Invoice
+                                          💵 Invoice
                                         </SelectItem>
                                         <SelectItem value="Email/Message">
-                                          Email/Message
+                                          📧 Email/Message
                                         </SelectItem>
                                         <SelectItem value="Photo Evidence">
-                                          Photo Evidence
+                                          📸 Photo Evidence
                                         </SelectItem>
                                         <SelectItem value="Bank Statement">
-                                          Bank Statement
+                                          🏦 Bank Statement
                                         </SelectItem>
                                         <SelectItem value="Contract">
-                                          Contract
+                                          📋 Contract
                                         </SelectItem>
                                         <SelectItem value="ID Copy">
-                                          ID Copy
+                                          🆔 ID Copy
+                                        </SelectItem>
+                                        <SelectItem value="Communication Records">
+                                          💬 Communication Records
+                                        </SelectItem>
+                                        <SelectItem value="Service Agreement">
+                                          📜 Service Agreement
                                         </SelectItem>
                                         <SelectItem value="Other Document">
-                                          Other Document
+                                          📁 Other Document
                                         </SelectItem>
                                       </SelectContent>
                                     </Select>
