@@ -794,18 +794,23 @@ export default function ComplaintForm() {
         </div>
 
         <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8 relative">
-          <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
-            {/* Company Selection - Redesigned */}
-            <Card className="shadow-lg border border-gray-200 bg-white">
-              <CardHeader>
-                <CardTitle className="flex items-center text-lg font-semibold text-gray-900">
-                  <Building2 className="h-5 w-5 text-blue-600 mr-3" />
-                  Select Company to Report
+                    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            {/* Step 1: Company Selection - Compact Design */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <Building2 className="h-4 w-4 text-blue-600" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900">Company Selection</h3>
+                  </div>
                   {completedSteps.includes(1) && (
-                    <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                    </div>
                   )}
-                </CardTitle>
-              </CardHeader>
+                </div>
               <CardContent className="p-4 sm:p-6 relative">
                 <div className="relative">
                   <div className="relative w-full sm:w-1/2 mx-auto">
