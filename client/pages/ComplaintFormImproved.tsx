@@ -533,7 +533,9 @@ export default function ComplaintFormImproved() {
                   onValueChange={handleSelectChange}
                   required
                 >
-                  <SelectTrigger className="w-full h-10 text-sm">
+                  <SelectTrigger
+                    className={`w-full h-10 text-sm ${!selectedCompany ? "border-red-500" : "border-gray-300"}`}
+                  >
                     <SelectValue placeholder="Select or search company..." />
                   </SelectTrigger>
                   <SelectContent className="max-h-60">
@@ -656,7 +658,9 @@ export default function ComplaintFormImproved() {
                     required
                     disabled={!selectedCompany}
                   >
-                    <SelectTrigger className="mt-1">
+                    <SelectTrigger
+                      className={`mt-1 ${getFieldErrorClass(reportData.issueType, true)}`}
+                    >
                       <SelectValue placeholder="Select issue type..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -726,7 +730,7 @@ export default function ComplaintFormImproved() {
                         description: e.target.value,
                       }))
                     }
-                    className="mt-1 min-h-[100px]"
+                    className={`mt-1 min-h-[100px] ${getFieldErrorClass(reportData.description, true)}`}
                     required
                     disabled={!selectedCompany}
                   />
@@ -773,7 +777,7 @@ export default function ComplaintFormImproved() {
                           dateOfIncident: e.target.value,
                         }))
                       }
-                      className="mt-1"
+                      className={`mt-1 ${getFieldErrorClass(reportData.dateOfIncident, true)}`}
                       required
                       disabled={!selectedCompany}
                     />
@@ -1005,7 +1009,7 @@ export default function ComplaintFormImproved() {
                           reporterName: e.target.value,
                         }))
                       }
-                      className="mt-1"
+                      className={`mt-1 ${getFieldErrorClass(reportData.reporterName, true)}`}
                       required
                       disabled={!reportData.description}
                     />
@@ -1029,7 +1033,7 @@ export default function ComplaintFormImproved() {
                           reporterEmail: e.target.value,
                         }))
                       }
-                      className="mt-1"
+                      className={`mt-1 ${getFieldErrorClass(reportData.reporterEmail, true)}`}
                       required
                       disabled={!reportData.description}
                     />
