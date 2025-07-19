@@ -567,7 +567,11 @@ export default function SimpleBusinessDirectory() {
                 {/* Search Input */}
                 <input
                   type="text"
-                  placeholder="Search consultants..."
+                  placeholder={
+                    window.innerWidth < 640
+                      ? "Search..."
+                      : "Search consultants..."
+                  }
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onFocus={() =>
