@@ -571,14 +571,12 @@ export default function ComplaintFormImproved() {
                           onFocus={(e) => {
                             e.stopPropagation();
                           }}
-                          onInput={(e) => {
-                            // Keep focus after input
-                            const target = e.target as HTMLInputElement;
-                            setTimeout(() => {
-                              if (target && document.activeElement !== target) {
-                                target.focus();
-                              }
-                            }, 10);
+                          onKeyDown={(e) => {
+                            // Prevent dropdown from closing on typing
+                            e.stopPropagation();
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
                           }}
                           autoComplete="off"
                           className="w-full px-3 py-2 pr-8 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
