@@ -61,9 +61,11 @@ interface ReportFormData {
   evidenceDescription: string;
   paymentReceipt?: File;
   agreementCopy?: File;
+  evidenceFiles?: File[];
   reporterName: string;
   reporterEmail: string;
   reporterPhone: string;
+  isPublic: boolean;
 }
 
 export default function ComplaintFormImproved() {
@@ -84,10 +86,13 @@ export default function ComplaintFormImproved() {
     reporterName: "",
     reporterEmail: "",
     reporterPhone: "",
+    isPublic: true,
+    evidenceFiles: [],
   });
 
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [uploadErrors, setUploadErrors] = useState<string[]>([]);
 
   const navigate = useNavigate();
   const location = useLocation();
