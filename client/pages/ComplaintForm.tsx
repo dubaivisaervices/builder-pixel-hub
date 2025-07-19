@@ -814,7 +814,7 @@ export default function ComplaintForm() {
                   )}
                 </div>
 
-                {/* Search Section */}
+                {/* Compact Search Section */}
                 <div className="relative">
                   <div className="relative w-full sm:w-1/2 mx-auto">
                     <input
@@ -823,21 +823,19 @@ export default function ComplaintForm() {
                       value={searchTerm}
                       onChange={(e) => handleCompanySearch(e.target.value)}
                       onFocus={handleSearchFocus}
-                      className={`w-full h-12 sm:h-14 pl-12 pr-6 text-sm sm:text-base border-2 rounded-xl focus:outline-none transition-all duration-300 shadow-sm hover:shadow-md ${
+                      className={`w-full h-10 sm:h-12 pl-10 pr-4 text-sm border rounded-lg focus:outline-none transition-all duration-200 ${
                         isTyping
-                          ? "border-blue-500 ring-2 ring-blue-200 bg-blue-50"
-                          : "border-gray-300 bg-white hover:border-blue-400"
+                          ? "border-blue-400 ring-1 ring-blue-200 bg-blue-50"
+                          : "border-gray-300 bg-white hover:border-gray-400"
                       }`}
                       required
                     />
-                    <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                      <Search
-                        className={`h-5 w-5 transition-colors duration-300 ${isTyping ? "text-blue-500" : "text-gray-400"}`}
-                      />
+                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                      <Search className="h-4 w-4 text-gray-400" />
                     </div>
                     {isTyping && (
-                      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                        <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <div className="w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                       </div>
                     )}
                   </div>
@@ -1191,7 +1189,7 @@ export default function ComplaintForm() {
                     <Input
                       id="amountLost"
                       type="number"
-                      placeholder="���� 0"
+                      placeholder="��� 0"
                       value={reportData.amountLost || ""}
                       onChange={(e) =>
                         setReportData((prev) => ({
