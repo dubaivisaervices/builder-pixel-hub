@@ -56,16 +56,10 @@ const App = () => (
             <Route path="/services" element={<BusinessListing />} />
             <Route path="/services/:category" element={<BusinessListing />} />
             <Route path="/help-center" element={<HelpCenter />} />
-            <Route path="/api-test" element={<ApiTest />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/manage" element={<AdminManage />} />
             <Route path="/admin/*" element={<AdminDashboard />} />
-            <Route path="/admin-images" element={<AdminImageManager />} />
-            <Route path="/supabase-admin" element={<SupabaseAdmin />} />
-            <Route path="/hostinger-upload" element={<HostingerUpload />} />
             <Route path="/add-business" element={<AddBusinessPage />} />
-            <Route path="/admin-login" element={<AdminBypass />} />
-            <Route path="/admin-access" element={<InstantAdmin />} />
             <Route
               path="/fraud-immigration-consultants"
               element={<FraudImmigrationConsultants />}
