@@ -982,9 +982,9 @@ export default function ComplaintForm() {
                       <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 text-green-500 flex-shrink-0 mx-auto sm:mx-0" />
                     </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                                )}
+              </div>
+            </div>
 
             {/* Report Details - Enhanced */}
             <Card className="glass-card shadow-2xl border-0 overflow-hidden fade-in-scale">
