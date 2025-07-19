@@ -582,6 +582,7 @@ export default function SimpleBusinessDirectory() {
                     focus:ring-2 focus:ring-blue-300 focus:border-blue-500 focus:outline-none
                     placeholder-gray-500 text-gray-900
                     shadow-md transition-all duration-200
+                    placeholder:text-xs sm:placeholder:text-sm
                   "
                 />
 
