@@ -204,6 +204,17 @@ export default function ComplaintFormImproved() {
     }
   };
 
+  // Handle mobile viewport issues
+  const handleSelectOpen = () => {
+    // Prevent scroll to top on mobile
+    if (window.innerWidth <= 768) {
+      const currentScrollY = window.scrollY;
+      setTimeout(() => {
+        window.scrollTo(0, currentScrollY);
+      }, 100);
+    }
+  };
+
   const handleCompanySelect = (business: BusinessData) => {
     setSelectedCompany(business);
     setSearchTerm(business.name);
@@ -536,6 +547,9 @@ export default function ComplaintFormImproved() {
                 <Select
                   value={selectedCompany?.id || ""}
                   onValueChange={handleSelectChange}
+                  onOpenChange={(open) => {
+                    if (open) handleSelectOpen();
+                  }}
                   required
                 >
                   <SelectTrigger
@@ -543,22 +557,35 @@ export default function ComplaintFormImproved() {
                   >
                     <SelectValue placeholder="Select or search company..." />
                   </SelectTrigger>
-                  <SelectContent className="max-h-60">
+                  <SelectContent className="max-h-60" sideOffset={5}>
                     <div className="p-2 relative">
                       <input
                         type="text"
                         placeholder="Type 2+ characters to search..."
                         value={searchTerm}
                         onChange={(e) => {
-                          setSearchTerm(e.target.value);
-                          handleCompanySearch(e.target.value);
+                          const value = e.target.value;
+                          setSearchTerm(value);
+                          // Don't auto-call handleCompanySearch to prevent focus issues
+                        }}
+                        onInput={(e) => {
+                          const value = e.currentTarget.value;
+                          handleCompanySearch(value);
+                        }}
+                        onFocus={(e) => {
+                          e.stopPropagation();
+                          // Keep focus on input
                         }}
                         className="w-full px-3 py-2 pr-8 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        autoComplete="off"
                       />
                       {searchTerm && (
                         <button
                           type="button"
-                          onClick={clearSearch}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            clearSearch();
+                          }}
                           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                         >
                           <X className="h-4 w-4" />
