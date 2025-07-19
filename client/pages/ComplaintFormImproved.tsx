@@ -517,8 +517,8 @@ export default function ComplaintFormImproved() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="border border-gray-200 rounded-lg shadow-sm bg-white">
+      <div className="max-w-4xl mx-auto px-2 sm:px-4 py-4 sm:py-8 w-full">
+        <div className="border border-gray-200 rounded-lg shadow-sm bg-white mx-2 sm:mx-0">
           <form onSubmit={handleSubmit} className="p-6 space-y-8">
             {/* Step 1: Company Selection */}
             <Card className="shadow-sm border border-gray-200">
@@ -533,7 +533,7 @@ export default function ComplaintFormImproved() {
                   )}
                 </div>
 
-                <div className="max-w-lg mx-auto">
+                <div className="max-w-full sm:max-w-lg mx-auto">
                   <Select
                     value={selectedCompany?.id || ""}
                     onValueChange={handleSelectChange}
@@ -563,10 +563,20 @@ export default function ComplaintFormImproved() {
                           onChange={(e) => {
                             const value = e.target.value;
                             setSearchTerm(value);
-                            // Use setTimeout to prevent focus loss after 2 characters
-                            setTimeout(() => handleCompanySearch(value), 0);
+                            handleCompanySearch(value);
                           }}
-                          onFocus={(e) => e.stopPropagation()}
+                          onFocus={(e) => {
+                            e.stopPropagation();
+                          }}
+                          onInput={(e) => {
+                            // Keep focus after input
+                            const target = e.target as HTMLInputElement;
+                            setTimeout(() => {
+                              if (target && document.activeElement !== target) {
+                                target.focus();
+                              }
+                            }, 10);
+                          }}
                           autoComplete="off"
                           className="w-full px-3 py-2 pr-8 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
