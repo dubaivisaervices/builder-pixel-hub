@@ -557,7 +557,10 @@ export default function ComplaintFormImproved() {
                     >
                       <SelectValue placeholder="Select or search company..." />
                     </SelectTrigger>
-                    <SelectContent className="max-h-60">
+                    <SelectContent
+                      className="max-h-60"
+                      onCloseAutoFocus={(e) => e.preventDefault()}
+                    >
                       <div className="p-2 relative">
                         <input
                           type="text"
