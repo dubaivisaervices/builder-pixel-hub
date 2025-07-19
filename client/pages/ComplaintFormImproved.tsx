@@ -517,8 +517,9 @@ export default function ComplaintFormImproved() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="border border-gray-200 rounded-lg shadow-sm bg-white">
+          <form onSubmit={handleSubmit} className="p-6 space-y-8">
           {/* Step 1: Company Selection */}
           <Card className="shadow-sm border border-gray-200">
             <CardContent className="p-4 sm:p-6">
@@ -533,7 +534,7 @@ export default function ComplaintFormImproved() {
               </div>
 
               <div className="max-w-lg mx-auto">
-                <Select
+                                <Select
                   value={selectedCompany?.id || ""}
                   onValueChange={handleSelectChange}
                   onOpenChange={(open) => {
@@ -556,7 +557,7 @@ export default function ComplaintFormImproved() {
                         type="text"
                         placeholder="Type 2+ characters to search..."
                         value={searchTerm}
-                        onChange={(e) => {
+                                                onChange={(e) => {
                           const value = e.target.value;
                           setSearchTerm(value);
                           // Use setTimeout to prevent focus loss after 2 characters
