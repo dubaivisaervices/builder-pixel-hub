@@ -305,7 +305,7 @@ export default function ComplaintFormImproved() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-20">
       {/* Compact Hero */}
       <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white">
         <div className="max-w-4xl mx-auto px-4 py-8">
@@ -391,7 +391,7 @@ export default function ComplaintFormImproved() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           {/* Step 1: Company Selection */}
           <Card className="shadow-sm border border-gray-200">
             <CardContent className="p-6">
@@ -811,6 +811,78 @@ export default function ComplaintFormImproved() {
 
       <GovernmentSection />
       <Footer />
+
+      {/* Sticky Bottom Steps */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
+        <div className="max-w-4xl mx-auto px-2 sm:px-4 py-2 sm:py-3">
+          <div className="flex items-center justify-between relative">
+            {[
+              { number: 1, label: "Company", completed: !!selectedCompany },
+              {
+                number: 2,
+                label: "Details",
+                completed: !!(
+                  reportData.issueType &&
+                  reportData.description &&
+                  reportData.dateOfIncident
+                ),
+              },
+              {
+                number: 3,
+                label: "Evidence",
+                completed: !!reportData.evidenceDescription,
+              },
+              {
+                number: 4,
+                label: "Contact",
+                completed: !!(
+                  reportData.reporterName && reportData.reporterEmail
+                ),
+              },
+            ].map((step, index) => (
+              <div
+                key={step.number}
+                className="flex flex-col items-center flex-1 relative"
+              >
+                <div
+                  className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-xs font-medium mb-1 ${
+                    step.completed
+                      ? "bg-green-600 text-white"
+                      : "bg-gray-200 text-gray-500"
+                  }`}
+                >
+                  {step.completed ? (
+                    <CheckCircle className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                  ) : (
+                    step.number
+                  )}
+                </div>
+                <span className="text-xs sm:text-sm text-gray-600 text-center">
+                  {step.label}
+                </span>
+                {index < 3 && (
+                  <div
+                    className={`absolute top-2 sm:top-3 left-1/2 w-full h-0.5 ${
+                      step.completed ? "bg-green-600" : "bg-gray-200"
+                    }`}
+                    style={{
+                      left: "50%",
+                      width: "calc(100% - 1rem)",
+                      marginLeft: "0.5rem",
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-1 mt-2">
+            <div
+              className="bg-blue-600 h-1 rounded-full transition-all duration-500"
+              style={{ width: `${getProgressPercentage()}%` }}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
