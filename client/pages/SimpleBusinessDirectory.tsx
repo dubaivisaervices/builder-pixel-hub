@@ -570,9 +570,19 @@ export default function SimpleBusinessDirectory() {
                   placeholder="Search consultants..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  onFocus={() =>
-                    searchTerm.length >= 2 && setShowSuggestions(true)
-                  }
+                  onFocus={(e) => {
+                    // Prevent page scroll on mobile when keyboard opens
+                    if (window.innerWidth <= 768) {
+                      setTimeout(() => {
+                        e.target.scrollIntoView({
+                          behavior: "smooth",
+                          block: "center",
+                          inline: "nearest",
+                        });
+                      }, 300);
+                    }
+                    searchTerm.length >= 2 && setShowSuggestions(true);
+                  }}
                   onBlur={() =>
                     setTimeout(() => setShowSuggestions(false), 200)
                   }
