@@ -52,6 +52,12 @@ interface BusinessData {
   category: string;
 }
 
+interface EvidenceFile {
+  file: File;
+  name: string;
+  type: string;
+}
+
 interface ReportFormData {
   issueType: string;
   employeeName?: string;
@@ -59,9 +65,7 @@ interface ReportFormData {
   amountLost?: string;
   dateOfIncident: string;
   evidenceDescription: string;
-  paymentReceipt?: File;
-  agreementCopy?: File;
-  evidenceFiles?: File[];
+  evidenceFiles?: EvidenceFile[];
   reporterName: string;
   reporterEmail: string;
   reporterPhone: string;
@@ -89,6 +93,8 @@ export default function ComplaintFormImproved() {
     isPublic: true,
     evidenceFiles: [],
   });
+
+  const [evidenceNames, setEvidenceNames] = useState<string[]>([]);
 
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -228,7 +234,8 @@ export default function ComplaintFormImproved() {
   const handleFileUpload = (files: FileList | null) => {
     if (!files) return;
 
-    const newFiles: File[] = [];
+    const newEvidenceFiles: EvidenceFile[] = [];
+    const newEvidenceNames: string[] = [];
     const errors: string[] = [];
     const maxSize = 5 * 1024 * 1024; // 5MB
     const allowedTypes = [
@@ -265,7 +272,27 @@ export default function ComplaintFormImproved() {
         return;
       }
 
-      newFiles.push(file);
+      // Determine default evidence type based on filename
+      const fileName = file.name.toLowerCase();
+      let evidenceType = "Document";
+      if (fileName.includes("agreement") || fileName.includes("contract")) {
+        evidenceType = "Agreement Copy";
+      } else if (fileName.includes("receipt") || fileName.includes("payment")) {
+        evidenceType = "Payment Receipt";
+      } else if (fileName.includes("invoice")) {
+        evidenceType = "Invoice";
+      } else if (fileName.includes("email") || fileName.includes("message")) {
+        evidenceType = "Email/Message";
+      } else if (file.type.includes("image")) {
+        evidenceType = "Photo Evidence";
+      }
+
+      newEvidenceFiles.push({
+        file,
+        name: evidenceType,
+        type: file.type,
+      });
+      newEvidenceNames.push(evidenceType);
     });
 
     if (errors.length > 0) {
@@ -274,8 +301,9 @@ export default function ComplaintFormImproved() {
       setUploadErrors([]);
       setReportData((prev) => ({
         ...prev,
-        evidenceFiles: [...(prev.evidenceFiles || []), ...newFiles],
+        evidenceFiles: [...(prev.evidenceFiles || []), ...newEvidenceFiles],
       }));
+      setEvidenceNames((prev) => [...prev, ...newEvidenceNames]);
     }
   };
 
@@ -284,6 +312,29 @@ export default function ComplaintFormImproved() {
       ...prev,
       evidenceFiles: prev.evidenceFiles?.filter((_, i) => i !== index) || [],
     }));
+    setEvidenceNames((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const updateEvidenceName = (index: number, newName: string) => {
+    setEvidenceNames((prev) => {
+      const updated = [...prev];
+      updated[index] = newName;
+      return updated;
+    });
+    setReportData((prev) => ({
+      ...prev,
+      evidenceFiles:
+        prev.evidenceFiles?.map((evidence, i) =>
+          i === index ? { ...evidence, name: newName } : evidence,
+        ) || [],
+    }));
+  };
+
+  const clearSearch = () => {
+    setSearchTerm("");
+    setSelectedCompany(null);
+    setSearchSuggestions([]);
+    setShowSuggestions(false);
   };
 
   const formatFileSize = (bytes: number) => {
@@ -307,9 +358,11 @@ export default function ComplaintFormImproved() {
       const formData = new FormData();
       Object.entries(reportData).forEach(([key, value]) => {
         if (key === "evidenceFiles" && Array.isArray(value)) {
-          // Handle multiple evidence files
-          value.forEach((file, index) => {
-            formData.append(`evidenceFile_${index}`, file);
+          // Handle multiple evidence files with names
+          value.forEach((evidenceFile, index) => {
+            formData.append(`evidenceFile_${index}`, evidenceFile.file);
+            formData.append(`evidenceFileName_${index}`, evidenceFile.name);
+            formData.append(`evidenceFileType_${index}`, evidenceFile.type);
           });
         } else if (value instanceof File) {
           formData.append(key, value);
@@ -437,14 +490,26 @@ export default function ComplaintFormImproved() {
                     <SelectValue placeholder="Select or search company..." />
                   </SelectTrigger>
                   <SelectContent className="max-h-60">
-                    <div className="p-2">
+                    <div className="p-2 relative">
                       <input
                         type="text"
                         placeholder="Type 2+ characters to search..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        onChange={(e) => {
+                          setSearchTerm(e.target.value);
+                          handleCompanySearch(e.target.value);
+                        }}
+                        className="w-full px-3 py-2 pr-8 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
+                      {searchTerm && (
+                        <button
+                          type="button"
+                          onClick={clearSearch}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
                     </div>
                     {searchTerm.length >= 2 ? (
                       filteredBusinesses.length > 0 ? (
@@ -762,42 +827,94 @@ export default function ComplaintFormImproved() {
                     reportData.evidenceFiles.length > 0 && (
                       <div className="mt-4 space-y-2">
                         <Label className="text-sm font-medium text-gray-700">
-                          Uploaded Files ({reportData.evidenceFiles.length}/5)
+                          Uploaded Evidence Files (
+                          {reportData.evidenceFiles.length}/5)
                         </Label>
-                        <div className="space-y-2">
-                          {reportData.evidenceFiles.map((file, index) => (
-                            <div
-                              key={index}
-                              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border"
-                            >
-                              <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                                  {file.type.includes("image") ? (
-                                    <Eye className="h-4 w-4 text-blue-600" />
-                                  ) : (
-                                    <FileText className="h-4 w-4 text-blue-600" />
-                                  )}
+                        <div className="space-y-3">
+                          {reportData.evidenceFiles.map(
+                            (evidenceFile, index) => (
+                              <div
+                                key={index}
+                                className="p-4 bg-gray-50 rounded-lg border space-y-3"
+                              >
+                                {/* File Info */}
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center space-x-3">
+                                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                      {evidenceFile.type.includes("image") ? (
+                                        <Eye className="h-4 w-4 text-blue-600" />
+                                      ) : (
+                                        <FileText className="h-4 w-4 text-blue-600" />
+                                      )}
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-medium text-gray-900 truncate max-w-[200px]">
+                                        {evidenceFile.file.name}
+                                      </p>
+                                      <p className="text-xs text-gray-500">
+                                        {formatFileSize(evidenceFile.file.size)}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeFile(index)}
+                                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                  >
+                                    <X className="h-4 w-4" />
+                                  </Button>
                                 </div>
+
+                                {/* Evidence Name/Type */}
                                 <div>
-                                  <p className="text-sm font-medium text-gray-900 truncate max-w-[200px]">
-                                    {file.name}
-                                  </p>
-                                  <p className="text-xs text-gray-500">
-                                    {formatFileSize(file.size)}
-                                  </p>
+                                  <Label className="text-xs font-medium text-gray-600 mb-1 block">
+                                    Evidence Type/Name
+                                  </Label>
+                                  <Select
+                                    value={evidenceFile.name}
+                                    onValueChange={(value) =>
+                                      updateEvidenceName(index, value)
+                                    }
+                                  >
+                                    <SelectTrigger className="w-full h-8 text-xs">
+                                      <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="Agreement Copy">
+                                        Agreement Copy
+                                      </SelectItem>
+                                      <SelectItem value="Payment Receipt">
+                                        Payment Receipt
+                                      </SelectItem>
+                                      <SelectItem value="Invoice">
+                                        Invoice
+                                      </SelectItem>
+                                      <SelectItem value="Email/Message">
+                                        Email/Message
+                                      </SelectItem>
+                                      <SelectItem value="Photo Evidence">
+                                        Photo Evidence
+                                      </SelectItem>
+                                      <SelectItem value="Bank Statement">
+                                        Bank Statement
+                                      </SelectItem>
+                                      <SelectItem value="Contract">
+                                        Contract
+                                      </SelectItem>
+                                      <SelectItem value="ID Copy">
+                                        ID Copy
+                                      </SelectItem>
+                                      <SelectItem value="Other Document">
+                                        Other Document
+                                      </SelectItem>
+                                    </SelectContent>
+                                  </Select>
                                 </div>
                               </div>
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => removeFile(index)}
-                                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                              >
-                                <X className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          ))}
+                            ),
+                          )}
                         </div>
                       </div>
                     )}
