@@ -265,19 +265,29 @@ export const generateFAQStructuredData = (
 
 // Inject structured data into page
 export const injectStructuredData = (structuredData: StructuredData) => {
-  const script = document.createElement("script");
-  script.type = "application/ld+json";
-  script.textContent = JSON.stringify(structuredData);
+  try {
+    // Ensure we're in the browser environment
+    if (typeof document === "undefined") {
+      console.warn("injectStructuredData called outside browser environment");
+      return;
+    }
 
-  // Remove existing structured data script if present
-  const existingScript = document.querySelector(
-    'script[type="application/ld+json"]',
-  );
-  if (existingScript) {
-    existingScript.remove();
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify(structuredData);
+
+    // Remove existing structured data script if present
+    const existingScript = document.querySelector(
+      'script[type="application/ld+json"]',
+    );
+    if (existingScript) {
+      existingScript.remove();
+    }
+
+    document.head.appendChild(script);
+  } catch (error) {
+    console.error("Error injecting structured data:", error);
   }
-
-  document.head.appendChild(script);
 };
 
 // Generate breadcrumb structured data
