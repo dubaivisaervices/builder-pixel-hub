@@ -651,11 +651,13 @@ export default function ComplaintFormImproved() {
                     <CheckCircle className="h-6 w-6 text-green-600" />
                   </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
+                            )}
+              </div>
 
-          {/* Step 2: Report Details */}
+              {/* Divider */}
+              <div className="border-t border-gray-200"></div>
+
+              {/* Step 2: Report Details */}
           <Card
             className={`shadow-sm border border-gray-200 ${!selectedCompany ? "opacity-50" : ""}`}
           >
