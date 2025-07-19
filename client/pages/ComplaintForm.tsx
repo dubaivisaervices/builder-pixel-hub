@@ -762,117 +762,20 @@ export default function ComplaintForm() {
       `}</style>
 
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
-        {/* Enhanced Hero Section */}
-        <div className="relative overflow-hidden bg-white">
-          {/* Sophisticated Background Pattern */}
-          <div className="absolute inset-0 bg-gradient-to-br from-red-50 via-orange-50 to-pink-50"></div>
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 25px 25px, rgba(239, 68, 68, 0.1) 2px, transparent 0),
-                           radial-gradient(circle at 75px 75px, rgba(251, 146, 60, 0.1) 2px, transparent 0)`,
-              backgroundSize: "100px 100px",
-            }}
-          ></div>
-
-          {/* Floating Elements */}
-          <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-br from-red-400/10 to-orange-400/10 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
-          <div className="absolute top-40 right-20 w-72 h-72 bg-gradient-to-br from-orange-400/10 to-pink-400/10 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-40 w-72 h-72 bg-gradient-to-br from-red-400/10 to-rose-400/10 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
-
-          <div className="relative max-w-6xl mx-auto px-4 py-12 sm:py-16">
+        {/* Compact Hero Section */}
+        <div className="bg-gradient-to-br from-red-600 to-orange-700 text-white">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
             <div className="text-center space-y-6">
-              {/* Icon with Modern Design */}
-              <div className="flex justify-center mb-6">
-                <div className="relative group">
-                  <div className="absolute -inset-4 bg-gradient-to-r from-red-500 to-orange-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
-                  <div className="relative bg-white rounded-2xl p-6 shadow-xl border border-gray-100 transform group-hover:scale-110 transition-transform duration-300">
-                    <Shield className="h-12 w-12 text-red-600 mx-auto" />
-                  </div>
-                </div>
-              </div>
+              {/* Title */}
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">
+                Report Business Issues
+              </h1>
 
-              {/* Title with Typography Excellence */}
-              <div className="space-y-4">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight tracking-tight">
-                  <span className="bg-gradient-to-r from-red-600 via-orange-600 to-pink-600 bg-clip-text text-transparent">
-                    Report Business
-                  </span>
-                  <span className="block text-gray-800 mt-2">Issues</span>
-                </h1>
-
-                <div className="w-24 h-1 bg-gradient-to-r from-red-500 to-orange-600 mx-auto rounded-full"></div>
-              </div>
-
-              <p className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
-                Help protect Dubai's business community through
-                <span className="text-red-600 font-medium">
-                  {" "}
-                  transparent reporting
-                </span>
-                ,
-                <span className="text-orange-600 font-medium">
-                  {" "}
-                  evidence collection
-                </span>
-                , and
-                <span className="text-pink-600 font-medium">
-                  {" "}
-                  community safety
-                </span>
-                .
+              {/* Description */}
+              <p className="text-base sm:text-lg text-red-100 max-w-2xl mx-auto">
+                Help protect Dubai's business community. Report fraudulent
+                practices and poor services.
               </p>
-
-              {/* Enhanced Statistics */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto">
-                {[
-                  {
-                    icon: Shield,
-                    value: "2.8k+",
-                    label: "Reports Filed",
-                    color: "red",
-                    gradient: "from-red-500 to-red-600",
-                  },
-                  {
-                    icon: Users,
-                    value: "98%",
-                    label: "Success Rate",
-                    color: "orange",
-                    gradient: "from-orange-500 to-orange-600",
-                  },
-                  {
-                    icon: Clock,
-                    value: "24h",
-                    label: "Response Time",
-                    color: "pink",
-                    gradient: "from-pink-500 to-pink-600",
-                  },
-                  {
-                    icon: Award,
-                    value: "Secure",
-                    label: "Data Protection",
-                    color: "rose",
-                    gradient: "from-rose-500 to-rose-600",
-                  },
-                ].map((stat, index) => (
-                  <div key={index} className="group relative">
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-red-500 to-orange-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-                    <div className="relative bg-white rounded-2xl p-4 shadow-lg border border-gray-100 transform group-hover:-translate-y-1 transition-all duration-300">
-                      <div
-                        className={`w-10 h-10 bg-gradient-to-r ${stat.gradient} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg`}
-                      >
-                        <stat.icon className="h-5 w-5 text-white" />
-                      </div>
-                      <div className="text-2xl font-bold text-gray-900 mb-1">
-                        {stat.value}
-                      </div>
-                      <div className="text-xs font-medium text-gray-600">
-                        {stat.label}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>
