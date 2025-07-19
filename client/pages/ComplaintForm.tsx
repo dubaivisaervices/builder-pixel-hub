@@ -808,14 +808,14 @@ export default function ComplaintForm() {
               </CardHeader>
               <CardContent className="p-4 sm:p-6 relative">
                 <div className="relative">
-                  <div className="relative">
+                  <div className="relative w-full sm:w-1/2 mx-auto">
                     <input
                       type="text"
-                      placeholder="🔍 Search by company name, location, or category..."
+                      placeholder="🔍 Search companies..."
                       value={searchTerm}
                       onChange={(e) => handleCompanySearch(e.target.value)}
                       onFocus={handleSearchFocus}
-                      className={`w-full h-12 sm:h-14 pl-12 pr-6 text-base border-2 rounded-xl focus:outline-none transition-all duration-300 shadow-sm hover:shadow-md ${
+                      className={`w-full h-12 sm:h-14 pl-12 pr-6 text-sm sm:text-base border-2 rounded-xl focus:outline-none transition-all duration-300 shadow-sm hover:shadow-md ${
                         isTyping
                           ? "border-blue-500 ring-2 ring-blue-200 bg-blue-50"
                           : "border-gray-300 bg-white hover:border-blue-400"
