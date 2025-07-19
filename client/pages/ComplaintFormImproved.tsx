@@ -192,6 +192,34 @@ export default function ComplaintFormImproved() {
     setShowSuggestions(false);
   };
 
+  const handleSelectChange = (value: string) => {
+    if (value === "add-new") {
+      navigate("/add-business");
+      return;
+    }
+
+    const business = businesses.find((b) => b.id === value);
+    if (business) {
+      handleCompanySelect(business);
+    }
+  };
+
+  const filteredBusinesses =
+    searchTerm.length >= 2
+      ? businesses
+          .filter(
+            (business) =>
+              business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              business.address
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()) ||
+              business.category
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()),
+          )
+          .slice(0, 10)
+      : [];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedCompany) {
