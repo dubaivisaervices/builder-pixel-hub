@@ -99,6 +99,13 @@ export default function ComplaintFormImproved() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [uploadErrors, setUploadErrors] = useState<string[]>([]);
+  const [showAddCompanyModal, setShowAddCompanyModal] = useState(false);
+  const [addCompanyData, setAddCompanyData] = useState({
+    name: "",
+    location: "",
+    description: "",
+  });
+  const [companySubmitted, setCompanySubmitted] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -205,7 +212,7 @@ export default function ComplaintFormImproved() {
 
   const handleSelectChange = (value: string) => {
     if (value === "add-new") {
-      navigate("/add-business");
+      setShowAddCompanyModal(true);
       return;
     }
 
@@ -213,6 +220,46 @@ export default function ComplaintFormImproved() {
     if (business) {
       handleCompanySelect(business);
     }
+  };
+
+  const handleAddCompanySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!addCompanyData.name.trim() || !addCompanyData.location.trim()) {
+      alert("Company name and location are required.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/add-company-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(addCompanyData),
+      });
+
+      if (response.ok) {
+        setCompanySubmitted(true);
+        setAddCompanyData({ name: "", location: "", description: "" });
+        setTimeout(() => {
+          setShowAddCompanyModal(false);
+          setCompanySubmitted(false);
+        }, 3000);
+      } else {
+        throw new Error("Failed to submit company request");
+      }
+    } catch (error) {
+      console.error("Error submitting company:", error);
+      alert("Error submitting company request. Please try again.");
+    }
+  };
+
+  const getFieldErrorClass = (fieldValue: any, isRequired: boolean = false) => {
+    if (!isRequired) return "";
+    return !fieldValue ||
+      (typeof fieldValue === "string" && fieldValue.trim() === "")
+      ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+      : "border-gray-300 focus:ring-blue-500 focus:border-blue-500";
   };
 
   const filteredBusinesses =
