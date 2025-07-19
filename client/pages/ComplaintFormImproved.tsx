@@ -1177,6 +1177,148 @@ export default function ComplaintFormImproved() {
       <GovernmentSection />
       <Footer />
 
+      {/* Add Company Modal */}
+      {showAddCompanyModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000] p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            {companySubmitted ? (
+              <div className="p-6 text-center">
+                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Company Request Submitted!
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Your company addition request has been submitted for review.
+                </p>
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                  <div className="flex items-start space-x-2">
+                    <Clock className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-yellow-800">
+                        24-Hour Review Process
+                      </p>
+                      <p className="text-sm text-yellow-700 mt-1">
+                        Please come back after 24 hours to report this company
+                        once it's approved by our authority.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleAddCompanySubmit}>
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Add New Company
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setShowAddCompanyModal(false)}
+                      className="text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <Label
+                        htmlFor="companyName"
+                        className="text-sm font-medium text-gray-700"
+                      >
+                        Company Name *
+                      </Label>
+                      <Input
+                        id="companyName"
+                        type="text"
+                        placeholder="Enter company name"
+                        value={addCompanyData.name}
+                        onChange={(e) =>
+                          setAddCompanyData((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
+                        className={`mt-1 ${getFieldErrorClass(addCompanyData.name, true)}`}
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <Label
+                        htmlFor="companyLocation"
+                        className="text-sm font-medium text-gray-700"
+                      >
+                        Location *
+                      </Label>
+                      <Input
+                        id="companyLocation"
+                        type="text"
+                        placeholder="Enter company location (e.g., Business Bay, Dubai)"
+                        value={addCompanyData.location}
+                        onChange={(e) =>
+                          setAddCompanyData((prev) => ({
+                            ...prev,
+                            location: e.target.value,
+                          }))
+                        }
+                        className={`mt-1 ${getFieldErrorClass(addCompanyData.location, true)}`}
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <Label
+                        htmlFor="companyDescription"
+                        className="text-sm font-medium text-gray-700"
+                      >
+                        Description (Optional)
+                      </Label>
+                      <Textarea
+                        id="companyDescription"
+                        placeholder="Brief description of company services..."
+                        value={addCompanyData.description}
+                        onChange={(e) =>
+                          setAddCompanyData((prev) => ({
+                            ...prev,
+                            description: e.target.value,
+                          }))
+                        }
+                        className="mt-1 min-h-[80px]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-3 mt-6">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setShowAddCompanyModal(false)}
+                      className="flex-1"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      className="flex-1 bg-blue-600 hover:bg-blue-700"
+                      disabled={
+                        !addCompanyData.name.trim() ||
+                        !addCompanyData.location.trim()
+                      }
+                    >
+                      Submit Request
+                    </Button>
+                  </div>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Sticky Bottom Steps */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
         <div className="max-w-4xl mx-auto px-2 sm:px-4 py-2 sm:py-3">
