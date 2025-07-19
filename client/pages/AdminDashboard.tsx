@@ -65,6 +65,7 @@ function AdminDashboardContent() {
     if (path.includes("/admin/requests")) return "requests";
     if (path.includes("/admin/categories")) return "categories";
     if (path.includes("/admin/netlify")) return "netlify";
+    if (path.includes("/admin/meta")) return "meta";
     return "dashboard";
   };
 
