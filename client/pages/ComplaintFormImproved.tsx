@@ -547,6 +547,7 @@ export default function ComplaintFormImproved() {
                 <Select
                   value={selectedCompany?.id || ""}
                   onValueChange={handleSelectChange}
+                  onOpenChange={handleSelectOpen}
                   required
                 >
                   <SelectTrigger
