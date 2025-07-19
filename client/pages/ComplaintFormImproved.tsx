@@ -225,6 +225,75 @@ export default function ComplaintFormImproved() {
           .slice(0, 10)
       : [];
 
+  const handleFileUpload = (files: FileList | null) => {
+    if (!files) return;
+
+    const newFiles: File[] = [];
+    const errors: string[] = [];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/jpg",
+      "application/pdf",
+      "image/webp",
+    ];
+    const maxFiles = 5;
+
+    // Check total number of files
+    const currentFiles = reportData.evidenceFiles || [];
+    if (currentFiles.length + files.length > maxFiles) {
+      errors.push(
+        `Maximum ${maxFiles} files allowed. You have ${currentFiles.length} files already.`,
+      );
+      setUploadErrors(errors);
+      return;
+    }
+
+    Array.from(files).forEach((file) => {
+      // Check file size
+      if (file.size > maxSize) {
+        errors.push(`${file.name} is too large. Maximum size is 5MB.`);
+        return;
+      }
+
+      // Check file type
+      if (!allowedTypes.includes(file.type)) {
+        errors.push(
+          `${file.name} is not a supported format. Use JPG, PNG, PDF, or WebP.`,
+        );
+        return;
+      }
+
+      newFiles.push(file);
+    });
+
+    if (errors.length > 0) {
+      setUploadErrors(errors);
+    } else {
+      setUploadErrors([]);
+      setReportData((prev) => ({
+        ...prev,
+        evidenceFiles: [...(prev.evidenceFiles || []), ...newFiles],
+      }));
+    }
+  };
+
+  const removeFile = (index: number) => {
+    setReportData((prev) => ({
+      ...prev,
+      evidenceFiles: prev.evidenceFiles?.filter((_, i) => i !== index) || [],
+    }));
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedCompany) {
