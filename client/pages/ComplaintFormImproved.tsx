@@ -536,6 +536,13 @@ export default function ComplaintFormImproved() {
                 <Select
                   value={selectedCompany?.id || ""}
                   onValueChange={handleSelectChange}
+                  onOpenChange={(open) => {
+                    // Prevent scroll to top on mobile when select opens
+                    if (open && window.innerWidth <= 768) {
+                      const currentScrollY = window.scrollY;
+                      setTimeout(() => window.scrollTo(0, currentScrollY), 100);
+                    }
+                  }}
                   required
                 >
                   <SelectTrigger
