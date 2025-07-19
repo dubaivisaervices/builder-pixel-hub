@@ -1652,6 +1652,13 @@ function AdminDashboardContent() {
           </div>
         )}
 
+        {/* Meta Tags & SEO Tab */}
+        {activeTab === "meta" && (
+          <div className="space-y-6">
+            <MetaTagManager />
+          </div>
+        )}
+
         {/* Categories Tab */}
         {activeTab === "categories" && (
           <div className="space-y-6">
