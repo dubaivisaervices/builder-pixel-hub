@@ -639,31 +639,127 @@ export default function ComplaintFormImproved() {
                   <FileText className="h-4 w-4 text-purple-600" />
                 </div>
                 <h3 className="text-lg font-semibold">Evidence (Optional)</h3>
-                {reportData.evidenceDescription && (
+                {(reportData.evidenceDescription ||
+                  (reportData.evidenceFiles &&
+                    reportData.evidenceFiles.length > 0)) && (
                   <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
                 )}
               </div>
 
-              <div>
-                <Label
-                  htmlFor="evidenceDescription"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Evidence Description
-                </Label>
-                <Textarea
-                  id="evidenceDescription"
-                  placeholder="Describe any evidence you have..."
-                  value={reportData.evidenceDescription}
-                  onChange={(e) =>
-                    setReportData((prev) => ({
-                      ...prev,
-                      evidenceDescription: e.target.value,
-                    }))
-                  }
-                  className="mt-1"
-                  disabled={!reportData.issueType}
-                />
+              <div className="space-y-4">
+                <div>
+                  <Label
+                    htmlFor="evidenceDescription"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Evidence Description
+                  </Label>
+                  <Textarea
+                    id="evidenceDescription"
+                    placeholder="Describe any evidence you have..."
+                    value={reportData.evidenceDescription}
+                    onChange={(e) =>
+                      setReportData((prev) => ({
+                        ...prev,
+                        evidenceDescription: e.target.value,
+                      }))
+                    }
+                    className="mt-1"
+                    disabled={!reportData.issueType}
+                  />
+                </div>
+
+                {/* File Upload Section */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                    Upload Evidence Files (Optional)
+                  </Label>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+                    <input
+                      type="file"
+                      id="evidenceFiles"
+                      multiple
+                      accept=".jpg,.jpeg,.png,.pdf,.webp"
+                      onChange={(e) => handleFileUpload(e.target.files)}
+                      className="hidden"
+                      disabled={!reportData.issueType}
+                    />
+                    <label
+                      htmlFor="evidenceFiles"
+                      className={`cursor-pointer flex flex-col items-center space-y-2 ${!reportData.issueType ? "opacity-50 cursor-not-allowed" : ""}`}
+                    >
+                      <Upload className="h-8 w-8 text-gray-400" />
+                      <div>
+                        <span className="text-sm font-medium text-gray-700">
+                          Click to upload files
+                        </span>
+                        <p className="text-xs text-gray-500 mt-1">
+                          JPG, PNG, PDF, WebP up to 5MB each (Max 5 files)
+                        </p>
+                      </div>
+                    </label>
+                  </div>
+
+                  {/* Upload Errors */}
+                  {uploadErrors.length > 0 && (
+                    <div className="mt-2 space-y-1">
+                      {uploadErrors.map((error, index) => (
+                        <p
+                          key={index}
+                          className="text-sm text-red-600 flex items-center"
+                        >
+                          <X className="h-4 w-4 mr-1" />
+                          {error}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Uploaded Files */}
+                  {reportData.evidenceFiles &&
+                    reportData.evidenceFiles.length > 0 && (
+                      <div className="mt-4 space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">
+                          Uploaded Files ({reportData.evidenceFiles.length}/5)
+                        </Label>
+                        <div className="space-y-2">
+                          {reportData.evidenceFiles.map((file, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border"
+                            >
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                  {file.type.includes("image") ? (
+                                    <Eye className="h-4 w-4 text-blue-600" />
+                                  ) : (
+                                    <FileText className="h-4 w-4 text-blue-600" />
+                                  )}
+                                </div>
+                                <div>
+                                  <p className="text-sm font-medium text-gray-900 truncate max-w-[200px]">
+                                    {file.name}
+                                  </p>
+                                  <p className="text-xs text-gray-500">
+                                    {formatFileSize(file.size)}
+                                  </p>
+                                </div>
+                              </div>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => removeFile(index)}
+                                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                </div>
               </div>
             </CardContent>
           </Card>
