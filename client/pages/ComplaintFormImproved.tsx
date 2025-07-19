@@ -346,7 +346,11 @@ export default function ComplaintFormImproved() {
       reportData.dateOfIncident
     )
       completed++;
-    if (reportData.evidenceDescription) completed++;
+    if (
+      reportData.evidenceDescription ||
+      (reportData.evidenceFiles && reportData.evidenceFiles.length > 0)
+    )
+      completed++;
     if (reportData.reporterName && reportData.reporterEmail) completed++;
 
     return (completed / total) * 100;
