@@ -394,7 +394,7 @@ export default function ComplaintFormImproved() {
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           {/* Step 1: Company Selection */}
           <Card className="shadow-sm border border-gray-200">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                   <Building2 className="h-4 w-4 text-blue-600" />
@@ -490,7 +490,7 @@ export default function ComplaintFormImproved() {
           <Card
             className={`shadow-sm border border-gray-200 ${!selectedCompany ? "opacity-50" : ""}`}
           >
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
                   <AlertTriangle className="h-4 w-4 text-orange-600" />
@@ -628,7 +628,7 @@ export default function ComplaintFormImproved() {
           <Card
             className={`shadow-sm border border-gray-200 ${!reportData.issueType ? "opacity-50" : ""}`}
           >
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
                   <FileText className="h-4 w-4 text-purple-600" />
@@ -667,7 +667,7 @@ export default function ComplaintFormImproved() {
           <Card
             className={`shadow-sm border border-gray-200 ${!reportData.description ? "opacity-50" : ""}`}
           >
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                   <UserCheck className="h-4 w-4 text-green-600" />
