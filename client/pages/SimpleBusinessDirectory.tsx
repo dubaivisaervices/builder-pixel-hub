@@ -557,7 +557,7 @@ export default function SimpleBusinessDirectory() {
             </p>
 
             {/* Search Box - Mobile Friendly */}
-            <div className="relative max-w-xl mx-auto mt-6">
+            <div className="relative max-w-xl mx-auto mt-6 mb-4 px-4 sm:px-0">
               <div className="relative">
                 {/* Search Icon */}
                 <div className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 z-20">
