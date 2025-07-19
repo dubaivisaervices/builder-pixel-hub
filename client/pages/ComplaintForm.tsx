@@ -1713,6 +1713,77 @@ export default function ComplaintForm() {
             </Card>
           </form>
 
+          {/* Community Protection Message */}
+          <div className="mt-12 sm:mt-16 mb-8 sm:mb-12">
+            <div className="bg-gradient-to-br from-red-50 via-orange-50 to-pink-50 rounded-3xl p-6 sm:p-8 lg:p-12 shadow-xl border border-red-100">
+              <div className="text-center space-y-6">
+                {/* Icon */}
+                <div className="flex justify-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-xl">
+                    <Shield className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+                  </div>
+                </div>
+
+                {/* Title */}
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
+                  Report the Company if You're Facing Issues
+                </h2>
+
+                {/* Description */}
+                <p className="text-base sm:text-lg lg:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+                  Help protect our community from fraudulent businesses and poor
+                  service providers. Your report makes a difference in keeping
+                  Dubai's business environment safe and trustworthy.
+                </p>
+
+                {/* Key Points */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-8">
+                  <div className="flex flex-col items-center text-center space-y-3">
+                    <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                      <AlertTriangle className="h-6 w-6 text-red-600" />
+                    </div>
+                    <h3 className="font-bold text-gray-900">Report Fraud</h3>
+                    <p className="text-sm text-gray-600">
+                      Expose scams and fraudulent activities
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col items-center text-center space-y-3">
+                    <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                      <Users className="h-6 w-6 text-orange-600" />
+                    </div>
+                    <h3 className="font-bold text-gray-900">
+                      Protect Community
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Keep others safe from bad experiences
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col items-center text-center space-y-3">
+                    <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                      <Award className="h-6 w-6 text-green-600" />
+                    </div>
+                    <h3 className="font-bold text-gray-900">Build Trust</h3>
+                    <p className="text-sm text-gray-600">
+                      Create a transparent business environment
+                    </p>
+                  </div>
+                </div>
+
+                {/* Call to Action */}
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/50">
+                  <p className="text-sm sm:text-base text-gray-600 font-medium">
+                    <span className="text-red-600 font-bold">🚨 Remember:</span>{" "}
+                    Every report you submit helps protect future customers from
+                    fraudulent practices and contributes to a safer business
+                    community in Dubai.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Community Impact Stats */}
           <div className="mt-12 sm:mt-16 mb-8 sm:mb-12">
             <div className="text-center mb-6 sm:mb-8 px-4">
