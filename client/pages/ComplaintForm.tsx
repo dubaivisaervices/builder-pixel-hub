@@ -344,7 +344,7 @@ export default function ComplaintForm() {
       ];
 
       console.log(
-        "🔧 Using error fallback data with",
+        "���� Using error fallback data with",
         fallbackBusinesses.length,
         "businesses",
       );
@@ -1687,62 +1687,102 @@ export default function ComplaintForm() {
             </div>
           </div>
 
-          {/* Community Impact Stats */}
-          <div className="mt-12 sm:mt-16 mb-8 sm:mb-12">
-            <div className="text-center mb-6 sm:mb-8 px-4">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-                Community Protection Impact
-              </h2>
-              <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                Together we're building the safest business environment in Dubai
-                🌟
-              </p>
+          {/* Community Impact Section - Redesigned */}
+          <div className="mt-8 sm:mt-12 mb-6 sm:mb-8">
+            {/* Why Report Section */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl p-6 sm:p-8 mb-8">
+              <div className="text-center space-y-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto">
+                  <Shield className="h-8 w-8 text-white" />
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+                  Why Your Report Matters
+                </h2>
+
+                <p className="text-sm sm:text-base text-gray-700 max-w-2xl mx-auto">
+                  Every report helps protect future customers and builds a safer
+                  business community in Dubai.
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                  <div className="bg-white/70 p-4 rounded-xl">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                        <AlertTriangle className="h-5 w-5 text-red-600" />
+                      </div>
+                      <div className="text-left">
+                        <h3 className="font-semibold text-gray-900 text-sm">
+                          Stop Fraud
+                        </h3>
+                        <p className="text-xs text-gray-600">
+                          Prevent others from being scammed
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/70 p-4 rounded-xl">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <Users className="h-5 w-5 text-green-600" />
+                      </div>
+                      <div className="text-left">
+                        <h3 className="font-semibold text-gray-900 text-sm">
+                          Protect Community
+                        </h3>
+                        <p className="text-xs text-gray-600">
+                          Keep Dubai business safe
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 px-4">
-              <div className="bg-white p-4 sm:p-6 text-center rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg">
-                  <Users className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+            {/* Quick Stats */}
+            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+              <div className="bg-white p-3 sm:p-4 text-center rounded-xl shadow-sm border border-gray-100">
+                <div className="text-lg sm:text-2xl font-bold text-red-600 mb-1">
+                  2.8k+
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
-                  2,847
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600 font-medium">
-                  Reports Submitted
-                </p>
-                <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                  This month: +127
-                </p>
+                <div className="text-xs sm:text-sm text-gray-600">
+                  Reports Filed
+                </div>
               </div>
 
-              <div className="bg-white p-4 sm:p-6 text-center rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg">
-                  <TrendingDown className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+              <div className="bg-white p-3 sm:p-4 text-center rounded-xl shadow-sm border border-gray-100">
+                <div className="text-lg sm:text-2xl font-bold text-green-600 mb-1">
+                  98%
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
-                  73%
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600 font-medium">
-                  Reduction in Scams
-                </p>
-                <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                  Since last year
-                </p>
+                <div className="text-xs sm:text-sm text-gray-600">
+                  Success Rate
+                </div>
               </div>
 
-              <div className="bg-white p-4 sm:p-6 text-center rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg">
-                  <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+              <div className="bg-white p-3 sm:p-4 text-center rounded-xl shadow-sm border border-gray-100">
+                <div className="text-lg sm:text-2xl font-bold text-blue-600 mb-1">
+                  24h
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
-                  24/7
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600 font-medium">
-                  Community Support
-                </p>
-                <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                  Always here for you
-                </p>
+                <div className="text-xs sm:text-sm text-gray-600">Response</div>
+              </div>
+            </div>
+
+            {/* Call to Action */}
+            <div className="bg-gradient-to-r from-red-500 to-orange-600 rounded-2xl p-6 sm:p-8 text-white text-center mt-8">
+              <h3 className="text-lg sm:text-xl font-bold mb-3">
+                🚨 Report & Protect Your Community
+              </h3>
+              <p className="text-sm sm:text-base opacity-90 mb-4">
+                Your voice matters. Help us keep Dubai's business environment
+                safe and trustworthy.
+              </p>
+              <div className="inline-flex items-center space-x-2 bg-white/20 rounded-lg px-4 py-2">
+                <Clock className="h-4 w-4" />
+                <span className="text-sm font-medium">
+                  Reports reviewed within 24 hours
+                </span>
               </div>
             </div>
           </div>
