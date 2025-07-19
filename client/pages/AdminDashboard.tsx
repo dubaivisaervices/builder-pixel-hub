@@ -849,6 +849,7 @@ function AdminDashboardContent() {
               { id: "google", label: "Google API Fetch", icon: Search },
               { id: "netlify", label: "📁 Netlify Images", icon: Camera },
               { id: "categories", label: "Categories", icon: Tags },
+              { id: "meta", label: "📝 Meta Tags & SEO", icon: FileText },
               { id: "upload", label: "🚀 Upload to Hostinger", icon: Camera },
             ].map((tab) => (
               <button
@@ -1346,7 +1347,7 @@ function AdminDashboardContent() {
                       {/* Combined Search Query Preview */}
                       <div className="bg-white border border-gray-200 rounded-lg p-4">
                         <Label className="text-sm font-medium text-gray-700">
-                          📝 Generated Search Query
+                          �� Generated Search Query
                         </Label>
                         <div
                           id="searchQueryPreview"
