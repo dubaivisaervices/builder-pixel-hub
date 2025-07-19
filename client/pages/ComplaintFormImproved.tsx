@@ -572,6 +572,31 @@ export default function ComplaintFormImproved() {
                   </Select>
                 </div>
 
+                {reportData.issueType && (
+                  <div>
+                    <Label
+                      htmlFor="employeeName"
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Employee/Contact Person Involved (Optional)
+                    </Label>
+                    <Input
+                      id="employeeName"
+                      type="text"
+                      placeholder="Name of the employee or contact person"
+                      value={reportData.employeeName || ""}
+                      onChange={(e) =>
+                        setReportData((prev) => ({
+                          ...prev,
+                          employeeName: e.target.value,
+                        }))
+                      }
+                      className="mt-1"
+                      disabled={!selectedCompany}
+                    />
+                  </div>
+                )}
+
                 <div>
                   <Label
                     htmlFor="description"
