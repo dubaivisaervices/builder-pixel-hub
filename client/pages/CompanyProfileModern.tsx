@@ -1191,7 +1191,7 @@ export default function CompanyProfileModern() {
 
   // IMMEDIATE title update using company name from URL
   if (companyName) {
-    const immediateTitle = `Reviews Visa Scam - ${companyName.replace(/-/g, ' ')}`;
+    const immediateTitle = `Reviews Visa Scam - ${companyName.replace(/-/g, " ")}`;
     document.title = immediateTitle;
     console.log("⚡ IMMEDIATE company title set to:", immediateTitle);
   }
