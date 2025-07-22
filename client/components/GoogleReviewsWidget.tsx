@@ -63,6 +63,16 @@ export default function GoogleReviewsWidget({
           return;
         }
 
+        // Check server connectivity first
+        const isServerReachable = await checkServerConnectivity();
+        if (!isServerReachable) {
+          console.log("🔍 Server appears to be unreachable, using fallback reviews");
+          setError("Unable to connect to server. Showing sample reviews.");
+          const fallbackData = getFallbackReviews(placeId);
+          setReviews(fallbackData);
+          return;
+        }
+
         // First test if API routing works at all
         try {
           const debugResponse = await fetch(`/api/debug-reviews/${placeId}`);
