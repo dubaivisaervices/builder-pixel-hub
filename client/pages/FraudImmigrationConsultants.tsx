@@ -80,6 +80,9 @@ interface FilterOptions {
 }
 
 export default function FraudImmigrationConsultants() {
+  // Initialize SEO for fraud immigration consultants page
+  useFraudReportSEO();
+
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>([]);
   const [displayedBusinesses, setDisplayedBusinesses] = useState<Business[]>(
