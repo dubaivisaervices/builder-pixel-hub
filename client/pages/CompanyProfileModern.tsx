@@ -1351,7 +1351,10 @@ export default function CompanyProfileModern() {
 
   // Initialize SEO for business profile with custom title format
   useEffect(() => {
-    console.log("🔍 SEO useEffect triggered. BusinessData:", businessData?.name);
+    console.log(
+      "🔍 SEO useEffect triggered. BusinessData:",
+      businessData?.name,
+    );
     console.log("🔍 Current document title:", document.title);
 
     if (businessData?.name) {
@@ -1388,7 +1391,10 @@ export default function CompanyProfileModern() {
           if (titleTagAgain) {
             titleTagAgain.textContent = seoData.title;
           }
-          console.log("🔄 Forced title update (second attempt):", document.title);
+          console.log(
+            "🔄 Forced title update (second attempt):",
+            document.title,
+          );
         }, 1000);
 
         // Update meta description
@@ -1460,18 +1466,23 @@ export default function CompanyProfileModern() {
         const titleMonitor = setInterval(() => {
           titleCheckCount++;
           if (document.title !== seoData.title) {
-            console.warn(`🚨 Title was changed externally! Expected: "${seoData.title}", Current: "${document.title}"`);
+            console.warn(
+              `🚨 Title was changed externally! Expected: "${seoData.title}", Current: "${document.title}"`,
+            );
             document.title = seoData.title; // Restore it
           }
 
-          if (titleCheckCount >= 10) { // Stop monitoring after 10 checks
+          if (titleCheckCount >= 10) {
+            // Stop monitoring after 10 checks
             clearInterval(titleMonitor);
           }
         }, 1000);
-
-        }, 100); // Small delay to ensure DOM is ready
+      }, 100); // Small delay to ensure DOM is ready
     } else {
-      console.log("❌ BusinessData not available yet:", { businessData, name: businessData?.name });
+      console.log("❌ BusinessData not available yet:", {
+        businessData,
+        name: businessData?.name,
+      });
     }
   }, [businessData?.name, locationParam, companyName]);
 
