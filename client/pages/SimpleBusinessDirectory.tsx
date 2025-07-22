@@ -71,6 +71,25 @@ export default function SimpleBusinessDirectory() {
         "Dubai Business Directory - Verified Immigration & Visa Services";
       console.log("🕐 DELAYED title update:", document.title);
     }, 100);
+
+    // Monitor title for external changes
+    let titleCheckCount = 0;
+    const expectedTitle = "Dubai Business Directory - Verified Immigration & Visa Services";
+    const titleMonitor = setInterval(() => {
+      titleCheckCount++;
+      if (document.title !== expectedTitle) {
+        console.warn(`🚨 Title was changed externally! Expected: "${expectedTitle}", Current: "${document.title}"`);
+        document.title = expectedTitle; // Restore it
+        console.log("🔄 Title restored to:", document.title);
+      } else {
+        console.log("✅ Title check passed:", document.title);
+      }
+
+      if (titleCheckCount >= 5) { // Stop monitoring after 5 checks
+        clearInterval(titleMonitor);
+        console.log("🛑 Title monitoring stopped");
+      }
+    }, 1000);
   } catch (error) {
     console.error("❌ Error in immediate title update:", error);
   }
