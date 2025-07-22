@@ -1488,19 +1488,43 @@ export default function CompanyProfileModern() {
                 );
               }
 
-              // Check for businesses with "hudhud" specifically
-              const hudbudMatches = businesses.filter((b: BusinessData) =>
-                b.name.toLowerCase().includes("hudhud"),
-              );
+              // Check for businesses with specific search terms
+              const searchTerms = ['hudhud', 'amani', 'alif', 'matroshi', 'safar', 'jawn', 'hudaibiyah', 'access', 'abjad'];
 
-              if (hudbudMatches.length > 0) {
-                console.log(
-                  "📋 Hudhud businesses found:",
-                  hudbudMatches.map((b) => b.name),
+              searchTerms.forEach(term => {
+                const matches = businesses.filter((b: BusinessData) =>
+                  b.name.toLowerCase().includes(term.toLowerCase())
                 );
-              } else {
-                console.log("❌ No businesses with 'hudhud' found in database");
+
+                if (matches.length > 0) {
+                  console.log(
+                    `📋 "${term}" businesses found:`,
+                    matches.map((b) => b.name),
+                  );
+                } else {
+                  console.log(`❌ No businesses with '${term}' found in database`);
+                }
+              });
+
+              // Show ALL business names starting with 'A' (first 20)
+              const aBusinesses = businesses.filter((b: BusinessData) =>
+                b.name.toLowerCase().startsWith('a')
+              ).slice(0, 20);
+
+              if (aBusinesses.length > 0) {
+                console.log(
+                  "📋 Businesses starting with 'A' (first 20):",
+                  aBusinesses.map((b) => b.name),
+                );
               }
+
+              // Show total database info
+              console.log("📊 Database Info:", {
+                totalBusinesses: businesses.length,
+                sampleNames: businesses.slice(0, 5).map(b => b.name),
+                searchedFor: companyName,
+                searchWords: searchWords,
+              });
 
               // Search for businesses that might be close matches
               const possibleMatches = businesses.filter((b: BusinessData) => {
