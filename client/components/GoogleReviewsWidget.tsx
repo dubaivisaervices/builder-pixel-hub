@@ -3,7 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, Star, ExternalLink, User } from "lucide-react";
 import { getFallbackReviews } from "@/lib/fallbackReviews";
-import { parseNetworkError, createFetchWithTimeout, checkAPIHealth } from "../utils/networkStatus";
+import {
+  parseNetworkError,
+  createFetchWithTimeout,
+  checkAPIHealth,
+} from "../utils/networkStatus";
 
 // Check if server is reachable
 const checkServerConnectivity = async (): Promise<boolean> => {
@@ -11,15 +15,15 @@ const checkServerConnectivity = async (): Promise<boolean> => {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-    const response = await fetch('/api/health', {
-      method: 'GET',
+    const response = await fetch("/api/health", {
+      method: "GET",
       signal: controller.signal,
     });
 
     clearTimeout(timeoutId);
     return response.ok;
   } catch (error) {
-    console.warn('Server connectivity check failed:', error);
+    console.warn("Server connectivity check failed:", error);
     return false;
   }
 };
@@ -67,7 +71,9 @@ export default function GoogleReviewsWidget({
         // Check server connectivity first
         const isServerReachable = await checkAPIHealth();
         if (!isServerReachable) {
-          console.log("🔍 Server appears to be unreachable, using fallback reviews");
+          console.log(
+            "🔍 Server appears to be unreachable, using fallback reviews",
+          );
           setError("Unable to connect to server. Showing sample reviews.");
           const fallbackData = getFallbackReviews(placeId);
           setReviews(fallbackData);
@@ -83,7 +89,10 @@ export default function GoogleReviewsWidget({
             debugResponse.status,
             debugData.substring(0, 100),
           );
-          console.log("🔍 Debug response headers:", Object.fromEntries(debugResponse.headers.entries()));
+          console.log(
+            "🔍 Debug response headers:",
+            Object.fromEntries(debugResponse.headers.entries()),
+          );
         } catch (debugErr) {
           console.log("🔍 Debug API test failed:", debugErr.message);
         }
@@ -109,7 +118,9 @@ export default function GoogleReviewsWidget({
         }
 
         console.log(`🔍 Response status: ${response.status}`);
-        console.log(`🔍 Response content-type: ${response.headers.get("content-type")}`);
+        console.log(
+          `🔍 Response content-type: ${response.headers.get("content-type")}`,
+        );
 
         // If primary endpoint fails, try alternative endpoint
         if (
@@ -135,11 +146,15 @@ export default function GoogleReviewsWidget({
             clearTimeout(altTimeoutId);
           } catch (altFetchError) {
             console.error("🔍 Alternative fetch error:", altFetchError);
-            throw new Error("Both primary and alternative API endpoints failed");
+            throw new Error(
+              "Both primary and alternative API endpoints failed",
+            );
           }
 
           console.log(`🔍 Alt Response status: ${response.status}`);
-          console.log(`🔍 Alt Response content-type: ${response.headers.get("content-type")}`);
+          console.log(
+            `🔍 Alt Response content-type: ${response.headers.get("content-type")}`,
+          );
         }
 
         if (response.ok) {
@@ -149,10 +164,15 @@ export default function GoogleReviewsWidget({
             console.log("🔍 Raw response:", responseText.substring(0, 200));
 
             // Check if response is actually JSON
-            if (responseText.trim().startsWith('{') || responseText.trim().startsWith('[')) {
+            if (
+              responseText.trim().startsWith("{") ||
+              responseText.trim().startsWith("[")
+            ) {
               data = JSON.parse(responseText);
             } else {
-              throw new Error("API returned invalid response (HTML instead of JSON)");
+              throw new Error(
+                "API returned invalid response (HTML instead of JSON)",
+              );
             }
           } catch (parseError) {
             console.error("🔍 JSON Parse Error:", parseError);
@@ -223,8 +243,7 @@ export default function GoogleReviewsWidget({
             err.message.includes("Unexpected token") ||
             err.message.includes("HTML instead of JSON")
           ) {
-            errorMessage =
-              "Unable to load reviews at this time";
+            errorMessage = "Unable to load reviews at this time";
           } else {
             errorMessage = `Unable to load reviews: ${err.message}`;
           }

@@ -647,9 +647,11 @@ function CommunityReportsSection({
         } catch (fetchError) {
           console.error("🔍 Reports fetch error:", fetchError);
 
-          if (fetchError.name === 'AbortError') {
-            throw new Error("Request timeout - server took too long to respond");
-          } else if (fetchError.message === 'Failed to fetch') {
+          if (fetchError.name === "AbortError") {
+            throw new Error(
+              "Request timeout - server took too long to respond",
+            );
+          } else if (fetchError.message === "Failed to fetch") {
             throw new Error("Network error - unable to connect to server");
           } else {
             throw fetchError;
@@ -711,7 +713,10 @@ function CommunityReportsSection({
         if (err.message) {
           if (err.message.includes("JSON")) {
             errorMessage = "API returned invalid response (using sample data)";
-          } else if (err.message.includes("Network error") || err.message === 'Failed to fetch') {
+          } else if (
+            err.message.includes("Network error") ||
+            err.message === "Failed to fetch"
+          ) {
             errorMessage = "Unable to connect to server (using sample data)";
           } else if (err.message.includes("timeout")) {
             errorMessage = "Server request timeout (using sample data)";
@@ -1352,7 +1357,7 @@ export default function CompanyProfileModern() {
       const seoData = {
         title: `Reviews Visa Scam - ${businessData.name}`,
         description: `Check reviews and reports for ${businessData.name} in Dubai, UAE. Verify if this business is legitimate or a scam. Read community experiences and protect yourself from fraud.`,
-        keywords: `${businessData.name}, Dubai business reviews, visa scam check, UAE business verification, ${businessData.category || 'services'}, fraud protection`,
+        keywords: `${businessData.name}, Dubai business reviews, visa scam check, UAE business verification, ${businessData.category || "services"}, fraud protection`,
         ogTitle: `Reviews Visa Scam - ${businessData.name}`,
         ogDescription: `Community reviews and scam reports for ${businessData.name}. Check if this Dubai business is legitimate before using their services.`,
         canonical: `${window.location.origin}/reviews/${locationParam}/${companyName}`,
@@ -1362,13 +1367,15 @@ export default function CompanyProfileModern() {
       document.title = seoData.title;
 
       // Update other meta tags
-      const metaDescription = document.querySelector('meta[name="description"]');
+      const metaDescription = document.querySelector(
+        'meta[name="description"]',
+      );
       if (metaDescription) {
-        metaDescription.setAttribute('content', seoData.description);
+        metaDescription.setAttribute("content", seoData.description);
       } else {
-        const newMeta = document.createElement('meta');
-        newMeta.setAttribute('name', 'description');
-        newMeta.setAttribute('content', seoData.description);
+        const newMeta = document.createElement("meta");
+        newMeta.setAttribute("name", "description");
+        newMeta.setAttribute("content", seoData.description);
         document.head.appendChild(newMeta);
       }
     }
