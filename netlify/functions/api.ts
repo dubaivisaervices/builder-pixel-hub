@@ -51,7 +51,19 @@ async function createMainServer() {
 }
 
 // Create and export the serverless handler
-const app = await createMainServer();
-const handler = serverless(app);
+let handler: any;
 
-export { handler };
+// Initialize the handler asynchronously
+const initializeHandler = async () => {
+  if (!handler) {
+    const app = await createMainServer();
+    handler = serverless(app);
+  }
+  return handler;
+};
+
+// Export a function that returns the initialized handler
+export const handler = async (event: any, context: any) => {
+  const serverlessHandler = await initializeHandler();
+  return serverlessHandler(event, context);
+};
