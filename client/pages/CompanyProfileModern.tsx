@@ -1292,6 +1292,10 @@ export default function CompanyProfileModern() {
                 "al bustan typing center",
               "al-barsha-customer-happiness-centre-federal-authority-for-identity-citizenship-customs-ports-security":
                 "al barsha customer happiness centre",
+              "al-hudhud-documents-clearing-services-dubai":
+                "al hudhud documents clearing",
+              "4s-study-abroad-5000-visa-approved-education-consultant-in-dubai":
+                "4s study abroad",
             };
 
             // Check URL mappings first
