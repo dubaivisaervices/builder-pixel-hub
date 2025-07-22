@@ -1273,11 +1273,27 @@ export default function CompanyProfileModern() {
           // Try to find matching business by name
           if (companyName) {
             const searchName = companyName.replace(/-/g, " ").toLowerCase();
-            const found = businesses.find(
-              (b: BusinessData) =>
-                b.name.toLowerCase().includes(searchName) ||
-                searchName.includes(b.name.toLowerCase()),
+            console.log("🔍 Searching for business with:", {
+              originalCompanyName: companyName,
+              searchName: searchName,
+              totalBusinesses: businesses.length
+            });
+
+            // Try exact name matching first
+            let found = businesses.find(
+              (b: BusinessData) => b.name.toLowerCase() === searchName
             );
+
+            if (!found) {
+              // Try partial matching
+              found = businesses.find(
+                (b: BusinessData) =>
+                  b.name.toLowerCase().includes(searchName) ||
+                  searchName.includes(b.name.toLowerCase()),
+              );
+              console.log("🔍 Partial match attempt for:", searchName);
+            }
+
             if (found) {
               business = found;
               console.log(`✅ Found matching business: ${business.name}`);
@@ -1290,8 +1306,10 @@ export default function CompanyProfileModern() {
               });
             } else {
               console.log(
-                `⚠️ No exact match found for "${companyName}", using first business: ${business.name}`,
+                `⚠️ No match found for "${companyName}" (searchName: "${searchName}")`,
               );
+              console.log("📋 Available business names:", businesses.slice(0, 5).map(b => b.name));
+              console.log(`⚠️ Using fallback business: ${business.name}`);
             }
           }
 
