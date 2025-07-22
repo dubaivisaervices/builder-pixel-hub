@@ -1283,14 +1283,19 @@ export default function CompanyProfileModern() {
               found = businesses.find((b: BusinessData) => {
                 const businessName = b.name.toLowerCase();
                 // Check if business name contains most of the search words
-                const matchedWords = searchWords.filter(word =>
-                  word.length > 2 && businessName.includes(word)
+                const matchedWords = searchWords.filter(
+                  (word) => word.length > 2 && businessName.includes(word),
                 );
-                return matchedWords.length >= Math.min(3, searchWords.length * 0.6);
+                return (
+                  matchedWords.length >= Math.min(3, searchWords.length * 0.6)
+                );
               });
 
               if (found) {
-                console.log("🔍 Found business with word matching:", found.name);
+                console.log(
+                  "🔍 Found business with word matching:",
+                  found.name,
+                );
               }
             }
 
@@ -1302,7 +1307,10 @@ export default function CompanyProfileModern() {
                   searchName.slice(0, 20).includes(b.name.toLowerCase()),
               );
               if (found) {
-                console.log("🔍 Found business with partial matching:", found.name);
+                console.log(
+                  "🔍 Found business with partial matching:",
+                  found.name,
+                );
               }
             }
 
@@ -1319,14 +1327,19 @@ export default function CompanyProfileModern() {
               );
 
               // Set error instead of fallback
-              setError(`Business "${companyName.replace(/-/g, ' ')}" not found in our directory.`);
+              setError(
+                `Business "${companyName.replace(/-/g, " ")}" not found in our directory.`,
+              );
               setLoading(false);
               return;
             }
           } else {
             // No company name provided, use first business as fallback
             business = businesses[0];
-            console.log("🔍 No company name provided, using first business:", business.name);
+            console.log(
+              "🔍 No company name provided, using first business:",
+              business.name,
+            );
           }
 
           // Enhance business data with additional info
@@ -1617,14 +1630,22 @@ export default function CompanyProfileModern() {
               Business Not Found
             </h2>
             <p className="text-gray-600 mb-4">
-              {error || "The business profile you're looking for doesn't exist in our directory."}
+              {error ||
+                "The business profile you're looking for doesn't exist in our directory."}
             </p>
             <div className="space-y-2">
-              <Button onClick={() => navigate("/dubai-businesses")} className="w-full">
+              <Button
+                onClick={() => navigate("/dubai-businesses")}
+                className="w-full"
+              >
                 <Building2 className="h-4 w-4 mr-2" />
                 Browse All Businesses
               </Button>
-              <Button onClick={() => navigate("/")} variant="outline" className="w-full">
+              <Button
+                onClick={() => navigate("/")}
+                variant="outline"
+                className="w-full"
+              >
                 <Home className="h-4 w-4 mr-2" />
                 Back to Home
               </Button>
