@@ -86,7 +86,24 @@ export default function GoogleReviewsWidget({
         }
 
         if (response.ok) {
-          const data = await response.json();
+          let data;
+          try {
+            const responseText = await response.text();
+            console.log("🔍 Raw response:", responseText.substring(0, 200));
+
+            // Check if response is actually JSON
+            if (responseText.trim().startsWith('{') || responseText.trim().startsWith('[')) {
+              data = JSON.parse(responseText);
+            } else {
+              throw new Error("API returned invalid response (HTML instead of JSON)");
+            }
+          } catch (parseError) {
+            console.error("🔍 JSON Parse Error:", parseError);
+            setError("API returned invalid response (HTML instead of JSON)");
+            setReviews([]);
+            return;
+          }
+
           console.log("🔍 API Response:", data); // Debug log
           if (data.success && data.reviews && data.reviews.length > 0) {
             // Limit to first 10 reviews for display
