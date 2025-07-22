@@ -7,6 +7,8 @@
 /api/featured.json /api/featured.json 200
 
 # Dynamic API routes to Netlify Functions (most specific first)
+/api/business-reviews/* /.netlify/functions/api 200
+/api/reviews/* /.netlify/functions/api 200
 /api/reports/company/* /.netlify/functions/get-reports 200
 /api/test /.netlify/functions/test-api 200
 /api/simple-test /.netlify/functions/simple-test 200
