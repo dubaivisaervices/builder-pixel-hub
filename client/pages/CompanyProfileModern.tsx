@@ -1280,16 +1280,16 @@ export default function CompanyProfileModern() {
               'al-barsha-customer-happiness-centre-federal-authority-for-identity-citizenship-customs-ports-security': 'al barsha customer happiness centre',
             };
 
+            // Check URL mappings first
+            let found = null;
             if (urlMappings[companyName]) {
               console.log("🔧 Using URL mapping for:", companyName, "->", urlMappings[companyName]);
               const mappedSearch = urlMappings[companyName];
-              const mappedFound = businesses.find((b: BusinessData) =>
+              found = businesses.find((b: BusinessData) =>
                 b.name.toLowerCase().includes(mappedSearch.toLowerCase())
               );
-              if (mappedFound) {
-                business = mappedFound;
-                console.log(`✅ Found business using URL mapping: ${business.name}`);
-                return;
+              if (found) {
+                console.log(`✅ Found business using URL mapping: ${found.name}`);
               }
             }
 
