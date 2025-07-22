@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, Star, ExternalLink, User } from "lucide-react";
 import { getFallbackReviews } from "@/lib/fallbackReviews";
+import { parseNetworkError, createFetchWithTimeout, checkAPIHealth } from "../utils/networkStatus";
 
 // Check if server is reachable
 const checkServerConnectivity = async (): Promise<boolean> => {
