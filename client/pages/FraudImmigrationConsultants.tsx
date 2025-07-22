@@ -80,6 +80,8 @@ interface FilterOptions {
 }
 
 export default function FraudImmigrationConsultants() {
+  console.log("🚨 FraudImmigrationConsultants component rendered");
+
   // Initialize SEO for fraud immigration consultants page
   useFraudReportSEO();
 
