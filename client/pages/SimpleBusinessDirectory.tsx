@@ -191,7 +191,7 @@ export default function SimpleBusinessDirectory() {
               responseText.trim().startsWith("<!DOCTYPE") ||
               responseText.trim().startsWith("<html")
             ) {
-              console.warn(`❌ ${source.name} returned HTML instead of JSON`);
+              console.warn(`�� ${source.name} returned HTML instead of JSON`);
               continue;
             }
 
@@ -479,8 +479,24 @@ export default function SimpleBusinessDirectory() {
     [businesses, currentBusinesses, filteredBusinesses],
   );
 
-  const handleBusinessClick = (business: any) => {
-    navigate(`/company/${business.id}`);
+  const handleBusinessClick = (business: any, openInNewTab = false) => {
+    // Create URL-friendly company name
+    const companySlug = business.name
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-') // Replace multiple hyphens with single
+      .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+
+    const reviewUrl = `/reviews/dubai/${companySlug}`;
+
+    if (openInNewTab) {
+      window.open(reviewUrl, '_blank');
+    } else {
+      navigate(reviewUrl);
+    }
+
+    console.log("🔗 Business clicked:", business.name, "-> URL:", reviewUrl);
   };
 
   const handleSuggestionClick = (suggestion: any) => {
