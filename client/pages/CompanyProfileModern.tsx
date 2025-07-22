@@ -1362,16 +1362,21 @@ export default function CompanyProfileModern() {
         canonical: `${window.location.origin}/reviews/${locationParam}/${companyName}`,
       };
 
-      // Set document title (multiple approaches for reliability)
-      document.title = seoData.title;
+      // Use setTimeout to ensure DOM is ready and avoid conflicts
+      setTimeout(() => {
+        console.log("🔄 Updating meta tags for:", businessData.name);
 
-      // Also update title tag directly
-      const titleTag = document.querySelector('title');
-      if (titleTag) {
-        titleTag.textContent = seoData.title;
-      }
+        // Set document title (multiple approaches for reliability)
+        document.title = seoData.title;
 
-      // Update meta description
+        // Also update title tag directly
+        const titleTag = document.querySelector('title');
+        if (titleTag) {
+          titleTag.textContent = seoData.title;
+          console.log("✅ Title updated to:", seoData.title);
+        }
+
+        // Update meta description
       const metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {
         metaDescription.setAttribute("content", seoData.description);
@@ -1425,6 +1430,9 @@ export default function CompanyProfileModern() {
         newCanonical.setAttribute("href", seoData.canonical);
         document.head.appendChild(newCanonical);
       }
+
+      console.log("✅ All meta tags updated successfully for:", businessData.name);
+      }, 100); // Small delay to ensure DOM is ready
     }
   }, [businessData?.name, locationParam, companyName]);
 
@@ -1470,7 +1478,7 @@ export default function CompanyProfileModern() {
       case "operational":
         return (
           <Badge className="bg-green-100 text-green-800 border-green-200">
-            �� Verified & Active
+            ��� Verified & Active
           </Badge>
         );
       case "temporarily_closed":
