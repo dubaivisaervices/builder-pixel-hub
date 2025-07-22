@@ -708,32 +708,38 @@ function CommunityReportsSection({
         console.error("❌ Request URL:", `/api/reports/company/${businessId}`);
 
         let errorMessage = "Error loading reports";
-        if (err.message && err.message.includes("JSON")) {
-          errorMessage = "API returned invalid response (using sample data)";
-
-          // Add sample report for demonstration when API fails
-          const sampleReport = {
-            id: "sample-report-netlify",
-            issueType: "poor_service",
-            description:
-              "Sample report for demonstration. Real reports will load when API is working properly.",
-            reporterName: "Sample User",
-            reporterLocation: "Dubai",
-            dateOfIncident: "2024-01-15",
-            createdAt: new Date().toISOString(),
-            severity: "medium",
-            status: "approved",
-            helpful: 5,
-            notHelpful: 1,
-            evidenceCount: 0,
-            isAnonymous: false,
-            tags: ["sample", "demo"],
-          };
-
-          setReports([sampleReport]);
-        } else {
-          errorMessage = err.message;
+        if (err.message) {
+          if (err.message.includes("JSON")) {
+            errorMessage = "API returned invalid response (using sample data)";
+          } else if (err.message.includes("Network error") || err.message === 'Failed to fetch') {
+            errorMessage = "Unable to connect to server (using sample data)";
+          } else if (err.message.includes("timeout")) {
+            errorMessage = "Server request timeout (using sample data)";
+          } else {
+            errorMessage = `Connection error: ${err.message} (using sample data)`;
+          }
         }
+
+        // Add sample report for demonstration when API fails
+        const sampleReport = {
+          id: "sample-report-netlify",
+          issueType: "poor_service",
+          description:
+            "Sample report for demonstration. Real reports will load when API is working properly.",
+          reporterName: "Sample User",
+          reporterLocation: "Dubai",
+          dateOfIncident: "2024-01-15",
+          createdAt: new Date().toISOString(),
+          severity: "medium",
+          status: "approved",
+          helpful: 5,
+          notHelpful: 1,
+          evidenceCount: 0,
+          isAnonymous: false,
+          tags: ["sample", "demo"],
+        };
+
+        setReports([sampleReport]);
 
         setError(errorMessage);
 
