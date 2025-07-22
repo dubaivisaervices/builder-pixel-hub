@@ -51,15 +51,15 @@ async function createMainServer() {
 }
 
 // Create and export the serverless handler
-let handler: any;
+let cachedHandler: any;
 
 // Initialize the handler asynchronously
 const initializeHandler = async () => {
-  if (!handler) {
+  if (!cachedHandler) {
     const app = await createMainServer();
-    handler = serverless(app);
+    cachedHandler = serverless(app);
   }
-  return handler;
+  return cachedHandler;
 };
 
 // Export a function that returns the initialized handler
