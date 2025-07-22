@@ -28,9 +28,23 @@ export const updateMetaTags = (seoData: SEOData) => {
     return;
   }
 
-  // Update document title
+  console.log("🔧 updateMetaTags called with:", seoData.title);
+
+  // Update document title with multiple approaches
   if (seoData.title) {
-    document.title = seoData.title;
+    try {
+      document.title = seoData.title;
+      console.log("✅ Document title set to:", document.title);
+
+      // Also update title tag directly
+      const titleTag = document.querySelector("title");
+      if (titleTag) {
+        titleTag.textContent = seoData.title;
+        console.log("✅ Title tag updated");
+      }
+    } catch (error) {
+      console.error("❌ Error setting title:", error);
+    }
   }
 
   // Update or create meta tags
