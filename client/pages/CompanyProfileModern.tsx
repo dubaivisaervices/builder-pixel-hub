@@ -1184,7 +1184,11 @@ const generateContactInfo = (business: BusinessData) => {
 };
 
 export default function CompanyProfileModern() {
+  console.log("🚀 CompanyProfileModern component rendered");
+
   const { location: locationParam, companyName } = useParams();
+  console.log("🔍 URL params:", { locationParam, companyName });
+
   const navigate = useNavigate();
   const location = useLocation();
   const [businessData, setBusinessData] = useState<BusinessData | null>(null);
