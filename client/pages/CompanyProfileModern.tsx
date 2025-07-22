@@ -1272,45 +1272,72 @@ export default function CompanyProfileModern() {
               totalBusinesses: businesses.length,
             });
 
-            // Try exact name matching first
-            let found = businesses.find(
+            // Enhanced matching algorithm for complex business names
+            let found = null;
+
+            // 1. Try exact name matching first
+            found = businesses.find(
               (b: BusinessData) => b.name.toLowerCase() === searchName,
             );
+            console.log("🔍 Exact match result:", found?.name || "No exact match");
 
             if (!found) {
-              // Try variations of the search name
-              const searchWords = searchName.split(" ");
+              // 2. Try key word matching (important business identifiers)
+              const searchWords = searchName.split(" ").filter(word => word.length > 2);
+              console.log("🔍 Search words:", searchWords);
+
               found = businesses.find((b: BusinessData) => {
                 const businessName = b.name.toLowerCase();
-                // Check if business name contains most of the search words
-                const matchedWords = searchWords.filter(
-                  (word) => word.length > 2 && businessName.includes(word),
+                const businessWords = businessName.split(" ");
+
+                // Look for key identifying words
+                const keyWords = ['formations', 'routes', 'bustan', 'barsha', 'typing', 'center', 'centre', 'happiness'];
+                const foundKeyWords = keyWords.filter(key =>
+                  searchName.includes(key) && businessName.includes(key)
                 );
-                return (
-                  matchedWords.length >= Math.min(3, searchWords.length * 0.6)
+
+                if (foundKeyWords.length > 0) {
+                  console.log("🔍 Found key words match:", foundKeyWords, "in", b.name);
+                  return true;
+                }
+
+                // Check if business name contains most important search words
+                const matchedWords = searchWords.filter(word =>
+                  businessName.includes(word) && !['dubai', 'uae', 'in', 'and', 'the', 'of', 'for'].includes(word)
                 );
+                const matchScore = matchedWords.length / Math.max(searchWords.length, 1);
+
+                if (matchScore >= 0.4) {
+                  console.log("�� Word match score:", matchScore, "for", b.name);
+                  return true;
+                }
+
+                return false;
+              });
+            }
+
+            if (!found) {
+              // 3. Try fuzzy matching with first few words
+              const firstWords = searchName.split(" ").slice(0, 3).join(" ");
+              found = businesses.find((b: BusinessData) => {
+                const businessName = b.name.toLowerCase();
+                return businessName.includes(firstWords) || firstWords.includes(businessName.split(" ").slice(0, 3).join(" "));
               });
 
               if (found) {
-                console.log(
-                  "🔍 Found business with word matching:",
-                  found.name,
-                );
+                console.log("🔍 Found with first words matching:", found.name);
               }
             }
 
             if (!found) {
-              // Try partial matching as last resort
+              // 4. Try partial matching as last resort
               found = businesses.find(
                 (b: BusinessData) =>
-                  b.name.toLowerCase().includes(searchName.slice(0, 20)) ||
-                  searchName.slice(0, 20).includes(b.name.toLowerCase()),
+                  b.name.toLowerCase().includes(searchName.slice(0, 15)) ||
+                  searchName.slice(0, 15).includes(b.name.toLowerCase()),
               );
               if (found) {
-                console.log(
-                  "🔍 Found business with partial matching:",
-                  found.name,
-                );
+                console.log("🔍 Found business with partial matching:", found.name);
               }
             }
 
@@ -1327,19 +1354,14 @@ export default function CompanyProfileModern() {
               );
 
               // Set error instead of fallback
-              setError(
-                `Business "${companyName.replace(/-/g, " ")}" not found in our directory.`,
-              );
+              setError(`Business "${companyName.replace(/-/g, ' ')}" not found in our directory.`);
               setLoading(false);
               return;
             }
           } else {
             // No company name provided, use first business as fallback
             business = businesses[0];
-            console.log(
-              "🔍 No company name provided, using first business:",
-              business.name,
-            );
+            console.log("🔍 No company name provided, using first business:", business.name);
           }
 
           // Enhance business data with additional info
@@ -1630,22 +1652,14 @@ export default function CompanyProfileModern() {
               Business Not Found
             </h2>
             <p className="text-gray-600 mb-4">
-              {error ||
-                "The business profile you're looking for doesn't exist in our directory."}
+              {error || "The business profile you're looking for doesn't exist in our directory."}
             </p>
             <div className="space-y-2">
-              <Button
-                onClick={() => navigate("/dubai-businesses")}
-                className="w-full"
-              >
+              <Button onClick={() => navigate("/dubai-businesses")} className="w-full">
                 <Building2 className="h-4 w-4 mr-2" />
                 Browse All Businesses
               </Button>
-              <Button
-                onClick={() => navigate("/")}
-                variant="outline"
-                className="w-full"
-              >
+              <Button onClick={() => navigate("/")} variant="outline" className="w-full">
                 <Home className="h-4 w-4 mr-2" />
                 Back to Home
               </Button>
