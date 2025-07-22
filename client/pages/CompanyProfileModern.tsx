@@ -627,8 +627,35 @@ function CommunityReportsSection({
       try {
         setLoading(true);
         console.log("🔍 Fetching reports for business:", businessId);
-        const response = await fetch(`/api/reports/company/${businessId}`);
-        console.log("🔍 Reports API response status:", response.status);
+
+        let response;
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+          response = await fetch(`/api/reports/company/${businessId}`, {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            signal: controller.signal,
+          });
+
+          clearTimeout(timeoutId);
+          console.log("🔍 Reports API response status:", response.status);
+        } catch (fetchError) {
+          console.error("🔍 Reports fetch error:", fetchError);
+
+          if (fetchError.name === 'AbortError') {
+            throw new Error("Request timeout - server took too long to respond");
+          } else if (fetchError.message === 'Failed to fetch') {
+            throw new Error("Network error - unable to connect to server");
+          } else {
+            throw fetchError;
+          }
+        }
+
         const data = await response.json();
         console.log("🔍 Reports API data:", data);
 
