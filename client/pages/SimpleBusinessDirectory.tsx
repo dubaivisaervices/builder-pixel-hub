@@ -65,7 +65,7 @@ export default function SimpleBusinessDirectory() {
   const [allDataLoaded, setAllDataLoaded] = useState(false);
 
   // Additional useEffect to ensure title updates
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = "Dubai Business Directory - Verified Immigration & Visa Services";
     console.log("🔄 useEffect title update:", document.title);
   }, []);
