@@ -99,13 +99,25 @@ export default function GoogleReviewsWidget({
         ) {
           console.log("🔄 Primary API failed, trying alternative endpoint");
           const altApiUrl = `/api/reviews/${placeId}`;
-          response = await fetch(altApiUrl, {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          });
+
+          try {
+            const altController = new AbortController();
+            const altTimeoutId = setTimeout(() => altController.abort(), 10000);
+
+            response = await fetch(altApiUrl, {
+              method: "GET",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              signal: altController.signal,
+            });
+
+            clearTimeout(altTimeoutId);
+          } catch (altFetchError) {
+            console.error("🔍 Alternative fetch error:", altFetchError);
+            throw new Error("Both primary and alternative API endpoints failed");
+          }
 
           console.log(`🔍 Alt Response status: ${response.status}`);
           console.log(`🔍 Alt Response content-type: ${response.headers.get("content-type")}`);
