@@ -272,6 +272,11 @@ export default function GoogleReviewsWidget({
           <div className="flex items-center space-x-2">
             <MessageSquare className="h-6 w-6" />
             <span>Google Reviews</span>
+            {error && error.includes("sample") && (
+              <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded-full border border-orange-200">
+                Sample Data
+              </span>
+            )}
           </div>
           <a
             href={googleMapsUrl}
