@@ -1366,24 +1366,61 @@ export default function CompanyProfileModern() {
       // Set document title
       document.title = seoData.title;
 
-      // Update other meta tags
-      const metaDescription = document.querySelector(
-        'meta[name="description"]',
-      );
+      // Update meta description
+      const metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {
         metaDescription.setAttribute("content", seoData.description);
       } else {
-        const newMeta = document.createElement("meta");
-        newMeta.setAttribute("name", "description");
-        newMeta.setAttribute("content", seoData.description);
-        document.head.appendChild(newMeta);
+        const newMetaDesc = document.createElement("meta");
+        newMetaDesc.setAttribute("name", "description");
+        newMetaDesc.setAttribute("content", seoData.description);
+        document.head.appendChild(newMetaDesc);
+      }
+
+      // Update meta keywords
+      const metaKeywords = document.querySelector('meta[name="keywords"]');
+      if (metaKeywords) {
+        metaKeywords.setAttribute("content", seoData.keywords);
+      } else {
+        const newMetaKeywords = document.createElement("meta");
+        newMetaKeywords.setAttribute("name", "keywords");
+        newMetaKeywords.setAttribute("content", seoData.keywords);
+        document.head.appendChild(newMetaKeywords);
+      }
+
+      // Update Open Graph title
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) {
+        ogTitle.setAttribute("content", seoData.ogTitle);
+      } else {
+        const newOgTitle = document.createElement("meta");
+        newOgTitle.setAttribute("property", "og:title");
+        newOgTitle.setAttribute("content", seoData.ogTitle);
+        document.head.appendChild(newOgTitle);
+      }
+
+      // Update Open Graph description
+      const ogDescription = document.querySelector('meta[property="og:description"]');
+      if (ogDescription) {
+        ogDescription.setAttribute("content", seoData.ogDescription);
+      } else {
+        const newOgDesc = document.createElement("meta");
+        newOgDesc.setAttribute("property", "og:description");
+        newOgDesc.setAttribute("content", seoData.ogDescription);
+        document.head.appendChild(newOgDesc);
+      }
+
+      // Update canonical URL
+      const canonicalLink = document.querySelector('link[rel="canonical"]');
+      if (canonicalLink) {
+        canonicalLink.setAttribute("href", seoData.canonical);
+      } else {
+        const newCanonical = document.createElement("link");
+        newCanonical.setAttribute("rel", "canonical");
+        newCanonical.setAttribute("href", seoData.canonical);
+        document.head.appendChild(newCanonical);
       }
     }
-
-    // Cleanup: restore original title when component unmounts
-    return () => {
-      document.title = "Reviews Visa Scam - UAE's Scam Protection Platform";
-    };
   }, [businessData?.name, locationParam, companyName]);
 
   const handleShare = (platform: string) => {
