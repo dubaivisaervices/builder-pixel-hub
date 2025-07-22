@@ -1442,7 +1442,9 @@ export default function CompanyProfileModern() {
           "✅ All meta tags updated successfully for:",
           businessData.name,
         );
-      }, 100); // Small delay to ensure DOM is ready
+        }, 100); // Small delay to ensure DOM is ready
+    } else {
+      console.log("❌ BusinessData not available yet:", { businessData, name: businessData?.name });
     }
   }, [businessData?.name, locationParam, companyName]);
 
