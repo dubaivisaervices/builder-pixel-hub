@@ -29,12 +29,16 @@ export const useSEO = (options: SEOOptions = {}) => {
         // Enhance Google indexing signals
         enhanceGoogleIndexing();
 
+        // Try to load custom meta tags from database (don't let this block manual options)
         if (!options.skipAutoLoad && isMounted) {
-          // Try to load custom meta tags from database
-          await loadPageMetaTags(currentPath);
+          try {
+            await loadPageMetaTags(currentPath);
+          } catch (dbError) {
+            console.warn("Failed to load meta tags from database, continuing with manual options:", dbError);
+          }
         }
 
-        // Apply manual SEO options if provided and component is still mounted
+        // ALWAYS apply manual SEO options if provided (regardless of database loading)
         if (
           isMounted &&
           (options.title ||
@@ -42,6 +46,8 @@ export const useSEO = (options: SEOOptions = {}) => {
             options.keywords ||
             options.ogImage)
         ) {
+          console.log("🔧 Applying manual SEO options:", options.title);
+
           const defaultData = getDefaultSEOData(currentPath);
           const seoData = {
             ...defaultData,
@@ -52,6 +58,7 @@ export const useSEO = (options: SEOOptions = {}) => {
           };
 
           updateMetaTags(seoData);
+          console.log("✅ Manual SEO applied, title should be:", seoData.title);
         }
 
         // Inject structured data if provided and component is still mounted
