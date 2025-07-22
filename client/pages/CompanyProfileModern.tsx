@@ -1614,16 +1614,21 @@ export default function CompanyProfileModern() {
           <CardContent className="p-8 text-center">
             <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              Company Not Found
+              Business Not Found
             </h2>
             <p className="text-gray-600 mb-4">
-              The company profile you're looking for doesn't exist or has been
-              removed.
+              {error || "The business profile you're looking for doesn't exist in our directory."}
             </p>
-            <Button onClick={() => navigate("/")} className="w-full">
-              <Home className="h-4 w-4 mr-2" />
-              Back to Home
-            </Button>
+            <div className="space-y-2">
+              <Button onClick={() => navigate("/dubai-businesses")} className="w-full">
+                <Building2 className="h-4 w-4 mr-2" />
+                Browse All Businesses
+              </Button>
+              <Button onClick={() => navigate("/")} variant="outline" className="w-full">
+                <Home className="h-4 w-4 mr-2" />
+                Back to Home
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -1878,7 +1883,7 @@ export default function CompanyProfileModern() {
                 }}
               >
                 <PenTool className="h-5 w-5 mr-2" />
-                Write Review ���
+                Write Review ����
               </Button>
             </div>
           </div>
