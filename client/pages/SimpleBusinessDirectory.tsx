@@ -35,6 +35,10 @@ import { getBestLogoUrl } from "@/lib/imageUtils";
 export default function SimpleBusinessDirectory() {
   console.log("🏢 SimpleBusinessDirectory component rendered");
 
+  // IMMEDIATE test to verify JavaScript is working
+  document.title = "Dubai Business Directory - Verified Immigration & Visa Services";
+  console.log("⚡ IMMEDIATE title set to:", document.title);
+
   // Initialize SEO for business directory page
   useSEO({
     title: "Dubai Business Directory - Verified Immigration & Visa Services",
