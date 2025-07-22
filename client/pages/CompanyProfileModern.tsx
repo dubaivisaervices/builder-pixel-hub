@@ -1371,13 +1371,25 @@ export default function CompanyProfileModern() {
 
         // Set document title (multiple approaches for reliability)
         document.title = seoData.title;
+        console.log("🔄 Set document.title to:", document.title);
 
         // Also update title tag directly
         const titleTag = document.querySelector("title");
         if (titleTag) {
           titleTag.textContent = seoData.title;
-          console.log("✅ Title updated to:", seoData.title);
+          titleTag.innerHTML = seoData.title; // Try innerHTML as well
+          console.log("✅ Title tag updated to:", titleTag.textContent);
         }
+
+        // Force another update after a longer delay to override any conflicting code
+        setTimeout(() => {
+          document.title = seoData.title;
+          const titleTagAgain = document.querySelector("title");
+          if (titleTagAgain) {
+            titleTagAgain.textContent = seoData.title;
+          }
+          console.log("🔄 Forced title update (second attempt):", document.title);
+        }, 1000);
 
         // Update meta description
         const metaDescription = document.querySelector(
