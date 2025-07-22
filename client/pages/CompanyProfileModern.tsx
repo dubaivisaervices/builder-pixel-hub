@@ -1370,9 +1370,28 @@ export default function CompanyProfileModern() {
                 `❌ NO BUSINESS FOUND for "${companyName}" (searchName: "${searchName}")`,
               );
               console.log(
-                "📋 Available business names:",
+                "📋 First 10 available business names:",
                 businesses.slice(0, 10).map((b) => b.name),
               );
+
+              // Search for businesses that might be close matches
+              const possibleMatches = businesses.filter((b: BusinessData) => {
+                const businessName = b.name.toLowerCase();
+                const searchWords = searchName.split(" ").slice(0, 3);
+                return searchWords.some(word => word.length > 3 && businessName.includes(word));
+              });
+
+              if (possibleMatches.length > 0) {
+                console.log("🔍 Possible matches found:", possibleMatches.map(b => b.name));
+                // Use the first possible match as fallback
+                business = possibleMatches[0];
+                console.log(`🔄 Using closest match: ${business.name}`);
+              } else {
+                console.log("❌ No possible matches found - business may not exist in database");
+                setError(`Business "${companyName.replace(/-/g, ' ')}" not found in our directory.`);
+                setLoading(false);
+                return;
+              }
 
               // Set error instead of fallback
               setError(`Business "${companyName.replace(/-/g, ' ')}" not found in our directory.`);
