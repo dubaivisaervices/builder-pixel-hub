@@ -1351,6 +1351,9 @@ export default function CompanyProfileModern() {
 
   // Initialize SEO for business profile with custom title format
   useEffect(() => {
+    console.log("🔍 SEO useEffect triggered. BusinessData:", businessData?.name);
+    console.log("🔍 Current document title:", document.title);
+
     if (businessData?.name) {
       // Custom SEO implementation for business profile
       const seoData = {
