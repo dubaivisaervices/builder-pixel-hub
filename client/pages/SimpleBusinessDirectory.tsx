@@ -484,15 +484,15 @@ export default function SimpleBusinessDirectory() {
     // Create URL-friendly company name
     const companySlug = business.name
       .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, '') // Remove special characters
-      .replace(/\s+/g, '-') // Replace spaces with hyphens
-      .replace(/-+/g, '-') // Replace multiple hyphens with single
-      .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+      .replace(/[^a-z0-9\s]/g, "") // Remove special characters
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .replace(/-+/g, "-") // Replace multiple hyphens with single
+      .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
 
     const reviewUrl = `/reviews/dubai/${companySlug}`;
 
     if (openInNewTab) {
-      window.open(reviewUrl, '_blank');
+      window.open(reviewUrl, "_blank");
     } else {
       navigate(reviewUrl);
     }

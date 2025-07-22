@@ -1303,20 +1303,15 @@ export default function CompanyProfileModern() {
                 "4s study abroad",
               "amani-dubai-uae-visa-tour-travel-consultants-in-dubai-uae-visa-family-visa-freelance-visa-golden-visa-services":
                 "amani dubai",
-              "alif-star-business-services-llc":
-                "alif star business",
-              "al-matroshi-travel-tourism-llc":
-                "al matroshi travel",
+              "alif-star-business-services-llc": "alif star business",
+              "al-matroshi-travel-tourism-llc": "al matroshi travel",
               "al-safar-partners-advocates-legal-consultants":
                 "al safar partners",
               "al-jawn-documents-clearing-service-family-visa-certificate-attestation-mofa-parents-visa":
                 "al jawn documents",
-              "al-hudaibiyah-dcs":
-                "al hudaibiyah",
-              "access-abroad-documents-clearing-services-llc":
-                "access abroad",
-              "abjad-documents-clearing-est":
-                "abjad documents",
+              "al-hudaibiyah-dcs": "al hudaibiyah",
+              "access-abroad-documents-clearing-services-llc": "access abroad",
+              "abjad-documents-clearing-est": "abjad documents",
             };
 
             // Check URL mappings first
@@ -1442,12 +1437,21 @@ export default function CompanyProfileModern() {
             if (!found) {
               // 3. Try fuzzy matching with first few words
               const firstTwoWords = searchName.split(" ").slice(0, 2).join(" ");
-              const firstThreeWords = searchName.split(" ").slice(0, 3).join(" ");
+              const firstThreeWords = searchName
+                .split(" ")
+                .slice(0, 3)
+                .join(" ");
 
               found = businesses.find((b: BusinessData) => {
                 const businessName = b.name.toLowerCase();
-                const businessFirstTwo = businessName.split(" ").slice(0, 2).join(" ");
-                const businessFirstThree = businessName.split(" ").slice(0, 3).join(" ");
+                const businessFirstTwo = businessName
+                  .split(" ")
+                  .slice(0, 2)
+                  .join(" ");
+                const businessFirstThree = businessName
+                  .split(" ")
+                  .slice(0, 3)
+                  .join(" ");
 
                 // Try different combinations
                 return (
@@ -1506,11 +1510,21 @@ export default function CompanyProfileModern() {
               }
 
               // Check for businesses with specific search terms
-              const searchTerms = ['hudhud', 'amani', 'alif', 'matroshi', 'safar', 'jawn', 'hudaibiyah', 'access', 'abjad'];
+              const searchTerms = [
+                "hudhud",
+                "amani",
+                "alif",
+                "matroshi",
+                "safar",
+                "jawn",
+                "hudaibiyah",
+                "access",
+                "abjad",
+              ];
 
-              searchTerms.forEach(term => {
+              searchTerms.forEach((term) => {
                 const matches = businesses.filter((b: BusinessData) =>
-                  b.name.toLowerCase().includes(term.toLowerCase())
+                  b.name.toLowerCase().includes(term.toLowerCase()),
                 );
 
                 if (matches.length > 0) {
@@ -1519,14 +1533,18 @@ export default function CompanyProfileModern() {
                     matches.map((b) => b.name),
                   );
                 } else {
-                  console.log(`❌ No businesses with '${term}' found in database`);
+                  console.log(
+                    `❌ No businesses with '${term}' found in database`,
+                  );
                 }
               });
 
               // Show ALL business names starting with 'A' (first 20)
-              const aBusinesses = businesses.filter((b: BusinessData) =>
-                b.name.toLowerCase().startsWith('a')
-              ).slice(0, 20);
+              const aBusinesses = businesses
+                .filter((b: BusinessData) =>
+                  b.name.toLowerCase().startsWith("a"),
+                )
+                .slice(0, 20);
 
               if (aBusinesses.length > 0) {
                 console.log(
@@ -1538,7 +1556,7 @@ export default function CompanyProfileModern() {
               // Show total database info
               console.log("📊 Database Info:", {
                 totalBusinesses: businesses.length,
-                sampleNames: businesses.slice(0, 5).map(b => b.name),
+                sampleNames: businesses.slice(0, 5).map((b) => b.name),
                 searchedFor: companyName,
                 searchWords: searchWords,
               });
