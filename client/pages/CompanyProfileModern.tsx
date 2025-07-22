@@ -1314,9 +1314,9 @@ export default function CompanyProfileModern() {
   // Set document title with company name
   useEffect(() => {
     if (businessData?.name) {
-      document.title = `Report Visa Scam - ${businessData.name}`;
+      document.title = `Reviews Visa Scam - ${businessData.name}`;
     } else {
-      document.title = "Report Visa Scam - Company Details";
+      document.title = "Reviews Visa Scam - Company Details";
     }
 
     // Cleanup: restore original title when component unmounts
