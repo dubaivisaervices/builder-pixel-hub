@@ -45,12 +45,24 @@ export default function SimpleBusinessDirectory() {
 
     // Also update meta description immediately
     const metaDesc = document.querySelector('meta[name="description"]');
+    console.log("🔍 Found meta description tag:", metaDesc);
+
     if (metaDesc) {
       metaDesc.setAttribute(
         "content",
         "Find verified immigration consultants and visa services in Dubai, UAE. Browse trusted businesses with reviews and ratings. Protect yourself from scams.",
       );
       console.log("⚡ IMMEDIATE meta description updated");
+    } else {
+      // Create meta description tag if it doesn't exist
+      const newMetaDesc = document.createElement("meta");
+      newMetaDesc.setAttribute("name", "description");
+      newMetaDesc.setAttribute(
+        "content",
+        "Find verified immigration consultants and visa services in Dubai, UAE. Browse trusted businesses with reviews and ratings. Protect yourself from scams.",
+      );
+      document.head.appendChild(newMetaDesc);
+      console.log("⚡ CREATED new meta description tag");
     }
 
     // Force title update with setTimeout as well
