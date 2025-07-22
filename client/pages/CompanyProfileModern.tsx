@@ -1363,8 +1363,14 @@ export default function CompanyProfileModern() {
         canonical: `${window.location.origin}/reviews/${locationParam}/${companyName}`,
       };
 
-      // Set document title
+      // Set document title (multiple approaches for reliability)
       document.title = seoData.title;
+
+      // Also update title tag directly
+      const titleTag = document.querySelector('title');
+      if (titleTag) {
+        titleTag.textContent = seoData.title;
+      }
 
       // Update meta description
       const metaDescription = document.querySelector('meta[name="description"]');
