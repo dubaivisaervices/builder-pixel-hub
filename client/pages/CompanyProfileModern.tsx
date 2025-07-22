@@ -834,7 +834,7 @@ function CommunityReportsSection({
         };
       case "document_issues":
         return {
-          icon: "📄",
+          icon: "��",
           label: "Document Issues",
           gradient: "from-blue-400 to-indigo-500",
         };
@@ -1338,6 +1338,7 @@ export default function CompanyProfileModern() {
             languages: business.languages || ["English", "Arabic"],
           };
 
+          console.log("✅ Setting businessData:", enhancedBusiness.name);
           setBusinessData(enhancedBusiness);
         } else {
           setError("No businesses found");
@@ -1836,7 +1837,7 @@ export default function CompanyProfileModern() {
                 }}
               >
                 <PenTool className="h-5 w-5 mr-2" />
-                Write Review ⭐
+                Write Review ���
               </Button>
             </div>
           </div>
