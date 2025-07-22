@@ -43,6 +43,9 @@ export default function SimpleBusinessDirectory() {
   });
 
   const [businesses, setBusinesses] = useState([]);
+
+  // Add business listing structured data
+  useBusinessListingSEO(businesses);
   const [filteredBusinesses, setFilteredBusinesses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState([]);
