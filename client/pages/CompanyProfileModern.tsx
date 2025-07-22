@@ -1441,14 +1441,20 @@ export default function CompanyProfileModern() {
 
             if (!found) {
               // 3. Try fuzzy matching with first few words
-              const firstWords = searchName.split(" ").slice(0, 3).join(" ");
+              const firstTwoWords = searchName.split(" ").slice(0, 2).join(" ");
+              const firstThreeWords = searchName.split(" ").slice(0, 3).join(" ");
+
               found = businesses.find((b: BusinessData) => {
                 const businessName = b.name.toLowerCase();
+                const businessFirstTwo = businessName.split(" ").slice(0, 2).join(" ");
+                const businessFirstThree = businessName.split(" ").slice(0, 3).join(" ");
+
+                // Try different combinations
                 return (
-                  businessName.includes(firstWords) ||
-                  firstWords.includes(
-                    businessName.split(" ").slice(0, 3).join(" "),
-                  )
+                  businessName.includes(firstTwoWords) ||
+                  businessName.includes(firstThreeWords) ||
+                  firstTwoWords.includes(businessFirstTwo) ||
+                  firstThreeWords.includes(businessFirstThree)
                 );
               });
 
