@@ -498,6 +498,7 @@ export default function SimpleBusinessDirectory() {
     }
 
     console.log("🔗 Business clicked:", business.name, "-> URL:", reviewUrl);
+    console.log("🔗 Open in new tab:", openInNewTab);
   };
 
   const handleSuggestionClick = (suggestion: any) => {
