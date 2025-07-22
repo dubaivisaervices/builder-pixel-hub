@@ -94,29 +94,18 @@ export default function GoogleReviewsWidget({
         // Try to fetch real reviews from our API with timeout and error handling
         let response;
         try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-
-          response = await fetch(apiUrl, {
+          const fetchWithTimeout = createFetchWithTimeout(10000);
+          response = await fetchWithTimeout(apiUrl, {
             method: "GET",
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
             },
-            signal: controller.signal,
           });
-
-          clearTimeout(timeoutId);
         } catch (fetchError) {
           console.error("🔍 Fetch error:", fetchError);
-
-          if (fetchError.name === 'AbortError') {
-            throw new Error("Request timeout - server took too long to respond");
-          } else if (fetchError.message === 'Failed to fetch') {
-            throw new Error("Network error - unable to connect to server. Please check your internet connection.");
-          } else {
-            throw fetchError;
-          }
+          const networkError = parseNetworkError(fetchError);
+          throw new Error(networkError.userMessage);
         }
 
         console.log(`🔍 Response status: ${response.status}`);
