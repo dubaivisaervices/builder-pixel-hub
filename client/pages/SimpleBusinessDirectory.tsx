@@ -33,6 +33,15 @@ import {
 import { getBestLogoUrl } from "@/lib/imageUtils";
 
 export default function SimpleBusinessDirectory() {
+  console.log("🏢 SimpleBusinessDirectory component rendered");
+
+  // Initialize SEO for business directory page
+  useSEO({
+    title: "Dubai Business Directory - Verified Immigration & Visa Services",
+    description: "Find verified immigration consultants and visa services in Dubai, UAE. Browse trusted businesses with reviews and ratings. Protect yourself from scams.",
+    keywords: "Dubai business directory, immigration consultants Dubai, visa services UAE, verified businesses Dubai, business reviews UAE",
+  });
+
   const [businesses, setBusinesses] = useState([]);
   const [filteredBusinesses, setFilteredBusinesses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
