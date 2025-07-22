@@ -188,6 +188,8 @@ export const useComplaintFormSEO = () => {
 };
 
 export const useFraudReportSEO = () => {
+  console.log("🚨 useFraudReportSEO hook called");
+
   useSEO({
     title: "Report Fraud Immigration Consultants - Dubai UAE",
     description:
