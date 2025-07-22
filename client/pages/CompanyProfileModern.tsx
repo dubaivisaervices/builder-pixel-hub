@@ -1313,21 +1313,21 @@ export default function CompanyProfileModern() {
               "access-abroad-documents-clearing-services-llc": "access abroad",
               "abjad-documents-clearing-est": "abjad documents",
               "badar-yaseen-documents-clearing-dubai-visa-service":
-                "badar yaseen documents",
+                "BADAR YASEEN DOCUMENTS CLEARING",
               "benchmark-mofa-attestation-certificate-attestation-dubai-degree-attestation-uae-apostille-uk-us-india-canada-australia":
-                "benchmark attestation",
+                "Benchmark MOFA Attestation",
               "attestation-services-degree-certificate-attestation":
                 "attestation services",
               "billion-earth-migration-dubai-immigration-consultant-service-uae":
-                "billion earth migration",
+                "Billion Earth Migration Dubai",
               "beyond-borders-immigration-visa-consultants-in-dubai":
-                "beyond borders immigration",
+                "BEYOND BORDERS - IMMIGRATION",
               "bizvisa-business-visa-facilitators":
-                "bizvisa business",
+                "BIZVISA - Business Visa",
               "bright-star-visa-services-schengen-visa-consultant-in-dubai-best-uk-usa-canada-japan-australia-visa-consultant":
-                "bright star visa",
+                "Bright Star Visa Services",
               "bytes-business-setup-consultant-dubai-uae":
-                "bytes business setup",
+                "Bytes Business Setup Consultant",
             };
 
             // Check URL mappings first
