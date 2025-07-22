@@ -29,6 +29,7 @@ import {
   TrendingUp,
   Target,
   FileText,
+  ExternalLink,
 } from "lucide-react";
 import { getBestLogoUrl } from "@/lib/imageUtils";
 
