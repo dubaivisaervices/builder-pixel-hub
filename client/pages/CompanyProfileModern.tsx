@@ -1454,6 +1454,21 @@ export default function CompanyProfileModern() {
           "✅ All meta tags updated successfully for:",
           businessData.name,
         );
+
+        // Monitor title changes to detect interference
+        let titleCheckCount = 0;
+        const titleMonitor = setInterval(() => {
+          titleCheckCount++;
+          if (document.title !== seoData.title) {
+            console.warn(`🚨 Title was changed externally! Expected: "${seoData.title}", Current: "${document.title}"`);
+            document.title = seoData.title; // Restore it
+          }
+
+          if (titleCheckCount >= 10) { // Stop monitoring after 10 checks
+            clearInterval(titleMonitor);
+          }
+        }, 1000);
+
         }, 100); // Small delay to ensure DOM is ready
     } else {
       console.log("❌ BusinessData not available yet:", { businessData, name: businessData?.name });
