@@ -69,8 +69,13 @@ export default function GoogleReviewsWidget({
         }
 
         // IMMEDIATE FIX: Force use fallback reviews for Netlify deployment to ensure 5 reviews show
-        if (window.location.hostname.includes('netlify') || window.location.hostname.includes('reportvisascam.com')) {
-          console.log("🚨 NETLIFY DETECTED - Using fallback reviews to ensure 5 reviews show");
+        if (
+          window.location.hostname.includes("netlify") ||
+          window.location.hostname.includes("reportvisascam.com")
+        ) {
+          console.log(
+            "🚨 NETLIFY DETECTED - Using fallback reviews to ensure 5 reviews show",
+          );
           const fallbackData = getFallbackReviews(placeId);
           setReviews(fallbackData);
           setError("Showing sample reviews (API connectivity issue resolved)");
