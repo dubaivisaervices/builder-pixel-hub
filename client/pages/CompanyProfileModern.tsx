@@ -1293,14 +1293,14 @@ export default function CompanyProfileModern() {
               }
             }
 
-            // Enhanced matching algorithm for complex business names
-            let found = null;
-
-            // 1. Try exact name matching first
-            found = businesses.find(
-              (b: BusinessData) => b.name.toLowerCase() === searchName,
-            );
-            console.log("🔍 Exact match result:", found?.name || "No exact match");
+            // Continue with enhanced matching if URL mapping didn't work
+            if (!found) {
+              // 1. Try exact name matching first
+              found = businesses.find(
+                (b: BusinessData) => b.name.toLowerCase() === searchName,
+              );
+              console.log("🔍 Exact match result:", found?.name || "No exact match");
+            }
 
             if (!found) {
               // 2. Try key word matching (important business identifiers)
