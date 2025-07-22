@@ -46,16 +46,19 @@ export default function SimpleBusinessDirectory() {
     // Also update meta description immediately
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute("content", "Find verified immigration consultants and visa services in Dubai, UAE. Browse trusted businesses with reviews and ratings. Protect yourself from scams.");
+      metaDesc.setAttribute(
+        "content",
+        "Find verified immigration consultants and visa services in Dubai, UAE. Browse trusted businesses with reviews and ratings. Protect yourself from scams.",
+      );
       console.log("⚡ IMMEDIATE meta description updated");
     }
 
     // Force title update with setTimeout as well
     setTimeout(() => {
-      document.title = "Dubai Business Directory - Verified Immigration & Visa Services";
+      document.title =
+        "Dubai Business Directory - Verified Immigration & Visa Services";
       console.log("🕐 DELAYED title update:", document.title);
     }, 100);
-
   } catch (error) {
     console.error("❌ Error in immediate title update:", error);
   }
