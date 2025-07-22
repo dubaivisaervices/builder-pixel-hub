@@ -4,6 +4,25 @@ import { Button } from "@/components/ui/button";
 import { MessageSquare, Star, ExternalLink, User } from "lucide-react";
 import { getFallbackReviews } from "@/lib/fallbackReviews";
 
+// Check if server is reachable
+const checkServerConnectivity = async (): Promise<boolean> => {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+    const response = await fetch('/api/health', {
+      method: 'GET',
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+    return response.ok;
+  } catch (error) {
+    console.warn('Server connectivity check failed:', error);
+    return false;
+  }
+};
+
 interface Review {
   id: string;
   authorName: string;
