@@ -191,7 +191,7 @@ export default function SimpleBusinessDirectory() {
               responseText.trim().startsWith("<!DOCTYPE") ||
               responseText.trim().startsWith("<html")
             ) {
-              console.warn(`�� ${source.name} returned HTML instead of JSON`);
+              console.warn(`❌ ${source.name} returned HTML instead of JSON`);
               continue;
             }
 
@@ -899,7 +899,14 @@ export default function SimpleBusinessDirectory() {
               className={`group cursor-pointer hover:shadow-2xl transition-all duration-500 border-0 bg-white/95 backdrop-blur-lg hover:bg-white transform hover:scale-[1.02] hover:-translate-y-1 shadow-lg ${
                 viewMode === "list" ? "flex max-w-none" : "w-full mx-auto"
               }`}
-              onClick={() => handleBusinessClick(business)}
+              onClick={(e) => {
+                const openInNewTab = e.ctrlKey || e.metaKey;
+                handleBusinessClick(business, openInNewTab);
+              }}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                handleBusinessClick(business, true);
+              }}
             >
               <CardContent
                 className={`p-0 ${viewMode === "list" ? "flex w-full" : ""}`}
