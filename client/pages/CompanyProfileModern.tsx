@@ -1392,11 +1392,6 @@ export default function CompanyProfileModern() {
                 setLoading(false);
                 return;
               }
-
-              // Set error instead of fallback
-              setError(`Business "${companyName.replace(/-/g, ' ')}" not found in our directory.`);
-              setLoading(false);
-              return;
             }
           } else {
             // No company name provided, use first business as fallback
