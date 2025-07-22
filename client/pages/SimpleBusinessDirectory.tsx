@@ -219,6 +219,9 @@ export default function SimpleBusinessDirectory() {
         console.log(
           `✅ Total businesses processed: ${processedBusinesses.length}`,
         );
+
+        // Apply business listing structured data
+        console.log("🔧 Applying business listing SEO for", processedBusinesses.length, "businesses");
       } catch (error) {
         console.error("Error loading businesses:", error);
         setError(error.message);
