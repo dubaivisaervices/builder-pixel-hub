@@ -1371,19 +1371,21 @@ export default function CompanyProfileModern() {
                 const matchedWords = searchWords.filter(
                   (word) =>
                     businessName.includes(word) &&
-                    !["dubai", "uae", "in", "and", "the", "of", "for"].includes(
+                    !["dubai", "uae", "in", "and", "the", "of", "for", "services", "consultant", "consultants"].includes(
                       word,
                     ),
                 );
                 const matchScore =
                   matchedWords.length / Math.max(searchWords.length, 1);
 
-                if (matchScore >= 0.4) {
+                if (matchScore >= 0.3) {
                   console.log(
                     "🔍 Word match score:",
                     matchScore,
                     "for",
                     b.name,
+                    "matched words:",
+                    matchedWords,
                   );
                   return true;
                 }
