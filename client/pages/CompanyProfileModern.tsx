@@ -1376,6 +1376,17 @@ export default function CompanyProfileModern() {
                   "4s",
                   "documents",
                   "clearing",
+                  "amani",
+                  "alif",
+                  "matroshi",
+                  "safar",
+                  "jawn",
+                  "hudaibiyah",
+                  "access",
+                  "abjad",
+                  "star",
+                  "partners",
+                  "advocates",
                 ];
                 const foundKeyWords = keyWords.filter(
                   (key) =>
