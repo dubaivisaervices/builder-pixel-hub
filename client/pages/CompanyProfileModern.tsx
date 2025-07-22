@@ -1536,6 +1536,18 @@ export default function CompanyProfileModern() {
                 "hudaibiyah",
                 "access",
                 "abjad",
+                "badar",
+                "yaseen",
+                "benchmark",
+                "attestation",
+                "billion",
+                "earth",
+                "beyond",
+                "borders",
+                "bizvisa",
+                "bright",
+                "star",
+                "bytes",
               ];
 
               searchTerms.forEach((term) => {
