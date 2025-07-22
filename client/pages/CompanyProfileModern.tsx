@@ -1312,19 +1312,39 @@ export default function CompanyProfileModern() {
     loadBusiness();
   }, [locationParam, companyName, location.state]);
 
-  // Set document title with company name
+  // Initialize SEO for business profile with custom title format
   useEffect(() => {
     if (businessData?.name) {
-      document.title = `Reviews Visa Scam - ${businessData.name}`;
-    } else {
-      document.title = "Reviews Visa Scam - Company Details";
+      // Custom SEO implementation for business profile
+      const seoData = {
+        title: `Reviews Visa Scam - ${businessData.name}`,
+        description: `Check reviews and reports for ${businessData.name} in Dubai, UAE. Verify if this business is legitimate or a scam. Read community experiences and protect yourself from fraud.`,
+        keywords: `${businessData.name}, Dubai business reviews, visa scam check, UAE business verification, ${businessData.category || 'services'}, fraud protection`,
+        ogTitle: `Reviews Visa Scam - ${businessData.name}`,
+        ogDescription: `Community reviews and scam reports for ${businessData.name}. Check if this Dubai business is legitimate before using their services.`,
+        canonical: `${window.location.origin}/reviews/${locationParam}/${companyName}`,
+      };
+
+      // Set document title
+      document.title = seoData.title;
+
+      // Update other meta tags
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) {
+        metaDescription.setAttribute('content', seoData.description);
+      } else {
+        const newMeta = document.createElement('meta');
+        newMeta.setAttribute('name', 'description');
+        newMeta.setAttribute('content', seoData.description);
+        document.head.appendChild(newMeta);
+      }
     }
 
     // Cleanup: restore original title when component unmounts
     return () => {
       document.title = "Reviews Visa Scam - UAE's Scam Protection Platform";
     };
-  }, [businessData?.name]);
+  }, [businessData?.name, locationParam, companyName]);
 
   const handleShare = (platform: string) => {
     const url = window.location.href;
