@@ -37,6 +37,12 @@ export default function GoogleReviewsWidget({
         setError(null);
 
         console.log("🔍 Fetching reviews for placeId:", placeId);
+        console.log("🔍 Current URL:", window.location.href);
+
+        if (!placeId) {
+          setError("No business ID provided for reviews");
+          return;
+        }
 
         // First test if API routing works at all
         try {
@@ -47,6 +53,7 @@ export default function GoogleReviewsWidget({
             debugResponse.status,
             debugData.substring(0, 100),
           );
+          console.log("🔍 Debug response headers:", Object.fromEntries(debugResponse.headers.entries()));
         } catch (debugErr) {
           console.log("🔍 Debug API test failed:", debugErr.message);
         }
