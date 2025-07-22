@@ -63,6 +63,9 @@ export default function GoogleReviewsWidget({
           },
         });
 
+        console.log(`🔍 Response status: ${response.status}`);
+        console.log(`🔍 Response content-type: ${response.headers.get("content-type")}`);
+
         // If primary endpoint fails, try alternative endpoint
         if (
           !response.ok ||
@@ -77,6 +80,9 @@ export default function GoogleReviewsWidget({
               "Content-Type": "application/json",
             },
           });
+
+          console.log(`🔍 Alt Response status: ${response.status}`);
+          console.log(`🔍 Alt Response content-type: ${response.headers.get("content-type")}`);
         }
 
         if (response.ok) {
