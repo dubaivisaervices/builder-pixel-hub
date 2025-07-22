@@ -1312,6 +1312,22 @@ export default function CompanyProfileModern() {
               "al-hudaibiyah-dcs": "al hudaibiyah",
               "access-abroad-documents-clearing-services-llc": "access abroad",
               "abjad-documents-clearing-est": "abjad documents",
+              "badar-yaseen-documents-clearing-dubai-visa-service":
+                "badar yaseen documents",
+              "benchmark-mofa-attestation-certificate-attestation-dubai-degree-attestation-uae-apostille-uk-us-india-canada-australia":
+                "benchmark attestation",
+              "attestation-services-degree-certificate-attestation":
+                "attestation services",
+              "billion-earth-migration-dubai-immigration-consultant-service-uae":
+                "billion earth migration",
+              "beyond-borders-immigration-visa-consultants-in-dubai":
+                "beyond borders immigration",
+              "bizvisa-business-visa-facilitators":
+                "bizvisa business",
+              "bright-star-visa-services-schengen-visa-consultant-in-dubai-best-uk-usa-canada-japan-australia-visa-consultant":
+                "bright star visa",
+              "bytes-business-setup-consultant-dubai-uae":
+                "bytes business setup",
             };
 
             // Check URL mappings first
