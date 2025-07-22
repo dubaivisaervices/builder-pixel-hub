@@ -36,14 +36,17 @@ export default function SimpleBusinessDirectory() {
   console.log("🏢 SimpleBusinessDirectory component rendered");
 
   // IMMEDIATE test to verify JavaScript is working
-  document.title = "Dubai Business Directory - Verified Immigration & Visa Services";
+  document.title =
+    "Dubai Business Directory - Verified Immigration & Visa Services";
   console.log("⚡ IMMEDIATE title set to:", document.title);
 
   // Initialize SEO for business directory page
   useSEO({
     title: "Dubai Business Directory - Verified Immigration & Visa Services",
-    description: "Find verified immigration consultants and visa services in Dubai, UAE. Browse trusted businesses with reviews and ratings. Protect yourself from scams.",
-    keywords: "Dubai business directory, immigration consultants Dubai, visa services UAE, verified businesses Dubai, business reviews UAE",
+    description:
+      "Find verified immigration consultants and visa services in Dubai, UAE. Browse trusted businesses with reviews and ratings. Protect yourself from scams.",
+    keywords:
+      "Dubai business directory, immigration consultants Dubai, visa services UAE, verified businesses Dubai, business reviews UAE",
   });
 
   const [businesses, setBusinesses] = useState([]);
@@ -66,7 +69,8 @@ export default function SimpleBusinessDirectory() {
 
   // Additional useEffect to ensure title updates
   useEffect(() => {
-    document.title = "Dubai Business Directory - Verified Immigration & Visa Services";
+    document.title =
+      "Dubai Business Directory - Verified Immigration & Visa Services";
     console.log("🔄 useEffect title update:", document.title);
   }, []);
 
@@ -234,7 +238,11 @@ export default function SimpleBusinessDirectory() {
         );
 
         // Apply business listing structured data
-        console.log("🔧 Applying business listing SEO for", processedBusinesses.length, "businesses");
+        console.log(
+          "🔧 Applying business listing SEO for",
+          processedBusinesses.length,
+          "businesses",
+        );
       } catch (error) {
         console.error("Error loading businesses:", error);
         setError(error.message);
