@@ -34,6 +34,8 @@ import { getBestLogoUrl } from "@/lib/imageUtils";
 
 export default function SimpleBusinessDirectory() {
   console.log("🏢 SimpleBusinessDirectory component rendered");
+  console.log("🔍 Current URL:", window.location.href);
+  console.log("🔍 Current pathname:", window.location.pathname);
 
   // IMMEDIATE test to verify JavaScript is working
   try {
