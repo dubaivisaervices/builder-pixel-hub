@@ -1274,22 +1274,33 @@ export default function CompanyProfileModern() {
 
             // Specific URL mappings for known problematic cases
             const urlMappings = {
-              'ae-formations-business-setup-consultants-in-dubai-uae-free-zone-offshore-mainland-business-setup-in-dubai-uae': 'ae formations',
-              'abroad-routes-trusted-immigration-consultants-in-dubai-business-skilled-immigration-tourist-and-student-visa': 'abroad routes',
-              'al-bustan-typing-center-al-barsha-first-street-dubai-uae': 'al bustan typing center',
-              'al-barsha-customer-happiness-centre-federal-authority-for-identity-citizenship-customs-ports-security': 'al barsha customer happiness centre',
+              "ae-formations-business-setup-consultants-in-dubai-uae-free-zone-offshore-mainland-business-setup-in-dubai-uae":
+                "ae formations",
+              "abroad-routes-trusted-immigration-consultants-in-dubai-business-skilled-immigration-tourist-and-student-visa":
+                "abroad routes",
+              "al-bustan-typing-center-al-barsha-first-street-dubai-uae":
+                "al bustan typing center",
+              "al-barsha-customer-happiness-centre-federal-authority-for-identity-citizenship-customs-ports-security":
+                "al barsha customer happiness centre",
             };
 
             // Check URL mappings first
             let found = null;
             if (urlMappings[companyName]) {
-              console.log("🔧 Using URL mapping for:", companyName, "->", urlMappings[companyName]);
+              console.log(
+                "🔧 Using URL mapping for:",
+                companyName,
+                "->",
+                urlMappings[companyName],
+              );
               const mappedSearch = urlMappings[companyName];
               found = businesses.find((b: BusinessData) =>
-                b.name.toLowerCase().includes(mappedSearch.toLowerCase())
+                b.name.toLowerCase().includes(mappedSearch.toLowerCase()),
               );
               if (found) {
-                console.log(`✅ Found business using URL mapping: ${found.name}`);
+                console.log(
+                  `✅ Found business using URL mapping: ${found.name}`,
+                );
               }
             }
 
@@ -1299,12 +1310,17 @@ export default function CompanyProfileModern() {
               found = businesses.find(
                 (b: BusinessData) => b.name.toLowerCase() === searchName,
               );
-              console.log("🔍 Exact match result:", found?.name || "No exact match");
+              console.log(
+                "🔍 Exact match result:",
+                found?.name || "No exact match",
+              );
             }
 
             if (!found) {
               // 2. Try key word matching (important business identifiers)
-              const searchWords = searchName.split(" ").filter(word => word.length > 2);
+              const searchWords = searchName
+                .split(" ")
+                .filter((word) => word.length > 2);
               console.log("🔍 Search words:", searchWords);
 
               found = businesses.find((b: BusinessData) => {
@@ -1312,24 +1328,49 @@ export default function CompanyProfileModern() {
                 const businessWords = businessName.split(" ");
 
                 // Look for key identifying words
-                const keyWords = ['formations', 'routes', 'bustan', 'barsha', 'typing', 'center', 'centre', 'happiness'];
-                const foundKeyWords = keyWords.filter(key =>
-                  searchName.includes(key) && businessName.includes(key)
+                const keyWords = [
+                  "formations",
+                  "routes",
+                  "bustan",
+                  "barsha",
+                  "typing",
+                  "center",
+                  "centre",
+                  "happiness",
+                ];
+                const foundKeyWords = keyWords.filter(
+                  (key) =>
+                    searchName.includes(key) && businessName.includes(key),
                 );
 
                 if (foundKeyWords.length > 0) {
-                  console.log("🔍 Found key words match:", foundKeyWords, "in", b.name);
+                  console.log(
+                    "🔍 Found key words match:",
+                    foundKeyWords,
+                    "in",
+                    b.name,
+                  );
                   return true;
                 }
 
                 // Check if business name contains most important search words
-                const matchedWords = searchWords.filter(word =>
-                  businessName.includes(word) && !['dubai', 'uae', 'in', 'and', 'the', 'of', 'for'].includes(word)
+                const matchedWords = searchWords.filter(
+                  (word) =>
+                    businessName.includes(word) &&
+                    !["dubai", "uae", "in", "and", "the", "of", "for"].includes(
+                      word,
+                    ),
                 );
-                const matchScore = matchedWords.length / Math.max(searchWords.length, 1);
+                const matchScore =
+                  matchedWords.length / Math.max(searchWords.length, 1);
 
                 if (matchScore >= 0.4) {
-                  console.log("🔍 Word match score:", matchScore, "for", b.name);
+                  console.log(
+                    "🔍 Word match score:",
+                    matchScore,
+                    "for",
+                    b.name,
+                  );
                   return true;
                 }
 
@@ -1342,7 +1383,12 @@ export default function CompanyProfileModern() {
               const firstWords = searchName.split(" ").slice(0, 3).join(" ");
               found = businesses.find((b: BusinessData) => {
                 const businessName = b.name.toLowerCase();
-                return businessName.includes(firstWords) || firstWords.includes(businessName.split(" ").slice(0, 3).join(" "));
+                return (
+                  businessName.includes(firstWords) ||
+                  firstWords.includes(
+                    businessName.split(" ").slice(0, 3).join(" "),
+                  )
+                );
               });
 
               if (found) {
@@ -1358,7 +1404,10 @@ export default function CompanyProfileModern() {
                   searchName.slice(0, 15).includes(b.name.toLowerCase()),
               );
               if (found) {
-                console.log("🔍 Found business with partial matching:", found.name);
+                console.log(
+                  "🔍 Found business with partial matching:",
+                  found.name,
+                );
               }
             }
 
@@ -1378,17 +1427,26 @@ export default function CompanyProfileModern() {
               const possibleMatches = businesses.filter((b: BusinessData) => {
                 const businessName = b.name.toLowerCase();
                 const searchWords = searchName.split(" ").slice(0, 3);
-                return searchWords.some(word => word.length > 3 && businessName.includes(word));
+                return searchWords.some(
+                  (word) => word.length > 3 && businessName.includes(word),
+                );
               });
 
               if (possibleMatches.length > 0) {
-                console.log("🔍 Possible matches found:", possibleMatches.map(b => b.name));
+                console.log(
+                  "🔍 Possible matches found:",
+                  possibleMatches.map((b) => b.name),
+                );
                 // Use the first possible match as fallback
                 business = possibleMatches[0];
                 console.log(`🔄 Using closest match: ${business.name}`);
               } else {
-                console.log("❌ No possible matches found - business may not exist in database");
-                setError(`Business "${companyName.replace(/-/g, ' ')}" not found in our directory.`);
+                console.log(
+                  "❌ No possible matches found - business may not exist in database",
+                );
+                setError(
+                  `Business "${companyName.replace(/-/g, " ")}" not found in our directory.`,
+                );
                 setLoading(false);
                 return;
               }
@@ -1396,7 +1454,10 @@ export default function CompanyProfileModern() {
           } else {
             // No company name provided, use first business as fallback
             business = businesses[0];
-            console.log("🔍 No company name provided, using first business:", business.name);
+            console.log(
+              "🔍 No company name provided, using first business:",
+              business.name,
+            );
           }
 
           // Enhance business data with additional info
@@ -1687,14 +1748,22 @@ export default function CompanyProfileModern() {
               Business Not Found
             </h2>
             <p className="text-gray-600 mb-4">
-              {error || "The business profile you're looking for doesn't exist in our directory."}
+              {error ||
+                "The business profile you're looking for doesn't exist in our directory."}
             </p>
             <div className="space-y-2">
-              <Button onClick={() => navigate("/dubai-businesses")} className="w-full">
+              <Button
+                onClick={() => navigate("/dubai-businesses")}
+                className="w-full"
+              >
                 <Building2 className="h-4 w-4 mr-2" />
                 Browse All Businesses
               </Button>
-              <Button onClick={() => navigate("/")} variant="outline" className="w-full">
+              <Button
+                onClick={() => navigate("/")}
+                variant="outline"
+                className="w-full"
+              >
                 <Home className="h-4 w-4 mr-2" />
                 Back to Home
               </Button>
