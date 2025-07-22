@@ -65,7 +65,7 @@ export default function GoogleReviewsWidget({
         }
 
         // Check server connectivity first
-        const isServerReachable = await checkServerConnectivity();
+        const isServerReachable = await checkAPIHealth();
         if (!isServerReachable) {
           console.log("🔍 Server appears to be unreachable, using fallback reviews");
           setError("Unable to connect to server. Showing sample reviews.");
