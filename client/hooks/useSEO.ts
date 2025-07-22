@@ -34,7 +34,10 @@ export const useSEO = (options: SEOOptions = {}) => {
           try {
             await loadPageMetaTags(currentPath);
           } catch (dbError) {
-            console.warn("Failed to load meta tags from database, continuing with manual options:", dbError);
+            console.warn(
+              "Failed to load meta tags from database, continuing with manual options:",
+              dbError,
+            );
           }
         }
 
