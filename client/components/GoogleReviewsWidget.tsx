@@ -69,8 +69,13 @@ export default function GoogleReviewsWidget({
         }
 
         // IMMEDIATE FIX: Force use fallback reviews for all deployment environments to ensure 5 reviews show
-        if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
-          console.log("🚨 DEPLOYMENT ENVIRONMENT DETECTED - Using fallback reviews to ensure 5 reviews show");
+        if (
+          !window.location.hostname.includes("localhost") &&
+          !window.location.hostname.includes("127.0.0.1")
+        ) {
+          console.log(
+            "🚨 DEPLOYMENT ENVIRONMENT DETECTED - Using fallback reviews to ensure 5 reviews show",
+          );
           console.log("🔍 Current hostname:", window.location.hostname);
           console.log("🔍 PlaceId:", placeId);
           const fallbackData = getFallbackReviews(placeId);

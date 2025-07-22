@@ -624,8 +624,13 @@ function CommunityReportsSection({
       if (!businessId) return;
 
       // IMMEDIATE FIX: For deployment environments, show clean record instead of API errors
-      if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
-        console.log("🚨 DEPLOYMENT ENVIRONMENT DETECTED - Showing clean record for reports");
+      if (
+        !window.location.hostname.includes("localhost") &&
+        !window.location.hostname.includes("127.0.0.1")
+      ) {
+        console.log(
+          "🚨 DEPLOYMENT ENVIRONMENT DETECTED - Showing clean record for reports",
+        );
         console.log("🔍 Current hostname:", window.location.hostname);
         setReports([]); // Empty reports = clean record
         setLoading(false);
@@ -1375,9 +1380,18 @@ export default function CompanyProfileModern() {
                 const matchedWords = searchWords.filter(
                   (word) =>
                     businessName.includes(word) &&
-                    !["dubai", "uae", "in", "and", "the", "of", "for", "services", "consultant", "consultants"].includes(
-                      word,
-                    ),
+                    ![
+                      "dubai",
+                      "uae",
+                      "in",
+                      "and",
+                      "the",
+                      "of",
+                      "for",
+                      "services",
+                      "consultant",
+                      "consultants",
+                    ].includes(word),
                 );
                 const matchScore =
                   matchedWords.length / Math.max(searchWords.length, 1);
@@ -1446,20 +1460,28 @@ export default function CompanyProfileModern() {
               // Search for any businesses that might contain parts of the search term
               const partialMatches = businesses.filter((b: BusinessData) => {
                 const name = b.name.toLowerCase();
-                return searchWords.some(word => name.includes(word) && word.length > 2);
+                return searchWords.some(
+                  (word) => name.includes(word) && word.length > 2,
+                );
               });
 
               if (partialMatches.length > 0) {
-                console.log("📋 Businesses with partial word matches:", partialMatches.slice(0, 5).map(b => b.name));
+                console.log(
+                  "📋 Businesses with partial word matches:",
+                  partialMatches.slice(0, 5).map((b) => b.name),
+                );
               }
 
               // Check for businesses with "hudhud" specifically
               const hudbudMatches = businesses.filter((b: BusinessData) =>
-                b.name.toLowerCase().includes('hudhud')
+                b.name.toLowerCase().includes("hudhud"),
               );
 
               if (hudbudMatches.length > 0) {
-                console.log("📋 Hudhud businesses found:", hudbudMatches.map(b => b.name));
+                console.log(
+                  "📋 Hudhud businesses found:",
+                  hudbudMatches.map((b) => b.name),
+                );
               } else {
                 console.log("❌ No businesses with 'hudhud' found in database");
               }
