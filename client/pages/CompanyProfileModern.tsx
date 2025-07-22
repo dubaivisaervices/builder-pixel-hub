@@ -1301,6 +1301,22 @@ export default function CompanyProfileModern() {
                 "al hudhud documents clearing",
               "4s-study-abroad-5000-visa-approved-education-consultant-in-dubai":
                 "4s study abroad",
+              "amani-dubai-uae-visa-tour-travel-consultants-in-dubai-uae-visa-family-visa-freelance-visa-golden-visa-services":
+                "amani dubai",
+              "alif-star-business-services-llc":
+                "alif star business",
+              "al-matroshi-travel-tourism-llc":
+                "al matroshi travel",
+              "al-safar-partners-advocates-legal-consultants":
+                "al safar partners",
+              "al-jawn-documents-clearing-service-family-visa-certificate-attestation-mofa-parents-visa":
+                "al jawn documents",
+              "al-hudaibiyah-dcs":
+                "al hudaibiyah",
+              "access-abroad-documents-clearing-services-llc":
+                "access abroad",
+              "abjad-documents-clearing-est":
+                "abjad documents",
             };
 
             // Check URL mappings first
