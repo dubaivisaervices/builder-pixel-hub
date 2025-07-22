@@ -170,12 +170,13 @@ export default function GoogleReviewsWidget({
         if (err.message) {
           if (
             err.message.includes("JSON") ||
-            err.message.includes("Unexpected token")
+            err.message.includes("Unexpected token") ||
+            err.message.includes("HTML instead of JSON")
           ) {
             errorMessage =
-              "API returned invalid response (HTML instead of JSON)";
+              "Unable to load reviews at this time";
           } else {
-            errorMessage = `Failed to load reviews: ${err.message}`;
+            errorMessage = `Unable to load reviews: ${err.message}`;
           }
         }
 
