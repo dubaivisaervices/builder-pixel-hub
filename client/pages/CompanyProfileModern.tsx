@@ -1358,6 +1358,10 @@ export default function CompanyProfileModern() {
     console.log("🔍 Current document title:", document.title);
 
     if (businessData?.name) {
+      // IMMEDIATE title update (no setTimeout)
+      const immediateTitle = `Reviews Visa Scam - ${businessData.name}`;
+      document.title = immediateTitle;
+      console.log("⚡ IMMEDIATE title set to:", immediateTitle);
       // Custom SEO implementation for business profile
       const seoData = {
         title: `Reviews Visa Scam - ${businessData.name}`,
