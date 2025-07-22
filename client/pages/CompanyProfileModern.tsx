@@ -1322,8 +1322,7 @@ export default function CompanyProfileModern() {
                 "Billion Earth Migration Dubai",
               "beyond-borders-immigration-visa-consultants-in-dubai":
                 "BEYOND BORDERS - IMMIGRATION",
-              "bizvisa-business-visa-facilitators":
-                "BIZVISA - Business Visa",
+              "bizvisa-business-visa-facilitators": "BIZVISA - Business Visa",
               "bright-star-visa-services-schengen-visa-consultant-in-dubai-best-uk-usa-canada-japan-australia-visa-consultant":
                 "Bright Star Visa Services",
               "bytes-business-setup-consultant-dubai-uae":
