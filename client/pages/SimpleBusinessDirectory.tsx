@@ -1067,6 +1067,19 @@ export default function SimpleBusinessDirectory() {
 
                     <Button
                       variant="outline"
+                      size="sm"
+                      className="w-full border-2 border-blue-200 hover:bg-blue-50 text-blue-700 font-medium py-2 rounded-lg transition-all duration-200"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleBusinessClick(business, true);
+                      }}
+                    >
+                      <ExternalLink className="h-4 w-4 mr-2" />
+                      Open in New Tab
+                    </Button>
+
+                    <Button
+                      variant="outline"
                       className="w-full border-2 border-gray-200 hover:bg-gray-50 text-gray-700 font-medium py-2 rounded-lg transition-all duration-200"
                       onClick={(e) => {
                         e.stopPropagation();
