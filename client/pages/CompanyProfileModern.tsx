@@ -1272,6 +1272,27 @@ export default function CompanyProfileModern() {
               totalBusinesses: businesses.length,
             });
 
+            // Specific URL mappings for known problematic cases
+            const urlMappings = {
+              'ae-formations-business-setup-consultants-in-dubai-uae-free-zone-offshore-mainland-business-setup-in-dubai-uae': 'ae formations',
+              'abroad-routes-trusted-immigration-consultants-in-dubai-business-skilled-immigration-tourist-and-student-visa': 'abroad routes',
+              'al-bustan-typing-center-al-barsha-first-street-dubai-uae': 'al bustan typing center',
+              'al-barsha-customer-happiness-centre-federal-authority-for-identity-citizenship-customs-ports-security': 'al barsha customer happiness centre',
+            };
+
+            if (urlMappings[companyName]) {
+              console.log("🔧 Using URL mapping for:", companyName, "->", urlMappings[companyName]);
+              const mappedSearch = urlMappings[companyName];
+              const mappedFound = businesses.find((b: BusinessData) =>
+                b.name.toLowerCase().includes(mappedSearch.toLowerCase())
+              );
+              if (mappedFound) {
+                business = mappedFound;
+                console.log(`✅ Found business using URL mapping: ${business.name}`);
+                return;
+              }
+            }
+
             // Enhanced matching algorithm for complex business names
             let found = null;
 
@@ -1308,7 +1329,7 @@ export default function CompanyProfileModern() {
                 const matchScore = matchedWords.length / Math.max(searchWords.length, 1);
 
                 if (matchScore >= 0.4) {
-                  console.log("�� Word match score:", matchScore, "for", b.name);
+                  console.log("🔍 Word match score:", matchScore, "for", b.name);
                   return true;
                 }
 
