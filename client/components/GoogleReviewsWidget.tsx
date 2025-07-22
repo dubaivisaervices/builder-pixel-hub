@@ -152,7 +152,7 @@ export default function GoogleReviewsWidget({
               "❌ Received HTML instead of JSON - API route not working",
             );
             setError(
-              "API endpoint not responding correctly - got HTML instead of JSON",
+              "Unable to load reviews at this time. Please try again later.",
             );
           } else {
             setError(`API Error: ${response.status} - ${response.statusText}`);
