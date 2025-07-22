@@ -1261,14 +1261,7 @@ export default function CompanyProfileModern() {
         }
 
         if (Array.isArray(businesses) && businesses.length > 0) {
-          let business = businesses[0]; // Default fallback
-          console.log("🔍 Default business data:", {
-            id: business.id,
-            name: business.name,
-            logoUrl: business.logoUrl,
-            logoS3Url: business.logoS3Url,
-            logo_base64: business.logo_base64 ? "present" : "missing",
-          });
+          let business = null;
 
           // Try to find matching business by name
           if (companyName) {
@@ -1285,35 +1278,55 @@ export default function CompanyProfileModern() {
             );
 
             if (!found) {
-              // Try partial matching
+              // Try variations of the search name
+              const searchWords = searchName.split(" ");
+              found = businesses.find((b: BusinessData) => {
+                const businessName = b.name.toLowerCase();
+                // Check if business name contains most of the search words
+                const matchedWords = searchWords.filter(word =>
+                  word.length > 2 && businessName.includes(word)
+                );
+                return matchedWords.length >= Math.min(3, searchWords.length * 0.6);
+              });
+
+              if (found) {
+                console.log("🔍 Found business with word matching:", found.name);
+              }
+            }
+
+            if (!found) {
+              // Try partial matching as last resort
               found = businesses.find(
                 (b: BusinessData) =>
-                  b.name.toLowerCase().includes(searchName) ||
-                  searchName.includes(b.name.toLowerCase()),
+                  b.name.toLowerCase().includes(searchName.slice(0, 20)) ||
+                  searchName.slice(0, 20).includes(b.name.toLowerCase()),
               );
-              console.log("🔍 Partial match attempt for:", searchName);
+              if (found) {
+                console.log("🔍 Found business with partial matching:", found.name);
+              }
             }
 
             if (found) {
               business = found;
               console.log(`✅ Found matching business: ${business.name}`);
-              console.log("🔍 Matched business data:", {
-                id: business.id,
-                name: business.name,
-                logoUrl: business.logoUrl,
-                logoS3Url: business.logoS3Url,
-                logo_base64: business.logo_base64 ? "present" : "missing",
-              });
             } else {
               console.log(
-                `⚠️ No match found for "${companyName}" (searchName: "${searchName}")`,
+                `❌ NO BUSINESS FOUND for "${companyName}" (searchName: "${searchName}")`,
               );
               console.log(
                 "📋 Available business names:",
-                businesses.slice(0, 5).map((b) => b.name),
+                businesses.slice(0, 10).map((b) => b.name),
               );
-              console.log(`⚠️ Using fallback business: ${business.name}`);
+
+              // Set error instead of fallback
+              setError(`Business "${companyName.replace(/-/g, ' ')}" not found in our directory.`);
+              setLoading(false);
+              return;
             }
+          } else {
+            // No company name provided, use first business as fallback
+            business = businesses[0];
+            console.log("🔍 No company name provided, using first business:", business.name);
           }
 
           // Enhance business data with additional info
